@@ -8,9 +8,7 @@ from sklearn.metrics import (
     silhouette_score, adjusted_rand_score,
     davies_bouldin_score, pairwise_distances_argmin_min, silhouette_samples
 )
-
 from clustering.evaluation.stability import stability_and_consensus
-
 import numpy as np
 import pandas as pd
 from sklearn.metrics import silhouette_samples

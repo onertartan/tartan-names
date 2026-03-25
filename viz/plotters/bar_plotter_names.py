@@ -56,7 +56,7 @@ class BarPlotter(abc.ABC):
 
 # ------------- matplotlib -------------
 class MatplotlibPlotter(BarPlotter):
-    ENGINE = "matplotlib"
+    ENGINE = "Matplotlib"
 
     def plot(self, df, col_plot):
 
@@ -64,7 +64,7 @@ class MatplotlibPlotter(BarPlotter):
 
         pivot_df = df.pivot(index="year", columns="name", values="count")
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(15, 9))
         pivot_df.plot(kind="bar", ax=ax)
 
         ax.set_title(self.title)
@@ -81,33 +81,34 @@ class MatplotlibPlotter(BarPlotter):
 
 # ------------- seaborn -------------
 class SeabornPlotter(BarPlotter):
-    ENGINE = "seaborn"
+    ENGINE = "Seaborn"
 
     def plot(self, df, col_plot):
 
         validate_df(df)
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(15, 9))
+        palette = sns.color_palette("tab20", n_colors=df["name"].nunique())
 
         sns.barplot(
             data=df,
             x="year",
             y="count",
             hue="name",
+            palette=palette,
             ax=ax
         )
-
         ax.set_title(self.title)
         ax.set_xlabel("Year")
         ax.set_ylabel("Count")
-
+        ax.legend(loc="best")
         col_plot.pyplot(fig)
         plt.close(fig)
 
 
 # ------------- plotly -------------
 class PlotlyPlotter(BarPlotter):
-    ENGINE = "plotly"
+    ENGINE = "Plotly"
 
     def plot(self, df, col_plot):
 
@@ -130,7 +131,7 @@ class PlotlyPlotter(BarPlotter):
 
 # ------------- pandas -------------
 class PandasPlotter(BarPlotter):
-    ENGINE = "pandas"
+    ENGINE = "Pandas"
 
     def plot(self, df, col_plot):
 
@@ -151,7 +152,7 @@ class PandasPlotter(BarPlotter):
 
 # ------------- altair -------------
 class AltairPlotter(BarPlotter):
-    ENGINE = "altair"
+    ENGINE = "Altair"
 
     def plot(
         self,
@@ -201,8 +202,8 @@ ENGINES: dict[str, type[BarPlotter]] = {
 }
 
 
-def get_plotter(
-    engine: Literal["matplotlib", "seaborn", "plotly", "pandas", "altair"],
+def get_bar_plotter(
+    engine: Literal["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
     gender: str,
     page_name: str,
 ) -> BarPlotter:

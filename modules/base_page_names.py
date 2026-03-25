@@ -17,8 +17,8 @@ from viz.gui_helpers.ui_base_page import province_selector, sidebar_controls_bas
 from viz.gui_helpers.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
     render_top_n_selector, sidebar_controls_plot_options_setup, render_rank_plot_sub_tabs, \
     render_custom_bar_plot_sub_tab
-from viz.plotters.bar_plotter_names import AltairPlotter
-from viz.plotters.bump_plotter import MatplotlibBumpPlotter
+from viz.plotters.bar_plotter_names import AltairPlotter, get_bar_plotter
+from viz.plotters.bump_plotter import MatplotlibBumpPlotter, PlotlyBumpPlotter, get_bump_plotter
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
 
@@ -35,8 +35,7 @@ class PageNames(BasePage):
         with cols[2]:
             selected_provinces = province_selector(
                 df.select(pl.col("province")).unique().to_series().to_list(),
-                key_prefix=f"{self.page_name}_province",
-            )
+                key_prefix=f"{self.page_name}_province")
         # 2. Yıl ve Şehir filtrelemesi (Pandas .loc[idx[...]] yerine)
         df = df.filter( (pl.col("year").is_in(selected_years)) & (pl.col("province").is_in(selected_provinces)) )
         # 3. Maksimum rank değerini bul ve filtrele
@@ -189,7 +188,7 @@ class PageNames(BasePage):
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
             self.tab_2_map(df)
         elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Tab 3-4-5
-            self.tab_3_4_5_new(df, col_plot, col_df, col_2, col_3, col_4)
+            self.tab_3_4_5(df, col_plot, col_df, col_2, col_3, col_4)
 
     def tab_2_map(self, df):
         # Expression depending on page
@@ -216,22 +215,22 @@ class PageNames(BasePage):
         if display_option:
             self.plot_map(col_plot, col_df, df, plot_value, display_option)
 
-    def tab_3_4_5_new(self,df,col_plot, col_df, col_2, col_3, col_4):
+    def tab_3_4_5(self, df, col_plot, col_df, col_2, col_3, col_4):
         page_name = self.page_name
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
         gender = st.session_state["gender_radio_widget_"+page_name]
         if "rank" in st.session_state["selected_tab_"+self.page_name]:
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately = render_rank_plot_sub_tabs(page_name, clusters)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine = render_rank_plot_sub_tabs(page_name, clusters)
         else:
             names = sorted(df["name"].unique(), key=locale.strxfrm)
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately = render_custom_bar_plot_sub_tab(page_name, clusters, names)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine = render_custom_bar_plot_sub_tab(page_name, clusters, names)
 
         if "bump" in st.session_state["selected_tab_"+page_name]:
-            plotter_object = MatplotlibBumpPlotter(gender,page_name)
+            plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
         elif "bar" in st.session_state["selected_tab_"+page_name]:
-            plotter_object = AltairPlotter(gender,page_name)
+            plotter_object = get_bar_plotter(plotter_engine,gender,page_name)
 
         col_plot.title("Counts by Name and Year")
         idx = pd.IndexSlice
@@ -263,69 +262,6 @@ class PageNames(BasePage):
         else:  # if not any selected, select all provinces
             plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
 
-    def tab_3_4_5(self, df, col_plot, col_df,col_2,col_3,col_4):
-        tab_selected = st.session_state["selected_tab_" + self.page_name]
-        if "rank" in tab_selected:  # add rank selectbox if tab_selected == "tab_rank_bump" or tab_selected == "tab_rank_bar": Tabs 2-3
-            col_2.selectbox(f"Select rank", range(1, 21), index=4, key="rank_" + self.page_name)
-            col_2.radio("Select an option",
-                        ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
-                        key="include_all_years")
-        elif tab_selected == "custom_bar":  # add name selector for custom name selection instead of top-rank names
-            expression_in_sentence = "names or surnames" if self.page_name == "names_surnames" else "baby names"
-            # names_surnames has extra name-surname radio group overlapping with name selector,if so move the selector to right col
-            empty_col = col_4 if self.page_name == "names_surnames" else col_2
-            empty_col.multiselect(f"Select {expression_in_sentence}", sorted(df["name"].unique(), key=locale.strxfrm),
-                                  key="names_" + self.page_name)
-        if tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # if tab is one of tab-2,3 or 4
-            col_3.radio("Select an option", options=["Use provinces", "Use clusters"],  key="province_or_cluster").lower()
-            provinces = sorted(df.index.get_level_values(1).unique(), key=locale.strxfrm)
-            if "n_clusters_" + self.page_name in st.session_state:
-                clusters = range(1, st.session_state["n_clusters_" + self.page_name] + 1)
-            else:
-                clusters= []
-            col_4.multiselect(f"Select provinces (default all)", provinces, key="provinces_" + self.page_name)
-            col_4.multiselect(f"Select clusters (default all)", clusters, key="clusters_" + self.page_name)
-            col_4.checkbox(f"Show aggregated totals (sum counts for selected provinces)", provinces,
-                           key="aggregate_totals_" + self.page_name)
-
-        # works for two tabs: Rank Bar Plot and Custom Name Bar Plot (tabs 4 & 5)
-        selected_provinces = st.session_state["provinces_" + self.page_name]
-        selected_clusters = st.session_state["clusters_" + self.page_name]
-
-        if "bar" in st.session_state["selected_tab_"+self.page_name]:
-            plot_method = getattr(self, "plot_rank_bar")
-        else:
-            plot_method = getattr(self, "plot_rank_bump") #getattr(cls, "plot_" + st.session_state["selected_tab"+cls.page_name])
-        col_plot.title("Counts by Name and Year")
-        idx = pd.IndexSlice
-        if st.session_state["province_or_cluster"] == "Use provinces" and selected_provinces:
-            if st.session_state["aggregate_totals_" + self.page_name]:
-                idx = pd.IndexSlice
-                df = df.loc[idx[:, selected_provinces], :]
-                plot_method(self.preprocess_for_rank_bar_tabs(df), col_plot)
-            else:
-                for province in selected_provinces:
-                    df_province = df.loc[idx[:, province], :]
-                    col_plot.subheader(province)
-                    plot_method(self.preprocess_for_rank_bar_tabs(df_province), col_plot)
-            col_df.dataframe(df)
-        elif st.session_state["province_or_cluster"] == "Use clusters" and selected_clusters:
-            df_pivot = self.preprocess_clustering(df)
-            df_pivot, _ = self.kmeans(df_pivot) # _ --> closest indices ( not used here)
-
-            df_clusters = df_pivot["clusters"]
-            df['clusters'] = df.index.get_level_values("province").map(df_clusters)
-            if st.session_state["aggregate_totals_" + self.page_name]:
-                df = df[df["clusters"].isin(selected_clusters)]
-                plot_method(self.preprocess_for_rank_bar_tabs(df), col_plot)
-            else:
-                for cluster in selected_clusters:
-                    df_cluster = df[df["clusters"] == cluster]
-                    col_plot.subheader(f"Cluster {cluster}")
-                    plot_method(self.preprocess_for_rank_bar_tabs(df_cluster), col_plot)
-            col_df.dataframe(df)
-        else:  # if not any selected, select all provinces
-            plot_method(self.preprocess_for_rank_bar_tabs(df), col_plot)
 
 
     def create_title_for_plot(self, rank):
@@ -511,26 +447,3 @@ class PageNames(BasePage):
                 )
 
         col_plot.plotly_chart(fig)
-
-    # Tab-2.3 & 2.4 plot methods
-    def plot_rank_bar(self, df, col_plot):
-        # 3rd tab & 4th tab: Bar plot for ranking and custom names
-        df = df.reset_index()
-        chart = alt.Chart(df).mark_bar().encode(
-            x=alt.X('year:O', title='Year'),
-            y=alt.Y('count:Q', title='Count'),
-            color=alt.Color('name:N', legend=None),  # Remove legend
-            column=alt.Column('name:N', title=None)
-        ).properties(
-            width=150,
-        title = {  # Add title configuration
-            "text": f"Frequency of {self.get_title_statement()} by Year",  # Title text
-            "anchor": "middle",  # Center the title
-            "dy": 4,  # Adjust vertical spacing (positive = move down)
-            "fontSize": 28  # Adjust font size
-        }
-        ).configure_header(labelFontSize=16,
-            titleFontSize=24,  # Increase font size for column titles (names)
-        ).configure_axisX(labelFontSize=16, titleFontSize=16).configure_axisY(labelFontSize=16, titleFontSize=16)
-        chart.save("temp/rank_bar.png", scale_factor=3)
-        col_plot.altair_chart(chart)
