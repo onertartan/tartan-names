@@ -1,4 +1,4 @@
-year,province,name,sex,count,rank,total_count
+year,province,name,gender,count,rank,total_count
 2024,Adana,Mehmet,male,39825,1,1140836
 2024,Adana,Mustafa,male,30673,2,1140836
 2024,Adana,Ahmet,male,26533,3,1140836

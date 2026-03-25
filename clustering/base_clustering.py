@@ -366,4 +366,3 @@ class BaseClustering:
             new_label_map[old_lbl] = next_new
             next_new += 1
         return labels.map(new_label_map).to_list()
-

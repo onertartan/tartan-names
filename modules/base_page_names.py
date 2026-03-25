@@ -15,32 +15,48 @@ from viz.config import COLORS, CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.color_mapping import create_cluster_color_mapping
 from viz.gui_helpers.ui_base_page import province_selector, sidebar_controls_basic_setup, figure_setup
 from viz.gui_helpers.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
-    render_top_n_selector, sidebar_controls_plot_options_setup
+    render_top_n_selector, sidebar_controls_plot_options_setup, render_rank_plot_sub_tabs, \
+    render_custom_bar_plot_sub_tab
+from viz.plotters.bar_plotter_names import AltairPlotter
+from viz.plotters.bump_plotter import MatplotlibBumpPlotter
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
+import polars as pl
 
 locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
 
 class PageNames(BasePage):
 
-    def initialize_multiindex_gdf_clusters(self, df: pd.DataFrame, year: object) -> None:
-        new_index = pd.MultiIndex.from_product([[year], df.index], names=["year", "city"])
-        self.gdf_clusters = df.copy()
-        self.gdf_clusters.index = new_index
-
-    def preprocessing_initial_filtering(self,name_surname_selection,selected_years,gender_list_state_key):
+    def preprocessing_initial_filtering(self,name_surname_selection,selected_years,gender_list_state_key,cols):
         # ---   Apply Filter ---
         # Only filter by gender if we are looking at names
         df = self.data[name_surname_selection.lower()]
-        top_n_names = render_top_n_selector()
-        selected_provinces = province_selector(df.index.get_level_values("province").unique().tolist())
-        idx = pd.IndexSlice
-        df = df.loc[idx[selected_years, selected_provinces], :]
-        df = df[df["rank"] <= top_n_names]  # use top-n for clustering (n=30 for all)
 
+        # 1. Benzersiz şehir listesini al (Eskiden index olan 'province' artık bir sütun)
+        with cols[2]:
+            selected_provinces = province_selector(
+                df.select(pl.col("province")).unique().to_series().to_list(),
+                key_prefix=f"{self.page_name}_province",
+            )
+        # 2. Yıl ve Şehir filtrelemesi (Pandas .loc[idx[...]] yerine)
+        df = df.filter( (pl.col("year").is_in(selected_years)) & (pl.col("province").is_in(selected_provinces)) )
+        # 3. Maksimum rank değerini bul ve filtrele
+        max_n = df.select(pl.col("rank")).max().item()  # .item() tek bir değeri Python tipine çevirir
+        with cols[3]:
+            st.markdown("**Data coverage**")
+            use_data_option = cols[3].radio("",["Use all data","Use top-n names (by default max-n=30)"])
+            top_n_names = render_top_n_selector(max_n)
+        if "top-n" in use_data_option:
+            df = df.filter(pl.col("rank") <= top_n_names)
+        # 4. Cinsiyet filtrelemesi
         if name_surname_selection != "surname":
-            # Ensure the column 'sex' exists before filtering
-            if 'sex' in df.columns:
-                df = df[df['sex'].isin(st.session_state[gender_list_state_key])]
+            # Sütun kontrolü ve filtreleme
+            if "gender" in df.columns:
+                df = df.filter( pl.col("gender").is_in(st.session_state[gender_list_state_key]) )
+        # 5. Polars DataFrame'i Pandas'a dönüştür
+        # Not: Bunun için 'pyarrow' kütüphanesinin yüklü olması gerekir.
+        df = df.to_pandas()
+        # 6. Pandas üzerinde MultiIndex oluştur
+        df = df.set_index(['year', 'province']).sort_index()
         return df
 
     def preprocess_clustering(self, df):
@@ -54,11 +70,9 @@ class PageNames(BasePage):
         if page_name == "names_surnames" and "name_surname_rb" in st.session_state and st.session_state["name_surname_rb"] == "surname":
             df_year = df.loc[year]
         elif st.session_state["sex_" + page_name] == ["male", "female"]:  # if both sexes are selected
-            df_year_male, df_year_female = df[df["sex"] == "male"].loc[year], df[df["sex"] == "female"].loc[year]
+            df_year_male, df_year_female = df[df["gender"] == "male"].loc[year], df[df["gender"] == "female"].loc[year]
             #     df_year_male = df_year_male[df_year_male["rank"] <= top_n]
             #    df_year_female = df_year_female[df_year_female["rank"] <= top_n]
-
-
             overlapping_names = set(df_year_male["name"]) & set(df_year_female["name"])
             df_year_male['name'] = df_year_male.apply(
                 lambda x: f"{x['name']}_female" if x['name'] in overlapping_names else x['name'], axis=1)
@@ -127,7 +141,7 @@ class PageNames(BasePage):
         df.index = df.index.droplevel(1)  # drop provinces from multiindex
         df = df.groupby([df.index, "name"]).aggregate({"count": "sum"}).reset_index(level="name")
         df = df.sort_values(by=["year", "count"], ascending=False)
-        if "rank" in st.session_state["selected_tab_"+self.page_name]:  # rank tabs work for cumulative results
+        if not df.empty and "rank" in st.session_state["selected_tab_"+self.page_name]:  # rank tabs work for cumulative results
             # Create rank column
             for year in df.index:
                 df.loc[year, 'rank'] = df.loc[year, 'count'].rank(axis=0, method='min', ascending=False)
@@ -142,6 +156,7 @@ class PageNames(BasePage):
         else:  # st.session_state["selected_tab" + cls.page_name] == "custom_bar":
             selected_names = st.session_state["names_" + self.page_name]
             df = df[df["name"].isin(selected_names)]
+        df.reset_index(inplace=True)
         return df
 
     def render(self):
@@ -149,11 +164,15 @@ class PageNames(BasePage):
         st.session_state["geo_scale"] = "province"
         header = "Names & Surnames Analysis" if self.page_name == "names_surnames" else "Baby Names Analysis"
         st.header(header)
-        start_year, end_year = self.data["name"].index.get_level_values(0).min(), self.data["name"].index.get_level_values(0).max()
+
+        start_year, end_year = self.data["name"].select(pl.col("year")).min().item(),  self.data["name"].select(pl.col("year")).max().item()
         sidebar_controls_basic_setup(start_year, end_year)
         sidebar_controls_plot_options_setup(self.page_name)
-        name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(self.page_name)
-        df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key)
+        cols = st.columns([1, 1, 3, 2])
+
+        name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(self.page_name,cols)
+        df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols)
+
         tab_selected = render_tab_selection(self.page_name)
         col_1, col_2, col_3, col_4, _ = st.columns([1, 1, 1, 1, 1])
 
@@ -170,7 +189,7 @@ class PageNames(BasePage):
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
             self.tab_2_map(df)
         elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Tab 3-4-5
-            self.tab_3_4_5(df, col_plot, col_df, col_2, col_3, col_4)
+            self.tab_3_4_5_new(df, col_plot, col_df, col_2, col_3, col_4)
 
     def tab_2_map(self, df):
         # Expression depending on page
@@ -196,6 +215,53 @@ class PageNames(BasePage):
         # Display results on map if a button is clicked
         if display_option:
             self.plot_map(col_plot, col_df, df, plot_value, display_option)
+
+    def tab_3_4_5_new(self,df,col_plot, col_df, col_2, col_3, col_4):
+        page_name = self.page_name
+        clusters = []
+        if "n_clusters_" + page_name in st.session_state:
+            clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
+        gender = st.session_state["gender_radio_widget_"+page_name]
+        if "rank" in st.session_state["selected_tab_"+self.page_name]:
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately = render_rank_plot_sub_tabs(page_name, clusters)
+        else:
+            names = sorted(df["name"].unique(), key=locale.strxfrm)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately = render_custom_bar_plot_sub_tab(page_name, clusters, names)
+
+        if "bump" in st.session_state["selected_tab_"+page_name]:
+            plotter_object = MatplotlibBumpPlotter(gender,page_name)
+        elif "bar" in st.session_state["selected_tab_"+page_name]:
+            plotter_object = AltairPlotter(gender,page_name)
+
+        col_plot.title("Counts by Name and Year")
+        idx = pd.IndexSlice
+        if use_province_or_cluster == "use provinces":
+            if show_provinces_separately:
+                for province in df.index.get_level_values(1).unique():
+                    df_province = df.loc[idx[:, province], :]
+                    col_plot.subheader(province)
+                    plotter_object.plot(self.preprocess_for_rank_bar_tabs(df_province), col_plot)
+            else:
+                plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
+
+            col_df.dataframe(df)
+        elif use_province_or_cluster == "Use clusters" and selected_n_cluster:
+            df_pivot = self.preprocess_clustering(df)
+            df_pivot, _ = self.kmeans(df_pivot) # _ --> closest indices ( not used here)
+
+            df_clusters = df_pivot["clusters"]
+            df['clusters'] = df.index.get_level_values("province").map(df_clusters)
+            if st.session_state["aggregate_totals_" + self.page_name]:
+                df = df[df["clusters"].isin(selected_n_cluster)]
+                plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
+            else:
+                for cluster in selected_n_cluster:
+                    df_cluster = df[df["clusters"] == cluster]
+                    col_plot.subheader(f"Cluster {cluster}")
+                    plotter_object.plot(self.preprocess_for_rank_bar_tabs(df_cluster), col_plot)
+            col_df.dataframe(df)
+        else:  # if not any selected, select all provinces
+            plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
 
     def tab_3_4_5(self, df, col_plot, col_df,col_2,col_3,col_4):
         tab_selected = st.session_state["selected_tab_" + self.page_name]
@@ -328,19 +394,7 @@ class PageNames(BasePage):
         else:
             st.write("No results found.")
 
-    def get_title_statement(self):
-        # Male Baby Names, Female Names
-        gender = st.session_state["sex_" + self.page_name]
-        if self.page_name == "names_surnames" and st.session_state["name_surname_rb"] == "Surname":
-            title_statement = "Surnames"
-        else:
-            title_statement = "Names"
-        if self.page_name == "baby_names":
-            title_statement = "Baby " + title_statement
-        if len(gender) == 1 and title_statement!="Surnames":
-            gender = gender[0]
-            title_statement = " " + gender.capitalize() + " " + title_statement
-        return title_statement
+
 
     # Tab-2.1:  nth most common
     def plot_names(self, df_result, ax):
@@ -349,7 +403,6 @@ class PageNames(BasePage):
         df_result["clusters"] = df_result["name"].factorize()[0]
         color_map = create_cluster_color_mapping(df_result.set_index("name"), CLUSTER_COLOR_MAPPING)
         # Assign colors to each row in the GeoDataFrame
-        print("LŞL",color_map)
         df_result['color'] = df_result['clusters'].map(color_map).fillna("gray") #-->GEREK YOK mu
         # After groupby df_result becomes Pandas dataframe, we have to convert it to GeoPandas dataframe
         df_result = gpd.GeoDataFrame(df_result, geometry='geometry')
@@ -388,87 +441,6 @@ class PageNames(BasePage):
        # for name, color in set(zip(df_result['name'], df_result['color'])):
        #     ax.plot([], [], color=color, label=name, linestyle='None', marker='o')
        #     ax.legend(title='Names', fontsize=4, bbox_to_anchor=(0.01, 0.01), loc='lower right', fancybox=True, shadow=True)
-
-
-    # Tab-2.2 plot method
-    def plot_rank_bump(self, df, col_plot):  # pyplot
-        # 2nd tab: Bump chart using pyplot
-        df_pivot = pd.pivot_table(df, values='rank', index=df.index, columns=['name'],
-                                  aggfunc=lambda x: x, dropna=False)
-        fig, ax = plt.subplots(figsize=(10, 6))  # Explicit figure creation
-        cmap = plt.cm.get_cmap("tab20", 20)  # good for categorical lines
-        COLORS = [cmap(i) for i in range(20)]
-        # Plot lines and dots for each name
-        for i, name in enumerate(df_pivot.columns):
-            color =  COLORS[i]
-            series = df_pivot[name]
-
-            # Identify all non-NaN segments, including single points
-            not_nan = series.notna()
-            segments = []
-            current_segment = []
-
-            for year, valid in zip(series.index, not_nan):
-                if valid:
-                    current_segment.append((year, series.loc[year]))
-                else:
-                    if current_segment:  # Changed from len(current_segment) > 1
-                        segments.append(current_segment)
-                    current_segment = []
-            if current_segment:  # Changed from len(current_segment) > 1
-                segments.append(current_segment)
-
-            # Plot each segment
-            for segment in segments:
-                seg_years, seg_ranks = zip(*segment)
-                ax.plot(seg_years, seg_ranks,
-                        marker='o',
-                        markersize=8,
-                        linewidth=2,
-                        alpha=0.7,
-                        color=color,
-                        label=name if segment == segments[0] else None)  # Avoid duplicate labels
-
-        max_rank = int(df["rank"].max())
-        # Invert y-axis to show #1 at top
-        ax.invert_yaxis()
-        ax.set_yticks(range(1, min(51,max_rank+1) ))  # Force show all ticks 1-10
-        ax.set_ylim(min(51,max_rank+1), 0)  # Add padding to top/bottom
-
-        ax.set_xticks(df_pivot.index)
-        # Add padding around plot content
-        ax.margins(x=0.15, y=0.1)  # 10% padding on both axes
-        fig.tight_layout(pad=2.0)  # Add padding around figure
-        # Customize plot
-        ax.set_title(f"Rank Evolution of {self.get_title_statement()} Over Years", fontsize=20, pad=20)
-        ax.set_xlabel("Year", fontsize=12)
-        ax.set_ylabel("Rank", fontsize=12)
-        ax.grid(True, alpha=0.3)
-        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        # Add data labels for first and last year
-
-        # Compute offsets to reduce overlapping texts
-        y_offset_tracker_first = defaultdict(int)
-        y_offset_tracker_last = defaultdict(int)
-
-        for name in df_pivot.columns:
-            first_rank = df_pivot[name].iloc[0]
-            final_rank = df_pivot[name].iloc[-1]
-            first_year = df_pivot.index[0]
-            final_year = df_pivot.index[-1]
-
-            # Add small vertical offsets if multiple names share the same rank
-            offset_first = y_offset_tracker_first[first_rank] * 0.2
-            offset_last = y_offset_tracker_last[final_rank] * 0.2
-
-            ax.text(first_year - 0.1, first_rank + offset_first, name,
-                    va='center', ha='right', alpha=0.7, fontsize=9)
-            ax.text(final_year + 0.1, final_rank + offset_last, name,
-                    va='center', ha='left', alpha=0.7, fontsize=9)
-
-            y_offset_tracker_first[first_rank] += 1
-            y_offset_tracker_last[final_rank] += 1
-        col_plot.pyplot(fig)
 
     # Tab-2 plot method (potential alternative using plotly)
     def plot_rank_bump_plotly(self, df, col_plot):

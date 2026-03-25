@@ -1,3 +1,5 @@
+import locale
+
 import extra_streamlit_components as stx
 import streamlit as st
 
@@ -42,21 +44,15 @@ def render_tab_selection(page_name):
         st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="tab_map")
     return st.session_state["selected_tab_" +page_name]
 
-def render_gender_name_surname_filters(page_name):
+def render_gender_name_surname_filters(page_name,cols):
     """ Common helper function for rendering
      'Names and Surnames' page and 'Baby Names' pages
     """
-    col_1, col_2 = st.columns([1, 8])
     name_surname_selection = "name"
     # data is a dictionary whose keys are names and surnames, values are corresponding dataframes
     # --- 1. Name/Surname Selection ---
     if page_name == "names_surnames":
-        # Using a key here is good practice
-        name_surname_selection = col_2.radio(
-            "Select name or surname",
-            ["Name", "Surname"],
-            key="name_surname_selection"
-        ).lower()
+        name_surname_selection = cols[1].radio( "Select name or surname", ["Name", "Surname"], key="name_surname_selection").lower()
         st.session_state["name_surname_rb"] = name_surname_selection
 
     # --- 2. Date Filtering ---
@@ -68,7 +64,7 @@ def render_gender_name_surname_filters(page_name):
 
     # Define keys for clarity
     gender_list_state_key = "sex_" + page_name
-    widget_key = "gender_radio_widget_" + page_name
+    widget_key = "gender_radio_widget_" + page_name # used for sub-folder name in saving clustering results
 
     # 1. One-time Initialization
     # If the widget hasn't been initialized yet, set its initial value
@@ -87,15 +83,10 @@ def render_gender_name_surname_filters(page_name):
         st.session_state[widget_key] = initial_val
 
     # 2. Render Widget
-    gender_selection = col_1.radio("Select Gender", ["Both genders", "Male", "Female"], key=widget_key,label_visibility="collapsed",disabled=disable )
+    gender_selection = cols[0].radio("Select Gender", ["Both genders", "Male", "Female"], key=widget_key,label_visibility="collapsed",disabled=disable )
+    gender_selection_dict = {"Male":["male"],"Female":["female"],"Both genders":["male","female"]}
     # 3. Update the Data List based on the Widget's new value
-    if gender_selection == "Male":
-        st.session_state[gender_list_state_key] = ["male"]
-    elif gender_selection == "Female":
-        st.session_state[gender_list_state_key] = ["female"]
-    else:
-        st.session_state[gender_list_state_key] = ["male", "female"]
-
+    st.session_state[gender_list_state_key] = gender_selection_dict[gender_selection]
     # --- 4. Override for Surnames ---
     # If surname is selected, we force both genders (or ignore gender column)
     if disable:
@@ -103,12 +94,32 @@ def render_gender_name_surname_filters(page_name):
 
     return name_surname_selection, selected_years, gender_list_state_key
 
+def render_rank_plot_sub_tabs(page_name,clusters):
+    """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """
+    col_1, col_2, col_3,_ = st.columns([2,1,2,2])
+    col_1.selectbox(f"Select rank", range(1, 21), index=4, key="rank_" + page_name)
+    col_1.radio("Select an option",
+                 ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
+                 key="include_all_years")
+    return _render_common_helper_bar(col_2, col_3, clusters)
 
-def render_top_n_selector():
-    return st.number_input(
-        "Use top-n names (by default all names are used)",
-        min_value=1,
-        max_value=30,
-        value=30,
-        key="top_n_names",
-    )
+
+def render_custom_bar_plot_sub_tab(page_name,clusters,names):
+    """ Helper function for rendering 'Custom Bar Plot'"""
+    col_1, col_2, col_3,_ = st.columns([2,1,2,2])
+    expression_in_sentence = "names or surnames" if page_name == "names_surnames" else "baby names"
+    # names_surnames has extra name-surname radio group overlapping with name selector,if so move the selector to right col
+    #empty_col = col_4 if self.page_name == "names_surnames" else col_2
+    col_1.multiselect(f"Select {expression_in_sentence}", names, key="names_" + page_name)
+    return _render_common_helper_bar(col_2, col_3, clusters)
+
+def _render_common_helper_bar(col_2, col_3, clusters):
+    use_province_or_cluster = col_2.radio("Select an option", options=["Use provinces", "Use clusters"],
+                                          key="province_or_cluster").lower()
+    selected_n_cluster = col_3.multiselect(f"Select clusters (default all)", clusters)
+    show_provinces_separately = col_3.checkbox(f"Show provinces separately(does not aggregate counts for selected provinces)")
+    return use_province_or_cluster, selected_n_cluster, show_provinces_separately
+
+
+def render_top_n_selector(max_n):
+    return st.number_input("", min_value=1, max_value=max_n,  value=30,  key="top_n_names")

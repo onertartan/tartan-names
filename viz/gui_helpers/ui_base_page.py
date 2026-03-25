@@ -4,9 +4,10 @@ from typing import List, Optional
 from matplotlib import pyplot as plt
 
 
-def province_selector(all_provinces, key_prefix: str = "province",  default_excluded: Optional[List[str]] = None) -> List[str]:
+def province_selector(all_provinces, key_prefix: str = "province", default_excluded: Optional[List[str]] = None) -> List[str]:
     """
-    Ultra-compact province selector using only exclusion.
+    Render a province selector with two mutually exclusive modes:
+    exclude selected provinces or include selected provinces.
 
     Args:
         key_prefix: Unique prefix for session state keys and widget IDs
@@ -14,51 +15,90 @@ def province_selector(all_provinces, key_prefix: str = "province",  default_excl
         default_excluded: Provinces to exclude by default on first load
 
     Returns:
-        List of currently selected provinces (all minus excluded)
+        List of currently selected provinces
     """
-    # Session state initialization
-    if f"{key_prefix}_excluded" not in st.session_state:
-        if default_excluded is not None:
-            st.session_state[f"{key_prefix}_excluded"] = default_excluded.copy()
-        else:
-            st.session_state[f"{key_prefix}_excluded"] = []
-
+    provinces = sorted({province for province in all_provinces if province is not None})
+    mode_key = f"{key_prefix}_mode"
     excluded_key = f"{key_prefix}_excluded"
+    excluded_widget_key = f"{key_prefix}_excluded_multiselect"
+    included_key = f"{key_prefix}_included"
+    included_widget_key = f"{key_prefix}_included_multiselect"
+    pending_action_key = f"{key_prefix}_pending_action"
 
-    # Tek bir searchable multiselect ile hariç tutma
+    if mode_key not in st.session_state:
+        st.session_state[mode_key] = "Exclude selected provinces"
+
+    if excluded_key not in st.session_state:
+        st.session_state[excluded_key] = [province for province in (default_excluded or []) if province in provinces]
+    else:
+        st.session_state[excluded_key] = [province for province in st.session_state[excluded_key] if province in provinces]
+
+    if included_key not in st.session_state:
+        st.session_state[included_key] = provinces.copy()
+    else:
+        st.session_state[included_key] = [province for province in st.session_state[included_key] if province in provinces]
+
+    pending_action = st.session_state.pop(pending_action_key, None)
+    if pending_action == "clear_excluded":
+        st.session_state[excluded_key] = []
+        st.session_state[excluded_widget_key] = []
+    elif pending_action == "select_all_included":
+        st.session_state[included_key] = provinces.copy()
+        st.session_state[included_widget_key] = provinces.copy()
+    elif pending_action == "clear_included":
+        st.session_state[included_key] = []
+        st.session_state[included_widget_key] = []
+
+    if excluded_widget_key not in st.session_state:
+        st.session_state[excluded_widget_key] = st.session_state[excluded_key].copy()
+    if included_widget_key not in st.session_state:
+        st.session_state[included_widget_key] = st.session_state[included_key].copy()
+
     st.markdown("**Province Selection**")
-    st.caption("Exclude provinces from analysis (all others are included)")
-    col_header = st.columns([3, 1])
-
-    with col_header[0]:
-        # Searchable multiselect with better UX
-        excluded = st.multiselect(
-            "Exclude provinces:",
-            options=all_provinces,
-            default=st.session_state[excluded_key],
-            key=f"{key_prefix}_exclude_compact",
-            label_visibility="collapsed",
-            placeholder="Search and select provinces to exclude..."
-        )
-    with col_header[1]:
-        if st.button("Clear", key=f"{key_prefix}_clear_btn", type="secondary"):
-            st.session_state[excluded_key] = []
-            st.rerun()
-
-    if excluded != st.session_state[excluded_key]:
-        st.session_state[excluded_key] = excluded.copy()
-        st.rerun()
-
-    # Calculate final selected (all minus excluded)
-    final_selected = [p for p in all_provinces if p not in st.session_state[excluded_key]]
-
-    # Mini summary
-    st.caption(
-        f"**{len(final_selected)}** provinces selected, "
-        f"**{len(st.session_state[excluded_key])}** excluded"
+    mode = st.radio(
+        "Selection mode",
+        ["Exclude selected provinces", "Include selected provinces"],
+        key=mode_key,
+        horizontal=True,
     )
 
-    return final_selected
+    col_selector, col_actions = st.columns([4, 1])
+
+    if mode == "Exclude selected provinces":
+        with col_selector:
+            excluded = st.multiselect(
+                "Exclude provinces",
+                options=provinces,
+                key=excluded_widget_key,
+                placeholder="Search and select provinces to exclude...",
+            )
+        with col_actions:
+            if st.button("Clear", key=f"{key_prefix}_clear_excluded_btn", type="secondary"):
+                st.session_state[pending_action_key] = "clear_excluded"
+                st.rerun()
+        st.session_state[excluded_key] = excluded
+        selected_provinces = [province for province in provinces if province not in excluded]
+        st.caption(f"**{len(selected_provinces)}** provinces selected, **{len(excluded)}** excluded")
+        return selected_provinces
+
+    with col_selector:
+        included = st.multiselect(
+            "Include provinces",
+            options=provinces,
+            key=included_widget_key,
+            placeholder="Search and select provinces to include...",
+        )
+    with col_actions:
+        if st.button("All", key=f"{key_prefix}_select_all_included_btn", type="secondary"):
+            st.session_state[pending_action_key] = "select_all_included"
+            st.rerun()
+        if st.button("Clear", key=f"{key_prefix}_clear_included_btn", type="secondary"):
+            st.session_state[pending_action_key] = "clear_included"
+            st.rerun()
+
+    st.session_state[included_key] = included
+    st.caption(f"**{len(included)}** provinces selected for inclusion")
+    return included
 
 
 def sidebar_controls_basic_setup(*args):
@@ -74,7 +114,7 @@ def sidebar_controls_basic_setup(*args):
     end_year = args[1]
     with (st.sidebar):
         st.header('Visualization options')
-         # if ifadesine gerek olmadığı düşünülerek (hata olursa bu if kalktığı için olabilir) metot classmethod'dan static'e dönüştü. Böylelikle higher-education kullanabildi.
+         # if ifadesine gerek olmadigi dusunulerek (hata olursa bu if kalktigi icin olabilir) metot classmethod'dan static'e donusttu. Boylelikle higher-education kullanabildi.
         # options= list(range(start_year, end_year + 1)) if cls.page_name != "sex_age_edu_elections" else [2018,2023]
         options = list(range(start_year, end_year + 1))
         # Create a slider to select a single year
@@ -104,6 +144,7 @@ def update_selected_slider_and_years(slider_index):
         st.session_state["year_1"] = st.session_state["year_2"] = int(st.session_state.slider_year_1)
     else:
         st.session_state["year_1"], st.session_state["year_2"] = int(st.session_state.slider_year_2[0]), int(st.session_state.slider_year_2[1])
+
 
 def figure_setup(display_change=False):
     if st.session_state["visualization_option"] != "matplotlib":

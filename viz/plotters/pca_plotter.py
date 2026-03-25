@@ -5,8 +5,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 class PCAPlotter:
-    import numpy as np
-    import pandas as pd
+
 
     def apply_clr(self,df: pd.DataFrame, pseudocount: float = 1e-10) -> pd.DataFrame:
         """

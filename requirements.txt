@@ -1,12 +1,12 @@
 altair==5.4.1
 folium==0.17.0
 geopandas==1.0.1
-matplotlib==3.9.1
+matplotlib==3.8.4
 numpy==1.26.4
 pandas==2.2.2
 plotly==5.23.0
 raceplotly==0.1.7
-scikit_learn>=1.6
+scikit_learn>1.6
 streamlit==1.37.1
 streamlit_folium==0.22.0
 openpyxl
@@ -19,3 +19,4 @@ pyarrow == 21.0.0
 pyvis
 scikit-learn-extra==0.3.0
 umap-learn==0.5.11
+polars

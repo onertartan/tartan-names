@@ -1,4 +1,4 @@
-year,province,name,sex,count,rank,total_count
+year,province,name,gender,count,rank,total_count
 2024,Adana,Alparslan,Erkek,206,1,13553
 2024,Adana,Aslan,Erkek,167,2,13553
 2024,Adana,Yusuf,Erkek,155,3,13553
