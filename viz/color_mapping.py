@@ -32,9 +32,9 @@ def create_cluster_color_mapping(
     remaining_clusters = clusters - set(color_map)
 
     # If there are more clusters than colors, use a cyclic fallback
-   # if len(remaining_clusters) > len(remaining_colors):
-     #   remaining_colors = (remaining_colors * (len(remaining_clusters) // len(remaining_colors)) +
-      #                      remaining_colors[:len(remaining_clusters) % len(remaining_colors)])
+    if len(remaining_clusters) > len(remaining_colors):
+      remaining_colors = (remaining_colors * (len(remaining_clusters) // len(remaining_colors)) +
+                         remaining_colors[:len(remaining_clusters) % len(remaining_colors)])
 
     # Assign remaining colors to remaining clusters
     for i, cluster in enumerate(remaining_clusters):

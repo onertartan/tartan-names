@@ -7,30 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 import altair as alt
-
-
-# ------------- helpers -------------
-def get_title_statement(gender, page_name):
-    if page_name == "names_surnames" and st.session_state["name_surname_rb"] == "Surname":
-        title_statement = "Surnames"
-    else:
-        title_statement = "Names"
-
-    if page_name == "baby_names":
-        title_statement = "Baby " + title_statement
-
-    if len(gender) == 1 and title_statement != "Surnames":
-        gender = gender[0]
-        title_statement = " " + gender.capitalize() + " " + title_statement
-
-    return title_statement
-
-
-def validate_df(df: pd.DataFrame):
-    # not used currently
-    required = {"year", "count", "name"}
-    if not required.issubset(df.columns):
-        raise ValueError(f"Missing columns: {required - set(df.columns)}")
+from viz.plotters.names_helpers import get_title_statement, validate_df
 
 
 # ------------- base -------------

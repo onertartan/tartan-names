@@ -36,7 +36,7 @@ current_page = st.navigation({
     "Türkiye": [
         st.Page("modules/population/baby_names.py", title="Baby Names ", icon=":material/public:"),
         st.Page("modules/population/names_surnames.py", title="Names and Surnames", icon=":material/public:")],
-  #  "USA":[        st.Page("modules/usa/baby_names_by_state.py", title="Baby Names by State", icon=":material/public:")]
+    "USA":[        st.Page("modules/usa/baby_names_by_state.py", title="Baby Names by State", icon=":material/public:")]
 
     })
 

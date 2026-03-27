@@ -1,24 +1,22 @@
-from collections import defaultdict
-from adjustText import adjust_text
-
 from clustering.scaling import scale
 from modules.base_page import BasePage
 import pandas as pd
 import geopandas as gpd
 import streamlit as st
-from matplotlib import colormaps, pyplot as plt, cm
 import locale
 import plotly.express as px
 from matplotlib.patches import Patch
-import altair as alt
-from viz.config import COLORS, CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
+from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.color_mapping import create_cluster_color_mapping
 from viz.gui_helpers.ui_base_page import province_selector, sidebar_controls_basic_setup, figure_setup
-from viz.gui_helpers.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
-    render_top_n_selector, sidebar_controls_plot_options_setup, render_rank_plot_sub_tabs, \
-    render_custom_bar_plot_sub_tab
-from viz.plotters.bar_plotter_names import AltairPlotter, get_bar_plotter
-from viz.plotters.bump_plotter import MatplotlibBumpPlotter, PlotlyBumpPlotter, get_bump_plotter
+from viz.gui_helpers.base_page_names.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
+    render_top_n_selector, sidebar_controls_plot_options_setup
+from viz.gui_helpers.base_page_names.render_plots_tab import render_rank_plot_sub_tabs, render_custom_bar_plot_sub_tab, \
+    render_plot_map_sub_tab
+from viz.plotters.bar_plotter_names import get_bar_plotter
+from viz.plotters.bump_plotter import get_bump_plotter
+from viz.plotters.geo_names_plotter import get_map_plotter
+from viz.plotters.names_helpers import get_ordinal
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
 
@@ -102,13 +100,6 @@ class PageNames(BasePage):
             df_pivot = df_pivot.T
         return df_pivot
 
-    @staticmethod
-    def get_ordinal(n):
-        if 11 <= (n % 100) <= 13:
-            suffix = 'th'
-        else:
-            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
-        return f"{n}{suffix}"
 
     @staticmethod
     def preprocess_for_map(df, year, target_rank, n_to_top_inclusive):
@@ -186,36 +177,20 @@ class PageNames(BasePage):
                     plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
                     plot_mds_provinces(df_pivot)
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
-            self.tab_2_map(df)
-        elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Tab 3-4-5
-            self.tab_3_4_5(df, col_plot, col_df, col_2, col_3, col_4)
+            self.tab2_subtab1_plot_map(df)
+        elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
+            self.tab2_subtab_3_4_5(df, col_plot, col_df)
 
-    def tab_2_map(self, df):
-        # Expression depending on page
-        expr = "names or surnames" if self.page_name == "names_surnames" else "baby names"
-        options = list(range(1, 31))  # Options are [1-30]
-        btn_col1, btn_col2 = st.columns([1, 1])
-        plot_value = 0
-        display_option = None
-        button_clicked = btn_col1.button("Select & Filter", use_container_width=True)
-        top_n = btn_col1.selectbox('Choose a number top-n to filter', options, index=1, key="top_n_filter")
-        btn_col1.multiselect(f"Select {expr}", sorted(df["name"].unique(), key=locale.strxfrm), key="names_" + self.page_name)
-        if button_clicked:
-            plot_value = top_n
-            display_option = "top-n to filter"
-        # Use container with custom class
-        button_clicked = btn_col2.button("Nth Common", use_container_width=True)
-        n_most_common = btn_col2.selectbox('Choose a number n for the "nth most common"', options)
-        if button_clicked:
-            plot_value = n_most_common
-            display_option = "nth most common"
+    def tab2_subtab1_plot_map(self, df):
+        names = sorted(df["name"].unique(), key=locale.strxfrm)
+        plot_value, display_option = render_plot_map_sub_tab(names,self.page_name)
         # --- Plot map ---
         col_plot, col_df = st.columns([5, 1])
         # Display results on map if a button is clicked
         if display_option:
             self.plot_map(col_plot, col_df, df, plot_value, display_option)
 
-    def tab_3_4_5(self, df, col_plot, col_df, col_2, col_3, col_4):
+    def tab2_subtab_3_4_5(self, df, col_plot, col_df):
         page_name = self.page_name
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
@@ -263,187 +238,55 @@ class PageNames(BasePage):
             plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
 
 
-
-    def create_title_for_plot(self, rank):
-        page_name = st.session_state["page_name"]
+    def create_title_for_plot(self, rank, year, display_option, page_name):
         names_or_surnames = "names"
         selected_gender = "male and female" if len(st.session_state["sex_" + self.page_name]) != 1 else st.session_state["sex_" + self.page_name][0]
         # Adjust phrasing based on rank
         if rank == 1:
             title_prefix = "The most common "
         else:
-            title_prefix = f"The {PageNames.get_ordinal(rank)} most common "
+            title_prefix = f"The {get_ordinal(rank)} most common "
 
         if page_name == "names_surnames":
             if st.session_state["name_surname_rb"] == "Surname":
                 title = title_prefix + "surnames"
+                names_or_surnames="surnames"
             else:
                 title = title_prefix + selected_gender+" names"
         else:
-            title = title_prefix + selected_gender + " baby names"
+            title = title_prefix.title() + selected_gender + " baby names"
+        if display_option == "nth most common":
+            title += f' in {year}'
+        elif display_option =="top-n to filter":
+            title = f"Provinces where the selected {names_or_surnames} in top {rank} for {year}"
+
         return title, names_or_surnames
 
-    # Plot methods of three tabs
-
-    def plot_map(self, col_plot, col_df, df, n, display_option):
+    def plot_map(self, col_plot, col_df, df, rank, display_option):
         st.session_state["visualization_option"] = "matplotlib"
+        page_name = st.session_state["page_name"]
         gdf_borders = self.gdf["province"]
-        title, names_or_surnames = self.create_title_for_plot(n)
         df_results = []
         year_1, year_2 = st.session_state["year_1"], st.session_state["year_2"]
-        fig, axs = figure_setup()
         for i, year in enumerate(sorted({year_1, year_2})):
             # Display option 1: Show the nth most common baby names
             if display_option == "nth most common":
-                df_year_rank = PageNames.preprocess_for_map(df, year, target_rank=n, n_to_top_inclusive=False)
+                df_year_rank = PageNames.preprocess_for_map(df, year, target_rank=rank, n_to_top_inclusive=False)
                 df_result = gdf_borders.merge(df_year_rank, left_on="province", right_index=True)
                 df_result = df_result.sort_values(by=['province', 'name'], ascending=[True, True]) # to prevent different orders like "Asel, Defne"  and "Defne, Asel"
                 df_result = df_result.groupby(["geometry", "province"])["name"].apply(
                     lambda x: "%s" % '\n'.join(x)).to_frame().reset_index()
                 df_results.append(df_result)
-                self.plot_names(df_results[i], axs[i, 0])
-                axs[i, 0].set_title(title + f' in {year}')
+                get_map_plotter("Matplotlib",HA_POSITIONS,VA_POSITIONS,CLUSTER_COLOR_MAPPING).plot(df_result,rank,year, display_option,page_name,col_plot)
+               # self.plot_names(df_results[i], axs[i, 0], rank, year, display_option, page_name)
             elif display_option == "top-n to filter":  # Display option 2: Select single year, name(s) and top-n number to filter
                 names_from_multi_select = st.session_state["names_" + self.page_name]
                 df_year = df.loc[year].reset_index()
                 if names_from_multi_select:
-                    df_result = df_year[(df_year["name"].isin(names_from_multi_select)) & (df_year["rank"] <= n)]
-                    # drop "s" if single name or surname selected
-                    names_or_surnames_statement = names_or_surnames[:-1] + " is" if len(names_from_multi_select) == 1 else names_or_surnames + " are"
-                    if df_result.empty:
-                        st.write(f"Selected {names_or_surnames_statement} are not in the top {n} for the year {year}")
-
+                    df_result = df_year[(df_year["name"].isin(names_from_multi_select)) & (df_year["rank"] <= rank)]
                     df_result_not_null = gdf_borders.merge(df_result, left_on="province", right_on="province")
                     df_result_not_null = df_result_not_null.groupby(["geometry", "province"])["name"].apply(lambda x: "%s" % '\n '.join(x)).to_frame().reset_index()
                     df_results.append(df_result_not_null)
                     df_result_with_nulls = gdf_borders.merge(df_result_not_null[["province", "name"]],
                                                              left_on="province", right_on="province", how="left")
-                    print("456987",df_result_with_nulls)
-                    self.plot_names(df_result_with_nulls, axs[i, 0])#, sorted(df_result_not_null['name'].unique()))  -->GEREKLİ Mİ, fonksiyondan parametre kalkmıştı, buradan yollamaya gerek var mı?
-                    axs[i, 0].set_title(f"Provinces where selected {names_or_surnames_statement} in the top {n} for {year}")
-            # else:  # K-means
-            #     self.k_means_clustering(df,  year)   # ilk ve son yıl için kullanılıyordu artık
-            #     #self.plot_clusters(axs[i, 0], year)  # artık for üstündeki ilk if çalıştığı için kullanılmıyor
-            #     df_results.append(self.gdf_clusters)
-        if axs[0, 0].has_data():
-            col_plot.pyplot(fig)
-        else:
-            st.write("No results found.")
-
-
-
-    # Tab-2.1:  nth most common
-    def plot_names(self, df_result, ax):
-        # Tab-1.1: Plots nth most common names on map
-        # Create a color map
-        df_result["clusters"] = df_result["name"].factorize()[0]
-        color_map = create_cluster_color_mapping(df_result.set_index("name"), CLUSTER_COLOR_MAPPING)
-        # Assign colors to each row in the GeoDataFrame
-        df_result['color'] = df_result['clusters'].map(color_map).fillna("gray") #-->GEREK YOK mu
-        # After groupby df_result becomes Pandas dataframe, we have to convert it to GeoPandas dataframe
-        df_result = gpd.GeoDataFrame(df_result, geometry='geometry')
-        # Plotting
-        df_result.plot(ax=ax, color=df_result['color'], legend=True,  edgecolor="black", linewidth=.2)
-        bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-        df_result.apply(lambda x: ax.annotate(
-            text=x["province"].upper() + "\n" + x['name'].title() if isinstance(x['name'], str) else x["province"],
-            size=4, xy=x.geometry.centroid.coords[0], ha=HA_POSITIONS.get(x["province"], "center"), va=VA_POSITIONS.get(x["province"], "center"), bbox=bbox), axis=1)
-        ax.axis("off")
-        ax.margins(x=0)
-        # # Add a table (positioned like a legend)
-        df_count = (df_result['name'].str.split('\n')  # Split names by newline
-                    .explode()        # Create separate row for each name
-                    .value_counts()   # Count occurrences
-                    .rename_axis('name')
-                    .reset_index(name='count')
-                   )
-        # Format the DataFrame as a string for the legend
-        legend_text = "\n".join(f"{row['name']}: {row['count']}" for _, row in df_count.iterrows())
-        # Create list of text entries instead of single multi-line string
-        legend_entries = [f"{row['name']}: {row['count']}" for _, row in df_count.iterrows()]
-        # Add custom legend entry with text only (no line): Create invisible handles for each entry
-        handles = [Patch(color='none', label=entry, linewidth=0) for entry in legend_entries]
-        ax.plot([], [], label=legend_text)  # Invisible plot
-        # Show legend
-        ncols = 1+len(legend_entries)//9
-        ax.legend(handles=handles, loc='upper right', bbox_to_anchor=(1, 0.165 if ncols>2 else 0.21), fontsize=4,ncols=ncols,  # Two columns
-                  # Reduce left margin parameters:
-                  handlelength=0,  # Remove space for legend handle (invisible line)
-                  handletextpad=0,  # Remove padding between handle and text
-                  alignment='left'  # Force left-aligned text
-                  )
-
-    # Add a legend
-       # for name, color in set(zip(df_result['name'], df_result['color'])):
-       #     ax.plot([], [], color=color, label=name, linestyle='None', marker='o')
-       #     ax.legend(title='Names', fontsize=4, bbox_to_anchor=(0.01, 0.01), loc='lower right', fancybox=True, shadow=True)
-
-    # Tab-2 plot method (potential alternative using plotly)
-    def plot_rank_bump_plotly(self, df, col_plot):
-        # 2nd tab: Bump chart using plotly (alternative not used yet)
-        # Prepare data in long format (from your pivot table)
-        max_rank = int(df["rank"].max())
-
-        # Create figure with custom size
-        fig = px.line(
-            df.reset_index(),
-            x='year',
-            y='rank',
-            color='name',
-            markers=True,
-        ).update_layout(
-            width=1500,  # Figure width in pixels
-            height=800,  # Figure height in pixels
-            xaxis_title="Year", yaxis_title="Rank",
-            margin=dict(l=50, r=50, t=80, b=50),  # Adjust margins for labels
-            legend=dict(orientation="v", yanchor="top", y=1.02, xanchor="right", x=1.15),
-            title=dict(text="Rank Evolution Over Years", font=dict(size=50), automargin=True, yref='paper'),
-            yaxis_title_font=dict(size=32), xaxis_title_font=dict(size=32)
-        ).update_yaxes(
-            tickvals=list(range(1, max_rank + 1)),
-            range=[max_rank + 0.5, 0.5],
-            autorange="reversed",
-            dtick=1,
-            tickfont=dict(size=32)
-        ).update_xaxes(
-            showline=True,
-            tickfont=dict(size=32)
-        ).update_traces(
-            line=dict(width=5.5),
-            marker=dict(size=30)
-        )
-
-        # Add annotations for names at the beginning and ending years
-        df_reset = df.reset_index()
-        years = df_reset['year'].unique()
-        first_year = years.min()
-        last_year = years.max()
-
-        for name in df_reset['name'].unique():
-            # Data for the first year
-            first_year_data = df_reset[(df_reset['name'] == name) & (df_reset['year'] == first_year)]
-            if not first_year_data.empty:
-                fig.add_annotation(
-                    x=first_year,
-                    y=first_year_data['rank'].iloc[0],
-                    text=name,
-                    showarrow=False,
-                    xshift=-20,  # Shift left for better positioning
-                    font=dict(size=20),
-                    xanchor="right"
-                )
-
-            # Data for the last year
-            last_year_data = df_reset[(df_reset['name'] == name) & (df_reset['year'] == last_year)]
-            if not last_year_data.empty:
-                fig.add_annotation(
-                    x=last_year,
-                    y=last_year_data['rank'].iloc[0],
-                    text=name,
-                    showarrow=False,
-                    xshift=20,  # Shift right for better positioning
-                    font=dict(size=20),
-                    xanchor="left"
-                )
-
-        col_plot.plotly_chart(fig)
+                    get_map_plotter("Matplotlib", HA_POSITIONS, VA_POSITIONS, CLUSTER_COLOR_MAPPING).plot(df_result_with_nulls,rank, year, display_option, page_name,col_plot)

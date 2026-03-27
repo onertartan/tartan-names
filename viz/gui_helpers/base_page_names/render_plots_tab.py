@@ -1,0 +1,59 @@
+import streamlit as st
+
+def render_plot_map_sub_tab(names,page_name):
+    # Expression depending on page
+    expr = "names or surnames" if page_name == "names_surnames" else "baby names"
+    options = list(range(1, 31))  # Options are [1-30]
+    btn_col1, btn_col2 = st.columns([1, 1])
+    plot_value = 0
+    display_option = None
+    button_clicked = btn_col1.button("Select & Filter", use_container_width=True)
+    top_n = btn_col1.selectbox('Choose a number top-n to filter', options, index=1, key="top_n_filter")
+    btn_col1.multiselect(f"Select {expr}", names,key="names_" + page_name)
+    if button_clicked:
+        plot_value = top_n
+        display_option = "top-n to filter"
+    # Use container with custom class
+    button_clicked = btn_col2.button("Nth Common", use_container_width=True)
+    n_most_common = btn_col2.selectbox('Choose a number n for the "nth most common"', options)
+    if button_clicked:
+        plot_value = n_most_common
+        display_option = "nth most common"
+    return plot_value, display_option
+
+def render_rank_plot_sub_tabs(page_name,clusters):
+    """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """
+    col_1, col_2_3_4 = st.columns([2,5])
+
+    col_1.selectbox(f"Select rank", range(1, 21), index=4, key="rank_" + page_name)
+    col_1.radio("Select an option",
+                 ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
+                 key="include_all_years")
+    with col_2_3_4:
+        return _render_common_helper_for_bar_and_rank_plots(clusters)
+
+
+def render_custom_bar_plot_sub_tab(page_name,clusters,names):
+    """ Helper function for rendering 'Custom Bar Plot'"""
+    col_1, col_2_3_4 = st.columns([2,5])
+    expression_in_sentence = "names or surnames" if page_name == "names_surnames" else "baby names"
+    # names_surnames has extra name-surname radio group overlapping with name selector,if so move the selector to right col
+    #empty_col = col_4 if self.page_name == "names_surnames" else col_2
+    col_1.multiselect(f"Select {expression_in_sentence}", names, key="names_" + page_name)
+    with col_2_3_4:
+        return _render_common_helper_for_bar_and_rank_plots(clusters)
+
+
+def _render_common_helper_for_bar_and_rank_plots(clusters):
+
+    col_2,col_3,col_4 = st.columns([1,2,2])
+    use_province_or_cluster = col_2.radio("Select an option", options=["Use provinces", "Use clusters"],
+                                          key="province_or_cluster").lower()
+    selected_n_cluster = col_3.multiselect(f"Select clusters (default all)", clusters)
+    show_provinces_separately = col_3.checkbox(f"Show provinces separately(does not aggregate counts for selected provinces)")
+    plotter_engine = col_4.radio("Plot Style",
+                      options=["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
+                      index=4,
+                      # key=f"bump_engine_{page_name}",
+                      )
+    return use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine

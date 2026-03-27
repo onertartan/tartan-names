@@ -1,5 +1,3 @@
-import locale
-
 import extra_streamlit_components as stx
 import streamlit as st
 
@@ -45,8 +43,15 @@ def render_tab_selection(page_name):
     return st.session_state["selected_tab_" +page_name]
 
 def render_gender_name_surname_filters(page_name,cols):
-    """ Common helper function for rendering
-     'Names and Surnames' page and 'Baby Names' pages
+    """
+     Configure name/surname selection, temporal filtering, and gender selection state.
+
+    This helper centralizes UI rendering and session state management for
+    name-based analyses across both "Names & Surnames" and "Baby Names" pages.
+    It ensures consistent handling of:
+      (1) name vs. surname selection,
+      (2) year range filtering,
+      (3) gender selection with persistent session state.
     """
     name_surname_selection = "name"
     # data is a dictionary whose keys are names and surnames, values are corresponding dataframes
@@ -93,42 +98,6 @@ def render_gender_name_surname_filters(page_name,cols):
         st.session_state[gender_list_state_key] = ["male", "female"]
 
     return name_surname_selection, selected_years, gender_list_state_key
-
-def render_rank_plot_sub_tabs(page_name,clusters):
-    """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """
-    col_1, col_2_3_4 = st.columns([2,5])
-
-    col_1.selectbox(f"Select rank", range(1, 21), index=4, key="rank_" + page_name)
-    col_1.radio("Select an option",
-                 ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
-                 key="include_all_years")
-    with col_2_3_4:
-        return _render_common_helper_for_bar_and_rank_plots(clusters)
-
-
-def render_custom_bar_plot_sub_tab(page_name,clusters,names):
-    """ Helper function for rendering 'Custom Bar Plot'"""
-    col_1, col_2_3_4 = st.columns([2,5])
-    expression_in_sentence = "names or surnames" if page_name == "names_surnames" else "baby names"
-    # names_surnames has extra name-surname radio group overlapping with name selector,if so move the selector to right col
-    #empty_col = col_4 if self.page_name == "names_surnames" else col_2
-    col_1.multiselect(f"Select {expression_in_sentence}", names, key="names_" + page_name)
-    with col_2_3_4:
-        return _render_common_helper_for_bar_and_rank_plots(clusters)
-
-def _render_common_helper_for_bar_and_rank_plots(clusters):
-
-    col_2,col_3,col_4 = st.columns([1,2,2])
-    use_province_or_cluster = col_2.radio("Select an option", options=["Use provinces", "Use clusters"],
-                                          key="province_or_cluster").lower()
-    selected_n_cluster = col_3.multiselect(f"Select clusters (default all)", clusters)
-    show_provinces_separately = col_3.checkbox(f"Show provinces separately(does not aggregate counts for selected provinces)")
-    plotter_engine = col_4.radio("Plot Style",
-                      options=["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
-                      index=4,
-                      # key=f"bump_engine_{page_name}",
-                      )
-    return use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine
 
 
 def render_top_n_selector(max_n):
