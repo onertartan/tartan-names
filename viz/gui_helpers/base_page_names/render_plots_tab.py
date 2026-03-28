@@ -5,21 +5,24 @@ def render_plot_map_sub_tab(names,page_name):
     expr = "names or surnames" if page_name == "names_surnames" else "baby names"
     options = list(range(1, 31))  # Options are [1-30]
     btn_col1, btn_col2 = st.columns([1, 1])
-    plot_value = 0
+    rank = 0
     display_option = None
-    button_clicked = btn_col1.button("Select & Filter", use_container_width=True)
+    button_clicked = btn_col1.button(f"Select {expr} and filter if they are in top-n", use_container_width=True)
     top_n = btn_col1.selectbox('Choose a number top-n to filter', options, index=1, key="top_n_filter")
     btn_col1.multiselect(f"Select {expr}", names,key="names_" + page_name)
     if button_clicked:
-        plot_value = top_n
+        rank = top_n
         display_option = "top-n to filter"
-    # Use container with custom class
-    button_clicked = btn_col2.button("Nth Common", use_container_width=True)
+    # Second option for Nth Most Common
+    button_clicked = btn_col2.button("Nth Most Common", use_container_width=True)
+    include_top_n = btn_col2.checkbox("Include top-n to filter")
+    if include_top_n:
+        options=list(range(1,6))
     n_most_common = btn_col2.selectbox('Choose a number n for the "nth most common"', options)
     if button_clicked:
-        plot_value = n_most_common
+        rank = n_most_common
         display_option = "nth most common"
-    return plot_value, display_option
+    return rank, display_option, include_top_n
 
 def render_rank_plot_sub_tabs(page_name,clusters):
     """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """

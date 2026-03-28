@@ -119,8 +119,7 @@ class BasePage(ABC):
         pass    # Overriden by sub-classes Base_Page_Names & Base_Page_Common
 
     def tab_clustering(self, df, save_sub_folder="", *args):
-        # 0. Render UI
-        scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs = gui_clustering_main()
+        scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main()
         if not clustering_algorithm:
             return
         engine_class = get_engine_class(clustering_algorithm)

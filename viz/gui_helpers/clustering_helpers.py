@@ -1,4 +1,9 @@
 import streamlit as st
+import pandas as pd
+import polars as pl
+
+from viz.gui_helpers.base_page_names.ui_base_page_names import render_top_n_selector
+
 
 
 def gui_clustering_up_col1():
@@ -42,14 +47,14 @@ def gui_clustering_bottom():
 # OPTIONS FOR CLUSTERING ALGORITHMS
 
 def gui_clustering_main():
-    col1, col2, _ = st.columns([2, 2, 6])
+    col1, col2,_ = st.columns([2, 2, 6])
     with col1:
         scaler = gui_clustering_up_col1()
     with col2:
         run_optimal_k_analysis, n_seeds, use_consensus = gui_clustering_up_col2()
+
     selected_algo, kwargs = gui_clustering_bottom()
     return scaler, run_optimal_k_analysis, n_seeds, use_consensus, selected_algo, kwargs
-
 
 def gui_options_gmm():
     n_clusters = st.number_input("Number of clusters / components", 2, 15, 4, key="n_cluster_gmm")

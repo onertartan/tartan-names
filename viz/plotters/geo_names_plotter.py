@@ -2,7 +2,6 @@ from __future__ import annotations
 import abc
 from typing import Literal
 
-import pandas as pd
 import geopandas as gpd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -13,7 +12,7 @@ import folium
 from folium.features import GeoJsonTooltip
 from streamlit_folium import st_folium
 
-from viz.plotters.names_helpers import build_legend_entries, create_title_for_plot, prepare_df
+from viz.gui_helpers.base_page_names.render_helpers import build_legend_entries, create_title_for_plot, prepare_df
 
 
 # ------------- base -------------

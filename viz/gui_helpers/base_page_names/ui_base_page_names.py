@@ -100,5 +100,11 @@ def render_gender_name_surname_filters(page_name,cols):
     return name_surname_selection, selected_years, gender_list_state_key
 
 
+def render_data_coverage_if_rank_available(max_rank):
+        st.markdown("**Data coverage**")
+        use_data_option = st.radio("", ["Use all data", "Use top-n names (by default max-n=30)"])
+        top_n_names = render_top_n_selector(max_rank)
+        return use_data_option, top_n_names
+
 def render_top_n_selector(max_n):
     return st.number_input("", min_value=1, max_value=max_n,  value=30,  key="top_n_names")
