@@ -3,7 +3,8 @@ from modules.base_page import BasePage
 import pandas as pd
 import streamlit as st
 import locale
-from utils.base_page_names.names_helpers import process_for_select_rank_tab, preprocess_for_nth_most_common_tab
+from utils.base_page_names.names_helpers import process_for_select_rank_tab, preprocess_for_nth_most_common_tab, \
+    preprocess_for_rank_bar_tabs
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.gui_helpers.ui_base_page import province_selector, sidebar_controls_basic_setup
 from viz.gui_helpers.base_page_names.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
@@ -78,28 +79,6 @@ class PageNames(BasePage):
             df_pivot = df_pivot.T
         return df_pivot
 
-    def preprocess_for_rank_bar_tabs(self, df):
-
-        df.index = df.index.droplevel(1)  # drop provinces from multiindex
-        df = df.groupby([df.index, "name"]).aggregate({"count": "sum"}).reset_index(level="name")
-        df = df.sort_values(by=["year", "count"], ascending=False)
-        if  "rank" in st.session_state["selected_tab_"+self.page_name]:  # rank tabs work for cumulative results
-            # Create rank column
-            for year in df.index:
-                df.loc[year, 'rank'] = df.loc[year, 'count'].rank(axis=0, method='min', ascending=False)
-
-            # preprocess rank
-            if st.session_state["include_all_years"] == "Include All Years for Names Ever in Top-n":
-                selected_names = df[df['rank'] <= st.session_state["rank_" + self.page_name]]["name"]
-                df = df[df["name"].isin(selected_names)]
-            else:
-                df = df[df['rank'] <= st.session_state["rank_" + self.page_name]]
-        else:  # st.session_state["selected_tab" + cls.page_name] == "custom_bar":
-            selected_names = st.session_state["names_" + self.page_name]
-            df = df[df["name"].isin(selected_names)]
-        df.reset_index(inplace=True)
-        return df
-
     def render(self):
         # Apply CSS to all radio groups except the first
         st.session_state["geo_scale"] = "province"
@@ -115,7 +94,6 @@ class PageNames(BasePage):
         df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols)
 
         tab_selected = render_tab_selection(self.page_name)
-        col_plot, col_df = st.columns([5, 1])
         if tab_selected == "tab_geo_clustering" or tab_selected == "tab_name_clustering":  # Main Tab-1
             # 0. Render UI
             if "rank" in df.columns:
@@ -137,7 +115,7 @@ class PageNames(BasePage):
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
             self.tab2_subtab1_plot_map(df)
         elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
-            self.tab2_subtab_2_3_4(df, col_plot, col_df)
+            self.tab2_subtab_2_3_4(df)
 
     def tab2_subtab1_plot_map(self, df):
         names = sorted(df["name"].unique(), key=locale.strxfrm)
@@ -167,8 +145,10 @@ class PageNames(BasePage):
                     map_plotter = get_map_plotter("Matplotlib", HA_POSITIONS, VA_POSITIONS, CLUSTER_COLOR_MAPPING)
                     map_plotter.plot(df_result,rank, year, display_option, page_name, col_plot)
 
-    def tab2_subtab_2_3_4(self, df, col_plot, col_df):
+
+    def tab2_subtab_2_3_4(self, df):
         page_name = self.page_name
+        tab_name = st.session_state["selected_tab_"+self.page_name]
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
@@ -183,19 +163,28 @@ class PageNames(BasePage):
             plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
         elif "bar" in st.session_state["selected_tab_"+page_name]:
             plotter_object = get_bar_plotter(plotter_engine,gender,page_name)
-        if df.empty:
-            st.error("You haven't selected any data (provinces)")
+        if df.is_empty():
+            st.error("You have not selected any data (provinces)")
             return
+        col_plot, col_df = st.columns([5, 1])
         col_plot.title("Counts by Name and Year")
-        idx = pd.IndexSlice
+        params = {"is_rank_tab": "rank" in st.session_state["selected_tab_"+self.page_name],
+            "include_all_years_option": st.session_state.get("include_all_years","Show Only Years When Names Are in Top-n"),
+            "selected_names":  st.session_state.get("names_" + self.page_name,[]),
+            "top_n": st.session_state.get("rank_" + self.page_name,-1)}
+        if tab_name == "custom_bar" and params["selected_names"] == []:
+            st.error("You have not selected any names/surnames)")
+            return
+
         if use_province_or_cluster == "use provinces":
             if show_provinces_separately:
-                for province in df.index.get_level_values(1).unique():
-                    df_province = df.loc[idx[:, province], :]
-                    col_plot.subheader(province)
-                    plotter_object.plot(self.preprocess_for_rank_bar_tabs(df_province), col_plot)
+                for province in df["province"].unique(maintain_order=True).to_list():
+                    df_province = df.filter(pl.col("province") == province)
+                    if not df_province.empty:
+                        col_plot.subheader(province)
+                        plotter_object.plot(preprocess_for_rank_bar_tabs(df_province,**params), col_plot)
             else:
-                plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
+                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot)
             col_df.dataframe(df)
         elif use_province_or_cluster == "Use clusters" and selected_n_cluster:
             df_pivot = self.preprocess_clustering(df)
@@ -205,12 +194,12 @@ class PageNames(BasePage):
             df['clusters'] = df.index.get_level_values("province").map(df_clusters)
             if st.session_state["aggregate_totals_" + self.page_name]:
                 df = df[df["clusters"].isin(selected_n_cluster)]
-                plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
+                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot)
             else:
                 for cluster in selected_n_cluster:
                     df_cluster = df[df["clusters"] == cluster]
                     col_plot.subheader(f"Cluster {cluster}")
-                    plotter_object.plot(self.preprocess_for_rank_bar_tabs(df_cluster), col_plot)
+                    plotter_object.plot(preprocess_for_rank_bar_tabs(df_cluster,params), col_plot)
             col_df.dataframe(df)
-        else:  # if not any selected, select all provinces
-            plotter_object.plot(self.preprocess_for_rank_bar_tabs(df), col_plot)
+       # else:  # if not any selected, select all provinces
+        #    plotter_object.plot(preprocess_for_rank_bar_tabs(df,params), col_plot)

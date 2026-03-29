@@ -1,3 +1,5 @@
+from typing import List
+
 import polars as pl
 import geopandas as gpd
 
@@ -54,3 +56,23 @@ def process_for_select_rank_tab(df,gdf_borders,names_from_multi_select,year,rank
                                       how="left")
         return df_result, df_result_not_null
     return None,None
+
+def preprocess_for_rank_bar_tabs( df: pl.DataFrame,is_rank_tab:bool,include_all_years_option:bool,selected_names:List,top_n:int) -> pl.DataFrame:
+    # Tabs 2.2,2.3,2.4
+    # drop province by aggregating count over year + name (replaces droplevel + groupby)
+    df = df.group_by(["year", "name"]).agg(pl.col("count").sum()).sort(["year", "count"], descending=[False, True])
+    if df.is_empty():
+        return df.to_pandas()
+    if is_rank_tab:
+        # vectorized rank per year (replaces row-by-row loop)
+        df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
+        if include_all_years_option == "Include All Years for Names Ever in Top-n":
+            # names that were ever in top-n across any year
+            ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
+            df = df.filter(pl.col("name").is_in(ever_top_n))
+        else:
+            df = df.filter(pl.col("rank") <= top_n)
+    else:
+        df = df.filter(pl.col("name").is_in(selected_names))
+
+    return df.to_pandas()

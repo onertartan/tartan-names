@@ -4,6 +4,10 @@ import abc
 from typing import Literal
 import pandas as pd
 import streamlit as st
+import plotly.express as px
+import altair as alt
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # ------------- base -------------
 class BarPlotter(abc.ABC):
@@ -29,7 +33,9 @@ class MatplotlibPlotter(BarPlotter):
         col_plot: st.delta_generator.DeltaGenerator,
         title: str = "Percentage by province",
     ) -> None:
-        import matplotlib.pyplot as plt
+        if df.empty:
+            st.error("You have not selected any data")
+            return
 
         fig, ax = plt.subplots(figsize=(max(6, len(df) * 0.6), 4))
         bars = ax.bar(df.index, df.percentage, color="#29b5e8")
@@ -65,9 +71,9 @@ class SeabornPlotter(BarPlotter):
         col_plot: st.delta_generator.DeltaGenerator,
         title: str = "Percentage by province",
     ) -> None:
-        import seaborn as sns
-        import matplotlib.pyplot as plt
-
+        if df.empty:
+            st.error("You have not selected any data")
+            return
         fig, ax = plt.subplots(figsize=(max(6, len(df) * 0.6), 4))
         sns.barplot(x=df.index, y="percentage", data=df, ax=ax, color="#29b5e8")
         ax.set_title(title)
@@ -100,8 +106,9 @@ class PlotlyPlotter(BarPlotter):
         col_plot: st.delta_generator.DeltaGenerator,
         title: str = "Percentage by province",
     ) -> None:
-        print("PLOTLYY",df.head())
-        import plotly.express as px
+        if df.empty:
+            st.error("You have not selected any data")
+            return
         fig = px.bar(
             df,
             x="province",
@@ -109,6 +116,7 @@ class PlotlyPlotter(BarPlotter):
             text="percentage",          # use the same column for labels
             title=title,
         )
+
         fig.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
         fig.update_layout(yaxis_tickformat=".1f", yaxis_ticksuffix="%")
         col_plot.plotly_chart(fig, use_container_width=True)
@@ -124,8 +132,9 @@ class PandasPlotter(BarPlotter):
         col_plot: st.delta_generator.DeltaGenerator,
         title: str = "Percentage by province",
     ) -> None:
-        import matplotlib.pyplot as plt
-
+        if df.empty:
+            st.error("You have not selected any data")
+            return
         fig, ax = plt.subplots(figsize=(max(6, len(df) * 0.6), 4))
         df["percentage"].plot(kind="bar", ax=ax, color="#29b5e8")
         ax.set_title(title)
@@ -161,8 +170,9 @@ class AltairPlotter(BarPlotter):
         height: int = 600,  # Default height of 500 pixels
 
     ) -> None:
-        import altair as alt
-
+        if df.empty:
+            st.error("You have not selected any data")
+            return
         bars = (
             alt.Chart(df)
             .mark_bar()

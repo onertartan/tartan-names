@@ -31,6 +31,7 @@ class BarPlotter(abc.ABC):
         """Draw the chart inside the supplied Streamlit column."""
 
 
+
 # ------------- matplotlib -------------
 class MatplotlibPlotter(BarPlotter):
     ENGINE = "Matplotlib"
