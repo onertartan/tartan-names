@@ -6,6 +6,7 @@ import streamlit as st
 import polars as pl
 class PageBabyNames(PageNames):
     page_name = "baby_names"
+    geo_level= "province"
 
     @staticmethod
     @st.cache_data

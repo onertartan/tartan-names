@@ -11,9 +11,47 @@ import altair as alt
 import folium
 from folium.features import GeoJsonTooltip
 from streamlit_folium import st_folium
+from shapely.geometry import Polygon
 
 from viz.gui_helpers.base_page_names.render_helpers import build_legend_entries, create_title_for_plot, prepare_df
 
+
+def alaska_hawaii(gdf, fig, geo_level, ha_positions, va_positions):
+    bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
+    polygon = Polygon([(-170, 50), (-170, 72), (-140, 72), (-140, 50)])
+
+    # Alaska inset
+    akax = fig.add_axes([0.1, 0.17, 0.2, 0.19])
+    akax.axis('off')
+    alaska_gdf = gdf[gdf.state == 'Alaska']
+    alaska_clipped = alaska_gdf.clip(polygon)
+    alaska_clipped.plot(color=alaska_clipped["color"], linewidth=0.8, ax=akax, edgecolor='0.8')
+    # Annotate Alaska regions inside the inset
+    alaska_clipped.apply(lambda x: akax.annotate(
+        text=x[geo_level].upper(),
+        size=4,
+        xy=x.geometry.centroid.coords[0],
+        ha=ha_positions.get(x[geo_level], "center"),
+        va=va_positions.get(x[geo_level], "center"),
+        bbox=bbox,
+    ), axis=1)
+
+    # Hawaii inset
+    hiax = fig.add_axes([.28, 0.20, 0.1, 0.1])
+    hiax.axis('off')
+    hipolygon = Polygon([(-160, 0), (-160, 90), (-120, 90), (-120, 0)])
+    hawaii_gdf = gdf[gdf.state == 'Hawaii']
+    hawaii_clipped = hawaii_gdf.clip(hipolygon)
+    hawaii_clipped.plot(color=hawaii_clipped["color"], linewidth=0.8, ax=hiax, edgecolor='0.8')
+    # Annotate Hawaii regions inside the inset
+    hawaii_clipped.apply(lambda x: hiax.annotate(
+        text=x[geo_level].upper(),
+        size=4,
+        xy=x.geometry.centroid.coords[0],
+        ha=ha_positions.get(x[geo_level], "center"),
+        va=va_positions.get(x[geo_level], "center"),
+        bbox=bbox,
+    ), axis=1)
 
 # ------------- base -------------
 class MapPlotter(abc.ABC):
@@ -33,6 +71,8 @@ class MapPlotter(abc.ABC):
         display_option: str,
         page_name: str,
         col_plot: st.delta_generator.DeltaGenerator,
+        geo_level: str
+
     ) -> None:
         pass
 
@@ -49,31 +89,44 @@ class MatplotlibMapPlotter(MapPlotter):
         display_option: str,
         page_name: str,
         col_plot: st.delta_generator.DeltaGenerator,
+        geo_level:str
     ) -> None:
         title, _ = create_title_for_plot(rank, year, display_option, page_name)
         df_result = prepare_df(df_result, self.cluster_color_mapping)
+        # Compute the natural aspect ratio of the data's bounding box
+        bounds = df_result.total_bounds  # [minx, miny, maxx, maxy]
+        data_width = bounds[2] - bounds[0]
+        data_height = bounds[3] - bounds[1]
+        aspect_ratio = data_width / data_height if data_height > 0 else 2.5
 
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig_width = 10
+        fig_height = max(4, fig_width / aspect_ratio)
+        fig, ax = plt.subplots(figsize=(fig_width, fig_height))
+       # fig, ax = plt.subplots(figsize=(10, 8))
 
-        df_result.plot(
-            ax=ax, color=df_result["color"],
-            edgecolor="black", linewidth=0.2
-        )
+        if geo_level == "state":
+            alaska_hawaii(df_result, fig, geo_level, self.ha_positions, self.va_positions)
+            df_mainland = df_result[~df_result.state.isin(["Alaska", "Hawaii"])]
+            df_mainland.plot(ax=ax, color=df_mainland["color"], edgecolor="black", linewidth=0.2)
+        else:
+            df_result.plot(ax=ax, color=df_result["color"], edgecolor="black", linewidth=0.2)
 
+        # Annotate only mainland (Alaska & Hawaii handled in insets)
         bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-        df_result.apply(lambda x: ax.annotate(
-            text=x["province"].upper() + "\n" + x["name"].title()
-                 if isinstance(x["name"], str) else x["province"],
+        df_to_annotate = df_result[~df_result.state.isin(["Alaska", "Hawaii"])] if geo_level == "state" else df_result
+        df_to_annotate.apply(lambda x: ax.annotate(
+            text=x[geo_level].upper(),
             size=4,
             xy=x.geometry.centroid.coords[0],
-            ha=self.ha_positions.get(x["province"], "center"),
-            va=self.va_positions.get(x["province"], "center"),
+            ha=self.ha_positions.get(x[geo_level], "center"),
+            va=self.va_positions.get(x[geo_level], "center"),
             bbox=bbox,
         ), axis=1)
 
         ax.axis("off")
         ax.margins(x=0)
-
+        ax.set_aspect("equal")
+        """
         legend_entries = build_legend_entries(df_result)
         handles = [Patch(color="none", label=entry, linewidth=0) for entry in legend_entries]
         ncols = 1 + len(legend_entries) // 9
@@ -87,6 +140,27 @@ class MatplotlibMapPlotter(MapPlotter):
             handletextpad=0,
             alignment="left",
         )
+        """
+    # Replace the legend block with this:
+
+        legend_entries = build_legend_entries(df_result)
+        handles = [Patch(color="none", label=entry, linewidth=0) for entry in legend_entries]
+        ncols = 1 + len(legend_entries) // 9
+
+        ax.legend(
+            handles=handles,
+            loc="upper center",
+            bbox_to_anchor=(0.5, -0.02),  # centered, just below the axes
+            bbox_transform=ax.transAxes,
+            fontsize=4,
+            ncols=ncols,
+            handlelength=0,
+            handletextpad=0,
+            alignment="left",
+            borderaxespad=0,
+        )
+
+        fig.subplots_adjust(bottom=0.15)  # reserve space below the axes for the legend
         ax.set_title(title)
 
         col_plot.pyplot(fig)
@@ -105,10 +179,11 @@ class PlotlyMapPlotter(MapPlotter):
         display_option: str,
         page_name: str,
         col_plot: st.delta_generator.DeltaGenerator,
+        geo_level: str
     ) -> None:
         title, _ = create_title_for_plot(rank, year, display_option, page_name)
         df_result = prepare_df(df_result, self.cluster_color_mapping)
-        df_result["id"] = df_result["province"]
+        df_result["id"] = df_result[geo_level]
         geojson = df_result.__geo_interface__
 
         fig = px.choropleth(
@@ -117,7 +192,7 @@ class PlotlyMapPlotter(MapPlotter):
             locations="id",
             color="name",
             color_discrete_map=dict(zip(df_result["name"], df_result["color"])),
-            hover_data={"province": True, "name": True, "id": False},
+            hover_data={geo_level: True, "name": True, "id": False},
             title=title,
         )
         fig.update_geos(fitbounds="locations", visible=False)
@@ -142,6 +217,7 @@ class AltairMapPlotter(MapPlotter):
         display_option: str,
         page_name: str,
         col_plot: st.delta_generator.DeltaGenerator,
+        geo_level: str
     ) -> None:
         title, _ = create_title_for_plot(rank, year, display_option, page_name)
         df_result = prepare_df(df_result, self.cluster_color_mapping)
@@ -160,7 +236,7 @@ class AltairMapPlotter(MapPlotter):
                 legend=alt.Legend(title="Name"),
             ),
             tooltip=[
-                alt.Tooltip("properties.province:N", title="Province"),
+                alt.Tooltip(f"properties.{geo_level}:N", title=geo_level.title()),
                 alt.Tooltip("properties.name:N", title="Name"),
             ],
         ).project(
@@ -186,6 +262,7 @@ class FoliumMapPlotter(MapPlotter):
         display_option: str,
         page_name: str,
         col_plot: st.delta_generator.DeltaGenerator,
+        geo_level: str
     ) -> None:
         title, _ = create_title_for_plot(rank, year, display_option, page_name)
         df_result = prepare_df(df_result, self.cluster_color_mapping)

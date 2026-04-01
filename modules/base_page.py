@@ -31,16 +31,15 @@ class BasePage(ABC):
     gdf_centroids = None  # closest provinces to centroids
 
 
-    @staticmethod
     @st.cache_data
-    def load_geo_data():
+    def load_geo_data(_self):
         gdf = {"district": gpd.read_file("data/preprocessed/gdf_borders_district.geojson"),
                "province": gpd.read_file("data/preprocessed/gdf_borders_ibbs3.geojson")}
         return gdf
 
     @property
     def gdf(self):
-        return BasePage.load_geo_data()
+        return self.load_geo_data()
 
     @abstractmethod
     def get_data(self, geo_scale=None):

@@ -305,7 +305,7 @@ class AltairBumpPlotter(BumpPlotter):
         base = alt.Chart(df).encode(
             x=alt.X("year:O", title="Year", axis=alt.Axis(labelFontSize=12, titleFontSize=14)),
             y=alt.Y("rank:Q", title="Rank",
-                    scale=alt.Scale(domain=[max_rank + 0.5, 0.5]),
+                    scale=alt.Scale(domain=[max_rank + 0.3, 0.3]),
                     axis=alt.Axis(tickCount=max_rank, labelFontSize=12, titleFontSize=14)),
             color=alt.Color("name:N", legend=alt.Legend(title="Name")),
         )
@@ -318,7 +318,7 @@ class AltairBumpPlotter(BumpPlotter):
         last_year = df["year"].max()
 
         first_labels = alt.Chart(df[df["year"] == first_year]).mark_text(
-            align="right", dx=-8, fontSize=11
+            align="right", dx=-8, dy=-12,fontSize=11
         ).encode(
             x=alt.X("year:O"),
             y=alt.Y("rank:Q"),
@@ -336,10 +336,9 @@ class AltairBumpPlotter(BumpPlotter):
         )
 
         chart = (lines + points + first_labels + last_labels).properties(
-            width=900, height=500,
+            width=1000, height=500,
             title=alt.TitleParams(text=self.title, fontSize=20, anchor="middle")
-        )
-
+        ).configure_legend(padding=10)
         col_plot.altair_chart(chart, use_container_width=True)
 
 # ------------- factory -------------

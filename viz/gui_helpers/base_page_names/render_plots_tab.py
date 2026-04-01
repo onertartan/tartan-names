@@ -28,7 +28,7 @@ def render_rank_plot_sub_tabs(page_name,clusters):
     """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """
     col_1, col_2_3_4 = st.columns([2,5])
 
-    col_1.selectbox(f"Select rank", range(1, 21), index=4, key="rank_" + page_name)
+    col_1.selectbox(f"Select rank", range(1, 11), index=4, key="rank_" + page_name)
     col_1.radio("Select an option",
                  ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
                  key="include_all_years")
