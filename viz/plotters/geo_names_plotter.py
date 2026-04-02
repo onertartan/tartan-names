@@ -53,6 +53,8 @@ def alaska_hawaii(gdf, fig, geo_level, ha_positions, va_positions):
         bbox=bbox,
     ), axis=1)
 
+
+
 # ------------- base -------------
 class MapPlotter(abc.ABC):
     ENGINE: str
@@ -100,7 +102,7 @@ class MatplotlibMapPlotter(MapPlotter):
         aspect_ratio = data_width / data_height if data_height > 0 else 2.5
 
         fig_width = 10
-        fig_height = max(4, fig_width / aspect_ratio)
+        fig_height = max(8, fig_width / aspect_ratio)
         fig, ax = plt.subplots(figsize=(fig_width, fig_height))
        # fig, ax = plt.subplots(figsize=(10, 8))
 
@@ -113,9 +115,8 @@ class MatplotlibMapPlotter(MapPlotter):
 
         # Annotate only mainland (Alaska & Hawaii handled in insets)
         bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-        df_to_annotate = df_result[~df_result.state.isin(["Alaska", "Hawaii"])] if geo_level == "state" else df_result
-        df_to_annotate.apply(lambda x: ax.annotate(
-            text=x[geo_level].upper(),
+        df_result.apply(lambda x: ax.annotate(
+            text=x[geo_level].upper()+"\n"+x["name"],
             size=4,
             xy=x.geometry.centroid.coords[0],
             ha=self.ha_positions.get(x[geo_level], "center"),
@@ -125,7 +126,6 @@ class MatplotlibMapPlotter(MapPlotter):
 
         ax.axis("off")
         ax.margins(x=0)
-        ax.set_aspect("equal")
         """
         legend_entries = build_legend_entries(df_result)
         handles = [Patch(color="none", label=entry, linewidth=0) for entry in legend_entries]

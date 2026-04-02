@@ -15,23 +15,28 @@ def preprocess_for_nth_most_common_tab(df: pl.DataFrame, gdf_borders:gpd.GeoData
     else:
         df_year_rank = df_year.filter(pl.col("rank") == target_rank)
     # if no sex column or only one gender — no combinations needed
+    print("çöş",df_year_rank.head())
 
-    if "gender" not in df_year_rank.columns or df_year_rank["gender"].n_unique() == 1:
-        return df_year_rank.to_pandas()
-    # generate male-female combinations per province
-    results = []
-    for province in df_year_rank[geo_column].unique().to_list():
-        province_data = df_year_rank.filter(pl.col(geo_column) == province)
-        male_names = province_data.filter(pl.col("gender") == "male")["name"].to_list()
-        female_names = province_data.filter(pl.col("gender") == "female")["name"].to_list()
-        combinations = "\n".join(
-            f"{male}-{female}"
-            for male in male_names
-            for female in female_names
-        )
-        results.append({geo_column: province, "name": combinations})
-    df_year_rank=pl.DataFrame(results).to_pandas()
+    #if "gender" not in df_year_rank.columns or df_year_rank["gender"].n_unique() == 1:
+     #   return df_year_rank.to_pandas()
+    if df_year_rank["gender"].n_unique() == 2:
+        # generate male-female combinations per province
+        results = []
+        for province in df_year_rank[geo_column].unique().to_list():
+            province_data = df_year_rank.filter(pl.col(geo_column) == province)
+            male_names = province_data.filter(pl.col("gender") == "male")["name"].to_list()
+            female_names = province_data.filter(pl.col("gender") == "female")["name"].to_list()
+            combinations = "\n".join(
+                f"{male}-{female}"
+                for male in male_names
+                for female in female_names
+            )
+            results.append({geo_column: province, "name": combinations})
+        df_year_rank=pl.DataFrame(results).to_pandas()
+    else:
+        df_year_rank=df_year_rank.to_pandas()
     # convert to pandas only at GeoPandas boundary
+    print("şlk",gdf_borders.head())
     df_result = gdf_borders.merge(df_year_rank, left_on=geo_column, right_on=geo_column)
     # sort before groupby to ensure consistent combination order (e.g. always "Asel-Defne" not "Defne-Asel")
     df_result = df_result.sort_values(by=[geo_column, "name"], ascending=[True, True])

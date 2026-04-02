@@ -120,6 +120,7 @@ class PageNames(BasePage):
             self.tab2_subtab_2_3_4(df)
 
     def tab2_subtab1_plot_map(self, df):
+        # Tab 2.1 (2.1.1.Map Plot , 2.1.2. Nth Most Common)
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         rank, display_option,include_top_n = render_plot_map_sub_tab(names,self.page_name)
         # --- Plot map ---
@@ -135,18 +136,17 @@ class PageNames(BasePage):
             year_1, year_2 = st.session_state["year_1"], st.session_state["year_2"]
             for i, year in enumerate(sorted({year_1, year_2})):
                 # Display option 1: Show the nth most common baby names
-                if display_option == "nth most common":
-                    df_result = preprocess_for_nth_most_common_tab(df, gdf_borders, year, rank, include_top_n,geo_level)
-                    df_results.append(df_result)
-                elif display_option == "top-n to filter":  # Display option 2: Select single year, name(s) and top-n number to filter
+                if display_option == "top-n to filter":  # Display option 2: Select single year, name(s) and top-n number to filter
                     names_from_multi_select = st.session_state["names_" + self.page_name]
                     df_result, df_result_not_null = process_for_select_rank_tab(df, gdf_borders,
                                                                                 names_from_multi_select, year, rank,geo_level)
+                elif display_option == "nth most common":
+                    df_result = preprocess_for_nth_most_common_tab(df, gdf_borders, year, rank, include_top_n,geo_level)
+                    df_results.append(df_result)
               #      if df_result_not_null is not None:
                #         df_results.append(df_result_not_null)
                 if df_result is not None:
                     map_plotter = get_map_plotter("Matplotlib", HA_POSITIONS, VA_POSITIONS, CLUSTER_COLOR_MAPPING)
-
                     map_plotter.plot(df_result,rank, year, display_option, page_name, col_plot,geo_level)
 
 
