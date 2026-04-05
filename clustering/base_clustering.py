@@ -108,7 +108,7 @@ class BaseClustering:
         Attach cluster labels to geodata and compute centroids for display.
         Args:
             gdf_dict: Dictionary containing geodataframes (e.g., {'province': gdf...})
-            geo_scale: Geographical scale key (province etc. ) to select the appropriate GeoDataFrame
+            geo_scale: Geographical scale key (province,state etc. ) to select the appropriate GeoDataFrame
             df_pivot: DataFrame containing the 'clusters' column
             closest_indices: List of indices representing cluster centers
         Returns:

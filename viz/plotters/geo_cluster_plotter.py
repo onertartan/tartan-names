@@ -48,43 +48,34 @@ class GeoClusterPlotter:
         Plots the geographic clusters.
         """
         fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-
         # 1. Create Colors
         ##  color_map = self.create_color_mapping(gdf_clusters, n_clusters)
         color_map = create_cluster_color_mapping(gdf_clusters, self.cluster_color_mapping_dict)
-
         # 2. Map colors and Plot
         # gdf_clusters = gdf_clusters.copy()
         gdf_clusters["color"] = gdf_clusters["clusters"].map(color_map)
-
         gdf_clusters.plot(ax=ax, color=gdf_clusters['color'], legend=True, edgecolor="black", linewidth=.2)
         ax.axis("off")
         ax.margins(x=0)
-
         # 3. Annotations
         bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-
-        for province in gdf_clusters.index:
+        for geo_name in gdf_clusters.index:# geo_name: (province or state name)
             # Use configurations passed in __init__
-            ha = self.ha_positions.get(province, "center")
-            va = self.va_positions.get(province, "center")
-
+            ha = self.ha_positions.get(geo_name, "center")
+            va = self.va_positions.get(geo_name, "center")
             # Centroid safety check
-            geom = gdf_clusters.loc[province, "geometry"]
+            geom = gdf_clusters.loc[geo_name, "geometry"]
             # Handle cases where index might be duplicated or geom is missing
             if isinstance(geom, gpd.GeoSeries): geom = geom.iloc[0]
-
-            ax.annotate(text=province,
+            ax.annotate(text=geo_name,
                         xy=(geom.centroid.x, geom.centroid.y),
                         ha=ha, va=va, fontsize=5, color="black", bbox=bbox)
-
         # 4. Legend & Centroid Markers
         title = f"{n_clusters} Clusters Identified {year_label}"
         ax.set_title(title)
         if gdf_centroids is not None:
             closest_provinces_centroids = gdf_centroids.to_crs("EPSG:4326")#gdf_centroids.to_crs("EPSG:4326").copy()
             closest_provinces_centroids["centroid_geometry"] = closest_provinces_centroids.geometry.centroid
-
             closest_points = gpd.GeoDataFrame(
                 closest_provinces_centroids,
                 geometry="centroid_geometry",

@@ -117,7 +117,7 @@ class BasePage(ABC):
     def preprocess_clustering(self, df, *args):
         pass    # Overriden by sub-classes Base_Page_Names & Base_Page_Common
 
-    def tab_clustering(self, df, save_sub_folder="", *args):
+    def tab_clustering(self, df, geo_scale,save_sub_folder="", *args):
         scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main()
         if not clustering_algorithm:
             return
@@ -163,7 +163,7 @@ class BasePage(ABC):
             #df_distances = engine.pairwise(df_pivot,"cosine")
         else:
             representatives = None
-        self.gdf_clusters, self.gdf_centroids = engine_class.update_geo_cluster_centers(self.gdf, st.session_state["geo_scale"], df_pivot, representatives)
+        self.gdf_clusters, self.gdf_centroids = engine_class.update_geo_cluster_centers(self.gdf, geo_scale, df_pivot, representatives)
 
         if st.session_state.get("selected_tab_" + self.page_name, "") == "tab_geo_clustering":
             # Step-6: Render geo-cluster plots

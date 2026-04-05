@@ -4,46 +4,23 @@ import polars as pl
 import geopandas as gpd
 
 import streamlit as st
-def preprocess_for_nth_most_common_tab(df: pl.DataFrame, gdf_borders:gpd.GeoDataFrame,year: int, target_rank: int, include_top_n: bool,geo_column:str) -> pl.DataFrame:
+def preprocess_for_nth_most_common_tab(df: pl.DataFrame, gdf_borders:gpd.GeoDataFrame,year: int, target_rank: int, include_top_n: bool,geo_column:str) -> gpd.GeoDataFrame:
     # Helper for Tab 2.1
     # (2.1.1:Select names and filter if they are in top-n  & 2.1.2:Nth most common)
-    # filter by year (replaces df.loc[year])
+    # filter by year
     df_year = df.filter(pl.col("year") == year)
     # filter by rank
     if include_top_n:# Limits the rank limit to 5, since range-30 results in many names
         df_year_rank = df_year.filter(pl.col("rank") <= target_rank)
     else:
         df_year_rank = df_year.filter(pl.col("rank") == target_rank)
-    # if no sex column or only one gender — no combinations needed
-    print("çöş",df_year_rank.head())
-
-    #if "gender" not in df_year_rank.columns or df_year_rank["gender"].n_unique() == 1:
-     #   return df_year_rank.to_pandas()
-    if df_year_rank["gender"].n_unique() == 2:
-        # generate male-female combinations per province
-        results = []
-        for province in df_year_rank[geo_column].unique().to_list():
-            province_data = df_year_rank.filter(pl.col(geo_column) == province)
-            male_names = province_data.filter(pl.col("gender") == "male")["name"].to_list()
-            female_names = province_data.filter(pl.col("gender") == "female")["name"].to_list()
-            combinations = "\n".join(
-                f"{male}-{female}"
-                for male in male_names
-                for female in female_names
-            )
-            results.append({geo_column: province, "name": combinations})
-        df_year_rank=pl.DataFrame(results).to_pandas()
-    else:
-        df_year_rank=df_year_rank.to_pandas()
-    # convert to pandas only at GeoPandas boundary
-    print("şlk",gdf_borders.head())
-    df_result = gdf_borders.merge(df_year_rank, left_on=geo_column, right_on=geo_column)
-    # sort before groupby to ensure consistent combination order (e.g. always "Asel-Defne" not "Defne-Asel")
-    df_result = df_result.sort_values(by=[geo_column, "name"], ascending=[True, True])
-    df_result = df_result.groupby(["geometry", geo_column])["name"].apply(
-        lambda x: "\n".join(x)).to_frame().reset_index()
-
-    return df_result
+    df_year_rank=df_year_rank.to_pandas()
+    # Step 3: aggregate names cleanly
+    df_year_rank = df_year_rank.sort_values("rank").groupby(geo_column).apply(lambda g: "\n".join("-".join(rank_group["name"].tolist())
+            for _, rank_group in g.groupby("rank", sort=False))).reset_index(name="name")
+    # Step 4: attach geometry
+    gdf_result = gdf_borders.merge(df_year_rank, on=geo_column)
+    return gdf_result
 
 def process_for_select_rank_tab(df,gdf_borders,names_from_multi_select,year,rank,geo_column):
     # Helper for Tab 2.1.1
@@ -52,14 +29,11 @@ def process_for_select_rank_tab(df,gdf_borders,names_from_multi_select,year,rank
         # filter by name and rank
         df_result = df_year.filter(pl.col("name").is_in(names_from_multi_select) & (pl.col("rank") <= rank))
         # group by province and join names with newline (replaces groupby + apply lambda)
-        df_result_grouped = df_result.group_by(geo_column).agg(pl.col("name").sort()).with_columns(
-            pl.col("name").list.join("\n "))  # joins the list into a single string
+        df_result_grouped = df_result.group_by(geo_column).agg(pl.col("name").sort()).with_columns( pl.col("name").list.join("\n "))  # joins the list into a single string
         # merge with geodataframe borders (Polars → Pandas for GeoPandas compatibility)
-        print("çççö",gdf_borders)
         df_result_not_null = gdf_borders.merge(df_result_grouped.to_pandas(), left_on=geo_column, right_on=geo_column)
         # left join to keep all provinces including those with no match (#df_result_with_nulls)
-        df_result = gdf_borders.merge(df_result_not_null[[geo_column, "name"]], left_on=geo_column, right_on=geo_column,
-                                      how="left")
+        df_result = gdf_borders.merge(df_result_not_null[[geo_column, "name"]], left_on=geo_column, right_on=geo_column,how="left")
         return df_result, df_result_not_null
     return None,None
 

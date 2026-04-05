@@ -61,12 +61,11 @@ def create_title_for_plot( rank, year, display_option, page_name):
 
     return title, names_or_surnames
 
-def prepare_df(df_result: pd.DataFrame, cluster_color_mapping: dict) -> gpd.GeoDataFrame:
-    df_result = df_result.copy()
+def set_color_mapping(df_result: gpd.GeoDataFrame, cluster_color_mapping: dict) -> gpd.GeoDataFrame:
     df_result["clusters"] = df_result["name"].factorize()[0]
     color_map = create_cluster_color_mapping(df_result.set_index("name"), cluster_color_mapping)
     df_result["color"] = df_result["clusters"].map(color_map).fillna("gray")
-    return gpd.GeoDataFrame(df_result, geometry="geometry")
+    return df_result
 
 
 def build_legend_entries(df_result: gpd.GeoDataFrame) -> list[str]:

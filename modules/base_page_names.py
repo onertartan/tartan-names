@@ -6,6 +6,7 @@ import locale
 from utils.base_page_names.names_helpers import process_for_select_rank_tab, preprocess_for_nth_most_common_tab, \
     preprocess_for_rank_bar_tabs
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
+from viz.gui_helpers.base_page_names.render_helpers import create_title_for_plot
 from viz.gui_helpers.ui_base_page import province_selector, sidebar_controls_basic_setup
 from viz.gui_helpers.base_page_names.ui_base_page_names import render_tab_selection, render_gender_name_surname_filters, \
  sidebar_controls_plot_options_setup, render_data_coverage_if_rank_available
@@ -16,7 +17,7 @@ from viz.plotters.bump_plotter import get_bump_plotter
 from viz.plotters.geo_names_plotter import get_map_plotter
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
-
+import geopandas as gpd
 locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
 
 class PageNames(BasePage):
@@ -94,8 +95,10 @@ class PageNames(BasePage):
         name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(self.page_name,cols)
         df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, self.geo_level)
 
+        geo_level= self.geo_level
+        gdf_borders = self.gdf[geo_level]
+
         tab_selected = render_tab_selection(self.page_name)
-        geo_column= self.geo_level
         if tab_selected == "tab_geo_clustering" or tab_selected == "tab_name_clustering":  # Main Tab-1
             # 0. Render UI
             if "rank" in df.columns:
@@ -107,20 +110,20 @@ class PageNames(BasePage):
             # Not: Bunun için 'pyarrow' kütüphanesinin yüklü olması gerekir.
             df = df.to_pandas()
             # 6. Pandas üzerinde MultiIndex oluştur
-            df = df.set_index(['year', geo_column]).sort_index()
+            df = df.set_index(['year', geo_level]).sort_index()
 
-            df_pivot = self.tab_clustering(df=df,save_sub_folder=st.session_state["gender_radio_widget_" + self.page_name].lower())
+            df_pivot = self.tab_clustering(df,geo_level,save_sub_folder=st.session_state["gender_radio_widget_" + self.page_name].lower())
             if tab_selected=="tab_geo_clustering":
                 if df_pivot is not None:
                     plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
                     plot_mds_provinces(df_pivot)
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
-            self.tab2_subtab1_plot_map(df)
+            self.tab2_subtab1_plot_map(df,gdf_borders,geo_level)
         elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
             self.tab2_subtab_2_3_4(df)
 
-    def tab2_subtab1_plot_map(self, df):
-        # Tab 2.1 (2.1.1.Map Plot , 2.1.2. Nth Most Common)
+    def tab2_subtab1_plot_map(self, df:pl.DataFrame,gdf_borders:gpd.GeoDataFrame,geo_level:str):
+        # Tab 2.1 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         rank, display_option,include_top_n = render_plot_map_sub_tab(names,self.page_name)
         # --- Plot map ---
@@ -130,11 +133,10 @@ class PageNames(BasePage):
             #self.plot_map(col_plot, col_df, df, rank, display_option, include_top_n)
             st.session_state["visualization_option"] = "matplotlib"
             page_name = st.session_state["page_name"]
-            geo_level = self.geo_level
-            gdf_borders = self.gdf[geo_level]
             df_results = []  # for animation?
             year_1, year_2 = st.session_state["year_1"], st.session_state["year_2"]
             for i, year in enumerate(sorted({year_1, year_2})):
+                title, _ = create_title_for_plot(rank, year, display_option, page_name)
                 # Display option 1: Show the nth most common baby names
                 if display_option == "top-n to filter":  # Display option 2: Select single year, name(s) and top-n number to filter
                     names_from_multi_select = st.session_state["names_" + self.page_name]
@@ -142,12 +144,14 @@ class PageNames(BasePage):
                                                                                 names_from_multi_select, year, rank,geo_level)
                 elif display_option == "nth most common":
                     df_result = preprocess_for_nth_most_common_tab(df, gdf_borders, year, rank, include_top_n,geo_level)
+                    print("tippi2", type(df_result))
+
                     df_results.append(df_result)
               #      if df_result_not_null is not None:
                #         df_results.append(df_result_not_null)
                 if df_result is not None:
                     map_plotter = get_map_plotter("Matplotlib", HA_POSITIONS, VA_POSITIONS, CLUSTER_COLOR_MAPPING)
-                    map_plotter.plot(df_result,rank, year, display_option, page_name, col_plot,geo_level)
+                    map_plotter.plot(df_result,title, col_plot,geo_level)
 
 
     def tab2_subtab_2_3_4(self, df):
