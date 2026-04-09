@@ -27,31 +27,34 @@ class BarPlotter(abc.ABC):
         self,
         df: pd.DataFrame,
         col_plot: st.delta_generator.DeltaGenerator,
+        show_column:str # "count" or "ratio"
     ) -> None:
         """Draw the chart inside the supplied Streamlit column."""
-
 
 
 # ------------- matplotlib -------------
 class MatplotlibPlotter(BarPlotter):
     ENGINE = "Matplotlib"
 
-    def plot(self, df, col_plot):
 
+    def plot(self, df, col_plot,show_column: str = 'count'):
+        rotation = 0
+        figsize = (12, 7)
         validate_df(df)
 
-        pivot_df = df.pivot(index="year", columns="name", values="count")
+        pivot_df = df.pivot(index="year", columns="name", values=show_column)
 
-        fig, ax = plt.subplots(figsize=(15, 9))
+        fig, ax = plt.subplots(figsize=figsize)
         pivot_df.plot(kind="bar", ax=ax)
 
         ax.set_title(self.title)
         ax.set_xlabel("Year")
-        ax.set_ylabel("Count")
-        ax.tick_params(axis="x", rotation=0)
+        ax.set_ylabel(show_column.title())
+        ax.tick_params(axis="x", rotation=rotation)
 
-        for container in ax.containers:
-            ax.bar_label(container, fontsize=8)
+      ##  if self.show_labels:
+       #     for container in ax.containers:
+        #        ax.bar_label(container, fontsize=8)
 
         col_plot.pyplot(fig)
         plt.close(fig)
@@ -61,7 +64,7 @@ class MatplotlibPlotter(BarPlotter):
 class SeabornPlotter(BarPlotter):
     ENGINE = "Seaborn"
 
-    def plot(self, df, col_plot):
+    def plot(self, df, col_plot,show_column):
 
         validate_df(df)
 
@@ -71,14 +74,14 @@ class SeabornPlotter(BarPlotter):
         sns.barplot(
             data=df,
             x="year",
-            y="count",
+            y=show_column,
             hue="name",
             palette=palette,
             ax=ax
         )
         ax.set_title(self.title)
         ax.set_xlabel("Year")
-        ax.set_ylabel("Count")
+        ax.set_ylabel(show_column.title())
         ax.legend(loc="best")
         col_plot.pyplot(fig)
         plt.close(fig)
@@ -88,44 +91,23 @@ class SeabornPlotter(BarPlotter):
 class PlotlyPlotter(BarPlotter):
     ENGINE = "Plotly"
 
-    def plot(self, df, col_plot):
+    def plot(self, df, col_plot,show_column):
 
         validate_df(df)
 
         fig = px.bar(
             df,
             x="year",
-            y="count",
+            y=show_column,
             color="name",
             barmode="group",
-            text="count",
+            text=show_column,
             title=self.title
         )
 
         fig.update_traces(textposition="outside")
 
         col_plot.plotly_chart(fig, use_container_width=True)
-
-
-# ------------- pandas -------------
-class PandasPlotter(BarPlotter):
-    ENGINE = "Pandas"
-
-    def plot(self, df, col_plot):
-
-        validate_df(df)
-
-        pivot_df = df.pivot(index="year", columns="name", values="count")
-
-        fig, ax = plt.subplots(figsize=(10, 6))
-        pivot_df.plot(kind="bar", ax=ax)
-
-        ax.set_title(self.title)
-        ax.set_xlabel("Year")
-        ax.set_ylabel("Count")
-
-        col_plot.pyplot(fig)
-        plt.close(fig)
 
 
 # ------------- altair -------------
@@ -136,12 +118,12 @@ class AltairPlotter(BarPlotter):
         self,
         df: pd.DataFrame,
         col_plot: st.delta_generator.DeltaGenerator,
+        show_column: str = 'count',
         height: int = 600,
     ) -> None:
-
         chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('year:O', title='Year'),
-            y=alt.Y('count:Q', title='Count'),
+            y=alt.Y(f'{show_column}:Q', title=show_column.title()),
             color=alt.Color('name:N', legend=None),
             column=alt.Column('name:N', title=None)
         ).properties(
@@ -174,14 +156,13 @@ ENGINES: dict[str, type[BarPlotter]] = {
         MatplotlibPlotter,
         SeabornPlotter,
         PlotlyPlotter,
-        PandasPlotter,
         AltairPlotter,
     )
 }
 
 
 def get_bar_plotter(
-    engine: Literal["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
+    engine: Literal["Matplotlib", "Seaborn", "Plotly", "Altair"],
     gender: str,
     page_name: str,
 ) -> BarPlotter:

@@ -3,18 +3,38 @@ import abc
 from typing import Literal
 
 import geopandas as gpd
+import numpy as np
 import streamlit as st
-import matplotlib.pyplot as plt
-from matplotlib.patches import Patch
 import plotly.express as px
 import altair as alt
 import folium
 from folium.features import GeoJsonTooltip
 from streamlit_folium import st_folium
 from shapely.geometry import Polygon
-import pandas as pd
-from viz.gui_helpers.base_page_names.render_helpers import build_legend_entries, create_title_for_plot, set_color_mapping
 
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+import pandas as pd
+from adjustText import adjust_text
+from viz.gui_helpers.base_page_names.render_helpers import build_legend_entries, create_title_for_plot, set_color_mapping
+state_map_reversed = {
+    'Alaska': 'AK', 'Alabama': 'AL', 'Arkansas': 'AR', 'Arizona': 'AZ',
+    'California': 'CA', 'Colorado': 'CO', 'Connecticut': 'CT',
+    'District of Columbia': 'DC', 'Delaware': 'DE', 'Florida': 'FL',
+    'Georgia': 'GA', 'Hawaii': 'HI', 'Iowa': 'IA', 'Idaho': 'ID',
+    'Illinois': 'IL', 'Indiana': 'IN', 'Kansas': 'KS', 'Kentucky': 'KY',
+    'Louisiana': 'LA', 'Massachusetts': 'MA', 'Maryland': 'MD',
+    'Maine': 'ME', 'Michigan': 'MI', 'Minnesota': 'MN',
+    'Missouri': 'MO', 'Mississippi': 'MS', 'Montana': 'MT',
+    'North Carolina': 'NC', 'North Dakota': 'ND', 'Nebraska': 'NE',
+    'New Hampshire': 'NH', 'New Jersey': 'NJ', 'New Mexico': 'NM',
+    'Nevada': 'NV', 'New York': 'NY', 'Ohio': 'OH', 'Oklahoma': 'OK',
+    'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI',
+    'South Carolina': 'SC', 'South Dakota': 'SD', 'Tennessee': 'TN',
+    'Texas': 'TX', 'Utah': 'UT', 'Virginia': 'VA', 'Vermont': 'VT',
+    'Washington': 'WA', 'Wisconsin': 'WI', 'West Virginia': 'WV',
+    'Wyoming': 'WY'
+}
 
 def alaska_hawaii(gdf, fig, geo_level, ha_positions, va_positions):
     bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
@@ -53,6 +73,73 @@ def alaska_hawaii(gdf, fig, geo_level, ha_positions, va_positions):
         bbox=bbox,
     ), axis=1)
 
+import matplotlib.pyplot as plt
+from shapely.geometry import Polygon
+
+def _clip_and_plot(ax, gdf, polygon):
+    clipped = gdf.clip(polygon)
+    clipped.plot(
+        ax=ax,
+        color=clipped["color"],
+        edgecolor="black",
+        linewidth=0.2
+    )
+    return clipped
+def _annotate(ax, gdf, geo_level):
+    bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
+    texts = []
+    for _, row in gdf.iterrows():
+        centroid = row.geometry.centroid
+        texts.append(
+            ax.text(
+                centroid.x,
+                centroid.y,
+                row[geo_level].upper(),
+                fontsize=4,
+                ha="center",
+                va="center",
+                bbox=bbox
+            )
+        )
+    adjust_text(
+        texts,
+        ax=ax,
+        arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
+        expand_text=(1.1, 1.2),
+        expand_points=(1.2, 1.2),
+        force_text=(0.2, 0.4),
+        force_points=(0.3, 0.5),
+    )
+def split_regions( df, geo_level):
+    if geo_level != "state":
+        return {"main": df}
+
+    df_main = df[~df["state"].isin(["Alaska", "Hawaii"])]
+    df_ak = df[df["state"] == "Alaska"]
+    df_hi = df[df["state"] == "Hawaii"]
+
+    return {
+        "main": df_main,
+        "alaska": df_ak,
+        "hawaii": df_hi
+    }
+def draw_alaska_inset( fig, df_ak, geo_level):
+    polygon = Polygon([(-170, 50), (-170, 72), (-140, 72), (-140, 50)])
+
+    ax = fig.add_axes([0.12, 0.18, 0.2, 0.2])
+    ax.axis("off")
+
+    clipped = _clip_and_plot(ax, df_ak, polygon)
+    _annotate(ax, clipped, geo_level)
+
+def draw_hawaii_inset( fig, df_hi, geo_level):
+    polygon = Polygon([(-160, 0), (-160, 90), (-120, 90), (-120, 0)])
+
+    ax = fig.add_axes([0.32, 0.22, 0.1, 0.15])
+    ax.axis("off")
+
+    clipped = _clip_and_plot(ax, df_hi, polygon)
+    _annotate(ax, clipped, geo_level)
 
 
 # ------------- base -------------
@@ -73,64 +160,13 @@ class MapPlotter(abc.ABC):
     ) -> None:
         pass
 
-import matplotlib.pyplot as plt
-from shapely.geometry import Polygon
 
-def _clip_and_plot(ax, gdf, polygon):
-    clipped = gdf.clip(polygon)
-    clipped.plot(
-        ax=ax,
-        color=clipped["color"],
-        edgecolor="black",
-        linewidth=0.2
-    )
-    return clipped
-def _annotate(ax, gdf, geo_level):
-    for _, row in gdf.iterrows():
-        centroid = row.geometry.centroid
-        ax.annotate(
-            row[geo_level].upper(),
-            (centroid.x, centroid.y),
-            fontsize=4,
-            ha="center",
-            va="center"
-        )
-def split_regions( df, geo_level):
-    if geo_level != "state":
-        return {"main": df}
-
-    df_main = df[~df["state"].isin(["Alaska", "Hawaii"])]
-    df_ak = df[df["state"] == "Alaska"]
-    df_hi = df[df["state"] == "Hawaii"]
-
-    return {
-        "main": df_main,
-        "alaska": df_ak,
-        "hawaii": df_hi
-    }
+# ------------- matplotlib -------------
 
 class MatplotlibMapPlotter(MapPlotter):
     ENGINE = "Matplotlib"
 
-    def _draw_alaska_inset(self, fig, df_ak, geo_level):
-        polygon = Polygon([(-170, 50), (-170, 72), (-140, 72), (-140, 50)])
-
-        ax = fig.add_axes([0.12, 0.18, 0.2, 0.2])
-        ax.axis("off")
-
-        clipped = _clip_and_plot(ax, df_ak, polygon)
-        _annotate(ax, clipped, geo_level)
-
-    def _draw_hawaii_inset(self, fig, df_hi, geo_level):
-        polygon = Polygon([(-160, 0), (-160, 90), (-120, 90), (-120, 0)])
-
-        ax = fig.add_axes([0.32, 0.22, 0.1, 0.15])
-        ax.axis("off")
-
-        clipped = _clip_and_plot(ax, df_hi, polygon)
-        _annotate(ax, clipped, geo_level)
     def plot(self, gdf, title, col_plot, geo_level):
-
         df_view = set_color_mapping(gdf, self.cluster_color_mapping)
         regions = split_regions(df_view, geo_level)
         df_main = regions["main"]
@@ -149,108 +185,48 @@ class MatplotlibMapPlotter(MapPlotter):
         df_main.plot(ax=ax, color=df_main["color"], edgecolor="black", linewidth=0.2)
         # --- INSETS ---
         if df_ak is not None and not df_ak.empty:
-            self._draw_alaska_inset(fig, df_ak, geo_level)
+            draw_alaska_inset(fig, df_ak, geo_level)
         if df_hi is not None and not df_hi.empty:
-            self._draw_hawaii_inset(fig, df_hi, geo_level)
+            draw_hawaii_inset(fig, df_hi, geo_level)
 
         # --- LABELS (mainland only) ---
         bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
+        texts = []
         for idx, row in df_main.iterrows():
             geom = row.geometry
             # Safety check for possible GeoSeries
             if isinstance(geom, gpd.GeoSeries):
                 geom = geom.iloc[0]
             # Annotation text (as in the original second snippet)
-            text = f"{row[geo_level].upper()}\n{row['name']}"
+            name = row["name"] if row["name"] is not np.nan else ""
+            text = f"{state_map_reversed.get(row[geo_level],row[geo_level]).upper()}\n{name}"
 
-            ax.annotate(
-                text=text,
-                xy=(geom.centroid.x, geom.centroid.y),
-                ha=self.ha_positions.get(row[geo_level], "center"),
-                va=self.va_positions.get(row[geo_level], "center"),
-                fontsize=4,
-                color="black",
-                bbox=bbox
+            texts.append(
+                ax.text(
+                    geom.centroid.x,
+                    geom.centroid.y,
+                    text,
+                    ha=self.ha_positions.get(row[geo_level], "center"),
+                    va=self.va_positions.get(row[geo_level], "center"),
+                    fontsize=4,
+                    color="black",
+                    bbox=bbox
+                )
             )
 
-        ax.axis("off")
-        ax.set_title(title)
-
-        col_plot.pyplot(fig)
-        plt.close(fig)
-# ------------- matplotlib -------------
-class MatplotlibMapPlotterOLD(MapPlotter):
-    ENGINE = "MatplotlibOLD"
-
-    def plot(
-        self,
-        df_result: gpd.GeoDataFrame,
-        title:str,
-        col_plot: st.delta_generator.DeltaGenerator,
-        geo_level:str
-    ) -> None:
-        df_result = set_color_mapping(df_result, self.cluster_color_mapping)
-        st.header(str(df_result.columns))
-        # Compute the natural aspect ratio of the data's bounding box
-        bounds = df_result.total_bounds  # [minx, miny, maxx, maxy]
-        data_width = bounds[2] - bounds[0]
-        data_height = bounds[3] - bounds[1]
-        aspect_ratio = data_width / data_height if data_height > 0 else 2.5
-
-        fig_width = 10
-        fig_height = max(8, fig_width / aspect_ratio)
-        fig, ax = plt.subplots(figsize=(fig_width, fig_height))
-       # fig, ax = plt.subplots(figsize=(10, 8))
-
-        if geo_level == "state":
-            alaska_hawaii(df_result, fig, geo_level, self.ha_positions, self.va_positions)
-            df_mainland = df_result[~df_result.state.isin(["Alaska", "Hawaii"])]
-            df_mainland.plot(ax=ax, color=df_mainland["color"], edgecolor="black", linewidth=0.2)
-        else:
-            df_result.plot(ax=ax, color=df_result["color"], edgecolor="black", linewidth=0.2)
-
-        # Annotate only mainland (Alaska & Hawaii handled in insets)
-        bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-        for idx, row in df_result.iterrows():
-            geom = row.geometry
-            # Safety check for possible GeoSeries
-            if isinstance(geom, gpd.GeoSeries):
-                geom = geom.iloc[0]
-            # Annotation text (as in the original second snippet)
-            text = f"{row[geo_level].upper()}\n{row['name']}"
-
-            ax.annotate(
-                text=text,
-                xy=(geom.centroid.x, geom.centroid.y),
-                ha=self.ha_positions.get(row[geo_level], "center"),
-                va=self.va_positions.get(row[geo_level], "center"),
-                fontsize=4,
-                color="black",
-                bbox=bbox
-            )
-        ax.axis("off")
-        ax.margins(x=0)
-
-         # Replace the legend block with this:
-
-        legend_entries = build_legend_entries(df_result)
-        handles = [Patch(color="none", label=entry, linewidth=0) for entry in legend_entries]
-        ncols =10# 1 + len(legend_entries) // 5
-        ax.legend(
-            handles=handles,
-            loc="upper center",
-            bbox_to_anchor=(0.5, -0.02),  # centered, just below the axes
-            bbox_transform=ax.transAxes,
-            fontsize=4,
-            ncols=ncols,
-            handlelength=0,
-            handletextpad=0,
-            alignment="left",
-            borderaxespad=0,
+        adjust_text(
+            texts,
+            ax=ax,
+            arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
+            expand_text=(1.1, 1.2),
+            expand_points=(1.2, 1.2),
+            force_text=(0.2, 0.4),
+            force_points=(0.3, 0.5),
         )
 
-        fig.subplots_adjust(bottom=0.15)  # reserve space below the axes for the legend
+        ax.axis("off")
         ax.set_title(title)
+
         col_plot.pyplot(fig)
         plt.close(fig)
 

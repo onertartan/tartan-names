@@ -22,28 +22,42 @@ locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
 
 class PageNames(BasePage):
     geo_level=None
+    country = "turkiye"
     def preprocessing_initial_filtering(self, name_surname_selection, selected_years, gender_list_state_key, cols, geo_column="province"):
-        # ---   Apply Filter ---
-        # Only filter by gender if we are looking at names
+        """
+        Load the selected names/surnames dataset and apply the initial UI filters.
+
+        The method selects the appropriate dataframe from ``self.data``, renders the
+        geography selector, then filters rows by the chosen years, selected
+        geographic units, and gender selection when a ``gender`` column is present.
+
+        Parameters
+        ----------
+        name_surname_selection(str) : Dataset key chosen in the UI, such as ``"name"`` or ``"surname"``.
+        selected_years (list)       : Years selected by the user.
+        gender_list_state_key (str) : Session-state key that stores the selected genders.
+        cols (list)                 : Streamlit columns used to place the geography selector.
+        geo_column (str)            : Geography column to filter on, for example ``"province"`` or ``"state"``.
+
+        Returns
+        df (pl.DataFrame)          : Filtered dataframe matching the current UI selections.
+        """
+        # 1. data is a dictionary with the key "names" (it can have another key "surnames")
         df = self.data[name_surname_selection.lower()]
-        # 1. Get unique province(state) names
+        # 2. Get unique province(state) names
         with cols[2]:
             selected_provinces = province_selector(
                 df.select(pl.col(geo_column)).unique().to_series().to_list(),
                 key_prefix=f"{self.page_name}{geo_column}")
-        # 2. Filter according to the selected year and province
+        # 3. Filter according to the selected year and selected provinces
         df = df.filter((pl.col("year").is_in(selected_years)) & (pl.col(geo_column).is_in(selected_provinces)))
-        # 3. Filter according to the gender
-        if name_surname_selection != "surname":
-            # If surname is not selected there is a gender column
-            if "gender" in df.columns:
+        # 4. Filter according to the gender
+        # If surname is not selected there is a gender column (the line below is sufficent)  if name_surname_selection != "surname":
+        if "gender" in df.columns:
                 df = df.filter( pl.col("gender").is_in(st.session_state[gender_list_state_key]) )
         return df
 
     def preprocess_clustering(self, df):
-        """"
-        returns:df_pivot
-        """
         year = df.index.get_level_values(0).unique() # year(s)
         page_name = self.page_name
         geo_column = self.geo_level
@@ -61,6 +75,8 @@ class PageNames(BasePage):
      #   else:  # single gender selected for names  # gender selection handled in preprocessing_initial now
      #       sex = st.session_state["sex_" + page_name]
      #       df_year = df[df["sex"].isin(sex)].loc[year]
+        st.dataframe(df_year.head())
+
         if isinstance(df_year.index, pd.MultiIndex):  # If applying temporal clustering (multiple years given as year)
              df_year = df_year.droplevel(0)  # Drop the first level year(position 0)
 
@@ -86,7 +102,6 @@ class PageNames(BasePage):
         st.session_state["geo_scale"] = "state" if "usa" in self.page_name else "province"
         header = "Names & Surnames Analysis" if self.page_name == "names_surnames" else "Baby Names Analysis"
         st.header(header)
-
         start_year, end_year = self.data["name"].select(pl.col("year")).min().item(),  self.data["name"].select(pl.col("year")).max().item()
         sidebar_controls_basic_setup(start_year, end_year)
         sidebar_controls_plot_options_setup(self.page_name)
@@ -95,57 +110,54 @@ class PageNames(BasePage):
         name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(self.page_name,cols)
         df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, self.geo_level)
 
-        geo_level= self.geo_level
+        page_name, geo_level= self.page_name, self.geo_level
         gdf_borders = self.gdf[geo_level]
 
         tab_selected = render_tab_selection(self.page_name)
-        if tab_selected == "tab_geo_clustering" or tab_selected == "tab_name_clustering":  # Main Tab-1
-            # 0. Render UI
-            if "rank" in df.columns:
-               max_rank = df.select(pl.col("rank")).max().item()  # .item() tek bir değeri Python tipine çevirir
-               use_data_option, top_n_names=render_data_coverage_if_rank_available(max_rank)
-               if "top-n" in use_data_option:
-                   df = df.filter(pl.col("rank") <= top_n_names)
-            # 5. Polars DataFrame'i Pandas'a dönüştür
-            # Not: Bunun için 'pyarrow' kütüphanesinin yüklü olması gerekir.
-            df = df.to_pandas()
-            # 6. Pandas üzerinde MultiIndex oluştur
-            df = df.set_index(['year', geo_level]).sort_index()
-
-            df_pivot = self.tab_clustering(df,geo_level,save_sub_folder=st.session_state["gender_radio_widget_" + self.page_name].lower())
-            if tab_selected=="tab_geo_clustering":
-                if df_pivot is not None:
-                    plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
-                    plot_mds_provinces(df_pivot)
+        if "clustering" in tab_selected:  # Main Tab-1
+            self.maintab1(df, geo_level, tab_selected) # clustering tab
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
-            self.tab2_subtab1_plot_map(df,gdf_borders,geo_level)
+            self.maintab2_subtab1_plot_map(df, gdf_borders, page_name, geo_level)
         elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
-            self.tab2_subtab_2_3_4(df)
+            self.maintab2_subtab_2_3_4(df, page_name, tab_selected, geo_level)
 
-    def tab2_subtab1_plot_map(self, df:pl.DataFrame,gdf_borders:gpd.GeoDataFrame,geo_level:str):
+    def maintab1(self, df, geo_level, tab_selected):
+        # 0. Render UI
+        if "rank" in df.columns:
+            max_rank = df.select(pl.col("rank")).max().item()  # .item() tek bir değeri Python tipine çevirir
+            use_data_option, top_n_names = render_data_coverage_if_rank_available(max_rank)
+            if "top-n" in use_data_option:
+                df = df.filter(pl.col("rank") <= top_n_names)
+        # 5. Polars DataFrame'i Pandas'a dönüştür
+        df = df.to_pandas().set_index(['year', geo_level]).sort_index()
+        df_pivot = self.tab_clustering(df, geo_level, save_sub_folder=st.session_state["gender_radio_widget_" + self.page_name].lower())
+        if tab_selected == "tab_geo_clustering":
+            if df_pivot is not None:
+                plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
+                plot_mds_provinces(df_pivot)
+        elif tab_selected =="tab_temporal_clustering":
+            pass
+
+    def maintab2_subtab1_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, page_name:str,geo_level:str):
         # Tab 2.1 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
         names = sorted(df["name"].unique(), key=locale.strxfrm)
-        rank, display_option,include_top_n = render_plot_map_sub_tab(names,self.page_name)
+        rank, display_option,include_top_n = render_plot_map_sub_tab(names,page_name)
         # --- Plot map ---
         col_plot, _ = st.columns([9, 1])
         # Display results on map if a button is clicked
         if display_option:
-            #self.plot_map(col_plot, col_df, df, rank, display_option, include_top_n)
             st.session_state["visualization_option"] = "matplotlib"
-            page_name = st.session_state["page_name"]
             df_results = []  # for animation?
             year_1, year_2 = st.session_state["year_1"], st.session_state["year_2"]
             for i, year in enumerate(sorted({year_1, year_2})):
                 title, _ = create_title_for_plot(rank, year, display_option, page_name)
                 # Display option 1: Show the nth most common baby names
                 if display_option == "top-n to filter":  # Display option 2: Select single year, name(s) and top-n number to filter
-                    names_from_multi_select = st.session_state["names_" + self.page_name]
+                    names_from_multi_select = st.session_state["names_" + page_name]
                     df_result, df_result_not_null = process_for_select_rank_tab(df, gdf_borders,
                                                                                 names_from_multi_select, year, rank,geo_level)
                 elif display_option == "nth most common":
                     df_result = preprocess_for_nth_most_common_tab(df, gdf_borders, year, rank, include_top_n,geo_level)
-                    print("tippi2", type(df_result))
-
                     df_results.append(df_result)
               #      if df_result_not_null is not None:
                #         df_results.append(df_result_not_null)
@@ -154,18 +166,17 @@ class PageNames(BasePage):
                     map_plotter.plot(df_result,title, col_plot,geo_level)
 
 
-    def tab2_subtab_2_3_4(self, df):
-        page_name = self.page_name
-        tab_name = st.session_state["selected_tab_"+self.page_name]
+    def maintab2_subtab_2_3_4(self, df,page_name, tab_selected,geo_level):
+
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
         gender = st.session_state["gender_radio_widget_"+page_name]
         if "rank" in st.session_state["selected_tab_"+self.page_name]:
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine = render_rank_plot_sub_tabs(page_name, clusters)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column = render_rank_plot_sub_tabs(page_name, clusters,geo_level)
         else:
             names = sorted(df["name"].unique(), key=locale.strxfrm)
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine = render_custom_bar_plot_sub_tab(page_name, clusters, names)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column = render_custom_bar_plot_sub_tab(page_name, clusters, names,geo_level)
 
         if "bump" in st.session_state["selected_tab_"+page_name]:
             plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
@@ -179,20 +190,21 @@ class PageNames(BasePage):
         params = {"is_rank_tab": "rank" in st.session_state["selected_tab_"+self.page_name],
             "include_all_years_option": st.session_state.get("include_all_years","Show Only Years When Names Are in Top-n"),
             "selected_names":  st.session_state.get("names_" + self.page_name,[]),
-            "top_n": st.session_state.get("rank_" + self.page_name,-1)}
-        if tab_name == "custom_bar" and params["selected_names"] == []:
+            "top_n": st.session_state.get("rank_" + self.page_name,-1),
+            "show_column":show_column}
+        if tab_selected == "custom_bar" and params["selected_names"] == []:
             st.error("You have not selected any names/surnames)")
             return
 
-        if use_province_or_cluster == "use provinces":
+        if use_province_or_cluster == f"use {geo_level}s":
             if show_provinces_separately:
-                for province in df["province"].unique(maintain_order=True).to_list():
-                    df_province = df.filter(pl.col("province") == province)
+                for province in df[geo_level].unique(maintain_order=True).to_list():
+                    df_province = df.filter(pl.col(geo_level) == province)
                     if not df_province.is_empty():
                         col_plot.subheader(province)
-                        plotter_object.plot(preprocess_for_rank_bar_tabs(df_province,**params), col_plot)
+                        plotter_object.plot(preprocess_for_rank_bar_tabs(df_province,**params), col_plot,show_column)
             else:
-                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot)
+                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot,show_column)
         elif use_province_or_cluster == "Use clusters" and selected_n_cluster:
             df_pivot = self.preprocess_clustering(df)
             df_pivot, _ = self.kmeans(df_pivot) # _ --> closest indices ( not used here)
@@ -201,11 +213,11 @@ class PageNames(BasePage):
             df['clusters'] = df.index.get_level_values("province").map(df_clusters)
             if st.session_state["aggregate_totals_" + self.page_name]:
                 df = df[df["clusters"].isin(selected_n_cluster)]
-                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot)
+                plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot,show_column)
             else:
                 for cluster in selected_n_cluster:
                     df_cluster = df[df["clusters"] == cluster]
                     col_plot.subheader(f"Cluster {cluster}")
-                    plotter_object.plot(preprocess_for_rank_bar_tabs(df_cluster,params), col_plot)
+                    plotter_object.plot(preprocess_for_rank_bar_tabs(df_cluster,**params), col_plot)
        # else:  # if not any selected, select all provinces
         #    plotter_object.plot(preprocess_for_rank_bar_tabs(df,params), col_plot)

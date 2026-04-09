@@ -29,6 +29,8 @@ class BasePage(ABC):
     checkbox_group = {}
     data = None  # Class-level data storage
     gdf_centroids = None  # closest provinces to centroids
+    geo_level=None
+    country = None
 
 
     @st.cache_data
@@ -117,7 +119,7 @@ class BasePage(ABC):
     def preprocess_clustering(self, df, *args):
         pass    # Overriden by sub-classes Base_Page_Names & Base_Page_Common
 
-    def tab_clustering(self, df, geo_scale,save_sub_folder="", *args):
+    def tab_clustering(self, df, geo_scale, save_sub_folder="", *args):
         scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main()
         if not clustering_algorithm:
             return
@@ -125,9 +127,9 @@ class BasePage(ABC):
         n_clusters = st.session_state["n_clusters"] = kwargs["n_clusters"]
         df_pivot = self.preprocess_clustering(df, *args)
         engine =  engine_class(**kwargs)  # Single engine object will be initialized later if not optimal_k_analysis or use_consensus_labels
-        save_folder = "results/files"
+        save_folder = "results/files/"+self.country
         if save_sub_folder != "":
-            save_folder = f"results/files/{save_sub_folder}/{engine_class.__name__}"
+            save_folder = f"{save_folder}/{save_sub_folder}/{engine_class.__name__}"
         # 1. Run clustering: Preprocess
         # If optimal_k_analysis is selected or use_consensus_labels is checked but it is not present(optimal_k_analysis has not previously run)
         if run_optimal_k_analysis:
@@ -196,6 +198,7 @@ class BasePage(ABC):
             year_label = f"between {start_year}-{end_year}"
         # Plot geographic clusters
         with col_plot:
-            GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_cluster_map(self.gdf_clusters, self.gdf_centroids, st.session_state["n_clusters"], year_label)
+            print("ĞPO",self.geo_level)
+            GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_cluster_map(self.gdf_clusters, self.gdf_centroids, st.session_state["n_clusters"], year_label,self.geo_level)
             #GeoClusterPlotter(self.CLUSTER_COLOR_MAPPING, self.HA_POSITIONS, self.VA_POSITIONS).plot_elections(self.gdf_clusters)
         col_df.dataframe(df_clusters)

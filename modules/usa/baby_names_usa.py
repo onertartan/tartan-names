@@ -7,6 +7,7 @@ import geopandas as gpd
 class PageBabyNamesByState(PageNames):
     page_name = "baby_names_by_state"
     geo_level= "state"
+    country = "usa"
     @staticmethod
     @st.cache_data
     def get_data():

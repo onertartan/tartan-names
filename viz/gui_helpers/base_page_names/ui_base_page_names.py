@@ -32,7 +32,9 @@ def render_tab_selection(page_name):
 
     if tab_main_selected == "tab_main_clustering":
         tabs = [stx.TabBarItemData(id="tab_geo_clustering", title="Geographical Clustering", description=""),
-                stx.TabBarItemData(id="tab_name_clustering", title="Name Clustering", description="") ]
+                stx.TabBarItemData(id="tab_name_clustering", title="Name Clustering", description=""),
+                stx.TabBarItemData(id="tab_temporal_clustering", title="Temporal Clustering", description=""),
+                ]
         st.session_state["selected_tab_" +page_name] = stx.tab_bar(data=tabs, default="tab_geo_clustering")
     else:
         tabs = [ stx.TabBarItemData(id="tab_map", title="Map Plot", description=""),

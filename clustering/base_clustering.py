@@ -1,5 +1,5 @@
 import networkx as nx
-from sklearn.metrics import pairwise_distances
+from sklearn.metrics import pairwise_distances, calinski_harabasz_score
 from typing import List
 import time
 import streamlit as st
@@ -23,8 +23,6 @@ class BaseClustering:
     def fit_predict(self, df: pd.DataFrame) -> pd.DataFrame:
         labels = self.model.fit_predict(df) + 1
         return labels
-
-
 
     def get_representatives(self, df_pivot: pd.DataFrame):
         """
@@ -140,7 +138,11 @@ class BaseClustering:
         model_specific_metrics: list[str] = []           # e.g., {"Calinski-Harabasz": calinski_harabasz_score}
     ):
         n_samples = df.shape[0]
-        metrics_all = {"Silhouette Score (cosine)": [], "Silhouette Score (euclidean)": [], "Davies-Bouldin Index": []}
+        metrics_all = {"Silhouette Score (cosine)": [],
+                       "Silhouette Score (euclidean)": [],
+                       "Davies-Bouldin Index": [],
+                       "Calinski-Harabasz Index": []
+                       }
         if cls.__name__ == "KMeansEngine":
             metrics_all["Inertia"] = []
         elif cls.__name__ == "GMMEngine":
@@ -158,7 +160,7 @@ class BaseClustering:
 
         # ---- Run Clustering ----
         for idx, random_state in enumerate(random_states):
-            silhouettes_cosine, silhouettes_euclidean, db_scores, inertias,aics, bics, nlls = [], [],[], [],[], [], []
+            silhouettes_cosine, silhouettes_euclidean, db_scores,ch_scores, inertias,aics, bics, nlls = [], [],[], [],[], [], [], []
 
             seed_start = time.time()
 
@@ -170,6 +172,7 @@ class BaseClustering:
                 silhouettes_cosine.append(silhouette_score(df, labels, metric="cosine"))
                 silhouettes_euclidean.append(silhouette_score(df, labels, metric="euclidean"))
                 db_scores.append(davies_bouldin_score(df, labels))
+                ch_scores.append(calinski_harabasz_score(df, labels))
                 labels_all[random_state][k] = labels
                 if cls.__name__ == "KMeansEngine":
                     inertias.append(engine.model.inertia_)
@@ -187,7 +190,7 @@ class BaseClustering:
 
             metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
             metrics_all["Silhouette Score (euclidean)"].append(silhouettes_euclidean)
-
+            metrics_all["Calinski-Harabasz Index"].append(ch_scores)
             metrics_all["Davies-Bouldin Index"].append(db_scores)
             # Update progress and status after loop for one random state is completed
             progress_bar.progress((idx + 1) / total_states)
@@ -228,7 +231,7 @@ class BaseClustering:
             idx = list(k_values).index(k)
             sil_cos_mean, sil_cos_std = cls.mean_sd_at_k(metrics_all, "Silhouette Score (cosine)", idx)
             sil_euc_mean, sil_euc_std = cls.mean_sd_at_k(metrics_all, "Silhouette Score (euclidean)", idx)
-
+            ch_m, ch_s = cls.mean_sd_at_k(metrics_all,"Calinski-Harabasz Index", idx)
             db_m, db_s = cls.mean_sd_at_k(metrics_all, "Davies-Bouldin Index", idx)
             row_dict={
                 "Number of clusters": k,
@@ -238,6 +241,8 @@ class BaseClustering:
                 "Silhouette_std (euclidean)": sil_euc_std,
                 "DaviesBouldin_mean": db_m,
                 "DaviesBouldin_std": db_s,
+                "CalinskiHarabasz_mean": ch_m,
+                "CalinskiHarabasz_std": ch_s,
                 "ARI_mean": ari_mean[idx],
                 "ARI_std": ari_std[idx]
             }

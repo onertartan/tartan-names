@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
+from adjustText import adjust_text
 from matplotlib.patches import Patch
 import pandas as pd
 import geopandas as gpd
 import streamlit as st
 
 from viz.color_mapping import create_cluster_color_mapping
+from viz.plotters.geo_names_plotter import split_regions, draw_alaska_inset, draw_hawaii_inset, state_map_reversed
 
 
 class GeoClusterPlotter:
@@ -43,7 +45,7 @@ class GeoClusterPlotter:
                 color_map[cluster] = "grey"  # Fallback
         return color_map
 
-    def plot_cluster_map(self, gdf_clusters, gdf_centroids, n_clusters, year_label):
+    def plot_cluster_map(self, gdf_clusters, gdf_centroids, n_clusters, year_label,geo_level):
         """
         Plots the geographic clusters.
         """
@@ -54,22 +56,63 @@ class GeoClusterPlotter:
         # 2. Map colors and Plot
         # gdf_clusters = gdf_clusters.copy()
         gdf_clusters["color"] = gdf_clusters["clusters"].map(color_map)
-        gdf_clusters.plot(ax=ax, color=gdf_clusters['color'], legend=True, edgecolor="black", linewidth=.2)
+        # 3. Split regions
+        regions = split_regions(gdf_clusters.reset_index(), geo_level)
+        df_main = regions["main"]
+        df_ak = regions.get("alaska")
+        df_hi = regions.get("hawaii")
+        # --- dynamic figure size ---
+        bounds = df_main.total_bounds
+        width = bounds[2] - bounds[0]
+        height = bounds[3] - bounds[1]
+        aspect = width / height if height > 0 else 2.5
+
+        fig, ax = plt.subplots(figsize=(10, max(8, 10 / aspect)))
+        #--- MAINLAND - --
+        df_main.plot(ax=ax, color=df_main["color"], legend=True, edgecolor="black", linewidth=0.2)
+        # --- INSETS ---
+        if df_ak is not None and not df_ak.empty:
+            draw_alaska_inset(fig, df_ak, geo_level)
+        if df_hi is not None and not df_hi.empty:
+            draw_hawaii_inset(fig, df_hi, geo_level)
+
         ax.axis("off")
         ax.margins(x=0)
         # 3. Annotations
         bbox = dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.6)
-        for geo_name in gdf_clusters.index:# geo_name: (province or state name)
-            # Use configurations passed in __init__
-            ha = self.ha_positions.get(geo_name, "center")
-            va = self.va_positions.get(geo_name, "center")
-            # Centroid safety check
-            geom = gdf_clusters.loc[geo_name, "geometry"]
-            # Handle cases where index might be duplicated or geom is missing
-            if isinstance(geom, gpd.GeoSeries): geom = geom.iloc[0]
-            ax.annotate(text=geo_name,
-                        xy=(geom.centroid.x, geom.centroid.y),
-                        ha=ha, va=va, fontsize=5, color="black", bbox=bbox)
+        texts = []
+        for idx, row in df_main.iterrows():
+            geom = row.geometry
+            # Safety check for possible GeoSeries
+            if isinstance(geom, gpd.GeoSeries):
+                geom = geom.iloc[0]
+            # Annotation text (as in the original second snippet)
+            add_name = f"\n{row['name']}" if "name" in row else ""
+
+            text = f"{state_map_reversed.get(row[geo_level], row[geo_level]).upper()}{add_name}"
+
+            texts.append(
+                ax.text(
+                    geom.centroid.x,
+                    geom.centroid.y,
+                    text,
+                    ha=self.ha_positions.get(row[geo_level], "center"),
+                    va=self.va_positions.get(row[geo_level], "center"),
+                    fontsize=4,
+                    color="black",
+                    bbox=bbox
+                )
+            )
+
+        adjust_text(
+            texts,
+            ax=ax,
+            arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
+            expand_text=(1.1, 1.2),
+            expand_points=(1.2, 1.2),
+            force_text=(0.2, 0.4),
+            force_points=(0.3, 0.5),
+        )
         # 4. Legend & Centroid Markers
         title = f"{n_clusters} Clusters Identified {year_label}"
         ax.set_title(title)

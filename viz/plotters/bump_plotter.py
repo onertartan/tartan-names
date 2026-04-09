@@ -28,6 +28,7 @@ class BumpPlotter(abc.ABC):
         self,
         df: pd.DataFrame,
         col_plot: st.delta_generator.DeltaGenerator,
+            *args
     ) -> None:
         pass
 
@@ -35,8 +36,9 @@ class BumpPlotter(abc.ABC):
 # ------------- matplotlib implementation -------------
 class MatplotlibBumpPlotter(BumpPlotter):
     ENGINE = "Matplotlib"
+    # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
 
-    def plot(self, df: pd.DataFrame, col_plot):
+    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str):
         df_pivot = pd.pivot_table(
             df,
             values="rank",
@@ -113,7 +115,8 @@ class MatplotlibBumpPlotter(BumpPlotter):
 class PlotlyBumpPlotter(BumpPlotter):
     ENGINE = "Plotly"
 
-    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator) -> None:
+    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str) -> None:
+        # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
         max_rank = int(df["rank"].max())
         df_reset = df.reset_index() if isinstance(df.index, pd.MultiIndex) else df.copy()
@@ -189,7 +192,8 @@ class PlotlyBumpPlotter(BumpPlotter):
 class SeabornBumpPlotter(BumpPlotter):
     ENGINE = "Seaborn"
 
-    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator) -> None:
+    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator, show_column:str) -> None:
+        # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
         df_pivot = pd.pivot_table(
             df, values="rank", index="year", columns="name",
@@ -242,63 +246,12 @@ class SeabornBumpPlotter(BumpPlotter):
         col_plot.pyplot(fig)
         plt.close(fig)
 
-# ------------- pandas implementation -------------
-class PandasBumpPlotter(BumpPlotter):
-    ENGINE = "Pandas"
-
-    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator) -> None:
-        validate_df(df)
-        df_pivot = pd.pivot_table(
-            df, values="rank", index="year", columns="name",
-            aggfunc=lambda x: x, dropna=False
-        )
-
-        fig, ax = plt.subplots(figsize=(10, 6))
-        df_pivot.plot(
-            kind="line", ax=ax, marker="o",
-            markersize=8, linewidth=2
-        )
-
-        max_rank = int(df["rank"].max())
-        ax.invert_yaxis()
-        ax.set_yticks(range(1, min(51, max_rank + 1)))
-        ax.set_ylim(min(51, max_rank + 1), 0)
-        ax.set_xticks(df_pivot.index)
-        ax.margins(x=0.15, y=0.1)
-        ax.set_title(self.title, fontsize=20, pad=20)
-        ax.set_xlabel("Year")
-        ax.set_ylabel("Rank")
-        ax.grid(True, alpha=0.3)
-        ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
-
-        # --- endpoint labels ---
-        y_offset_first = defaultdict(int)
-        y_offset_last = defaultdict(int)
-
-        for name in df_pivot.columns:
-            series = df_pivot[name].dropna()
-            if series.empty:
-                continue
-            first_year, last_year = series.index[0], series.index[-1]
-            first_rank, last_rank = series.iloc[0], series.iloc[-1]
-
-            ax.text(first_year - 0.1, first_rank + y_offset_first[first_rank] * 0.2,
-                    name, ha="right", va="center", fontsize=9, alpha=0.7)
-            ax.text(last_year + 0.1, last_rank + y_offset_last[last_rank] * 0.2,
-                    name, ha="left", va="center", fontsize=9, alpha=0.7)
-
-            y_offset_first[first_rank] += 1
-            y_offset_last[last_rank] += 1
-
-        fig.tight_layout(pad=2.0)
-        col_plot.pyplot(fig)
-        plt.close(fig)
-
 # ------------- altair implementation -------------
 class AltairBumpPlotter(BumpPlotter):
     ENGINE = "Altair"
 
-    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator) -> None:
+    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str) -> None:
+        # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
         max_rank = int(df["rank"].max())
 
@@ -348,13 +301,12 @@ ENGINES: dict[str, type[BumpPlotter]] = {
         MatplotlibBumpPlotter,
         SeabornBumpPlotter,
         PlotlyBumpPlotter,
-        PandasBumpPlotter,
         AltairBumpPlotter,
     )
 }
 
 def get_bump_plotter(
-        engine: Literal["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
+        engine: Literal["Matplotlib", "Seaborn", "Plotly", "Altair"],
         gender: str,
         page_name: str,
 ) -> BumpPlotter:

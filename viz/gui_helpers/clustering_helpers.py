@@ -8,7 +8,7 @@ from viz.gui_helpers.base_page_names.ui_base_page_names import render_top_n_sele
 
 def gui_clustering_up_col1():
     # First column of upper part in clustering showing scaling options
-    options = ["Share of Top 30 (L1 Norm)",  # Denominator = Sum of the 30 columns
+    options = ["Share of Top-n (L1 Norm)",  # Denominator = Sum of the 30 columns
             "Share of Total",  # Denominator = Total births in province (External data)
             "TF-IDF",  # Best for emphasizing unique/rare names
             "L2 Normalization" ] # Best for pure cosine pattern matching

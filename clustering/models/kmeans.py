@@ -34,4 +34,5 @@ class KMeansEngine(BaseClustering):
         self.metric_for_silhouette = "euclidean"
     # ------------------------------------------------------------------
     def get_centroids(self, X):
+        # X parameters is not needed in KMeans, it is kept for compatibility
         return self.model.cluster_centers_

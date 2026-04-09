@@ -24,7 +24,7 @@ def render_plot_map_sub_tab(names,page_name):
         display_option = "nth most common"
     return rank, display_option, include_top_n
 
-def render_rank_plot_sub_tabs(page_name,clusters):
+def render_rank_plot_sub_tabs(page_name,clusters,geo_level):
     """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar Plot' sub-tabs of 'Plots Tab' """
     col_1, col_2_3_4 = st.columns([2,5])
 
@@ -33,10 +33,10 @@ def render_rank_plot_sub_tabs(page_name,clusters):
                  ["Show Only Years When Names Are in Top-n", "Include All Years for Names Ever in Top-n"],
                  key="include_all_years")
     with col_2_3_4:
-        return _render_common_helper_for_bar_and_rank_plots(clusters)
+        return _render_common_helper_for_bar_and_rank_plots(clusters,geo_level)
 
 
-def render_custom_bar_plot_sub_tab(page_name,clusters,names):
+def render_custom_bar_plot_sub_tab(page_name,clusters,names,geo_level):
     """ Helper function for rendering 'Custom Bar Plot'"""
     col_1, col_2_3_4 = st.columns([2,5])
     expression_in_sentence = "names or surnames" if page_name == "names_surnames" else "baby names"
@@ -44,19 +44,21 @@ def render_custom_bar_plot_sub_tab(page_name,clusters,names):
     #empty_col = col_4 if self.page_name == "names_surnames" else col_2
     col_1.multiselect(f"Select {expression_in_sentence}", names, key="names_" + page_name)
     with col_2_3_4:
-        return _render_common_helper_for_bar_and_rank_plots(clusters)
+        return _render_common_helper_for_bar_and_rank_plots(clusters,geo_level)
 
 
-def _render_common_helper_for_bar_and_rank_plots(clusters):
+def _render_common_helper_for_bar_and_rank_plots(clusters,geo_level):
 
     col_2,col_3,col_4 = st.columns([1,2,2])
-    use_province_or_cluster = col_2.radio("Select an option", options=["Use provinces", "Use clusters"],
+    use_province_or_cluster = col_2.radio("Select an option", options=[f"Use {geo_level}s", "Use clusters"],
                                           key="province_or_cluster").lower()
+    show_ratio = col_2.checkbox("Use ratio\n(default count)")
+    show_column="ratio" if show_ratio else "count"
     selected_n_cluster = col_3.multiselect(f"Select clusters (default all)", clusters)
     show_provinces_separately = col_3.checkbox(f"Show provinces separately(does not aggregate counts for selected provinces)")
     plotter_engine = col_4.radio("Plot Style",
-                      options=["Matplotlib", "Seaborn", "Plotly", "Pandas", "Altair"],
-                      index=4,
+                      options=["Matplotlib", "Seaborn", "Plotly",  "Altair"],
+                      index=3,
                       # key=f"bump_engine_{page_name}",
                       )
-    return use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine
+    return use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column
