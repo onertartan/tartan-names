@@ -1,16 +1,19 @@
 from __future__ import annotations
 import abc
 from typing import Literal
+
+import numpy as np
 import pandas as pd
 import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 import altair as alt
-from viz.gui_helpers.base_page_names.render_helpers import get_title_statement, validate_df
+import matplotlib.ticker as ticker
+from viz.gui_helpers.base_page_names.render_helpers import get_title_statement
+from utils.base_page_names.names_helpers import validate_df
 
 
-# ------------- base -------------
 class BarPlotter(abc.ABC):
     ENGINE: str
 
@@ -22,132 +25,150 @@ class BarPlotter(abc.ABC):
     def _build_title(self) -> str:
         return f"Frequency of {get_title_statement(self.gender, self.page_name)} by Year"
 
+    def _prepare_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        validate_df(df)
+        return df.sort_values(["name", "year"])
+
     @abc.abstractmethod
     def plot(
         self,
         df: pd.DataFrame,
         col_plot: st.delta_generator.DeltaGenerator,
-        show_column:str # "count" or "ratio"
+        show_column: str
     ) -> None:
-        """Draw the chart inside the supplied Streamlit column."""
-
+        pass
 
 # ------------- matplotlib -------------
 class MatplotlibPlotter(BarPlotter):
     ENGINE = "Matplotlib"
 
+    def plot(self, df, col_plot, show_column="count"):
+        df = self._prepare_df(df)
 
-    def plot(self, df, col_plot,show_column: str = 'count'):
-        rotation = 0
-        figsize = (12, 7)
-        validate_df(df)
+        names = df["name"].unique()
+        n = len(names)
 
-        pivot_df = df.pivot(index="year", columns="name", values=show_column)
+        fig, axes = plt.subplots(nrows=n, ncols=1, figsize=(10, 3*n), sharex=True)
+        if n == 1:
+            axes = [axes]
 
-        fig, ax = plt.subplots(figsize=figsize)
-        pivot_df.plot(kind="bar", ax=ax)
+        years = sorted(df["year"].unique())
+        start, end = years[0], years[-1]
 
-        ax.set_title(self.title)
-        ax.set_xlabel("Year")
-        ax.set_ylabel(show_column.title())
-        ax.tick_params(axis="x", rotation=rotation)
+        for ax, name in zip(axes, names):
+            sub = df[df["name"] == name]
+            ax.bar(sub["year"], sub[show_column])
+            ax.set_title(name, fontsize=10)
 
-      ##  if self.show_labels:
-       #     for container in ax.containers:
-        #        ax.bar_label(container, fontsize=8)
+            # ✅ key part
+            ax.set_xticks([start, end])
+            ax.set_xticklabels([str(start), str(end)])
+
+        axes[-1].set_xlabel("Year")
+        fig.suptitle(self.title)
+        fig.tight_layout()
 
         col_plot.pyplot(fig)
         plt.close(fig)
 
 
-# ------------- seaborn -------------
+
 class SeabornPlotter(BarPlotter):
     ENGINE = "Seaborn"
 
-    def plot(self, df, col_plot,show_column):
+    def plot(self, df, col_plot, show_column):
+        df = self._prepare_df(df)
 
-        validate_df(df)
+        g = sns.FacetGrid(
+            df,
+            col="name",
+            col_wrap=4,
+            sharey=False,
+            height=3.5
+        )
 
-        fig, ax = plt.subplots(figsize=(15, 9))
-        palette = sns.color_palette("tab20", n_colors=df["name"].nunique())
-
-        sns.barplot(
-            data=df,
+        g.map_dataframe(
+            sns.barplot,
             x="year",
             y=show_column,
-            hue="name",
-            palette=palette,
-            ax=ax
+            color="steelblue"
         )
-        ax.set_title(self.title)
-        ax.set_xlabel("Year")
-        ax.set_ylabel(show_column.title())
-        ax.legend(loc="best")
-        col_plot.pyplot(fig)
-        plt.close(fig)
 
+        # Tick thinning
+        for ax in g.axes.flat:
+            labels = ax.get_xticklabels()
+            n = len(labels)
 
-# ------------- plotly -------------
+            if n > 10:
+                step = max(1, n // 6)
+                for i, label in enumerate(labels):
+                    if i % step != 0:
+                        label.set_visible(False)
+
+            ax.tick_params(axis='x', rotation=45)
+
+        for ax in g.axes.flat:
+            ax.yaxis.set_major_locator(ticker.MaxNLocator(nbins=5))
+        g.set_titles("{col_name}")
+        g.set_axis_labels("Year", show_column.title())
+
+        g.figure.suptitle(self.title, y=1.02)
+
+        col_plot.pyplot(g.figure)
+        plt.close(g.figure)
+# Plotly
 class PlotlyPlotter(BarPlotter):
     ENGINE = "Plotly"
 
-    def plot(self, df, col_plot,show_column):
-
-        validate_df(df)
+    def plot(self, df, col_plot, show_column):
+        df = self._prepare_df(df)
 
         fig = px.bar(
             df,
             x="year",
             y=show_column,
-            color="name",
-            barmode="group",
-            text=show_column,
+            facet_col="name",
+            facet_col_wrap=4,
+            facet_col_spacing=0.04,
             title=self.title
         )
+        years = sorted(list(df["year"].unique()))
+        start, end = years[0], years[-1]
 
-        fig.update_traces(textposition="outside")
+        n_ticks = 6  # configurable
+        ticks = np.linspace(start, end, n_ticks)
+        selected_years = [int(tick) for tick in ticks]
+
+        if years[0] not in selected_years:
+            selected_years.insert(0, years[0])
+        if years[-1] not in selected_years:
+            selected_years.append(years[-1])
+
+        fig.update_xaxes(
+            tickmode="array",
+            tickvals=selected_years,
+            ticktext=[str(y) for y in selected_years]
+        )
+        fig.update_layout(showlegend=False)
 
         col_plot.plotly_chart(fig, use_container_width=True)
-
-
 # ------------- altair -------------
 class AltairPlotter(BarPlotter):
     ENGINE = "Altair"
 
-    def plot(
-        self,
-        df: pd.DataFrame,
-        col_plot: st.delta_generator.DeltaGenerator,
-        show_column: str = 'count',
-        height: int = 600,
-    ) -> None:
+    def plot(self, df, col_plot, show_column="count", height=600):
+        df = self._prepare_df(df)
+
         chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('year:O', title='Year'),
             y=alt.Y(f'{show_column}:Q', title=show_column.title()),
-            color=alt.Color('name:N', legend=None),
             column=alt.Column('name:N', title=None)
         ).properties(
             width=150,
-            title={
-                "text": self.title,
-                "anchor": "middle",
-                "dy": 4,
-                "fontSize": 28
-            }
-        ).configure_header(
-            labelFontSize=16,
-            titleFontSize=24
-        ).configure_axisX(
-            labelFontSize=16,
-            titleFontSize=16
-        ).configure_axisY(
-            labelFontSize=16,
-            titleFontSize=16
+            title=self.title
         )
 
-    #    chart.save("temp/rank_bar.png", scale_factor=3)
-        col_plot.altair_chart(chart )
-
+        col_plot.altair_chart(chart)
 
 # ------------- factory -------------
 ENGINES: dict[str, type[BarPlotter]] = {

@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 
 
-def scale(scaler_method, df, total_counts):
+def scale(scaler_method, df, total_counts_unique):
     """    Row-wise scaling of feature vectors (provinces or names).
     All methods return a DataFrame with the same index/columns. """
     if "L1" in scaler_method:
@@ -22,7 +22,6 @@ def scale(scaler_method, df, total_counts):
 
     elif "Share of Total" in scaler_method:
         # Share of all births (not just top-n)
-        total_counts_unique = total_counts.groupby(level=0).first()
         df_scaled = df.div(total_counts_unique, axis=0)
 
     elif "TF-IDF" in scaler_method:

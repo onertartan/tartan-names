@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import seaborn as sns
 import altair as alt
-from viz.gui_helpers.base_page_names.render_helpers import get_title_statement, validate_df
+from viz.gui_helpers.base_page_names.render_helpers import get_title_statement
+from utils.base_page_names.names_helpers import validate_df
 
 
 # ------------- base -------------

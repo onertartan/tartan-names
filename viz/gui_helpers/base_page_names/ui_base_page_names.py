@@ -39,8 +39,8 @@ def render_tab_selection(page_name):
     else:
         tabs = [ stx.TabBarItemData(id="tab_map", title="Map Plot", description=""),
                  stx.TabBarItemData(id="rank_bump", title="Rank Bump Plot", description=""),
-                 stx.TabBarItemData(id="rank_bar", title="Rank Bar Plot", description=""),
-                 stx.TabBarItemData(id="custom_bar", title="Custom Name Bar Plot", description="")]
+                 stx.TabBarItemData(id="rank_bar_line_bar", title="Rank Bar & Line Plot", description=""),
+                 stx.TabBarItemData(id="custom_bar_line_bar", title="Custom Name Bar & Line Plot", description="")]
         st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="tab_map")
     return st.session_state["selected_tab_" +page_name]
 

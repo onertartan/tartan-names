@@ -1,4 +1,3 @@
-import pandas as pd
 import streamlit as st
 import geopandas as gpd
 
@@ -20,13 +19,6 @@ def get_title_statement(gender, page_name):
         title_statement = " " + gender.capitalize() + " " + title_statement
 
     return title_statement
-
-
-def validate_df(df: pd.DataFrame):
-    # not used currently
-    required = {"year", "count", "name"}
-    if not required.issubset(df.columns):
-        raise ValueError(f"Missing columns: {required - set(df.columns)}")
 
 
 # Map Plot helpers

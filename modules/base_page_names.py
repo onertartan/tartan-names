@@ -15,6 +15,7 @@ from viz.gui_helpers.base_page_names.render_plots_tab import render_rank_plot_su
 from viz.plotters.bar_plotter_names import get_bar_plotter
 from viz.plotters.bump_plotter import get_bump_plotter
 from viz.plotters.geo_names_plotter import get_map_plotter
+from viz.plotters.line_plotter_names import get_line_plotter
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
 import geopandas as gpd
@@ -67,6 +68,10 @@ class PageNames(BasePage):
         elif st.session_state["sex_" + page_name] == ["male", "female"]:  # if both sexes are selected
             df_year_male, df_year_female = df[df["gender"] == "male"].loc[year], df[df["gender"] == "female"].loc[year]
             overlapping_names = set(df_year_male["name"]) & set(df_year_female["name"])
+            nonoverlapping_names =set(df_year_male["name"]) - set(df_year_female["name"])
+            nonoverlapping_names2 =set(df_year_female["name"]) - set(df_year_male["name"])
+
+            st.header("Size overlapping:"+str(len(overlapping_names))+", Size nonoverlapping:"+str(len(nonoverlapping_names))+", Size nonoverlapping2:"+str(len(nonoverlapping_names2)))
             df_year_male['name'] = df_year_male.apply(
                 lambda x: f"{x['name']}_female" if x['name'] in overlapping_names else x['name'], axis=1)
             df_year_female['name'] = df_year_female.apply(
@@ -75,25 +80,41 @@ class PageNames(BasePage):
      #   else:  # single gender selected for names  # gender selection handled in preprocessing_initial now
      #       sex = st.session_state["sex_" + page_name]
      #       df_year = df[df["sex"].isin(sex)].loc[year]
-        st.dataframe(df_year.head())
-
-        if isinstance(df_year.index, pd.MultiIndex):  # If applying temporal clustering (multiple years given as year)
-             df_year = df_year.droplevel(0)  # Drop the first level year(position 0)
-
-          # Get unique cumulative total counts over years(for each province)
+        st.dataframe(df_year.head(35))
+        st.header("df_year shape:"+str(df_year.shape))
+        if st.session_state["selected_tab_" + page_name] == "tab_temporal_clustering":
+            total_counts = df[["total_count"]].groupby(level=["year", geo_column]).first()
+       # else: # Use top-30 names for clustering otherwise, pivot table becomes a very high-dimensional sparse matrix
+       #     df=df.filter((pl.col("rank") <= 30))
+        # Get unique cumulative total counts over years(for each province)
         total_counts = df[["total_count"]].groupby(level=["year", geo_column]).first()
+        st.write("after groupby year and state")
+        st.dataframe(total_counts)
+        # INSTEAD OF AGGREGATING PROVINCE/STATE COUNTS OVER YEARS, KEEP YEAR COLUMN
+        pivot_df = df.pivot_table(index=['year', 'state'],
+            columns='name',
+            values='count',
+            fill_value=0  # optional: replaces NaN with 0
+        )
+        st.dataframe(pivot_df.head())
         total_counts = total_counts.groupby(geo_column).sum()
+        if isinstance(df_year.index, pd.MultiIndex):  # If applying temporal clustering (multiple years given as year)
+            df_year = df_year.droplevel(0)  # Drop the first level year(position 0), if so index becomes province/state
+        st.dataframe(df_year.sample(12))
 
         df_year = df_year.groupby([df_year.index, 'name']).agg({'count': 'sum'})
         # Merge
         df_year = df_year.merge(total_counts, left_index=True, right_index=True, how="outer")
         df_year = df_year.reset_index().set_index(geo_column)
-        df_pivot = pd.pivot_table(df_year, values='count', index=df_year.index, columns=['name'], aggfunc=lambda x: x,
-                                  dropna=False, fill_value=0)
+        df_pivot = pd.pivot_table(df_year, values='count', index=df_year.index, columns=['name'], aggfunc=lambda x: x, dropna=False, fill_value=0)
         total_counts = df_year.loc[:, "total_count"]
+        total_counts_unique=total_counts.groupby(level=0).first()
         scaler_method = st.session_state["scaler"]
-        df_pivot = scale(scaler_method, df_pivot, total_counts)
-        if st.session_state["selected_tab_" + self.page_name] == "tab_name_clustering":  # transpose_for_name_clustering:
+        df_pivot = scale(scaler_method, df_pivot, total_counts_unique)
+        st.dataframe(df_pivot.head())
+        st.header("df_pivot shape:"+str(df_pivot.shape))
+
+        if st.session_state["selected_tab_" + page_name] == "tab_name_clustering":  # transpose_for_name_clustering:
             df_pivot = df_pivot.T
         return df_pivot
 
@@ -113,12 +134,12 @@ class PageNames(BasePage):
         page_name, geo_level= self.page_name, self.geo_level
         gdf_borders = self.gdf[geo_level]
 
-        tab_selected = render_tab_selection(self.page_name)
+        tab_selected = render_tab_selection(page_name)
         if "clustering" in tab_selected:  # Main Tab-1
             self.maintab1(df, geo_level, tab_selected) # clustering tab
         elif tab_selected == "tab_map":  # Main Tab-2: Tab-1
             self.maintab2_subtab1_plot_map(df, gdf_borders, page_name, geo_level)
-        elif tab_selected in ["rank_bump", "rank_bar", "custom_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
+        else : # elif tab_selected in ["rank_bump", "rank_line_bar", "custom_line_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
             self.maintab2_subtab_2_3_4(df, page_name, tab_selected, geo_level)
 
     def maintab1(self, df, geo_level, tab_selected):
@@ -128,6 +149,7 @@ class PageNames(BasePage):
             use_data_option, top_n_names = render_data_coverage_if_rank_available(max_rank)
             if "top-n" in use_data_option:
                 df = df.filter(pl.col("rank") <= top_n_names)
+
         # 5. Polars DataFrame'i Pandas'a dönüştür
         df = df.to_pandas().set_index(['year', geo_level]).sort_index()
         df_pivot = self.tab_clustering(df, geo_level, save_sub_folder=st.session_state["gender_radio_widget_" + self.page_name].lower())
@@ -166,31 +188,34 @@ class PageNames(BasePage):
                     map_plotter.plot(df_result,title, col_plot,geo_level)
 
 
-    def maintab2_subtab_2_3_4(self, df,page_name, tab_selected,geo_level):
-
+    def maintab2_subtab_2_3_4(self, df,page_name, tab_selected, geo_level):
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
         gender = st.session_state["gender_radio_widget_"+page_name]
-        if "rank" in st.session_state["selected_tab_"+self.page_name]:
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column = render_rank_plot_sub_tabs(page_name, clusters,geo_level)
+        if "rank" in tab_selected:
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column, plot_style = render_rank_plot_sub_tabs(page_name, clusters,geo_level, tab_selected)
         else:
             names = sorted(df["name"].unique(), key=locale.strxfrm)
-            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column = render_custom_bar_plot_sub_tab(page_name, clusters, names,geo_level)
+            use_province_or_cluster, selected_n_cluster, show_provinces_separately, plotter_engine, show_column, plot_style = render_custom_bar_plot_sub_tab(page_name, clusters, names,geo_level, tab_selected)
 
-        if "bump" in st.session_state["selected_tab_"+page_name]:
+        if "bump" in tab_selected:
             plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
-        elif "bar" in st.session_state["selected_tab_"+page_name]:
-            plotter_object = get_bar_plotter(plotter_engine,gender,page_name)
+        else:  # "rank_bar_line_bar" or "custom_bar_line_bar"  (sub-tab 2.3 or 2.4)
+            if "bar" in plot_style:
+                plotter_object = get_bar_plotter(plotter_engine,gender,page_name)
+            else: # elif "line
+                plotter_object = get_line_plotter(plotter_engine,gender,page_name)
+
         if df.is_empty():
             st.error("You have not selected any data (provinces)")
             return
         col_plot, _ = st.columns([9, 1])
         col_plot.title("Counts by Name and Year")
-        params = {"is_rank_tab": "rank" in st.session_state["selected_tab_"+self.page_name],
+        params = {"is_rank_tab": "rank" in st.session_state["selected_tab_"+page_name],
             "include_all_years_option": st.session_state.get("include_all_years","Show Only Years When Names Are in Top-n"),
-            "selected_names":  st.session_state.get("names_" + self.page_name,[]),
-            "top_n": st.session_state.get("rank_" + self.page_name,-1),
+            "selected_names":  st.session_state.get("names_" + page_name,[]),
+            "top_n": st.session_state.get("rank_" + page_name,-1),
             "show_column":show_column}
         if tab_selected == "custom_bar" and params["selected_names"] == []:
             st.error("You have not selected any names/surnames)")
