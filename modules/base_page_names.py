@@ -91,7 +91,7 @@ class PageNames(BasePage):
         st.write("after groupby year and state")
         st.dataframe(total_counts)
         # INSTEAD OF AGGREGATING PROVINCE/STATE COUNTS OVER YEARS, KEEP YEAR COLUMN
-        pivot_df = df.pivot_table(index=['year', 'state'],
+        pivot_df = df.pivot_table(index=['year', self.geo_level],
             columns='name',
             values='count',
             fill_value=0  # optional: replaces NaN with 0
