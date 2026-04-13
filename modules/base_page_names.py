@@ -97,6 +97,7 @@ class PageNames(BasePage):
             fill_value=0  # optional: replaces NaN with 0
         )
         st.dataframe(pivot_df.head())
+        st.write(pivot_df.shape)
         total_counts = total_counts.groupby(geo_column).sum()
         if isinstance(df_year.index, pd.MultiIndex):  # If applying temporal clustering (multiple years given as year)
             df_year = df_year.droplevel(0)  # Drop the first level year(position 0), if so index becomes province/state
@@ -205,7 +206,7 @@ class PageNames(BasePage):
             if "bar" in plot_style:
                 plotter_object = get_bar_plotter(plotter_engine,gender,page_name)
             else: # elif "line
-                plotter_object = get_line_plotter(plotter_engine,gender,page_name)
+                plotter_object = get_line_plotter (plotter_engine,gender,page_name)
 
         if df.is_empty():
             st.error("You have not selected any data (provinces)")

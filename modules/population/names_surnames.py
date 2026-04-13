@@ -10,6 +10,7 @@ import polars as pl
 
 class PageNamesSurnames(PageNames):
     page_name = "names_surnames"
+    geo_level= "province"
 
     @classmethod
     @st.cache_data
