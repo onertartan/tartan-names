@@ -54,9 +54,8 @@ def province_selector(all_provinces, key_prefix: str = "province", default_exclu
     if included_widget_key not in st.session_state:
         st.session_state[included_widget_key] = st.session_state[included_key].copy()
 
-    st.markdown("**Province Selection**")
     mode = st.radio(
-        "Selection mode",
+        "**Province Selection**",
         ["Exclude selected provinces", "Include selected provinces"],
         key=mode_key,
         horizontal=True,

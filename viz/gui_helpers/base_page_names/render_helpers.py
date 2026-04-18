@@ -1,5 +1,6 @@
 import streamlit as st
 import geopandas as gpd
+import ast
 
 from viz.color_mapping import create_cluster_color_mapping
 
@@ -69,4 +70,45 @@ def build_legend_entries(df_result: gpd.GeoDataFrame) -> list[str]:
         .reset_index(name="count")
     )
     return [f"{row['name']}: {row['count']}" for _, row in df_count.iterrows()]
+
+
+def _parse_blob_centers(centers_text: str, n_features: int):
+    if not centers_text.strip():
+        return None
+
+    try:
+        centers = ast.literal_eval(centers_text)
+    except (SyntaxError, ValueError):
+        st.error("Centers must be a valid Python-style list, for example [[0, 0], [3, 3]].")
+        return None
+
+    if not isinstance(centers, (list, tuple)) or not centers:
+        st.error("Centers must be a non-empty list of coordinate rows.")
+        return None
+
+    normalized_centers = []
+    for row in centers:
+        if not isinstance(row, (list, tuple)) or len(row) != n_features:
+            st.error(f"Each center must contain exactly {n_features} values.")
+            return None
+        normalized_centers.append(list(row))
+
+    return normalized_centers
+
+
+def render_synthetic_data():
+    st.subheader("Synthetic Data")
+    col1, col2 = st.columns([1, 1])
+
+    n_samples = col1.number_input("n_samples", min_value=1, value=100, step=1)
+    n_features = col1.number_input("n_features", min_value=1, value=2, step=1)
+
+    centers = col1.number_input("centers", min_value=1, value=3, step=1)
+    random_state = col1.number_input("random_state",value=70)
+    return {
+        "n_samples": int(n_samples),
+        "n_features": int(n_features),
+        "centers": centers,
+        "random_state": random_state,
+    }
 

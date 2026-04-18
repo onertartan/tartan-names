@@ -4,135 +4,110 @@ from sklearn.decomposition import PCA
 import streamlit as st
 import numpy as np
 import pandas as pd
+
+
 class PCAPlotter:
-
-
-    def apply_clr(self,df: pd.DataFrame, pseudocount: float = 1e-10) -> pd.DataFrame:
+    def apply_clr(self, df: pd.DataFrame, pseudocount: float = 1e-10) -> pd.DataFrame:
         """
         Apply centered log-ratio (CLR) transformation row-wise.
 
-        Assumptions (important for your study):
+        Assumptions:
         - Rows = names
         - Columns = provinces
         - Values are non-negative frequencies or proportions
         - Each row represents a compositional profile over provinces
-
-        Parameters
-        ----------
-        df : pd.DataFrame
-            Input data (rows = compositions).
-        pseudocount : float
-            Small constant added to avoid log(0).
-
-        Returns
-        -------
-        pd.DataFrame
-            CLR-transformed data with same shape and labels.
         """
-
-        # --- safety checks ---
         if (df < 0).any().any():
             raise ValueError("CLR requires non-negative values.")
 
-        # add pseudocount to avoid log(0)
-        X = df + pseudocount
-
-        # log-transform
-        log_X = np.log(X)
-
-        # row-wise geometric mean (mean of logs)
-        row_means = log_X.mean(axis=1)
-
-        # CLR transform: log(x_ij) - mean_j(log(x_i·))
-        clr_values = log_X.sub(row_means, axis=0)
-
+        x = df + pseudocount
+        log_x = np.log(x)
+        row_means = log_x.mean(axis=1)
+        clr_values = log_x.sub(row_means, axis=0)
         return clr_values
 
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    from sklearn.decomposition import PCA
-    from adjustText import adjust_text
-    import streamlit as st
-    from mpl_toolkits.mplot3d import Axes3D
-
     def plot_pca(
-            self,
-            df_pivot: pd.DataFrame,
-            df_clusters: pd.Series,
-            dense_threshold: int,
-            mid_threshold: int,
-            colors,
-            title: str = "",
-            raw_label: str = "Share-normalized",
-            clr_label: str = "CLR-transformed",
-            annotate: bool = True,
-            show_loadings: bool = True,
-            n_loadings: int = 5,
-            point_alpha: float = 0.90,
-            same_axis_limits: bool = False,
-            n_components: int = 2,  # ← new parameter
+        self,
+        df_pivot: pd.DataFrame,
+        df_clusters: pd.Series,
+        dense_threshold: int,
+        mid_threshold: int,
+        colors,
+        title: str = "",
+        raw_label: str = "Share-normalized",
+        clr_label: str = "CLR-transformed",
+        annotate: bool = True,
+        show_loadings: bool = True,
+        n_loadings: int = 5,
+        point_alpha: float = 0.90,
+        same_axis_limits: bool = False,
+        n_components: int = 2,
     ):
         """
-        Flexible PCA visualization: 2D (side-by-side raw vs CLR) or 3D scatter.
+        Flexible PCA visualization: 2D or 3D scatter.
 
-        When n_components == 3: shows interactive-ish 3D plot (one panel).
-        When n_components == 2: shows classic 1×2 comparison (raw vs CLR).
+        When n_components == 3: shows a single 3D plot.
+        When n_components == 2:
+        - if df_pivot has no negative values, shows raw and CLR side by side
+        - if df_pivot has negative values, shows only the raw PCA panel
         """
-        # ---- Input validation / fallback ----
         if n_components not in (2, 3):
-            st.warning(f"n_components={n_components} not supported → falling back to 2D")
+            st.warning(f"n_components={n_components} not supported; falling back to 2D")
             n_components = 2
 
-        # ---- alignment ----
         if not df_clusters.index.equals(df_pivot.index):
             df_clusters = df_clusters.reindex(df_pivot.index)
 
-        # ---- prepare inputs ----
-        X_raw = df_pivot
-        X_clr = self.apply_clr(df_pivot) if n_components == 2 else None
+        has_negative_values = (df_pivot < 0).any().any()
+        x_raw = df_pivot
+        x_clr = self.apply_clr(df_pivot) if n_components == 2 and not has_negative_values else None
 
-        # ---- color mapping (shared) ----
         unique_clusters = sorted(df_clusters.dropna().unique())
         cluster_to_color = {cid: colors[i % len(colors)] for i, cid in enumerate(unique_clusters)}
         point_colors = df_clusters.map(cluster_to_color).fillna("gray")
 
-        # Legend handles (used in both 2D and 3D)
         legend_handles = [
-            plt.Line2D([], [], marker="o", linestyle="",
-                       color=cluster_to_color[cid], markersize=8,
-                       label=f"Cluster {cid}")
+            plt.Line2D(
+                [],
+                [],
+                marker="o",
+                linestyle="",
+                color=cluster_to_color[cid],
+                markersize=8,
+                label=f"Cluster {cid}",
+            )
             for cid in unique_clusters
         ]
 
-        # ───────────────────────────────────────────────
-        #  Case 1:  2 components → classic side-by-side
-        # ───────────────────────────────────────────────
         if n_components == 2:
+            n_panels = 1 if has_negative_values else 2
+            fig_width = 7 if n_panels == 1 else 14
+            fig, axes = plt.subplots(1, n_panels, figsize=(fig_width, 6), constrained_layout=True)
+            axes = np.atleast_1d(axes)
 
-            fig, axes = plt.subplots(1, 2, figsize=(14, 6), constrained_layout=True)
-            axes = np.atleast_1d(axes)  # make iterable safe
-
-            def _plot_2d_panel(ax, X, panel_title,x_label="",y_label=""):
+            def _plot_2d_panel(ax, x, panel_title, x_label="", y_label=""):
                 pca = PCA(n_components=2)
-                scores = pca.fit_transform(X)
+                scores = pca.fit_transform(x)
                 pc1, pc2 = pca.explained_variance_ratio_[:2]
 
                 ax.scatter(
-                    scores[:, 0], scores[:, 1],
-                    c=point_colors, edgecolors="w", linewidths=0.5,
-                    alpha=point_alpha, s=60
+                    scores[:, 0],
+                    scores[:, 1],
+                    c=point_colors,
+                    edgecolors="w",
+                    linewidths=0.5,
+                    alpha=point_alpha,
+                    s=60,
                 )
-                if x_label=="":
+                if x_label == "":
                     ax.set_xlabel(f"PC1 ({pc1:.2%})")
                     ax.set_ylabel(f"PC2 ({pc2:.2%})")
                 else:
-                    ax.set_xlabel(x_label,fontsize=9)
+                    ax.set_xlabel(x_label, fontsize=9)
                     ax.set_ylabel(y_label, fontsize=9)
                 ax.set_title(f"{panel_title} | PC1+PC2 = {(pc1 + pc2):.2%}", fontsize=11)
                 ax.grid(True, alpha=0.3)
 
-                # Annotation logic (sparse)
                 if annotate:
                     texts = []
                     cluster_counts = df_clusters.value_counts()
@@ -145,19 +120,20 @@ class PCAPlotter:
                             continue
                         texts.append(
                             ax.annotate(
-                                name, (scores[i, 0], scores[i, 1]),
-                                fontsize=8, alpha=0.7
+                                name,
+                                (scores[i, 0], scores[i, 1]),
+                                fontsize=8,
+                                alpha=0.7,
                             )
                         )
                     if texts:
                         adjust_text(texts, ax=ax)
 
-                # Top loadings (provinces)
                 if show_loadings:
                     load = pd.DataFrame(
                         pca.components_.T,
                         columns=["PC1", "PC2"],
-                        index=X.columns
+                        index=x.columns,
                     )
                     for pc in ["PC1", "PC2"]:
                         top = load[pc].abs().nlargest(n_loadings)
@@ -167,18 +143,19 @@ class PCAPlotter:
 
                 return scores, pca
 
-            # ── Plot both panels ──
-            x_label=""# x_label = "PC1: Southeastern $\\longleftrightarrow$ Western--Central Anatolian(74.6\\%)"
-            y_label=""#y_label= "PC2:  Black Sea Coastal $\\longleftrightarrow$ Southeastern(9.6\\%)"
-            scores_raw, pca_raw = _plot_2d_panel(axes[0], X_raw, raw_label,x_label,y_label)
-            scores_clr, pca_clr = _plot_2d_panel(axes[1], X_clr, clr_label)
+            x_label = ""
+            y_label = ""
+            scores_raw, pca_raw = _plot_2d_panel(axes[0], x_raw, raw_label, x_label, y_label)
 
-            display_pca_loadings(X_raw, n_components=2, top_n=10)
-             # Legend on right panel
-            axes[1].legend(handles=legend_handles, title="Clusters", loc="best")
+            scores_clr = None
+            pca_clr = None
+            if not has_negative_values:
+                scores_clr, pca_clr = _plot_2d_panel(axes[1], x_clr, clr_label)
 
-            # Optional: force same axis limits
-            if same_axis_limits:
+            display_pca_loadings(x_raw, n_components=2, top_n=10)
+            axes[-1].legend(handles=legend_handles, title="Clusters", loc="best")
+
+            if same_axis_limits and scores_clr is not None:
                 all_x = np.concatenate([scores_raw[:, 0], scores_clr[:, 0]])
                 all_y = np.concatenate([scores_raw[:, 1], scores_clr[:, 1]])
                 xpad = 0.05 * (all_x.ptp() + 1e-12)
@@ -188,170 +165,136 @@ class PCAPlotter:
                 for ax in axes:
                     ax.set_xlim(xlim)
                     ax.set_ylim(ylim)
-
-        # ───────────────────────────────────────────────
-        #  Case 2:  3 components → single 3D scatter
-        # ───────────────────────────────────────────────
-        else:  # n_components == 3
-
+        else:
             fig = plt.figure(figsize=(12, 10))
-            ax = fig.add_subplot(111, projection='3d')
+            ax = fig.add_subplot(111, projection="3d")
 
             pca = PCA(n_components=3)
-            scores = pca.fit_transform(X_raw)  # for simplicity — only raw shown in 3D
+            scores = pca.fit_transform(x_raw)
 
             pc_var = pca.explained_variance_ratio_
             total_var = pc_var.sum()
 
             ax.scatter(
-                scores[:, 0], scores[:, 1], scores[:, 2],
-                c=point_colors, edgecolors="w", linewidths=0.6,
-                alpha=point_alpha, s=70
+                scores[:, 0],
+                scores[:, 1],
+                scores[:, 2],
+                c=point_colors,
+                edgecolors="w",
+                linewidths=0.6,
+                alpha=point_alpha,
+                s=70,
             )
 
             ax.set_xlabel(f"PC1 ({pc_var[0]:.2%})")
             ax.set_ylabel(f"PC2 ({pc_var[1]:.2%})")
             ax.set_zlabel(f"PC3 ({pc_var[2]:.2%})")
+            ax.set_title(
+                f"3D PCA - {title or 'Provinces'}\nExplained variance: {total_var:.2%}",
+                fontsize=13,
+            )
+            ax.view_init(elev=20, azim=75)
 
-            ax.set_title(f"3D PCA – {title or 'Provinces'}\n"
-                         f"Explained variance: {total_var:.2%}", fontsize=13)
-
-            ax.view_init(elev=20, azim=75)  # nice starting angle — user can rotate in notebook
-
-            # Sparse annotation in 3D (a bit more aggressive thinning)
             if annotate:
-                texts = []
                 cluster_counts = df_clusters.value_counts()
                 for i, name in enumerate(df_pivot.index):
                     cid = df_clusters.loc[name]
                     size = cluster_counts.get(cid, 0)
-                    if size >= dense_threshold * 1.3:  # more conservative in 3D
+                    if size >= dense_threshold * 1.3:
                         continue
                     if size >= mid_threshold and i % 4 != 0:
                         continue
-                    texts.append(
-                        ax.text(
-                            scores[i, 0], scores[i, 1], scores[i, 2],
-                            name, fontsize=8, alpha=0.65
-                        )
+                    ax.text(
+                        scores[i, 0],
+                        scores[i, 1],
+                        scores[i, 2],
+                        name,
+                        fontsize=8,
+                        alpha=0.65,
                     )
-                # adjust_text works poorly in 3D → optional or use smaller fontsize
 
-            # Legend
-            ax.legend(handles=legend_handles, title="Clusters",
-                      loc="upper right", bbox_to_anchor=(1.15, 1))
-
+            ax.legend(handles=legend_handles, title="Clusters", loc="upper right", bbox_to_anchor=(1.15, 1))
             ax.grid(True, alpha=0.25)
 
-            # For 3D we don't show CLR comparison (too crowded)
             pca_raw = pca
             pca_clr = None
 
-        # ───────────────────────────────────────────────
-        #  Common parts: super-title + explained variance plot
-        # ───────────────────────────────────────────────
         if title:
-            fig.suptitle(title, fontsize=14, y=1.05  )
+            fig.suptitle(title, fontsize=14, y=1.05)
 
-        # Scree / cumulative variance plot (always shown)
         pca_full = PCA().fit(df_pivot)
         per_var = np.round(pca_full.explained_variance_ratio_ * 100, 1)
         cum_var = per_var.cumsum()
 
         fig_scree, ax_scree = plt.subplots(figsize=(8, 4))
         ax_scree.plot(range(1, len(per_var) + 1), cum_var, marker="o", linestyle="--", color="teal")
-        #ax_scree.axhline(y=90, color="gray", linestyle=":", alpha=0.7, label="90% threshold")
         ax_scree.set_xlabel("Number of Components")
         ax_scree.set_ylabel("Cumulative Explained Variance (%)")
         ax_scree.set_title("Explained Variance by Number of Components")
         ax_scree.grid(True, alpha=0.3)
         ax_scree.legend()
-        fig_scree.savefig(f"temp/pca2.png", dpi=300, bbox_inches="tight")
+        fig_scree.savefig("temp/pca2.png", dpi=300, bbox_inches="tight")
         st.pyplot(fig_scree)
-        fig.savefig(f"temp/pca1.png", dpi=300, bbox_inches="tight")
-
-        # Show final figure
+        fig.savefig("temp/pca1.png", dpi=300, bbox_inches="tight")
         st.pyplot(fig)
 
         return fig, (pca_raw, pca_clr)
+
 
 def display_pca_loadings(df_features, n_components=2, top_n=10):
     """
     Fit PCA, extract feature loadings, and display top positive/negative
     contributors per component as side-by-side Streamlit dataframes.
-
-    Parameters
-    ----------
-    df_features : pd.DataFrame
-        Feature matrix (rows = observations, columns = names/features).
-        Should not contain 'clusters' or any non-feature columns.
-    n_components : int
-        Number of PCA components to extract (default 2).
-    top_n : int
-        Number of top positive and negative loadings to display per component.
-
-    Returns
-    -------
-    loadings : pd.DataFrame
-        Full loadings matrix (features × components).
-    variance_ratios : np.ndarray
-        Explained variance ratio per component.
     """
-    from sklearn.decomposition import PCA
-    import pandas as pd
-    import numpy as np
-    import streamlit as st
-
-    # ------------------------------------------------------------------ #
-    # 1. Fit PCA                                                           #
-    # ------------------------------------------------------------------ #
     pca = PCA(n_components=n_components)
     pca.fit(df_features)
 
-    component_labels = [f"PC{i+1}" for i in range(n_components)]
+    component_labels = [f"PC{i + 1}" for i in range(n_components)]
     loadings = pd.DataFrame(
-        pca.components_.T,          # shape: (n_features, n_components)
+        pca.components_.T,
         index=df_features.columns,
         columns=component_labels,
     )
 
     variance_ratios = pca.explained_variance_ratio_
 
-    # ------------------------------------------------------------------ #
-    # 2. Display top loadings per component                                #
-    # ------------------------------------------------------------------ #
     for pc in component_labels:
-        st.subheader(f"{pc}  —  explained variance: {variance_ratios[component_labels.index(pc)]*100:.1f}%")
-        col_name = loadings[pc].index.name
+        st.subheader(f"{pc} - explained variance: {variance_ratios[component_labels.index(pc)] * 100:.1f}%")
+        col_name = loadings[pc].index.name or "feature"
 
-        top_pos = (loadings[pc]
-                   .nlargest(top_n)
-                   .reset_index()
-                   .rename(columns={ pc: "loading"}))
-
+        top_pos = (
+            loadings[pc]
+            .nlargest(top_n)
+            .reset_index()
+            .rename(columns={loadings[pc].index.name or "index": col_name, pc: "loading"})
+        )
         top_pos["rank"] = range(1, len(top_pos) + 1)
         top_pos["loading"] = top_pos["loading"].round(4)
 
-        top_neg = (loadings[pc]
-                   .nsmallest(top_n)
-                   .reset_index()
-                   .rename(columns={pc: "loading"}))
+        top_neg = (
+            loadings[pc]
+            .nsmallest(top_n)
+            .reset_index()
+            .rename(columns={loadings[pc].index.name or "index": col_name, pc: "loading"})
+        )
         top_neg["rank"] = range(1, len(top_neg) + 1)
         top_neg["loading"] = top_neg["loading"].round(4)
 
-
         top_combined = pd.concat(
             [top_pos.add_suffix("_pos"), top_neg.add_suffix("_neg")],
-            axis=1
-        )[["rank_pos", col_name+"_pos", "loading_pos", col_name+"_neg", "loading_neg"]]
+            axis=1,
+        )[["rank_pos", col_name + "_pos", "loading_pos", col_name + "_neg", "loading_neg"]]
 
-        top_combined = top_combined.rename(columns={
-            "rank_pos": "rank",
-            col_name+"_pos": col_name+" (+)",
-            "loading_pos": "loading (+)",
-            col_name+"_neg": col_name+" (−)",
-            "loading_neg": "loading (−)",
-        })
+        top_combined = top_combined.rename(
+            columns={
+                "rank_pos": "rank",
+                col_name + "_pos": col_name + " (+)",
+                "loading_pos": "loading (+)",
+                col_name + "_neg": col_name + " (-)",
+                "loading_neg": "loading (-)",
+            }
+        )
 
         st.dataframe(top_combined, hide_index=True, use_container_width=True)
+
     return loadings, variance_ratios

@@ -1,21 +1,18 @@
-from sklearn import preprocessing
 import os
 import time
 import pandas as pd
 import streamlit.components.v1 as components
 from PIL import Image
-from folium import GeoJsonPopup, GeoJsonTooltip
+from folium import GeoJsonPopup
 from matplotlib.colors import to_hex
 from raceplotly.plots import barplot
 from matplotlib import colors, pyplot as plt, patches
-from sklearn.cluster import KMeans
 from streamlit_folium import folium_static
 import folium
 from modules.base_page import BasePage
-import plotly.graph_objects as go
 import plotly.express as px
 
-from viz.gui_helpers.ui_base_page import sidebar_controls_basic_setup, figure_setup
+from viz.gui_helpers.base_page.ui_base_page import sidebar_controls_basic_setup, figure_setup
 from viz.gui_helpers.ui_base_page_common import *
 
 class PageCommon(BasePage):
@@ -210,10 +207,7 @@ class PageCommon(BasePage):
                 df1, df2 = df1.align(df2, join="inner", axis=1)  # Align columns
                 df1, df2 = df1.align(df2, join="inner", axis=0)  # Align rows
                 df_change = df2.copy()
-                print("PŞM:", df1.head())
-                print("OIK:", df2.head())
                 df_change = df2.select_dtypes(include=['number']) - df1.select_dtypes(include=['number'])
-                print("ÇÖKJ:", df1.shape, df2.shape)
                 if st.session_state["display_percentage"]:
                     numeric_cols = df_change.select_dtypes(include=['number']).columns
                     df_change.loc[:, numeric_cols] = df_change.loc[:, numeric_cols] / df1.loc[:, numeric_cols] * 100
@@ -551,7 +545,6 @@ class PageCommon(BasePage):
         st.plotly_chart(fig)
 
     def plot_pyramid_matplotlib(self, df_data, selected_features, *args):
-        print("piram", df_data)
         cols = st.columns([1, 8, 1])
         cols[1].write("Note: First slider is used for year selection.")
         df = df_data["nominator"]["province"].loc[st.session_state.slider_year_1, selected_features["nominator"]]
