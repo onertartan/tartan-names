@@ -1,11 +1,7 @@
-from sklearn.datasets import make_blobs
-
 from modules.base_page_names import PageNames
-import pandas as pd
+from modules.experimental.synthetic_data_generator import BlobsSyntheticDataGenerator
 import streamlit as st
-
 import polars as pl
-
 from viz.gui_helpers.base_page_names.render_helpers import render_synthetic_data
 from viz.gui_helpers.base_page_names.ui_base_page_names import sidebar_controls_plot_options_setup, \
     render_gender_name_surname_filters
@@ -28,8 +24,7 @@ class Experiment(PageNames):
         page_name,geo_column = self.page_name, self.geo_level
 
         tabs_main = [stx.TabBarItemData(id="tab_synthetic_clustering", title="Synthetic Data", description=""),
-                     stx.TabBarItemData(id="tab_geo_clustering", title="Names Data", description="")
-                     ]
+                     stx.TabBarItemData(id="tab_geo_clustering", title="Names Data", description="")]
         tab_main_selected = stx.tab_bar(data=tabs_main, default="tab_geo_clustering")
         st.session_state["selected_tab_" + page_name] = tab_main_selected
 
@@ -41,9 +36,10 @@ class Experiment(PageNames):
            # st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="tab_map")
         return tab_main_selected
 
-    def preprocess_clustering(self, df, selected_tab):
-        if selected_tab == "tab_geo_clustering":
-            return super().preprocess_clustering(df, selected_tab)
+    def preprocess_clustering(self, df, tab_main_selected):
+        # data_generator parameter is for compatibility, it is passed as *args to tab_clustering
+        if tab_main_selected == "tab_geo_clustering":
+            return super().preprocess_clustering(df, tab_main_selected)
         else:
             return df
     def render(self):
@@ -60,12 +56,11 @@ class Experiment(PageNames):
             name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
             df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, geo_level)
             df = df.to_pandas().set_index(['year', geo_level]).sort_index()
+            data_generator = None
         else: # make blobs synthetic data
-            kwargs = render_synthetic_data()
-            df = self.generate_synthetic_data(kwargs)
-        df_pivot = self.tab_clustering(df, geo_level, "experiment", tab_main_selected)
+            synthetic_kwargs = render_synthetic_data()
+            data_generator = BlobsSyntheticDataGenerator(synthetic_kwargs)
+            df,ground_truth_labels= data_generator.generate()
+        df_pivot = self.tab_clustering(df, geo_level, "results/experiment", data_generator,tab_main_selected)
 
-    def generate_synthetic_data(self, kwargs):
-        X, y = make_blobs(**kwargs)
-        return pd.DataFrame(X)
 Experiment().run()

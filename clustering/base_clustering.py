@@ -13,6 +13,10 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import silhouette_samples
 from sklearn.metrics import pairwise_distances_argmin_min
+
+from modules.experimental.synthetic_data_generator import SyntheticDataGenerator
+
+
 class BaseClustering:
     """
     Unified clustering factory.
@@ -135,6 +139,7 @@ class BaseClustering:
         model_kwargs: dict,
         save_folder: str,
         saved_file_suffix: str = "",
+        data_generator:SyntheticDataGenerator = None,
         model_specific_metrics: list[str] = []           # e.g., {"Calinski-Harabasz": calinski_harabasz_score}
     ):
         n_samples = df.shape[0]
@@ -153,6 +158,10 @@ class BaseClustering:
             random_states = range(1)  # Hierarchical is deterministic
 
         labels_all = {seed: {} for seed in random_states}
+        if data_generator:
+            ground_truth_labels_all={seed: {} for seed in random_states}
+        else:
+            ground_truth_labels_all=None
         progress_bar = st.progress(0.0)
         status_text = st.empty()  # This will hold the "X / Y completed" message
         total_states = len(random_states)
@@ -160,11 +169,16 @@ class BaseClustering:
 
         # ---- Run Clustering ----
         for idx, random_state in enumerate(random_states):
-            silhouettes_cosine, silhouettes_euclidean, db_scores,ch_scores, inertias,aics, bics, nlls = [], [],[], [],[], [], [], []
+            silhouettes_cosine, silhouettes_euclidean, db_scores,ch_scores, inertias, aics, bics, nlls = [], [],[], [],[], [], [], []
 
             seed_start = time.time()
-
             for k in k_values:
+                if data_generator:
+                    # override df and initialize ground_truth_labels_all if synthetic data option is used
+                    data_generator.kwargs["random_state"] = random_state
+                    data_generator.kwargs["centers"] = k
+                    df, ground_truth_labels = data_generator.generate()
+                    ground_truth_labels_all[random_state] [k]= ground_truth_labels
                 if "n_clusters" in model_kwargs:
                     model_kwargs["n_clusters"] = k
                 engine = cls(random_state=random_state, **model_kwargs)
@@ -188,6 +202,7 @@ class BaseClustering:
                 metrics_all["BIC"].append(bics)
                 metrics_all["NegLogLikelihood"].append(nlls)
 
+
             metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
             metrics_all["Silhouette Score (euclidean)"].append(silhouettes_euclidean)
             metrics_all["Calinski-Harabasz Index"].append(ch_scores)
@@ -207,8 +222,7 @@ class BaseClustering:
 
         # ---- Model-independent evaluation ----
         ari_mean, ari_std, consensus_labels_all = \
-            stability_and_consensus(labels_all=labels_all, k_values=k_values, random_states=random_states,
-                                    n_samples=n_samples)
+            stability_and_consensus(labels_all, k_values, random_states, n_samples, ground_truth_labels_all)
         df_summary = cls.summarize(metrics_all, ari_mean, ari_std,  k_values)
         df_summary.to_csv(f"{save_folder}/{saved_file_suffix}.csv")
         pd.DataFrame(consensus_labels_all).to_csv(f"{save_folder}/consensus_labels_all_{saved_file_suffix}.csv")

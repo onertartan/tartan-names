@@ -143,8 +143,8 @@ class PageNames(BasePage):
 
         # 5. Polars DataFrame'i Pandas'a dönüştür
         df = df.to_pandas().set_index(['year', geo_level]).sort_index()
-        save_sub_folder = st.session_state["gender_radio_widget_" + self.page_name].lower()
-        df_pivot = self.tab_clustering(df, geo_level, save_sub_folder,tab_selected)
+        save_folder =  "results/"+self.country+"/files"+st.session_state["gender_radio_widget_" + self.page_name].lower()
+        df_pivot = self.tab_clustering(df, geo_level, save_folder,tab_selected)
         if tab_selected == "tab_geo_clustering":
             if df_pivot is not None:
                 plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)

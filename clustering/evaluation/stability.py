@@ -2,7 +2,7 @@ from sklearn.metrics import adjusted_rand_score
 from scipy.cluster.hierarchy import linkage, fcluster
 import numpy as np
 
-def stability_and_consensus(labels_all, k_values, random_states, n_samples):
+def stability_and_consensus(labels_all, k_values, random_states, n_samples,ground_truth_labels_all):
     """
     Compute ARI-based stability and consensus clustering metrics.
 
@@ -16,6 +16,9 @@ def stability_and_consensus(labels_all, k_values, random_states, n_samples):
         Random seeds used in clustering.
     n_samples : int
         Number of samples.
+    ground_truth_labels_all : dict, optional
+        ground_truth_labels_all[seed][k] -> array-like of shape (n_samples,)
+        Ground truth labels per seed and cluster count.
 
     Returns
     -------
@@ -31,13 +34,24 @@ def stability_and_consensus(labels_all, k_values, random_states, n_samples):
     ari_scores = {k: [] for k in k_values}
 
     for k in k_values:
-        for i in range(len(random_states)):
-            for j in range(i + 1, len(random_states)):
+        if ground_truth_labels_all is not None:
+            # Supervised: compare each run's labels against ground truth
+            for i in range(len(random_states)):
                 ari = adjusted_rand_score(
-                    labels_all[random_states[i]][k],
-                    labels_all[random_states[j]][k]
+                    ground_truth_labels_all[random_states[i]][k],
+                    labels_all[random_states[i]][k]
                 )
                 ari_scores[k].append(ari)
+        else:
+            # Unsupervised: compare all pairs of runs against each other
+            for i in range(len(random_states)):
+                for j in range(i + 1, len(random_states)):
+                    ari = adjusted_rand_score(
+                        labels_all[random_states[i]][k],
+                        labels_all[random_states[j]][k]
+                    )
+                    ari_scores[k].append(ari)
+
 
     ari_mean = [np.mean(ari_scores[k]) for k in k_values]
     ari_std = [np.std(ari_scores[k]) for k in k_values]

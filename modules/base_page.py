@@ -121,7 +121,7 @@ class BasePage(ABC):
     def preprocess_clustering(self, df, *args):
         pass    # Overriden by sub-classes Base_Page_Names & Base_Page_Common
 
-    def run_optimal_k_analysis_helper(self, df_pivot, engine_class, n_clusters, kwargs, save_folder):
+    def run_optimal_k_analysis_helper(self, df_pivot, engine_class, n_clusters, kwargs, save_folder,data_generator):
         k_values = list(range(2, 11)) if engine_class is not HierarchicalBaseClusteringEngine else range(n_clusters, n_clusters + 1)
 
         random_states = range(st.session_state["number_of_seeds"]) if engine_class.__name__ != "HierarchicalClusteringEngine" else range(1)
@@ -131,13 +131,13 @@ class BasePage(ABC):
         saved_file_suffix = f"{scaler}_{year1}_{year2}"
 
         df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
-            engine_class.optimal_k_analysis( df_pivot, random_states, k_values, kwargs, save_folder, saved_file_suffix)
+            engine_class.optimal_k_analysis( df_pivot, random_states, k_values, kwargs, save_folder, saved_file_suffix,data_generator)
         df_pivot["clusters"] = consensus_labels_all[n_clusters]
         st.write(f"Running optimal k analysis for {engine_class.__name__}, scaler = {scaler}, year1={year1}, year2={year2}")
         OptimalKPlotter.plot_optimal_k_analysis(engine_class, num_seeds_to_plot, k_values, random_states, metrics_all, metrics_mean, ari_mean, ari_std, kwargs)
         OptimalKPlotter.print_optimal_k_analysis(df_summary)
 
-    def tab_clustering(self, df, geo_scale, save_sub_folder="", *args):
+    def tab_clustering(self, df, geo_scale, save_folder="", data_generator=None,*args):
         scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main()
         if not clustering_algorithm:
             return
@@ -145,13 +145,12 @@ class BasePage(ABC):
         n_clusters = st.session_state["n_clusters"] = kwargs["n_clusters"]
         df_pivot = self.preprocess_clustering(df, *args)
         engine =  engine_class(**kwargs)  # Single engine object will be initialized later if not optimal_k_analysis or use_consensus_labels
-        save_folder = "results/files/"+self.country
-        if save_sub_folder != "":
-            save_folder = f"{save_folder}/{save_sub_folder}/{engine_class.__name__}"
+        if save_folder != "":
+            save_folder = f"{save_folder}/{engine_class.__name__}"
         # 1. Run clustering: Preprocess
         # If optimal_k_analysis is selected or use_consensus_labels is checked but it is not present(optimal_k_analysis has not previously run)
         if run_optimal_k_analysis:
-            self.run_optimal_k_analysis_helper(df_pivot, engine_class, n_clusters, kwargs, save_folder)
+            self.run_optimal_k_analysis_helper(df_pivot, engine_class, n_clusters, kwargs, save_folder,data_generator)
         elif use_consensus:
             df_pivot["clusters"] = engine_class.load_consensus_labels(kwargs, save_folder)
             st.header("Using previously saved consensus labels")
@@ -165,7 +164,7 @@ class BasePage(ABC):
             df_pivot["clusters"] = labels
 
 
-        col_plot, col_df = st.columns([5, 1])
+        col_plot, col_df = st.columns([7, 3])
         # Step: Update geodata
         if st.session_state.get("selected_tab_" + self.page_name, "") == "tab_geo_clustering" and engine:
             representatives = engine.get_representatives(df_pivot)
@@ -191,7 +190,7 @@ class BasePage(ABC):
                 # GeoClusterPlotter(self.CLUSTER_COLOR_MAPPING, self.HA_POSITIONS, self.VA_POSITIONS).plot_elections(self.gdf_clusters)
             col_df.dataframe(df_pivot["clusters"])
         elif st.session_state.get("selected_tab_" + self.page_name, "") =="tab_synthetic_clustering":
-            SyntheticDataPlotter().plot(df_pivot)
+            SyntheticDataPlotter().plot(df_pivot,data_generator.ground_truth_labels)
         with col_plot:
             self.tab_clustering_pca(df_pivot.copy())
         return df_pivot
