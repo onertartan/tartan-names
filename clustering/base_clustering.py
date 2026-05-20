@@ -1,3 +1,5 @@
+import io
+
 import networkx as nx
 from sklearn.metrics import pairwise_distances, calinski_harabasz_score
 from typing import List
@@ -94,7 +96,6 @@ class BaseClustering:
         if self.__class__.__name__ == "KMedoidsEngine":
             return df_pivot.index[self.model.medoid_indices_].tolist()
 
-
     @classmethod
     def recompute_centroid_provinces(cls,df_pivot):
         """Recompute centroid provinces after clusters changed due to consensus relabel.
@@ -130,19 +131,54 @@ class BaseClustering:
             gdf_centroids["centroid"] = gdf_centroids.geometry.centroid
         return gdf_clusters, gdf_centroids
 
+    @staticmethod
+    def cross_method_ari(tensor_m1, tensor_m2):
+        """
+        Parameters
+        ----------
+        tensor_m1 : np.ndarray, shape (n_states, n_k, n_samples)
+            Labels tensor for method 1.
+        tensor_m2 : np.ndarray, shape (n_states, n_k, n_samples)
+            Labels tensor for method 2.
+        k_values : list
+            Candidate k values — used for indexing/reporting.
+        random_states : list
+            Random seeds — used for indexing/reporting.
+
+        Returns
+        -------
+        ari_mean_per_k : np.ndarray, shape (n_k,)
+            Mean ARI across seeds for each k.
+        ari_std_per_k : np.ndarray, shape (n_k,)
+            Std ARI across seeds for each k.
+        """
+        n_states, n_k, _ = tensor_m1.shape
+        ari_tensor = np.empty((n_states, n_k))
+
+        for s in range(n_states):
+            for ki in range(n_k):
+                ari_tensor[s, ki] = adjusted_rand_score(
+                    tensor_m1[s, ki, :],  # (n_samples,) for method1, seed s, k ki
+                    tensor_m2[s, ki, :]  # (n_samples,) for method2, seed s, k ki
+                )
+
+        ari_mean_per_k = ari_tensor.mean(axis=0)  # mean over seeds -> (n_k,)
+        ari_std_per_k = ari_tensor.std(axis=0)  # std  over seeds -> (n_k,)
+
+        return  ari_mean_per_k, ari_std_per_k
 
     @classmethod
     def optimal_k_analysis(cls,
         df: pd.DataFrame,
-        random_states: list[int],
+        random_states: range,
         k_values: range,
         model_kwargs: dict,
         save_folder: str,
         saved_file_suffix: str = "",
         data_generator:SyntheticDataGenerator = None,
+        using_same_data = False,
         model_specific_metrics: list[str] = []           # e.g., {"Calinski-Harabasz": calinski_harabasz_score}
     ):
-        n_samples = df.shape[0]
         metrics_all = {"Silhouette Score (cosine)": [],
                        "Silhouette Score (euclidean)": [],
                        "Davies-Bouldin Index": [],
@@ -157,37 +193,42 @@ class BaseClustering:
         elif cls.__name__ == "HierarchicalEngine":
             random_states = range(1)  # Hierarchical is deterministic
 
+        num_of_states, num_of_k, n_samples = len(random_states),len(k_values), df.shape[0]
         labels_all = {seed: {} for seed in random_states}
+        labels_tensor = np.empty((num_of_states, num_of_k, n_samples), dtype=int)
+
         if data_generator:
             ground_truth_labels_all={seed: {} for seed in random_states}
         else:
             ground_truth_labels_all=None
         progress_bar = st.progress(0.0)
         status_text = st.empty()  # This will hold the "X / Y completed" message
-        total_states = len(random_states)
         start_time = time.time()  # Record overall start time
-
         # ---- Run Clustering ----
-        for idx, random_state in enumerate(random_states):
+        for  seed in random_states:
+            st.header("Running for the random_state:"+str(seed))
             silhouettes_cosine, silhouettes_euclidean, db_scores,ch_scores, inertias, aics, bics, nlls = [], [],[], [],[], [], [], []
 
             seed_start = time.time()
-            for k in k_values:
-                if data_generator:
+            for k_idx,k in enumerate(k_values):
+                if data_generator and not using_same_data:
                     # override df and initialize ground_truth_labels_all if synthetic data option is used
-                    data_generator.kwargs["random_state"] = random_state
+                    # generates df for len(random_states) times
+                    data_generator.kwargs["random_state"] = seed
                     data_generator.kwargs["centers"] = k
                     df, ground_truth_labels = data_generator.generate()
-                    ground_truth_labels_all[random_state] [k]= ground_truth_labels
+                    ground_truth_labels_all[seed] [k]= ground_truth_labels
                 if "n_clusters" in model_kwargs:
                     model_kwargs["n_clusters"] = k
-                engine = cls(random_state=random_state, **model_kwargs)
+                engine = cls(random_state=seed, **model_kwargs)
                 labels = engine.fit_predict(df)
-                silhouettes_cosine.append(silhouette_score(df, labels, metric="cosine"))
+               # silhouettes_cosine.append(silhouette_score(df, labels, metric="cosine"))
                 silhouettes_euclidean.append(silhouette_score(df, labels, metric="euclidean"))
                 db_scores.append(davies_bouldin_score(df, labels))
                 ch_scores.append(calinski_harabasz_score(df, labels))
-                labels_all[random_state][k] = labels
+                labels_all[seed][k] = labels
+                labels_tensor[seed, k_idx, :] = labels
+
                 if cls.__name__ == "KMeansEngine":
                     inertias.append(engine.model.inertia_)
                 elif cls.__name__ == "GMMEngine":
@@ -203,17 +244,17 @@ class BaseClustering:
                 metrics_all["NegLogLikelihood"].append(nlls)
 
 
-            metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
+           # metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
             metrics_all["Silhouette Score (euclidean)"].append(silhouettes_euclidean)
             metrics_all["Calinski-Harabasz Index"].append(ch_scores)
             metrics_all["Davies-Bouldin Index"].append(db_scores)
             # Update progress and status after loop for one random state is completed
-            progress_bar.progress((idx + 1) / total_states)
+            progress_bar.progress((seed + 1) / num_of_states)
             elapsed_total = time.time() - start_time
             elapsed_minutes, elapsed_seconds = divmod(int(elapsed_total), 60)
             seed_time = int(time.time() - seed_start)
             status_text.text(f"The last seed took {seed_time}s")
-            status_text.text(f"Completed {idx + 1}/{total_states} seeds. Elapsed: {elapsed_minutes}m {elapsed_seconds}s")
+            status_text.text(f"Completed {seed + 1}/{num_of_states} seeds. Elapsed: {elapsed_minutes}m {elapsed_seconds}s")
 
         progress_bar.empty()
         status_text.empty()
@@ -224,8 +265,21 @@ class BaseClustering:
         ari_mean, ari_std, consensus_labels_all = \
             stability_and_consensus(labels_all, k_values, random_states, n_samples, ground_truth_labels_all)
         df_summary = cls.summarize(metrics_all, ari_mean, ari_std,  k_values)
-        df_summary.to_csv(f"{save_folder}/{saved_file_suffix}.csv")
-        pd.DataFrame(consensus_labels_all).to_csv(f"{save_folder}/consensus_labels_all_{saved_file_suffix}.csv")
+        if "experiment" in save_folder:
+            np.save(f"{save_folder}/labels_tensor_{cls.__name__}_{data_generator.n_features}.npy", labels_tensor)
+            labels_buffer = io.BytesIO()
+            np.save(labels_buffer, labels_tensor)
+            labels_buffer.seek(0)
+            st.download_button(
+                label="Download Labels Tensor (.npy)",
+                data=labels_buffer,
+                file_name="labels_tensor.npy",
+                mime="application/octet-stream"
+            )
+        else:
+            df_summary.to_csv(f"{save_folder}/{saved_file_suffix}.csv")
+            pd.DataFrame(consensus_labels_all).to_csv(f"{save_folder}/consensus_labels_all_{saved_file_suffix}.csv")
+
         return df_summary, metrics_all, metrics_mean, ari_mean, ari_std,  consensus_labels_all
 
     @staticmethod
@@ -345,41 +399,10 @@ class BaseClustering:
         col1.pyplot(fig)
 
     def pairwise(self, X, metric="euclidean"):
-
         centroids = self.get_centroids(X)
-
         D = pairwise_distances(centroids, metric=metric)
-
         k = centroids.shape[0]
-
         labels = [f"C{i + 1}" for i in range(k)]
-
         return pd.DataFrame(D, index=labels, columns=labels)
 
 
-
-
-
-    # Not used
-    @staticmethod
-    def remap_clusters(labels: pd.Series, priority: List[str]) -> pd.Series:
-        """
-        labels:   pd.Series indexed by province name, values are original kmeans.labels_
-        priority: list of province names in the order you want new labels assigned.
-
-        Returns a new pd.Series of same index with relabeled cluster IDs 0,1,2…
-        """
-        new_label_map = {}
-        next_new = 0
-        for prov in priority:
-            old_lbl = labels.loc[prov]
-            if old_lbl not in new_label_map:
-                new_label_map[old_lbl] = next_new
-                next_new += 1
-
-        # If you have provinces outside your priority list and want to
-        # give them labels too, you could continue:
-        for old_lbl in sorted(set(labels) - set(new_label_map)):
-            new_label_map[old_lbl] = next_new
-            next_new += 1
-        return labels.map(new_label_map).to_list()

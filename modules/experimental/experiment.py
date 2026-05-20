@@ -3,9 +3,9 @@ from modules.experimental.synthetic_data_generator import BlobsSyntheticDataGene
 import streamlit as st
 import polars as pl
 from viz.gui_helpers.base_page_names.render_helpers import render_synthetic_data
-from viz.gui_helpers.base_page_names.ui_base_page_names import sidebar_controls_plot_options_setup, \
+from viz.gui_helpers.base_page_names.helpers import sidebar_controls_plot_options_setup, \
     render_gender_name_surname_filters
-from viz.gui_helpers.base_page.ui_base_page import sidebar_controls_basic_setup
+from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
 import extra_streamlit_components as stx
 
 

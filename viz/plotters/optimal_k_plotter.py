@@ -63,20 +63,20 @@ class OptimalKPlotter:
             dpi=200,
             sharex="col",
         )
-
-        # ---- per-seed rows ----
-        for i, seed in enumerate(random_states[:num_seeds_to_plot]):
+        # ---- per-seed rows
+        st.header("XXXX:"+str(num_seeds_to_plot))
+        for seed in range(num_seeds_to_plot):
             for j, (key, title, _) in enumerate(columns):
-                ax = axs[i, j]
+                ax = axs[seed, j]
                 if key.startswith("Silhouette"):
-                    ax.plot(k_values, metrics_all[key][i], "o-")
+                    ax.plot(k_values, metrics_all[key][seed], "o-")
                     ax.set_title(f"Seed {seed}: {title}", fontsize=TITLE_FONTSIZE)
 
                 elif key == "Inertia":
-                    ax.plot(k_values, metrics_all["Inertia"][i], "o-")
+                    ax.plot(k_values, metrics_all["Inertia"][seed], "o-")
                     elbow = KneeLocator(
                         k_values,
-                        metrics_all["Inertia"][i],
+                        metrics_all["Inertia"][seed],
                         curve="convex",
                         direction="decreasing",
                     )
@@ -85,7 +85,7 @@ class OptimalKPlotter:
                     ax.set_title(f"Seed {seed}: {title}", fontsize=TITLE_FONTSIZE)
 
                 elif key in ("AIC", "BIC"):
-                    ax.plot(k_values, metrics_all[key][i], "o-")
+                    ax.plot(k_values, metrics_all[key][seed], "o-")
                     ax.set_title(f"Seed {seed}: {title}", fontsize=TITLE_FONTSIZE)
 
                 else:  # ARI column → hidden for seed rows
@@ -141,15 +141,15 @@ class OptimalKPlotter:
         st.pyplot(fig)
 
     @staticmethod
-    def print_optimal_k_analysis(df_summary):
+    def print_optimal_k_analysis(df_summary,using_same_data=False):
         col1, col2 = st.columns(2)
-        col1.write("Formatted results")
-        col1.dataframe(OptimalKPlotter.style_metrics_dataframe(df_summary))
-        col2.write("Raw results")
-        col2.dataframe(df_summary)
+        st.write("Results")
+        st.dataframe(OptimalKPlotter.style_metrics_dataframe(df_summary,using_same_data))
+        #col2.write("Raw results")
+        #col2.dataframe(df_summary)
 
     @staticmethod
-    def style_metrics_dataframe(df: pd.DataFrame):
+    def style_metrics_dataframe(df: pd.DataFrame,using_same_data:bool):
         display = pd.DataFrame(index=df.index)
         def mean_pm_std(mean_col_, std_col, prec=3):
             return (
@@ -159,10 +159,13 @@ class OptimalKPlotter:
             )
 
         # ---- Always-present metrics ----
-        display["Silhouette Score (cosine)"] = mean_pm_std("Silhouette_mean (cosine)", "Silhouette_std (cosine)")
-        display["Silhouette Score (euclidean)"] = mean_pm_std("Silhouette_mean (euclidean)", "Silhouette_std (euclidean)")
-        display["Davies–Bouldin"] = mean_pm_std("DaviesBouldin_mean", "DaviesBouldin_std" )
-        display["ARI"] = mean_pm_std("ARI_mean", "ARI_std")
+     #   display["Silhouette Score (cosine)"] = mean_pm_std("Silhouette_mean (cosine)", "Silhouette_std (cosine)")
+        if using_same_data:
+            display["ARI"] = mean_pm_std("ARI_mean", "ARI_std")
+
+        display["Silhouette Score (euclidean)"] = mean_pm_std("Silhouette_mean (euclidean)",
+                                                              "Silhouette_std (euclidean)")
+        display["Davies–Bouldin"] = mean_pm_std("DaviesBouldin_mean", "DaviesBouldin_std")
 
         # ---- GMM-only metrics (guarded) ----
         if "BIC_mean" in df.columns:

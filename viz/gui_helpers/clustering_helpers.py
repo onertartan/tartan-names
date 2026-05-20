@@ -2,23 +2,26 @@ import streamlit as st
 import pandas as pd
 import polars as pl
 
-from viz.gui_helpers.base_page_names.ui_base_page_names import render_top_n_selector
+from viz.gui_helpers.base_page_names.helpers import render_top_n_selector
 
 
 
-def gui_clustering_up_col1():
+def gui_clustering_up_col1(page_name):
     # First column of upper part in clustering showing scaling options
-    options = ["Share of Top-n (L1 Norm)",  # Denominator = Sum of the 30 columns
-            "Share of Total",  # Denominator = Total births in province (External data)
-            "TF-IDF",  # Best for emphasizing unique/rare names
-            "L2 Normalization" ] # Best for pure cosine pattern matching
+    if "names" in page_name:
+        options = ["Share of Top-n (L1 Norm)",  # Denominator = Sum of the 30 columns
+                "Share of Total",  # Denominator = Total births in province (External data)
+                "TF-IDF",  # Best for emphasizing unique/rare names
+                "L2 Normalization" ] # Best for pure cosine pattern matching
+    else:
+        options = ["None", "L1 Norm (row based)", "L2 Norm (row based)", "Standard Scaler (column based)", "MinMaxScaler (column based)", "RobustScaler (column based)" ]
     scaler = st.radio("Select scaling option", options=options, key="scaler")
     return scaler
 
 def gui_clustering_up_col2():
     # scaler
     run_optimal_k_analysis = st.checkbox("Run cluster analysis", key="optimal_k_analysis")
-    n_seeds = st.number_input("Number of seeds", min_value=1, max_value=100, value=1, key="number_of_seeds")
+    n_seeds = st.number_input("Number of seeds", min_value=3, max_value=100, value=3, key="number_of_seeds")
     use_consensus = st.checkbox("Use consensus labels", False, key="use_consensus_labels")
     return run_optimal_k_analysis, n_seeds, use_consensus
 def gui_clustering_bottom():
@@ -46,10 +49,10 @@ def gui_clustering_bottom():
 
 # OPTIONS FOR CLUSTERING ALGORITHMS
 
-def gui_clustering_main():
+def gui_clustering_main(page_name):
     col1, col2,_ = st.columns([2, 2, 6])
     with col1:
-        scaler = gui_clustering_up_col1()
+        scaler = gui_clustering_up_col1(page_name)
     with col2:
         run_optimal_k_analysis, n_seeds, use_consensus = gui_clustering_up_col2()
 
@@ -72,8 +75,10 @@ def gui_options_kmeans():
 def gui_options_kmedoids():
     n_clusters = st.number_input("Number of clusters", 2, 15, 4, key="n_cluster_kmedoids")
     max_iter = st.number_input("Maximum number of iteration", 10, 300, 100, key="max_iter_kmedoids")
+    distance_metric = st.selectbox("Select distance metric", options=["euclidean", "cosine"], index=0)
+
    # metric = st.selectbox("Distance metric", ["cosine"], help="Cosine: profile similarity;", key="distance_metric_pam")
-    return {"n_clusters": n_clusters, "metric": "cosine", "max_iter": max_iter, "method": "pam"}
+    return {"n_clusters": n_clusters, "metric":distance_metric, "max_iter": max_iter, "method": "pam"}
 
 
 def gui_options_spectral():

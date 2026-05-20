@@ -115,8 +115,7 @@ class PlotlyLinePlotter(LinePlotter):
             markers=True,
             title=self.title)
 
-        fig.update_layout(legend=dict(orientation="v"),
-            hovermode="x unified")
+        fig.update_layout(legend=dict(orientation="v"), hovermode="x unified")
 
         col_plot.plotly_chart(fig, use_container_width=True)
 
@@ -139,6 +138,8 @@ class AltairLinePlotter(LinePlotter):
         )
 
         col_plot.altair_chart(chart)
+        st.dataframe(df)
+
 
 
 

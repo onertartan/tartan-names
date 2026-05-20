@@ -26,8 +26,7 @@ class SyntheticDataPlotter:
         aligned_predicted = np.array([label_mapping.get(label, label) for label in predicted_labels])
         return aligned_predicted, label_mapping
 
-    def plot(self, df_pivot: pd.DataFrame, ground_truth_values: pd.Series):
-        col1, col2 = st.columns(2)
+    def plot_synthetic_data(self, df_pivot: pd.DataFrame, ground_truth_values: pd.Series = None, plot_comparison_with_ground_truth: bool = False ):
         feature_columns = [column for column in df_pivot.columns if column != "clusters"]
         if len(feature_columns) < 2:
             st.warning("Synthetic data plot requires at least two feature columns.")
@@ -36,21 +35,14 @@ class SyntheticDataPlotter:
         x_col, y_col = feature_columns[:2]
         predicted_labels = df_pivot["clusters"].to_numpy()
         ground_truth_array = None if ground_truth_values is None else np.asarray(ground_truth_values)
-        aligned_predicted = predicted_labels
+        show_ground_truth_comparison = plot_comparison_with_ground_truth and ground_truth_array is not None
 
-        if ground_truth_array is not None:
+        aligned_predicted = predicted_labels
+        if show_ground_truth_comparison:
             aligned_predicted, _ = self._match_labels(predicted_labels, ground_truth_array)
 
         fig_pred, ax_pred = plt.subplots(figsize=(8, 6))
-        scatter_pred = ax_pred.scatter(
-            df_pivot[x_col],
-            df_pivot[y_col],
-            c=aligned_predicted,
-            cmap="tab10",
-            alpha=0.8,
-            edgecolors="white",
-            linewidths=0.4,
-        )
+        scatter_pred = ax_pred.scatter(df_pivot[x_col], df_pivot[y_col], c=aligned_predicted, cmap="tab10", alpha=0.8, edgecolors="white",linewidths=0.4)
         ax_pred.set_title("Predicted Clusters")
         ax_pred.set_xlabel(str(x_col))
         ax_pred.set_ylabel(str(y_col))
@@ -64,7 +56,7 @@ class SyntheticDataPlotter:
         )
         ax_pred.add_artist(legend_pred)
 
-        if ground_truth_array is not None:
+        if show_ground_truth_comparison:
             matches = aligned_predicted == ground_truth_array
             mismatches = ~matches
             matching_count = int(matches.sum())
@@ -93,9 +85,15 @@ class SyntheticDataPlotter:
                 fontsize=9,
                 bbox={"boxstyle": "round", "facecolor": "white", "alpha": 0.85},
             )
-        col1.pyplot(fig_pred)
+        if show_ground_truth_comparison:
+            col1, col2 = st.columns(2)
+            col1.pyplot(fig_pred)
+        else:
+            col1, col2 = st.columns([7,3])
 
-        if ground_truth_values is None:
+            col1.pyplot(fig_pred)
+
+        if not show_ground_truth_comparison:
             return
 
         fig_gt, ax_gt = plt.subplots(figsize=(8, 6))

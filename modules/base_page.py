@@ -11,7 +11,7 @@ from sklearn.decomposition import PCA
 from clustering.models.factory import get_engine_class
 from clustering.models.hierarchical import HierarchicalBaseClusteringEngine
 from viz import PCAPlotter, OptimalKPlotter
-from viz.gui_helpers.base_page.ui_base_page import sidebar_controls_basic_setup
+from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
 # Streamlit & Tools
 from viz.gui_helpers.clustering_helpers import *
 from viz.plotters.geo_cluster_plotter import GeoClusterPlotter
@@ -97,9 +97,9 @@ class BasePage(ABC):
     def animation_slider_changed(self):
         st.session_state["animate"] = True
 
-    def sidebar_controls(self, *args):  # start_year=2007,end_year=2023
-        sidebar_controls_basic_setup(*args)
-        self.sidebar_controls_plot_options_setup(*args)
+   # def sidebar_controls(self, *args):  # start_year=2007,end_year=2023
+    #    sidebar_controls_basic_setup(*args)
+     #   self.sidebar_controls_plot_options_setup(*args)
 
     def sidebar_controls_plot_options_setup(self,*args):
         pass
@@ -129,16 +129,18 @@ class BasePage(ABC):
         num_seeds_to_plot = 3 if engine_class.__name__ != "HierarchicalClusteringEngine" else 1
         scaler,year1 , year2 = st.session_state["scaler"], st.session_state["year_1"], st.session_state["year_2"]
         saved_file_suffix = f"{scaler}_{year1}_{year2}"
+        # CROSS-METHOD OPTIMAL K ANALYSIS
+
 
         df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
             engine_class.optimal_k_analysis( df_pivot, random_states, k_values, kwargs, save_folder, saved_file_suffix,data_generator)
         df_pivot["clusters"] = consensus_labels_all[n_clusters]
         st.write(f"Running optimal k analysis for {engine_class.__name__}, scaler = {scaler}, year1={year1}, year2={year2}")
         OptimalKPlotter.plot_optimal_k_analysis(engine_class, num_seeds_to_plot, k_values, random_states, metrics_all, metrics_mean, ari_mean, ari_std, kwargs)
-        OptimalKPlotter.print_optimal_k_analysis(df_summary)
+        OptimalKPlotter.print_optimal_k_analysis(df_summary,using_same_data=False)
 
     def tab_clustering(self, df, geo_scale, save_folder="", data_generator=None,*args):
-        scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main()
+        scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main(self.page_name)
         if not clustering_algorithm:
             return
         engine_class = get_engine_class(clustering_algorithm)
@@ -162,7 +164,6 @@ class BasePage(ABC):
             st.header(str(type(df_pivot))+str( df_pivot.shape))
             labels = engine.fit_predict(df_pivot)
             df_pivot["clusters"] = labels
-
 
         col_plot, col_df = st.columns([7, 3])
         # Step: Update geodata
@@ -190,7 +191,7 @@ class BasePage(ABC):
                 # GeoClusterPlotter(self.CLUSTER_COLOR_MAPPING, self.HA_POSITIONS, self.VA_POSITIONS).plot_elections(self.gdf_clusters)
             col_df.dataframe(df_pivot["clusters"])
         elif st.session_state.get("selected_tab_" + self.page_name, "") =="tab_synthetic_clustering":
-            SyntheticDataPlotter().plot(df_pivot,data_generator.ground_truth_labels)
+            SyntheticDataPlotter().plot_synthetic_data(df_pivot,data_generator.ground_truth_labels)
         with col_plot:
             self.tab_clustering_pca(df_pivot.copy())
         return df_pivot

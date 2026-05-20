@@ -5,27 +5,62 @@ import polars as pl
 import geopandas as gpd
 
 import streamlit as st
+
+
+def rank_again(df: pl.DataFrame, geo_column: str) -> pl.DataFrame:
+    accumulated = (
+        df.group_by([geo_column, "name", "gender"])
+        .agg(pl.col("count").sum().alias("count"))
+        .with_columns(
+            pl.col("count")
+            .rank(method="min", descending=True)
+            .over([geo_column, "gender"])
+            .alias("rank")
+        )
+        .sort([geo_column, "rank", "count", "name"], descending=[False, False, True, False])
+    )
+
+    if "total_count" in df.columns:
+        total_counts = (
+            df.select(["year", geo_column, "total_count"])
+            .unique()
+            .group_by(geo_column)
+            .agg(pl.col("total_count").sum().alias("total_count"))
+        )
+        accumulated = accumulated.join(total_counts, on=geo_column, how="left")
+
+    return accumulated
+
+
 def preprocess_for_nth_most_common_tab(df: pl.DataFrame, gdf_borders:gpd.GeoDataFrame,year: int, target_rank: int, include_top_n: bool,geo_column:str) -> gpd.GeoDataFrame:
     # Helper for Tab 2.1
     # (2.1.1:Select names and filter if they are in top-n  & 2.1.2:Nth most common)
-    # filter by year
-    df_year = df.filter(pl.col("year") == year)
-    # filter by rank
+    # Step 1: filter by year
+    # If 'year' is a single value, wrap it in a list; otherwise use it as is
+    year_list = year if isinstance(year, list) else [year]
+    # Filter rows where the 'year' column is in year_list
+    df_year = df if ("year" not in df.columns or year is None) else df.filter(pl.col("year").is_in(year_list))
+
+
+    # Step 2: filter by rank
     if include_top_n:# Limits the rank limit to 5, since range-30 results in many names
         df_year_rank = df_year.filter(pl.col("rank") <= target_rank)
     else:
         df_year_rank = df_year.filter(pl.col("rank") == target_rank)
     df_year_rank=df_year_rank.to_pandas()
     # Step 3: aggregate names cleanly
-    df_year_rank = df_year_rank.sort_values("rank").groupby(geo_column).apply(lambda g: "\n".join("-".join(rank_group["name"].tolist())
+    df_year_rank = df_year_rank.sort_values(["rank","gender"]).groupby(geo_column).apply(lambda g: "\n".join("-".join(rank_group["name"].tolist())
             for _, rank_group in g.groupby("rank", sort=False))).reset_index(name="name")
     # Step 4: attach geometry
     gdf_result = gdf_borders.merge(df_year_rank, on=geo_column)
     return gdf_result
 
-def process_for_select_rank_tab(df,gdf_borders,names_from_multi_select,year,rank,geo_column):
-    # Helper for Tab 2.1.1
-    df_year = df.filter(pl.col("year") == year)
+def process_for_subtabs_211_212(df, gdf_borders, names_from_multi_select, year, rank, geo_column):
+    # Helper for Tab 2.1.1 (under 2.1 plot map tab)
+    # If 'year' is a single value, wrap it in a list; otherwise use it as is
+    year_list = year if isinstance(year, list) else [year]
+    # Filter rows where the 'year' column is in year_list
+    df_year = df if ("year" not in df.columns or year is None) else df.filter(pl.col("year").is_in(year_list))
     if names_from_multi_select:
         # filter by name and rank
         df_result = df_year.filter(pl.col("name").is_in(names_from_multi_select) & (pl.col("rank") <= rank))
@@ -38,7 +73,7 @@ def process_for_select_rank_tab(df,gdf_borders,names_from_multi_select,year,rank
         return df_result, df_result_not_null
     return None,None
 
-def preprocess_for_rank_bar_tabs( df: pl.DataFrame,is_rank_tab:bool,include_all_years_option:bool,selected_names:List,top_n:int,show_column:str) -> pl.DataFrame:
+def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, include_all_years_option:bool, selected_names:List, top_n:int, show_column:str, n_for_second_filter:str) -> pl.DataFrame:
     # Tabs 2.2,2.3,2.4
     # Drop geography by aggregating counts over year + name.
     df = df.group_by(["year", "name"]).agg(pl.col("count").sum()).sort(["year", "count"], descending=[False, True])
@@ -48,16 +83,29 @@ def preprocess_for_rank_bar_tabs( df: pl.DataFrame,is_rank_tab:bool,include_all_
 
     if df.is_empty():
         return df.to_pandas()
-    if is_rank_tab:
-        # vectorized rank per year
-        df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
+
+    # vectorized rank per year
+    df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
+    if use_rank_filtering:
         if include_all_years_option == "Include All Years for Names Ever in Top-n":
             # names that were ever in top-n across any year
             ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
             df = df.filter(pl.col("name").is_in(ever_top_n))
+            if n_for_second_filter and n_for_second_filter != "No second filter":
+                threshold = int(n_for_second_filter.split("top-")[1])
+                n_years = df.select(pl.col("year").n_unique()).item()
+                always_top_names = (
+                    df.filter(pl.col("rank") <= threshold)
+                    .group_by("name")
+                    .agg(pl.col("year").n_unique().alias("years_in_threshold"))
+                    .filter(pl.col("years_in_threshold") == n_years)
+                    .select("name")
+                )
+                df = df.filter(pl.col("name").is_in(always_top_names["name"]))
+
         else:
             df = df.filter(pl.col("rank") <= top_n)
-    else:
+    if selected_names:
         df = df.filter(pl.col("name").is_in(selected_names))
 
     return df.to_pandas()

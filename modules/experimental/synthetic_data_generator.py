@@ -9,6 +9,7 @@ class SyntheticDataGenerator(ABC):
     def __init__(self, kwargs):
         self.kwargs = kwargs
         self.ground_truth_labels = None
+        self.n_features = None
 
     @abstractmethod
     def generate(self) -> pd.DataFrame:
@@ -19,4 +20,5 @@ class BlobsSyntheticDataGenerator(SyntheticDataGenerator):
     def generate(self) -> tuple[DataFrame, DataFrame]:
         x_values, ground_truth_values = make_blobs(**self.kwargs)
         self.ground_truth_labels = ground_truth_values
+        self.n_features =  self.kwargs["n_features"]
         return pd.DataFrame(x_values), ground_truth_values

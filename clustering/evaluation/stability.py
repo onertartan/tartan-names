@@ -2,7 +2,7 @@ from sklearn.metrics import adjusted_rand_score
 from scipy.cluster.hierarchy import linkage, fcluster
 import numpy as np
 
-def stability_and_consensus(labels_all, k_values, random_states, n_samples,ground_truth_labels_all):
+def stability_and_consensus(labels_all, k_values, random_states, n_samples,ground_truth_labels_all,use_ground_truth_for_ari=False):
     """
     Compute ARI-based stability and consensus clustering metrics.
 
@@ -12,8 +12,8 @@ def stability_and_consensus(labels_all, k_values, random_states, n_samples,groun
         labels_all[seed][k] -> array-like of shape (n_samples,)
     k_values : iterable
         Candidate numbers of clusters.
-    random_states : iterable
-        Random seeds used in clustering.
+    random_states : range object
+        R seeds from 0 to R-1
     n_samples : int
         Number of samples.
     ground_truth_labels_all : dict, optional
@@ -36,20 +36,14 @@ def stability_and_consensus(labels_all, k_values, random_states, n_samples,groun
     for k in k_values:
         if ground_truth_labels_all is not None:
             # Supervised: compare each run's labels against ground truth
-            for i in range(len(random_states)):
-                ari = adjusted_rand_score(
-                    ground_truth_labels_all[random_states[i]][k],
-                    labels_all[random_states[i]][k]
-                )
+            for i in random_states:
+                ari = adjusted_rand_score(ground_truth_labels_all[i][k],  labels_all[i][k])
                 ari_scores[k].append(ari)
         else:
             # Unsupervised: compare all pairs of runs against each other
-            for i in range(len(random_states)):
+            for i in random_states:
                 for j in range(i + 1, len(random_states)):
-                    ari = adjusted_rand_score(
-                        labels_all[random_states[i]][k],
-                        labels_all[random_states[j]][k]
-                    )
+                    ari = adjusted_rand_score(labels_all[i][k], labels_all[j][k])
                     ari_scores[k].append(ari)
 
 

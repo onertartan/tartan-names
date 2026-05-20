@@ -1,23 +1,24 @@
-from sklearn.preprocessing import normalize
 import pandas as pd
-# Overridden method
 import streamlit as st
-
-from sklearn.preprocessing import normalize
 from sklearn.feature_extraction.text import TfidfTransformer
-import pandas as pd
-import streamlit as st
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler, normalize
 
 
 def scale(scaler_method, df, total_counts_unique):
-    """    Row-wise scaling of feature vectors (provinces or names).
-    All methods return a DataFrame with the same index/columns. """
-    if "L1" in scaler_method:
-        # Relative distribution of selected features
+    """Apply scaling to clustering features and preserve the input shape.
+
+    L1/L2 options normalize each row.
+    Standard/MinMax/Robust scalers transform each column across rows.
+    """
+    if scaler_method == "None":
+        df_scaled = df.values
+
+    elif "L1" in scaler_method:
+        # Row-wise relative distribution of selected features.
         df_scaled = normalize(df, axis=1, norm="l1")
 
     elif "L2" in scaler_method:
-        # Unit-length vectors (angular similarity)
+        # Row-wise unit-length vectors for angular similarity.
         df_scaled = normalize(df, axis=1, norm="l2")
 
     elif "Share of Total" in scaler_method:
@@ -32,9 +33,22 @@ def scale(scaler_method, df, total_counts_unique):
         )
         df_scaled = tfidf.fit_transform(df.values).toarray()
 
+    elif "Standard Scaler" in scaler_method:
+        # Column-wise z-score scaling across all rows.
+        df_scaled = StandardScaler().fit_transform(df)
+
+    elif "MinMaxScaler" in scaler_method:
+        # Column-wise min-max scaling across all rows.
+        df_scaled = MinMaxScaler().fit_transform(df)
+
+    elif "RobustScaler" in scaler_method:
+        # Column-wise robust scaling across all rows.
+        df_scaled = RobustScaler().fit_transform(df)
+
     else:
-        st.warning("No scaling selected. Using raw counts.")
+        st.warning(f"Unknown scaling option: {scaler_method}. Using raw counts.")
         df_scaled = df.values
+
     return pd.DataFrame(
         df_scaled,
         index=df.index,

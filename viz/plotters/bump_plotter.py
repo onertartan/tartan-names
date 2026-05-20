@@ -10,6 +10,7 @@ import seaborn as sns
 import altair as alt
 from viz.gui_helpers.base_page_names.render_helpers import get_title_statement
 from utils.base_page_names.names_helpers import validate_df
+import plotly.graph_objects as go
 
 
 # ------------- base -------------
@@ -23,6 +24,37 @@ class BumpPlotter(abc.ABC):
 
     def _build_title(self) -> str:
         return f"Rank Evolution of {get_title_statement(self.gender, self.page_name)} Over Years"
+
+    @staticmethod
+    def _build_year_ticks(years: list[int], max_ticks: int = 12) -> list[int]:
+        if not years:
+            return []
+        if len(years) <= max_ticks:
+            return years
+
+        step = max(1, (len(years) - 1) // (max_ticks - 1))
+        ticks = years[::step]
+        if ticks[-1] != years[-1]:
+            ticks.append(years[-1])
+        if ticks[0] != years[0]:
+            ticks.insert(0, years[0])
+        return ticks
+
+    @staticmethod
+    def _first_seen_points(df: pd.DataFrame) -> pd.DataFrame:
+        return (
+            df.sort_values(["name", "year"])
+            .groupby("name", as_index=False)
+            .first()[["name", "year", "rank"]]
+        )
+
+    @staticmethod
+    def _get_max_rank(df: pd.DataFrame) -> int | None:
+        rank_series = pd.to_numeric(df["rank"], errors="coerce")
+        rank_series = rank_series.dropna()
+        if rank_series.empty:
+            return None
+        return int(rank_series.max())
 
     @abc.abstractmethod
     def plot(
@@ -40,6 +72,7 @@ class MatplotlibBumpPlotter(BumpPlotter):
     # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
 
     def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str):
+        validate_df(df)
         df_pivot = pd.pivot_table(
             df,
             values="rank",
@@ -79,11 +112,17 @@ class MatplotlibBumpPlotter(BumpPlotter):
                     label=name if j == 0 else None
                 )
 
-        max_rank = int(df["rank"].max())
+        max_rank = self._get_max_rank(df)
+        if max_rank is None:
+            col_plot.warning("No rank data available for the selected filters.")
+            return
         ax.invert_yaxis()
         ax.set_yticks(range(1, min(51, max_rank + 1)))
         ax.set_ylim(min(51, max_rank + 1), 0)
-        ax.set_xticks(df_pivot.index)
+        years = [int(y) for y in df_pivot.index]
+        tick_years = self._build_year_ticks(years)
+        ax.set_xticks(tick_years)
+        ax.set_xticklabels([str(y) for y in tick_years], rotation=45, ha="right")
         ax.margins(x=0.15, y=0.1)
         fig.tight_layout(pad=2.0)
         ax.set_title(self.title, fontsize=20, pad=20)
@@ -96,18 +135,23 @@ class MatplotlibBumpPlotter(BumpPlotter):
         y_offset_last = defaultdict(int)
 
         for name in df_pivot.columns:
-            first_rank = df_pivot[name].iloc[0]
             last_rank = df_pivot[name].iloc[-1]
-            first_year = df_pivot.index[0]
             last_year = df_pivot.index[-1]
-            offset_f = y_offset_first[first_rank] * 0.2
             offset_l = y_offset_last[last_rank] * 0.2
-            ax.text(first_year - 0.1, first_rank + offset_f, name,
-                    ha="right", va="center", fontsize=9, alpha=0.7)
             ax.text(last_year + 0.1, last_rank + offset_l, name,
                     ha="left", va="center", fontsize=9, alpha=0.7)
-            y_offset_first[first_rank] += 1
             y_offset_last[last_rank] += 1
+
+        for _, row in self._first_seen_points(df).iterrows():
+            ax.text(
+                row["year"] + 0.1,
+                row["rank"] - 0.15,
+                row["name"],
+                ha="left",
+                va="center",
+                fontsize=9,
+                alpha=0.7
+            )
 
         col_plot.pyplot(fig)
         plt.close(fig)
@@ -116,78 +160,159 @@ class MatplotlibBumpPlotter(BumpPlotter):
 class PlotlyBumpPlotter(BumpPlotter):
     ENGINE = "Plotly"
 
-    def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str) -> None:
-        # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
+    def _selected_top_n(self) -> int | None:
+        try:
+            value = st.session_state.get(f"rank_{self.page_name}")
+        except Exception:
+            return None
+
+        try:
+            top_n = int(value)
+        except (TypeError, ValueError):
+            return None
+        return top_n if top_n > 0 else None
+
+    @staticmethod
+    def _with_segment_ids(df: pd.DataFrame) -> pd.DataFrame:
+        df = df.sort_values(["name", "year"]).copy()
+        ordered_years = sorted(df["year"].dropna().unique().tolist())
+        year_positions = {year: index for index, year in enumerate(ordered_years)}
+
+        df["_year_position"] = df["year"].map(year_positions)
+        starts_new_segment = (
+            df.groupby("name")["_year_position"]
+            .diff()
+            .fillna(1)
+            .ne(1)
+        )
+        df["_segment"] = starts_new_segment.groupby(df["name"]).cumsum()
+        return df.drop(columns="_year_position")
+
+    def plot(
+        self,
+        df: pd.DataFrame,
+        col_plot: st.delta_generator.DeltaGenerator,
+        show_column: str,
+    ) -> None:
         validate_df(df)
-        max_rank = int(df["rank"].max())
         df_reset = df.reset_index() if isinstance(df.index, pd.MultiIndex) else df.copy()
 
-        fig = px.line(
-            df_reset,
-            x="year",
-            y="rank",
-            color="name",
-            markers=True,
-        ).update_layout(
-            width=1500,
-            height=800,
+        top_n = self._selected_top_n()
+        if top_n is not None:
+            df_reset = df_reset[df_reset["rank"] <= top_n].copy()
+
+        if df_reset.empty:
+            col_plot.warning("No names are in the selected top-n range for this year interval.")
+            return
+
+        max_rank = top_n if top_n is not None else int(df_reset["rank"].max())
+        names = sorted(df_reset["name"].dropna().unique().tolist())
+        colors = px.colors.qualitative.Dark24
+        color_by_name = {name: colors[index % len(colors)] for index, name in enumerate(names)}
+        segmented_df = self._with_segment_ids(df_reset)
+
+        fig = go.Figure()
+        line_traces = []
+        marker_traces = []
+
+        for name in names:
+            name_df = segmented_df[segmented_df["name"] == name]
+            color = color_by_name[name]
+
+            for _, segment_df in name_df.groupby("_segment", sort=False):
+                if len(segment_df) < 2:
+                    continue
+
+                line_traces.append(
+                    go.Scatter(
+                        x=segment_df["year"],
+                        y=segment_df["rank"],
+                        name=name,
+                        mode="lines",
+                        line=dict(color=color, width=2),
+                        legendgroup=name,
+                        showlegend=False,
+                        hoverinfo="skip",
+                    )
+                )
+
+            marker_traces.append(
+                go.Scatter(
+                    x=name_df["year"],
+                    y=name_df["rank"],
+                    name=name,
+                    mode="markers",
+                    marker=dict(color=color, size=8),
+                    legendgroup=name,
+                    showlegend=True,
+                    customdata=name_df[["name"]],
+                    hovertemplate=(
+                        "Name: %{customdata[0]}<br>"
+                        "Year: %{x}<br>"
+                        "Rank: %{y}<extra></extra>"
+                    ),
+                )
+            )
+
+        for trace in line_traces:
+            fig.add_trace(trace)
+        for trace in marker_traces:
+            fig.add_trace(trace)
+
+        years = sorted(df_reset["year"].dropna().unique().tolist())
+        tick_years = self._build_year_ticks([int(year) for year in years])
+        fig.update_layout(
+            width=1000,
+            height=500,
             xaxis_title="Year",
             yaxis_title="Rank",
-            margin=dict(l=120, r=120, t=80, b=50),  # wider margins for endpoint labels
+            margin=dict(l=120, r=120, t=80, b=50),
             legend=dict(orientation="v", yanchor="top", y=1.02, xanchor="right", x=1.15),
-            title=dict(
-                text=self.title,
-                font=dict(size=20),          # 50 → 20
-                automargin=True,
-                yref="paper"
-            ),
-            yaxis_title_font=dict(size=14),  # 32 → 14
-            xaxis_title_font=dict(size=14),  # 32 → 14
-        ).update_yaxes(
+            title=dict(text=self.title, font=dict(size=20), automargin=True, yref="paper"),
+            yaxis_title_font=dict(size=14),
+            xaxis_title_font=dict(size=14),
+        )
+        fig.update_yaxes(
             tickvals=list(range(1, max_rank + 1)),
             range=[max_rank + 0.5, 0.5],
-            autorange="reversed",
             dtick=1,
-            tickfont=dict(size=12),          # 32 → 12
-        ).update_xaxes(
+            tickfont=dict(size=12),
+        )
+        fig.update_xaxes(
             showline=True,
-            tickfont=dict(size=12),          # 32 → 12
-        ).update_traces(
-            line=dict(width=2),              # 5.5 → 2
-            marker=dict(size=8),             # 30 → 8
+            tickfont=dict(size=12),
+            tickmode="array",
+            tickvals=tick_years,
+            ticktext=[str(year) for year in tick_years],
         )
 
-        # --- endpoint annotations ---
-        years = df_reset["year"].unique()
-        first_year = years.min()
-        last_year = years.max()
+        last_year = max(years)
+        for _, row in df_reset[df_reset["year"] == last_year].iterrows():
+            fig.add_annotation(
+                x=row["year"],
+                y=row["rank"],
+                text=row["name"],
+                showarrow=False,
+                xshift=8,
+                font=dict(size=11, color=color_by_name.get(row["name"])),
+                xanchor="left",
+            )
 
-        for name in df_reset["name"].unique():
-            first_row = df_reset[(df_reset["name"] == name) & (df_reset["year"] == first_year)]
-            if not first_row.empty:
-                fig.add_annotation(
-                    x=first_year,
-                    y=first_row["rank"].iloc[0],
-                    text=name,
-                    showarrow=False,
-                    xshift=-40,              # -20 → -40 to clear wider margin
-                    font=dict(size=11),      # 20 → 11
-                    xanchor="right",
-                )
-                # Data for the last year
-            last_year_data = df_reset[(df_reset["name"] == name) & (df_reset["year"] == last_year)]
-            if not last_year_data.empty:
-                fig.add_annotation(
-                    x=last_year,
-                    y=last_year_data["rank"].iloc[0],
-                    text=name,
-                    showarrow=False,
-                    xshift=40,               # 20 → 40
-                    font=dict(size=11),      # 20 → 11
-                    xanchor="left",
-                )
+        for _, row in self._first_seen_points(df_reset).iterrows():
+            fig.add_annotation(
+                x=row["year"],
+                y=row["rank"],
+                text=row["name"],
+                showarrow=False,
+                xshift=-0,
+                yshift=-10 if row["rank"] != 2 else 10,
+                font=dict(size=11, color=color_by_name.get(row["name"])),
+                xanchor="center",
+            )
 
         col_plot.plotly_chart(fig, use_container_width=True)
+        col_plot.dataframe(df)
+
 
 # ------------- seaborn implementation -------------
 class SeabornBumpPlotter(BumpPlotter):
@@ -212,11 +337,17 @@ class SeabornBumpPlotter(BumpPlotter):
                 markersize=8, linewidth=2, label=name
             )
 
-        max_rank = int(df["rank"].max())
+        max_rank = self._get_max_rank(df)
+        if max_rank is None:
+            col_plot.warning("No rank data available for the selected filters.")
+            return
         ax.invert_yaxis()
         ax.set_yticks(range(1, min(51, max_rank + 1)))
         ax.set_ylim(min(51, max_rank + 1), 0)
-        ax.set_xticks(df_pivot.index)
+        years = [int(y) for y in df_pivot.index]
+        tick_years = self._build_year_ticks(years)
+        ax.set_xticks(tick_years)
+        ax.set_xticklabels([str(y) for y in tick_years], rotation=45, ha="right")
         ax.margins(x=0.15, y=0.1)
         ax.set_title(self.title, fontsize=20, pad=20)
         ax.set_xlabel("Year")
@@ -227,25 +358,36 @@ class SeabornBumpPlotter(BumpPlotter):
         # --- endpoint labels ---
         y_offset_first = defaultdict(int)
         y_offset_last = defaultdict(int)
-
         for name in df_pivot.columns:
             series = df_pivot[name].dropna()
             if series.empty:
                 continue
             first_year, last_year = series.index[0], series.index[-1]
             first_rank, last_rank = series.iloc[0], series.iloc[-1]
-
-            ax.text(first_year - 0.1, first_rank + y_offset_first[first_rank] * 0.2,
-                    name, ha="right", va="center", fontsize=9, alpha=0.7)
-            ax.text(last_year + 0.1, last_rank + y_offset_last[last_rank] * 0.2,
-                    name, ha="left", va="center", fontsize=9, alpha=0.7)
+            if first_year!=df.index[0]:
+                ax.text(first_year - 0.1, first_rank + y_offset_first[first_rank] * 0.2,
+                        name, ha="right", va="center", fontsize=9, alpha=0.7)
+                ax.text(last_year + 0.1, last_rank + y_offset_last[last_rank] * 0.2,
+                        name, ha="left", va="center", fontsize=9, alpha=0.7)
 
             y_offset_first[first_rank] += 1
             y_offset_last[last_rank] += 1
 
+        for _, row in self._first_seen_points(df).iterrows():
+            ax.text(
+                row["year"] + 0.1,
+                row["rank"] - 0.15,
+                row["name"],
+                ha="left",
+                va="center",
+                fontsize=9,
+                alpha=0.7
+            )
+
         fig.tight_layout(pad=2.0)
         col_plot.pyplot(fig)
         plt.close(fig)
+        col_plot.dataframe(df)
 
 # ------------- altair implementation -------------
 class AltairBumpPlotter(BumpPlotter):
@@ -254,14 +396,25 @@ class AltairBumpPlotter(BumpPlotter):
     def plot(self, df: pd.DataFrame, col_plot: st.delta_generator.DeltaGenerator,show_column:str) -> None:
         # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
-        max_rank = int(df["rank"].max())
+        max_rank = self._get_max_rank(df)
+        labelFontSize=12
+        titleFontSize=16
+        if max_rank is None:
+            col_plot.warning("No rank data available for the selected filters.")
+            return
+        names = sorted(df["name"].dropna().unique().tolist())
+        if len(names)<=10:
+            color_scale = alt.Scale(scheme="tableau10", domain=names)
+        else:
+            color_scale = alt.Scale(scheme="tableau20", domain=names)
 
         base = alt.Chart(df).encode(
-            x=alt.X("year:O", title="Year", axis=alt.Axis(labelFontSize=12, titleFontSize=14)),
+            x=alt.X("year:O", title="Year", axis=alt.Axis(labelFontSize=labelFontSize, titleFontSize=titleFontSize)),
             y=alt.Y("rank:Q", title="Rank",
-                    scale=alt.Scale(domain=[max_rank + 0.3, 0.3]),
-                    axis=alt.Axis(tickCount=max_rank, labelFontSize=12, titleFontSize=14)),
-            color=alt.Color("name:N", legend=alt.Legend(title="Name")),
+                    scale=alt.Scale(domain=[max_rank + 0.5, 0.5]),
+                    axis=alt.Axis(    values=list(range(1, max_rank + 1)), format="d",
+             labelFontSize=labelFontSize, titleFontSize=titleFontSize)),
+            color=alt.Color("name:N", scale=color_scale, legend=alt.Legend(title="Name")),
         )
 
         lines = base.mark_line(strokeWidth=2)
@@ -270,30 +423,65 @@ class AltairBumpPlotter(BumpPlotter):
         # endpoint labels — first year
         first_year = df["year"].min()
         last_year = df["year"].max()
+        first_seen_df = (
+            df.sort_values(["name", "year"])
+            .groupby("name", as_index=False)
+            .first()[["name", "year", "rank"]]
+        )
 
-        first_labels = alt.Chart(df[df["year"] == first_year]).mark_text(
-            align="right", dx=-8, dy=-12,fontSize=11
+        first_year_labels_df = (
+            df[df["year"] == first_year][["name", "year", "rank"]]
+            .drop_duplicates(subset=["name"])
+        )
+        first_year_labels = alt.Chart(first_year_labels_df).mark_text(
+            align="center", dx=-50, dy=0, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
             y=alt.Y("rank:Q"),
             text=alt.Text("name:N"),
-            color=alt.Color("name:N", legend=None),
+            color=alt.Color("name:N", scale=color_scale, legend=None),
         )
+
+        first_seen_df = first_seen_df[first_seen_df["year"] != first_year]
+        
+        odd_rows = alt.Chart(first_seen_df[(first_seen_df["rank"] % 2 == 1) & (first_seen_df["rank"] <= 3)]).mark_text(
+            align="center", dx=0, dy=15, fontSize=labelFontSize
+        ).encode(
+            x=alt.X("year:O"),
+            y=alt.Y("rank:Q"),
+            text=alt.Text("name:N"),
+            color=alt.Color("name:N", scale=color_scale, legend=None),
+        )
+        even_rows = alt.Chart(first_seen_df[(first_seen_df["rank"]%2==0) & (first_seen_df["rank"]<=3)]).mark_text(
+            align="center", dx=0, dy=-15, fontSize=labelFontSize
+        ).encode(
+            x=alt.X("year:O"),
+            y=alt.Y("rank:Q"),
+            text=alt.Text("name:N"),
+            color=alt.Color("name:N", scale=color_scale, legend=None),
+        )
+        first_seen_labels = odd_rows + even_rows
 
         last_labels = alt.Chart(df[df["year"] == last_year]).mark_text(
-            align="left", dx=8, fontSize=11
+            align="left", dx=8, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
             y=alt.Y("rank:Q"),
             text=alt.Text("name:N"),
-            color=alt.Color("name:N", legend=None),
+            color=alt.Color("name:N", scale=color_scale, legend=None),
         )
 
-        chart = (lines + points + first_labels + last_labels).properties(
+        chart = (lines + points + first_year_labels + first_seen_labels + last_labels).properties(
             width=1000, height=500,
             title=alt.TitleParams(text=self.title, fontSize=20, anchor="middle")
-        ).configure_legend(padding=10)
+        ).configure_axisY(    labelAlign='left',     #
+            labelPadding=16,
+            titlePadding=60,
+        ).configure_legend(padding=30)
         col_plot.altair_chart(chart, use_container_width=True)
+        st.write(str(df["name"].unique().tolist()))
+        st.write(len(df["name"].unique().tolist()))
+        st.dataframe(df)
 
 # ------------- factory -------------
 ENGINES: dict[str, type[BumpPlotter]] = {

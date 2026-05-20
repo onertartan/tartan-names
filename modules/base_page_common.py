@@ -11,9 +11,11 @@ from streamlit_folium import folium_static
 import folium
 from modules.base_page import BasePage
 import plotly.express as px
+import streamlit as st
+import extra_streamlit_components as stx
+from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup, figure_setup
+from viz.gui_helpers.base_page_common.helpers import apply_custom_css, sidebar_controls_plot_options_setup, gui_basic_setup
 
-from viz.gui_helpers.base_page.ui_base_page import sidebar_controls_basic_setup, figure_setup
-from viz.gui_helpers.ui_base_page_common import *
 
 class PageCommon(BasePage):
 

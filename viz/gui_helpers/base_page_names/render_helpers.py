@@ -46,11 +46,17 @@ def create_title_for_plot( rank, year, display_option, page_name):
         else:
             title = title_prefix + selected_gender+" names"
     else:
-        title = title_prefix.title() + selected_gender + " baby names"
+        title = title_prefix + selected_gender + " baby names"
     if display_option == "nth most common":
-        title += f' in {year}'
+        if type(year) == int:
+            title += f' in {year}'
+        else:
+            title += f' in between years {year}'
     elif display_option =="top-n to filter":
-        title = f"Provinces where the selected {names_or_surnames} in top {rank} for {year}"
+        if type(year) == int:
+            title = f"Provinces where the selected {names_or_surnames} in top {rank} for {year}"
+        else:
+            title = f"Provinces where the selected {names_or_surnames} in top {rank} between years {year}"
 
     return title, names_or_surnames
 
