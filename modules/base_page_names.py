@@ -2,7 +2,14 @@ from clustering.scaling import scale
 from modules.base_page import BasePage
 import pandas as pd
 import streamlit as st
+import seaborn as sns
+import matplotlib.pyplot as plt
 import locale
+import numpy as np
+from scipy.cluster.hierarchy import dendrogram, linkage, leaves_list
+from scipy.cluster.hierarchy import fcluster
+from scipy.spatial.distance import squareform
+from sklearn.metrics import silhouette_score, davies_bouldin_score
 from utils.base_page_names.names_helpers import process_for_subtabs_211_212, preprocess_for_nth_most_common_tab, \
     preprocess_for_rank_bar_tabs, rank_again
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
@@ -15,6 +22,7 @@ from viz.plotters.bar_plotter_names import get_bar_plotter
 from viz.plotters.bump_plotter import get_bump_plotter
 from viz.plotters.geo_names_plotter import get_map_plotter
 from viz.plotters.line_plotter_names import get_line_plotter
+from viz.plotters.line_plotter_name_clusters import line_plotter_name_clusters
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
 import geopandas as gpd
@@ -122,17 +130,17 @@ class PageNames(BasePage):
 
         name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
         df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, geo_level)
-        tab_selected = render_tab_selection(page_name)
+        tab_selected = render_tab_selection(page_name,geo_level)
         if "clustering" in tab_selected:  # tabs- 1.1, 1.2, 1.3
-            self.maintab1_subtab12(df, geo_level, tab_selected, page_name) # clustering tab
+            self.maintab1_subtab_2_3(df, page_name, tab_selected, geo_level) # clustering tab
         elif tab_selected=="tab_name_trend_analysis":
-            self.maintab1_subtab3(df, geo_level, tab_selected, page_name)  # clustering tab
-        elif tab_selected == "tab_map":  #  tab 2.1
-            self.maintab2_subtab1_plot_map(df, gdf_borders, geo_level,page_name)
-        else : # elif tab_selected in ["rank_bump", "rank_line_bar", "custom_line_bar"]:  # Main Tab-2: Sub-tabs: 2-3-4
-            self.maintab2_subtab_2_3(df, geo_level, tab_selected, page_name)
+            self.maintab1_subtab_1(df, page_name, tab_selected, geo_level)  # clustering tab
+        elif tab_selected == "tab_map":  #  tab 2.3 Map Plot
+            self.maintab2_subtab3_plot_map(df, gdf_borders, page_name, geo_level)
+        else : # elif tab_selected in ["rank_bump", "rank_line_bar"]:  # Main Tab-2: Sub-tabs: 2-3
+            self.maintab2_subtab_1_2(df, page_name, tab_selected, geo_level)
 
-    def maintab1_subtab12(self, df, geo_level, tab_selected, page_name):
+    def maintab1_subtab_2_3(self, df, page_name, tab_selected, geo_level):
         # Geographical clustering & Name Clustering & Trend Analysis
         if "rank" in df.columns:
             max_rank = df.select(pl.col("rank")).max().item()  # .item() tek bir değeri Python tipine çevirir
@@ -148,14 +156,13 @@ class PageNames(BasePage):
             if df_pivot is not None:
                 plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
                 plot_mds_provinces(df_pivot)
-    def maintab1_subtab3(self,df,geo_level, tab_selected,page_name):
-        "Uses the same ui with subtab2.2 rank bump"
+    def maintab1_subtab_1(self, df, page_name, tab_selected, geo_level=None):
+        """ Name Trend Analysis Tab: Uses the same ui with subtab2.1 rank bump"""
         clusters = []
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         selected_names, use_rank_filtering, top_n, include_all_years, n_for_second_filter, use_province_or_cluster, show_column, \
             selected_n_cluster, show_provinces_separately, plotter_engine, plot_style = render_rank_and_trend_sub_tabs(
             page_name, clusters, names, geo_level, tab_selected)
-        st.dataframe(df.head())
         params = {"use_rank_filtering": use_rank_filtering,
                   "include_all_years_option": st.session_state.get("include_all_years",
                                                                    "Show Only Years When Names Are in Top-n"),
@@ -164,8 +171,155 @@ class PageNames(BasePage):
                   "show_column": show_column,
                   "n_for_second_filter": n_for_second_filter}
         df = preprocess_for_rank_bar_tabs(df, **params)
-        st.dataframe(df.head())
-    def maintab2_subtab1_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, geo_level:str,page_name:str):
+        pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
+        if len(pivot_df)<2 or len(pivot_df.columns)<2:
+            st.warning("No data available to compute correlation. You should select a range of years and multiple names.")
+            return
+
+        corr_df = pivot_df.corr(method="pearson")
+        if corr_df.empty:
+            st.warning("Not enough numeric columns to compute Pearson correlation.")
+            return
+
+        # Hierarchical clustering on 1 - correlation so similar names are adjacent.
+        distance_df = 1 - corr_df
+        np.fill_diagonal(distance_df.values, 0)
+        condensed_distance = squareform(distance_df.values, checks=False)
+        linkage_matrix = linkage(condensed_distance, method="average")
+
+        # Save original order BEFORE reordering corr_df
+        original_names = corr_df.index.tolist()  # ← original order for dendrogram & fcluster
+        ordered_names = corr_df.index[leaves_list(linkage_matrix)]
+        corr_df = corr_df.loc[ordered_names, ordered_names]  # reordered only for heatmap
+
+        fig, ax = plt.subplots(figsize=(12, 10))
+        sns.heatmap(
+            corr_df,
+            ax=ax,
+            cmap="coolwarm",
+            center=0,
+            square=True,
+            linewidths=0.5,
+            cbar_kws={"label": "Pearson correlation"},
+        )
+        ax.set_title("Pearson Correlation Heatmap")
+        ax.set_xlabel("Name")
+        ax.set_ylabel("Name")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+
+        fig, ax = plt.subplots(figsize=(12, 5))
+        cluster_cutoff = st.slider(
+            "Dendrogram cut distance",
+            min_value=0.0,
+            max_value=2.0,
+            value=0.7,
+            step=0.05,
+        )
+        # Dendrogram uses ORIGINAL order — correct
+        dendrogram(
+            linkage_matrix,
+            labels=original_names,  # ← fixed
+            color_threshold=cluster_cutoff,
+            leaf_rotation=90,
+            ax=ax,
+        )
+        ax.axhline(cluster_cutoff, color="red", linestyle="--", linewidth=1)
+        ax.text(
+            0.99,
+            0.98,
+            f"cut = {cluster_cutoff:.3f}",
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=9,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+        )
+        ax.set_title("Hierarchical Clustering Dendrogram")
+        ax.set_xlabel("Name")
+        ax.set_ylabel("Distance")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+
+        # fcluster labels align with original_names — correct
+        cluster_labels = fcluster(linkage_matrix, t=cluster_cutoff, criterion="distance")
+        clusters_df = pd.DataFrame(
+            {"name": original_names, "cluster": cluster_labels}  # ← fixed
+        ).sort_values(["cluster", "name"])
+
+        st.dataframe(clusters_df, use_container_width=True)
+
+        # Use the already computed distance matrix (squareform, with zeros on diagonal)
+        dist_matrix = distance_df.values  # shape (n_names, n_names)
+
+        silhouette_k_values = []
+        silhouette_vals = []
+
+        n_names = dist_matrix.shape[0]
+        st.header(str(dist_matrix.shape))
+        max_k = min(15, n_names - 1)
+
+        if max_k >= 2:
+            for k in range(2, max_k + 1):
+                labels = fcluster(linkage_matrix, t=k, criterion="maxclust")
+                unique, counts = np.unique(labels, return_counts=True)
+                # Only keep if we actually obtained k clusters and none is singletons-only
+               # if len(unique) != k or np.any(counts < 2):
+             #       continue
+                score = silhouette_score(dist_matrix, labels, metric="precomputed")
+                silhouette_k_values.append(k)
+                silhouette_vals.append(score)
+            if silhouette_vals:
+                fig, ax = plt.subplots(figsize=(10, 4))
+                ax.plot(silhouette_k_values, silhouette_vals, marker="o", linewidth=2)
+                ax.set_title("Silhouette Score by Number of Clusters")
+                ax.set_xlabel("k")
+                ax.set_ylabel("Silhouette score")
+                ax.set_xticks(silhouette_k_values)
+                ax.grid(True, axis="y", alpha=0.3)
+                st.pyplot(fig, use_container_width=True)
+                plt.close(fig)
+            else:
+                st.info("Silhouette score could not be computed for k=2..15 with the current data.")
+        else:
+            st.info("Not enough names to compute silhouette scores for k=2..15.")
+
+        dbi_k_values = []
+        dbi_vals = []
+        name_features = corr_df.loc[original_names, original_names].values
+        plot_DB = False
+        if max_k >= 2 and plot_DB:
+            for k in range(2, max_k + 1):
+                labels = fcluster(linkage_matrix, t=k, criterion="maxclust")
+                unique = np.unique(labels)
+                if len(unique) < 2 or len(unique) >= name_features.shape[0]:
+                    continue
+                score = davies_bouldin_score(name_features, labels)
+                dbi_k_values.append(k)
+                dbi_vals.append(score)
+
+            if dbi_vals:
+                fig, ax = plt.subplots(figsize=(10, 4))
+                ax.plot(dbi_k_values, dbi_vals, marker="o", linewidth=2)
+                ax.set_title("Davies-Bouldin Index by Number of Clusters")
+                ax.set_xlabel("k")
+                ax.set_ylabel("Davies-Bouldin index")
+                ax.set_xticks(dbi_k_values)
+                ax.grid(True, axis="y", alpha=0.3)
+                st.pyplot(fig, use_container_width=True)
+                plt.close(fig)
+            else:
+                st.info("Davies-Bouldin Index could not be computed for k=2..15 with the current data.")
+
+        line_plotter_name_clusters(
+            pivot_df=pivot_df,
+            clusters_df=clusters_df,
+            title="Cluster Name Trajectories",
+        )
+
+
+
+    def maintab2_subtab3_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, page_name:str, geo_level:str):
         # Tab 2.1 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
         names = sorted(df["name"].unique(), key=locale.strxfrm) # names variable contains surnames if surnames checkbox is selected
         rank, display_option,include_top_n,accumulate,plotter_engine = render_plot_map_sub_tab(names,page_name)
@@ -202,7 +356,8 @@ class PageNames(BasePage):
                     title, _ = create_title_for_plot(rank, year, display_option, page_name)
                     plot_map(year,title)
 
-    def maintab2_subtab_2_3(self, df, geo_level,tab_selected,page_name):
+    def maintab2_subtab_1_2(self, df, page_name, tab_selected, geo_level=None):
+        """Rank Bump Plot , Rank Bar & Line Plot"""
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
@@ -221,7 +376,7 @@ class PageNames(BasePage):
         if df.is_empty():
             st.error("You have not selected any data (provinces)")
             return
-        col_plot, _ = st.columns([9, 1])
+        col_plot, _ = st.columns([99, 1])
         col_plot.title("Counts by Name and Year")
         params = {"use_rank_filtering": use_rank_filtering,
             "include_all_years_option": st.session_state.get("include_all_years","Show Only Years When Names Are in Top-n"),

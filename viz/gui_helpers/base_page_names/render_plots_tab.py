@@ -36,7 +36,7 @@ def render_plot_map_sub_tab(names,page_name):
 
 def render_rank_filtering_panel(col_1,page_name,names):
     expression_in_sentence = "names or surnames" if page_name == "names_surnames" else "baby names"
-    selected_names = col_1.multiselect(f"Filter {expression_in_sentence}", names)
+    selected_names = col_1.multiselect(f"Filter {expression_in_sentence} (optional)", names)
     use_rank_filtering = col_1.toggle("Use rank filtering", value=True)
     with col_1.container(border=True):
         col_1_1, _ = st.columns([3, 1])
@@ -54,8 +54,16 @@ def render_rank_filtering_panel(col_1,page_name,names):
                 "Always in top-20",
                 "Always in top-50",
                 "Always in top-100",
+                "Always in top-200",
+                "Always in top-300",
+                "Always in top-400",
                 "Always in top-500",
+                "Always in top-600",
                 "Always in top-1000",
+                "Always in top-2000",
+                "Always in top-3000",
+                "Always in top-4000",
+                "Always in top-5000","Always in top-10000","Always in top-20000"
             ],
             key="always_top_filter_" + page_name, disabled=not use_rank_filtering
         )
@@ -73,7 +81,7 @@ def render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_se
     else:
         show_column="ratio"
     show_provinces_separately = col_3.toggle(f"Show provinces separately(does not aggregate counts for selected provinces)", value=False)
-    if tab_selected=="rank_bar_line" and geo_level != "":
+    if tab_selected=="rank_bar_line" and geo_level != None:
         use_province_or_cluster = col_3.radio("Select an option", options=[f"Use {geo_level}s", "Use clusters"],
                                           key="province_or_cluster").lower()
         selected_n_cluster = col_3.multiselect(f"Select clusters (default all)", clusters)

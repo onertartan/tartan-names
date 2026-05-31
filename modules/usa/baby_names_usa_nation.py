@@ -6,7 +6,7 @@ import geopandas as gpd
 
 from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
 from viz.gui_helpers.base_page_names.helpers import sidebar_controls_plot_options_setup, \
-    render_gender_name_surname_filters, render_tab_selection_usa_nationwide
+    render_gender_name_surname_filters, render_tab_selection
 
 
 class PageBabyNamesNation(PageNames):
@@ -38,9 +38,11 @@ class PageBabyNamesNation(PageNames):
         if "gender" in df.columns:
                 df = df.filter( pl.col("gender").is_in(st.session_state[gender_list_state_key]) )
 
-        tab_selected = render_tab_selection_usa_nationwide(page_name)
-
-        # since the page relies on nation-level data instead of state-level, there is not map plotting (only line, rank bump etc.)
-        self.maintab2_subtab_2_3(df, page_name, tab_selected, geo_level="")
+        tab_selected = render_tab_selection(page_name)
+        if  tab_selected=="tab_name_trend_analysis":
+            self.maintab1_subtab_1(df, page_name, tab_selected)
+        else:
+            # since the page relies on nation-level data instead of state-level, there is not map plotting (only line, rank bump etc.)
+            self.maintab2_subtab_1_2(df, page_name, tab_selected)
 
 PageBabyNamesNation().run()

@@ -1,5 +1,6 @@
 from __future__ import annotations
 import abc
+import random
 from typing import Literal
 from collections import defaultdict
 import pandas as pd
@@ -11,7 +12,29 @@ import altair as alt
 from viz.gui_helpers.base_page_names.render_helpers import get_title_statement
 from utils.base_page_names.names_helpers import validate_df
 import plotly.graph_objects as go
+def resolve_label_overlaps(label_df: pd.DataFrame, min_gap: float =-1) -> pd.DataFrame:
+    """
+    Returns a copy with 'rank_label' column — spread apart so no two labels
+    are closer than min_gap rank-units. Original 'rank' is untouched.
+    """
+    df_s = label_df.sort_values("rank").copy().reset_index(drop=True)
+    pos = df_s["rank"].tolist()
+    if min_gap==-1:
+        max_rank = max(pos)
+        min_gap = max_rank//20
+    for _ in range(1000):          # iterate until stable
+        changed = False
+        for i in range(1, len(pos)):
+            if pos[i] - pos[i - 1] < min_gap:
+                mid = (pos[i] + pos[i - 1]) / 2
+                pos[i - 1] = mid - min_gap / 2
+                pos[i]     = mid + min_gap / 2
+                changed = True
+        if not changed:
+            break
 
+    df_s["rank_label"] = pos
+    return df_s
 
 # ------------- base -------------
 class BumpPlotter(abc.ABC):
@@ -397,7 +420,7 @@ class AltairBumpPlotter(BumpPlotter):
         # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
         max_rank = self._get_max_rank(df)
-        labelFontSize=12
+        labelFontSize=10
         titleFontSize=16
         if max_rank is None:
             col_plot.warning("No rank data available for the selected filters.")
@@ -429,22 +452,18 @@ class AltairBumpPlotter(BumpPlotter):
             .first()[["name", "year", "rank"]]
         )
 
-        first_year_labels_df = (
-            df[df["year"] == first_year][["name", "year", "rank"]]
-            .drop_duplicates(subset=["name"])
-        )
-        first_year_labels = alt.Chart(first_year_labels_df).mark_text(
-            align="center", dx=-50, dy=0, fontSize=labelFontSize
+        first_year_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == first_year],250)).mark_text(
+            align="center", dx=-55, dy=0, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
-            y=alt.Y("rank:Q"),
+            y=alt.Y("rank_label:Q", scale=alt.Scale(domain=[max_rank + 0.5, 0.5])),  # ← rank_label
             text=alt.Text("name:N"),
             color=alt.Color("name:N", scale=color_scale, legend=None),
         )
 
         first_seen_df = first_seen_df[first_seen_df["year"] != first_year]
-        
-        odd_rows = alt.Chart(first_seen_df[(first_seen_df["rank"] % 2 == 1) & (first_seen_df["rank"] <= 3)]).mark_text(
+        threshold= 3 if max_rank<10 else max_rank
+        odd_rows = alt.Chart(first_seen_df[(first_seen_df["rank"] % 2 == 1) & (first_seen_df["rank"] <= threshold)]).mark_text(
             align="center", dx=0, dy=15, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
@@ -452,7 +471,7 @@ class AltairBumpPlotter(BumpPlotter):
             text=alt.Text("name:N"),
             color=alt.Color("name:N", scale=color_scale, legend=None),
         )
-        even_rows = alt.Chart(first_seen_df[(first_seen_df["rank"]%2==0) & (first_seen_df["rank"]<=3)]).mark_text(
+        even_rows = alt.Chart(first_seen_df[(first_seen_df["rank"]%2==0) & (first_seen_df["rank"]<=threshold)]).mark_text(
             align="center", dx=0, dy=-15, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
@@ -462,11 +481,11 @@ class AltairBumpPlotter(BumpPlotter):
         )
         first_seen_labels = odd_rows + even_rows
 
-        last_labels = alt.Chart(df[df["year"] == last_year]).mark_text(
+        last_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == last_year],-1) ).mark_text(
             align="left", dx=8, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
-            y=alt.Y("rank:Q"),
+            y=alt.Y("rank_label:Q", scale=alt.Scale(domain=[max_rank + 0.5, 0.5])),  # ← rank_label
             text=alt.Text("name:N"),
             color=alt.Color("name:N", scale=color_scale, legend=None),
         )
@@ -475,14 +494,44 @@ class AltairBumpPlotter(BumpPlotter):
             width=1000, height=500,
             title=alt.TitleParams(text=self.title, fontSize=20, anchor="middle")
         ).configure_axisY(    labelAlign='left',     #
-            labelPadding=16,
+            labelPadding=25,
             titlePadding=60,
-        ).configure_legend(padding=30)
+        ).configure_legend(
+    padding=40,     )
+
         col_plot.altair_chart(chart, use_container_width=True)
-        st.write(str(df["name"].unique().tolist()))
+        st.write(str(sorted(df["name"].unique().tolist())))
         st.write(len(df["name"].unique().tolist()))
         st.dataframe(df)
+        #EKSİK YILLAR RAPORU
+        """
+        # Aranan isimler listesi
+        target_names = ['Aiden', 'Brandon', 'Brian', 'Ethan', 'Gary', 'Jayden', 'Jeffrey', 'Justin', 'Liam', 'Lucas',
+                        'Mateo', 'Ronald', 'Tyler']
 
+        # Yıl aralığını belirle (1880-2024)
+        all_years = set(range(1880, 2025))
+
+        results = {}
+
+        for name in target_names:
+            # İsmin bulunduğu yılları bul
+            present_years = set(df[df['name'] == name]['year'].unique())
+            # Eksik yılları bul
+            missing_years = sorted(list(all_years - present_years))
+            results[name] = missing_years
+
+        # Sonuçları yazdır
+        st.write("Eksik Yıllar Raporu:")
+        st.write("-" * 30)
+        for name, years in results.items():
+            if not years:
+                st.write(f"{name}: Hiçbir yıl eksik değil.")
+            else:
+                # Yılları gruplandırarak daha okunabilir hale getirebiliriz (isteğe bağlı)
+                # Şimdilik direkt listeyi yazdıralım
+                st.write(f"{name}: {years}")
+        """
 # ------------- factory -------------
 ENGINES: dict[str, type[BumpPlotter]] = {
     cls.ENGINE: cls

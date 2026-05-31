@@ -22,34 +22,27 @@ def sidebar_controls_plot_options_setup(page_name):
         st.session_state["visualization_option"] = sidebar.radio("Choose visualization option",
                                                                  ["Matplotlib", "Folium"]).lower()
 
-def render_tab_selection(page_name):
+def render_tab_selection(page_name,geo_level=None):
     # if "selected_tab" not in st.session_state:
     #    st.session_state["selected_tab_"+self.page_name] = "map"
-    tabs_main = [stx.TabBarItemData(id="tab_main_clustering", title="Clustering Tabs", description=""),
-                 stx.TabBarItemData(id="tab_main_plot", title="Plots Tab", description="")
+    tabs_main = [stx.TabBarItemData(id="tab_main_algorithmic", title="Clustering & Trend Analysis Tabs", description=""),
+                 stx.TabBarItemData(id="tab_main_plot", title="Plot Tabs", description="")
                  ]
-    tab_main_selected = stx.tab_bar(data=tabs_main, default="tab_main_clustering")
+    tab_main_selected = stx.tab_bar(data=tabs_main, default="tab_main_algorithmic")
 
-    if tab_main_selected == "tab_main_clustering":
-        tabs = [stx.TabBarItemData(id="tab_geo_clustering", title="Geographical Clustering", description=""),
-                stx.TabBarItemData(id="tab_name_clustering", title="Name Clustering", description=""),
-                stx.TabBarItemData(id="tab_name_trend_analysis", title="Name Trend Analysis", description=""),
-                ]
-        st.session_state["selected_tab_" +page_name] = stx.tab_bar(data=tabs, default="tab_geo_clustering")
+    if tab_main_selected == "tab_main_algorithmic":
+        tabs=[stx.TabBarItemData(id="tab_name_trend_analysis", title="Name Trend Analysis", description="")]
+        if geo_level:
+            tabs.extend([stx.TabBarItemData(id="tab_geo_clustering", title="Geographical Clustering", description=""),
+                    stx.TabBarItemData(id="tab_name_clustering", title="Name Clustering", description="")])
+        st.session_state["selected_tab_" +page_name] = stx.tab_bar(data=tabs, default="tab_name_trend_analysis")
     else:
-        tabs = [ stx.TabBarItemData(id="tab_map", title="Map Plot", description=""),
-                 stx.TabBarItemData(id="rank_bump", title="Rank Bump Plot", description=""),
-                 stx.TabBarItemData(id="rank_bar_line", title="Rank Bar & Line Plot", description=""),
-                 ]
-        st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="tab_map")
+        tabs=[stx.TabBarItemData(id="rank_bump", title="Rank Bump Plot", description=""),
+        stx.TabBarItemData(id="rank_bar_line", title="Rank Bar & Line Plot", description="")]
+        if geo_level:
+            tabs.append(stx.TabBarItemData(id="tab_map", title="Map Plot", description=""))
+        st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="rank_bump")
     return st.session_state["selected_tab_" +page_name]
-
-def render_tab_selection_usa_nationwide(page_name):
-    tabs = [stx.TabBarItemData(id="rank_bump", title="Rank Bump Plot", description=""),
-            stx.TabBarItemData(id="rank_bar_line_bar", title="Rank Bar & Line Plot", description="")]
-    st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="rank_bump")
-    return st.session_state["selected_tab_" +page_name]
-
 
 def render_gender_name_surname_filters(page_name,cols):
     """
@@ -65,7 +58,7 @@ def render_gender_name_surname_filters(page_name,cols):
     name_surname_selection = "name"
     # data is a dictionary whose keys are names and surnames, values are corresponding dataframes
     # --- 1. Name/Surname Selection ---
-    if page_name == "names_surnames":
+    if "surnames" in page_name:
         name_surname_selection = cols[1].radio( "Select name or surname", ["Name", "Surname"], key="name_surname_selection").lower()
         st.session_state["name_surname_rb"] = name_surname_selection
 
