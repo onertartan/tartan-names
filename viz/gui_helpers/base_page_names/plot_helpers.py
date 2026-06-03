@@ -102,19 +102,3 @@ def _parse_blob_centers(centers_text: str, n_features: int):
     return normalized_centers
 
 
-def render_synthetic_data():
-    st.subheader("Synthetic Data")
-    col1, col2 = st.columns([1, 1])
-
-    n_samples = col1.number_input("n_samples", min_value=1, value=100, step=1)
-    n_features = col1.number_input("n_features", min_value=1, value=2, step=1)
-
-    centers = col1.number_input("centers", min_value=1, value=3, step=1)
-    random_state = col1.number_input("random_state",value=70)
-    return {
-        "n_samples": int(n_samples),
-        "n_features": int(n_features),
-        "centers": centers,
-        "random_state": random_state,
-    }
-

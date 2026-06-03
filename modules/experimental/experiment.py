@@ -2,9 +2,7 @@ from modules.base_page_names import PageNames
 from modules.experimental.synthetic_data_generator import BlobsSyntheticDataGenerator
 import streamlit as st
 import polars as pl
-from viz.gui_helpers.base_page_names.render_helpers import render_synthetic_data
-from viz.gui_helpers.base_page_names.helpers import sidebar_controls_plot_options_setup, \
-    render_gender_name_surname_filters
+from viz.gui_helpers.base_page_names.helpers import render_gender_name_surname_filters, render_synthetic_data
 from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
 import extra_streamlit_components as stx
 
@@ -49,7 +47,6 @@ class Experiment(PageNames):
         st.session_state["geo_scale"] = "province"
         start_year, end_year = self.data["name"].select(pl.col("year")).min().item(),  self.data["name"].select(pl.col("year")).max().item()
         sidebar_controls_basic_setup(start_year, end_year)
-        sidebar_controls_plot_options_setup(page_name)
         cols = st.columns([1, 1, 3, 2])
         tab_main_selected = self.render_tabs()
         if tab_main_selected == "tab_geo_clustering":

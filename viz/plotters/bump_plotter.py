@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import seaborn as sns
 import altair as alt
-from viz.gui_helpers.base_page_names.render_helpers import get_title_statement
+from viz.gui_helpers.base_page_names.plot_helpers import get_title_statement
 from utils.base_page_names.names_helpers import validate_df
 import plotly.graph_objects as go
 def resolve_label_overlaps(label_df: pd.DataFrame, min_gap: float =-1) -> pd.DataFrame:

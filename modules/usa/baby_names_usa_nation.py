@@ -5,8 +5,7 @@ import polars as pl
 import geopandas as gpd
 
 from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
-from viz.gui_helpers.base_page_names.helpers import sidebar_controls_plot_options_setup, \
-    render_gender_name_surname_filters, render_tab_selection
+from viz.gui_helpers.base_page_names.helpers import  render_gender_name_surname_filters, render_tab_selection
 
 
 class PageBabyNamesNation(PageNames):

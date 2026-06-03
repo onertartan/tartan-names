@@ -16,11 +16,6 @@ def load_css(file_path: str) -> None:
     except Exception as e:
         print(f"CSS file not found: {file_path}")
 
-def sidebar_controls_plot_options_setup(page_name):
-    sidebar = st.sidebar
-    if st.session_state.get("selected_tab_" + page_name, "map") == "map":
-        st.session_state["visualization_option"] = sidebar.radio("Choose visualization option",
-                                                                 ["Matplotlib", "Folium"]).lower()
 
 def render_tab_selection(page_name,geo_level=None):
     # if "selected_tab" not in st.session_state:
@@ -78,19 +73,19 @@ def render_gender_name_surname_filters(page_name,cols):
     # based on the existing list data (if any).
     if widget_key not in st.session_state:
         # Default to "Both"
-        initial_val = "Both genders"
+        initial_val = "Male"
         # If we have previous list data, sync the widget to match it
         if gender_list_state_key in st.session_state:
             current_list = st.session_state[gender_list_state_key]
-            if current_list == ["male"]:
-                initial_val = "Male"
+            if current_list == ["male","female"]:
+                initial_val = "Both genders"
             elif current_list == ["female"]:
                 initial_val = "Female"
 
         st.session_state[widget_key] = initial_val
 
     # 2. Render Widget
-    gender_selection = cols[0].radio("Select Gender", ["Both genders", "Male", "Female"], key=widget_key,label_visibility="collapsed",disabled=disable )
+    gender_selection = cols[0].radio("Select Gender", ["Male", "Female","Both genders"], key=widget_key,label_visibility="collapsed",disabled=disable )
     gender_selection_dict = {"Male":["male"],"Female":["female"],"Both genders":["male","female"]}
     # 3. Update the Data List based on the Widget's new value
     st.session_state[gender_list_state_key] = gender_selection_dict[gender_selection]
@@ -110,3 +105,20 @@ def render_data_coverage_if_rank_available(max_rank):
 def render_top_n_selector(max_n):
     col1,col2=st.columns([15,85])
     return col1.number_input("Top-n", min_value=1, max_value=max_n,  value=30,  key="top_n_names")
+
+
+def render_synthetic_data():
+    st.subheader("Synthetic Data")
+    col1, col2 = st.columns([1, 1])
+
+    n_samples = col1.number_input("n_samples", min_value=1, value=100, step=1)
+    n_features = col1.number_input("n_features", min_value=1, value=2, step=1)
+
+    centers = col1.number_input("centers", min_value=1, value=3, step=1)
+    random_state = col1.number_input("random_state",value=70)
+    return {
+        "n_samples": int(n_samples),
+        "n_features": int(n_features),
+        "centers": centers,
+        "random_state": random_state,
+    }

@@ -21,7 +21,7 @@ import vl_convert as vlc
 import matplotlib.pyplot as plt
 import pandas as pd
 from adjustText import adjust_text
-from viz.gui_helpers.base_page_names.render_helpers import build_legend_entries, set_color_mapping
+from viz.gui_helpers.base_page_names.plot_helpers import build_legend_entries, set_color_mapping
 
 state_map_reversed = {
     'Alaska': 'AK', 'Alabama': 'AL', 'Arkansas': 'AR', 'Arizona': 'AZ',
