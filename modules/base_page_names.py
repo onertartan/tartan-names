@@ -169,7 +169,7 @@ class PageNames(BasePage):
         """ Name Trend Analysis Tab: Uses the same ui with subtab2.1 rank bump"""
         clusters = []
         names = sorted(df["name"].unique(), key=locale.strxfrm)
-        selected_names, use_rank_filtering, top_n, include_all_years, n_for_second_filter, use_province_or_cluster, show_column, \
+        selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter,always_or_appeared_in_top_k, use_province_or_cluster, show_column, \
             selected_n_cluster, show_provinces_separately, plotter_engine, plot_style = render_rank_and_trend_sub_tabs(
             page_name, clusters, names, geo_level, tab_selected)
         params = {"use_rank_filtering": use_rank_filtering,
@@ -178,33 +178,40 @@ class PageNames(BasePage):
                   "selected_names": selected_names,
                   "top_n": top_n,
                   "show_column": show_column,
-                  "n_for_second_filter": n_for_second_filter}
+                  "secondary_top_k_filter": secondary_top_k_filter,
+                  "always_or_appeared_in_top_k":always_or_appeared_in_top_k}
         df = preprocess_for_rank_bar_tabs(df, **params)
 
         pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
+        if len(pivot_df)<2 or len(pivot_df.columns)<2:
+            st.warning("Note: For temporal analysis you should select a range of years and multiple names.")
+            return
+
         # pivot_df: years=rows, names=columns
 
-        #scaler = MinMaxScaler()
+        #scaler = StandardScaler()
         #scaled_values = scaler.fit_transform(pivot_df)  # scales per name (per column)
+#        scaled_values =pivot_df.apply(zscore, axis=0)
 
         #log_df = np.log1p(pivot_df)  # log1p handles zeros gracefully
        # scaled_values = log_df.apply(zscore, axis=0)
 
-        #scaled_values=np.log1p(pivot_df).diff()
+       # scaled_values=np.log1p(pivot_df).diff()+0.0001
+
         #scaled_values=pivot_df.diff().dropna()
-        #scaled_values = pivot_df.pct_change().dropna()
-        scaled_values=  TimeSeriesScalerMeanVariance().fit_transform(scaled_values.T)
+        #scaled_values=pivot_df
+
+        #scaled_values = pivot_df.pct_change().fillna(0)+0.0001
+        scaled_values=  TimeSeriesScalerMeanVariance().fit_transform(pivot_df.T)
         scaled_values = scaled_values.squeeze().T
 
         pivot_df_scaled = pd.DataFrame(
             scaled_values,
-            index=pivot_df.index[],  # years preserved
+            index=pivot_df.index,  # years preserved
             columns=pivot_df.columns  # names preserved
         )
         st.dataframe(pivot_df_scaled)
-        if len(pivot_df)<2 or len(pivot_df.columns)<2:
-            st.warning("No data available to compute correlation. You should select a range of years and multiple names.")
-            return
+
 
         corr_df = pivot_df_scaled.corr(method="pearson")
         if corr_df.empty:
@@ -262,13 +269,13 @@ class PageNames(BasePage):
         ax.set_ylabel("Name")
         st.pyplot(fig, use_container_width=True)
         plt.close(fig)
-
         fig, ax = plt.subplots(figsize=(12, 5))
+        max_val_slider = heatmap_df.max().max()
         cluster_cutoff = st.slider(
             "Dendrogram cut distance",
             min_value=0.0,
-            max_value=2.0,
-            value=0.7,
+            max_value= max_val_slider,
+            value=max_val_slider/2,
             step=0.05,
         )
         # Dendrogram uses ORIGINAL order — correct
@@ -429,7 +436,7 @@ class PageNames(BasePage):
         ).plot()
 
     def maintab2_subtab3_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, page_name:str, geo_level:str):
-        # Tab 2.1 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
+        # Tab 2.3 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
         names = sorted(df["name"].unique(), key=locale.strxfrm) # names variable contains surnames if surnames checkbox is selected
         rank, display_option,include_top_n,accumulate,plotter_engine = render_plot_map_sub_tab(names,page_name)
         def plot_map(year, title):
@@ -472,7 +479,7 @@ class PageNames(BasePage):
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
         gender = st.session_state["gender_radio_widget_"+page_name]
         names = sorted(df["name"].unique(), key=locale.strxfrm)
-        selected_names,use_rank_filtering,top_n,include_all_years,n_for_second_filter,use_province_or_cluster,show_column,\
+        selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,\
             selected_n_cluster,show_provinces_separately,plotter_engine,plot_style = render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_selected)
         if "bump" in tab_selected: # sub-tab 2.1
             plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
@@ -492,20 +499,25 @@ class PageNames(BasePage):
             "selected_names":  selected_names,
             "top_n": top_n,
             "show_column":show_column,
-            "n_for_second_filter": n_for_second_filter}
+            "secondary_top_k_filter": secondary_top_k_filter,
+            "always_or_appeared_in_top_k":always_or_appeared_in_top_k}
 
         if not use_rank_filtering and selected_names == []:
             st.error("You have not selected any names/surnames or activate RANK FILTERING")
             return
         if use_province_or_cluster == "":  # empty string is for nationwide data (no geo_level available)
-            plotter_object.plot(preprocess_for_rank_bar_tabs(df, **params), col_plot, show_column)
+            df_plot = preprocess_for_rank_bar_tabs(df, **params)
+            plotter_object.plot(df_plot, col_plot, show_column)
         elif use_province_or_cluster == f"use {geo_level}s":
+
             if show_provinces_separately:
                 for province in df[geo_level].unique(maintain_order=True).to_list():
                     df_province = df.filter(pl.col(geo_level) == province)
                     if not df_province.is_empty():
                         col_plot.subheader(province)
-                        plotter_object.plot(preprocess_for_rank_bar_tabs(df_province,**params), col_plot,show_column)
+                        df_plot = preprocess_for_rank_bar_tabs(df_province,**params)
+                        st.write(df_plot)
+                        plotter_object.plot(df_plot, col_plot,show_column)
             else:
                 plotter_object.plot(preprocess_for_rank_bar_tabs(df,**params), col_plot,show_column)
         elif use_province_or_cluster == "Use clusters" and selected_n_cluster:

@@ -14,6 +14,7 @@ import altair as alt
 import folium
 from PIL import Image
 from folium.features import GeoJsonTooltip
+from matplotlib.patches import Patch
 from streamlit_folium import st_folium
 from shapely.geometry import Polygon, box
 import vl_convert as vlc
@@ -22,6 +23,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from adjustText import adjust_text
 from viz.gui_helpers.base_page_names.plot_helpers import build_legend_entries, set_color_mapping
+from turkish_string import upper_tr
 
 state_map_reversed = {
     'Alaska': 'AK', 'Alabama': 'AL', 'Arkansas': 'AR', 'Arizona': 'AZ',
@@ -69,7 +71,8 @@ def _clip_and_plot(ax, gdf, polygon):
 
 
 def _build_label(row, geo_level):
-    region_code = state_map_reversed.get(row[geo_level], row[geo_level]).upper()
+    region_code = state_map_reversed.get(row[geo_level], row[geo_level])
+    region_code=upper_tr(region_code)
     name = row.get("name")
 
     if isinstance(name, str) and name.strip():
@@ -265,22 +268,46 @@ class MatplotlibMapPlotter(MapPlotter):
                     bbox=bbox
                 )
             )
-
-        adjust_text(
-            texts,
-            ax=ax,
-            arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
-            expand_text=(1.1, 1.2),
-            expand_points=(1.2, 1.2),
-            force_text=(0.2, 0.4),
-            force_points=(0.3, 0.5),
-        )
+        if geo_level=="state":
+            adjust_text(
+                texts,
+                ax=ax,
+                arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
+                expand_text=(1.1, 1.2),
+                expand_points=(1.2, 1.2),
+                force_text=(0.2, 0.4),
+                force_points=(0.3, 0.5),
+            )
 
         ax.axis("off")
         ax.set_title(title)
+        # # Add a table (positioned like a legend)
+        df_count = (df_main['name'].str.split('\n')  # Split names by newline
+                    .explode()  # Create separate row for each name
+                    .value_counts()  # Count occurrences
+                    .rename_axis('name')
+                    .reset_index(name='count')
+                    )
+        # Format the DataFrame as a string for the legend
+        legend_text = "\n".join(f"{row['name']}: {row['count']}" for _, row in df_count.iterrows())
+        # Create list of text entries instead of single multi-line string
+        legend_entries = [f"{row['name']}: {row['count']}" for _, row in df_count.iterrows()]
+        # Add custom legend entry with text only (no line): Create invisible handles for each entry
+        handles = [Patch(color='none', label=entry, linewidth=0) for entry in legend_entries]
+        ax.plot([], [], label=legend_text)  # Invisible plot
+        # Show legend
+        ncols = 1 + len(legend_entries) // 9
+        ax.legend(handles=handles, loc='upper right', bbox_to_anchor=(1, 0.165 if ncols > 2 else 0.21), fontsize=4,
+                  ncols=ncols,  # Two columns
+                  # Reduce left margin parameters:
+                  handlelength=0,  # Remove space for legend handle (invisible line)
+                  handletextpad=0,  # Remove padding between handle and text
+                  alignment='left'  # Force left-aligned text
+                  )
         # FIXED — store before closing
         self._figure = fig
         col_plot.pyplot(fig)
+        fig.savefig("temp/eps/X.pdf", format="pdf",dpi=300, bbox_inches="tight")
         plt.close(fig)
 
     def to_jpeg_bytes(self) -> bytes:

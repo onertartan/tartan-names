@@ -1,6 +1,6 @@
 from typing import Dict
 import pandas as pd
-
+import streamlit as st
 
 def create_cluster_color_mapping(
         gdf: pd.DataFrame,  # must contain a 'clusters' column
@@ -14,7 +14,7 @@ def create_cluster_color_mapping(
     color_map: Dict[int, str] = {-1: "gray"}
     used_colors = set()
     clusters = set(gdf["clusters"].unique())
-
+    st.header("N_CLUSTERS:"+str(len(clusters)),"color_map:"+str(color_map))
     # 1st pass – honour defaults where possible
     for idx, color in cluster_color_defaults.items():
         if idx in gdf.index:

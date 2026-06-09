@@ -9,7 +9,7 @@ from viz.gui_helpers.base_page_names.helpers import  render_gender_name_surname_
 
 
 class PageBabyNamesNation(PageNames):
-    page_name = "baby_names_nation"
+    page_name = "baby_names_usa_nation"
     geo_level= "state"
     country = "usa"
     @staticmethod

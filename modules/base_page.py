@@ -188,7 +188,8 @@ class BasePage(ABC):
                                                                                                       n_clusters,
                                                                                                       year_label,
                                                                                                       self.geo_level)
-                # GeoClusterPlotter(self.CLUSTER_COLOR_MAPPING, self.HA_POSITIONS, self.VA_POSITIONS).plot_elections(self.gdf_clusters)
+               # plot_elections
+                GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_elections(self.gdf_clusters,n_clusters)
             col_df.dataframe(df_pivot["clusters"])
         elif st.session_state.get("selected_tab_" + self.page_name, "") =="tab_synthetic_clustering":
             SyntheticDataPlotter().plot_synthetic_data(df_pivot,data_generator.ground_truth_labels)

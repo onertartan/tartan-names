@@ -88,8 +88,10 @@ class GeoClusterPlotter:
                 geom = geom.iloc[0]
             # Annotation text (as in the original second snippet)
             add_name = f"\n{row['name']}" if "name" in row else ""
-
-            text = f"{state_map_reversed.get(row[geo_level], row[geo_level]).upper()}{add_name}"
+            if geo_level =="state": # use uppercase for state names otherwise do not change(province names)
+                text = f"{state_map_reversed.get(row[geo_level], row[geo_level].upper())}{add_name}"
+            else:
+                text =row[geo_level]# f"{state_map_reversed.get(row[geo_level], row[geo_level])}{add_name}"
 
             texts.append(
                 ax.text(
@@ -103,16 +105,17 @@ class GeoClusterPlotter:
                     bbox=bbox
                 )
             )
-
-        adjust_text(
-            texts,
-            ax=ax,
-            arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
-            expand_text=(1.1, 1.2),
-            expand_points=(1.2, 1.2),
-            force_text=(0.2, 0.4),
-            force_points=(0.3, 0.5),
-        )
+        adjust_text_with_arrows= False # for pca?
+        if adjust_text_with_arrows:
+            adjust_text(
+                texts,
+                ax=ax,
+                arrowprops=dict(arrowstyle="-", color="#888888", lw=0.4),
+                expand_text=(1.1, 1.2),
+                expand_points=(1.2, 1.2),
+                force_text=(0.2, 0.4),
+                force_points=(0.3, 0.5),
+            )
         # 4. Legend & Centroid Markers
         title = f"{n_clusters} Clusters Identified {year_label}"
         ax.set_title(title)
@@ -129,14 +132,14 @@ class GeoClusterPlotter:
                                 label="Cluster representatives")
             ax.legend(loc="upper right", fontsize=6)
         fig.savefig(f"temp/result.png", dpi=300, bbox_inches="tight")
+        fig.savefig("temp/eps/X.pdf", format="pdf",dpi=300, bbox_inches="tight")
         st.pyplot(fig)
 
-    def plot_elections(self, gdf_clusters):
+    def plot_elections(self, gdf_clusters,n_clusters):
         fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-        n_clusters = st.session_state["n_cluster"]
         # Define a color map for the categories
         # Map the colors to the GeoDataFrame
-        file_name = "elections2023.csv"
+        file_name = "elections2022.csv"
         gdf_clusters["clusters"] = pd.read_csv(file_name, index_col=0)["cluster"].tolist()  # elections1-->1.figure
         color_map = {1: "darkorange", 2: "red", 3: "purple", 4: "gold"}
         gdf_clusters["color"] = gdf_clusters["clusters"].map(color_map)
@@ -181,5 +184,6 @@ class GeoClusterPlotter:
             frameon=False  # Remove if you want a background
         )
         ax.set_title(title)
+        fig.savefig("temp/eps/Figure12a.pdf", format="pdf",dpi=300, bbox_inches="tight")
 
         st.pyplot(fig)

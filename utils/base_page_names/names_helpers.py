@@ -73,7 +73,7 @@ def process_for_subtabs_211_212(df, gdf_borders, names_from_multi_select, year, 
         return df_result, df_result_not_null
     return None,None
 
-def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, include_all_years_option:bool, selected_names:List, top_n:int, show_column:str, n_for_second_filter:str) -> pl.DataFrame:
+def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, include_all_years_option:bool, selected_names:List, top_n:int, show_column:str, secondary_top_k_filter:str, always_or_appeared_in_top_k:bool) -> pl.DataFrame:
     # Tabs 2.2,2.3,2.4
     # Drop geography by aggregating counts over year + name.
     df = df.group_by(["year", "name"]).agg(pl.col("count").sum()).sort(["year", "count"], descending=[False, True])
@@ -87,6 +87,7 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
     # vectorized rank per year
     df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
     if use_rank_filtering:
+        """
         if include_all_years_option == "Include All Years for Names Ever in Top-n":
             # names that were ever in top-n across any year
             ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
@@ -102,9 +103,44 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
                     .select("name")
                 )
                 df = df.filter(pl.col("name").is_in(always_top_names["name"]))
+        """
+        if include_all_years_option == "Include All Years for Names Ever in Top-n":
+
+            apply_filter_for_years_appearing=True
+            ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
+            df = df.filter(pl.col("name").is_in(ever_top_n))
+
+            if secondary_top_k_filter and secondary_top_k_filter != "No second filter":
+                threshold = int(secondary_top_k_filter.split("top-")[1])
+                n_years = df.select(pl.col("year").n_unique()).item()
+
+                # Her ismin veri setinde toplam kaç yıl göründüğünü hesapla
+                name_stats = (
+                    df.group_by("name")
+                    .agg([
+                        pl.col("year").n_unique().alias("total_appeared_years"),
+                        pl.col("year").filter(pl.col("rank") <= threshold).n_unique().alias("years_in_threshold")
+                    ])
+                )
+                if always_or_appeared_in_top_k:
+                    # True: Sadece veri setindeki TÜM yıllarda (n_years) kesintisiz görünen
+                    # ve her yıl belirlenen threshold içinde kalan isimler.
+                    always_top_names = name_stats.filter(
+                        pl.col("years_in_threshold") == n_years
+                    ).select("name")
+                else:
+                    # False: Her yıl görünmeyen (total_appeared_years < n_years), yani NaN içeren
+                    # ancak fiilen göründüğü tüm yıllarda threshold içinde kalan isimler.
+                    always_top_names = name_stats.filter(
+                        (pl.col("years_in_threshold") == pl.col("total_appeared_years")) &
+                        (pl.col("total_appeared_years") < n_years)
+                    ).select("name")
+
+                df = df.filter(pl.col("name").is_in(always_top_names["name"]))
 
         else:
             df = df.filter(pl.col("rank") <= top_n)
+
     if selected_names:
         df = df.filter(pl.col("name").is_in(selected_names))
 

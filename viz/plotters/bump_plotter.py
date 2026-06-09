@@ -19,7 +19,9 @@ def resolve_label_overlaps(label_df: pd.DataFrame, min_gap: float =-1) -> pd.Dat
     """
     df_s = label_df.sort_values("rank").copy().reset_index(drop=True)
     pos = df_s["rank"].tolist()
-    if min_gap==-1:
+    if min_gap==-1: # do not make any changes
+        return df_s
+    elif min_gap==-2:
         max_rank = max(pos)
         min_gap = max_rank//20
     for _ in range(1000):          # iterate until stable
@@ -105,7 +107,7 @@ class MatplotlibBumpPlotter(BumpPlotter):
             dropna=False
         )
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(10, 8))
         cmap = plt.cm.get_cmap("tab20", 20)
         colors = [cmap(i) for i in range(20)]
 
@@ -167,16 +169,17 @@ class MatplotlibBumpPlotter(BumpPlotter):
 
         for _, row in self._first_seen_points(df).iterrows():
             ax.text(
-                row["year"] + 0.1,
+                row["year"] - 0.1,
                 row["rank"] - 0.15,
                 row["name"],
-                ha="left",
+                ha="right",
                 va="center",
                 fontsize=9,
                 alpha=0.7
             )
 
         col_plot.pyplot(fig)
+        fig.savefig("temp/eps/X.pdf", format="pdf",dpi=300, bbox_inches="tight")
         plt.close(fig)
 
 # ------------- plotly implementation -------------
@@ -420,6 +423,7 @@ class AltairBumpPlotter(BumpPlotter):
         # show_column is not used (added for compatibility with bar plotters which accept 3 parameters)
         validate_df(df)
         max_rank = self._get_max_rank(df)
+        st.dataframe(df)
         labelFontSize=10
         titleFontSize=16
         if max_rank is None:
@@ -452,7 +456,7 @@ class AltairBumpPlotter(BumpPlotter):
             .first()[["name", "year", "rank"]]
         )
 
-        first_year_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == first_year],250)).mark_text(
+        first_year_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == first_year],-1)).mark_text(
             align="center", dx=-55, dy=0, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
@@ -464,7 +468,7 @@ class AltairBumpPlotter(BumpPlotter):
         first_seen_df = first_seen_df[first_seen_df["year"] != first_year]
         threshold= 3 if max_rank<10 else max_rank
         odd_rows = alt.Chart(first_seen_df[(first_seen_df["rank"] % 2 == 1) & (first_seen_df["rank"] <= threshold)]).mark_text(
-            align="center", dx=0, dy=15, fontSize=labelFontSize
+            align="right", dx=-2, dy=8, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
             y=alt.Y("rank:Q"),
@@ -472,7 +476,7 @@ class AltairBumpPlotter(BumpPlotter):
             color=alt.Color("name:N", scale=color_scale, legend=None),
         )
         even_rows = alt.Chart(first_seen_df[(first_seen_df["rank"]%2==0) & (first_seen_df["rank"]<=threshold)]).mark_text(
-            align="center", dx=0, dy=-15, fontSize=labelFontSize
+            align="right", dx=-2, dy=-8, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),
             y=alt.Y("rank:Q"),
@@ -481,7 +485,7 @@ class AltairBumpPlotter(BumpPlotter):
         )
         first_seen_labels = odd_rows + even_rows
 
-        last_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == last_year],-1) ).mark_text(
+        last_labels = alt.Chart(resolve_label_overlaps(df[df["year"] == last_year],-2) ).mark_text(
             align="left", dx=8, fontSize=labelFontSize
         ).encode(
             x=alt.X("year:O"),

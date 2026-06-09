@@ -40,14 +40,15 @@ def render_rank_filtering_panel(col_1,page_name,names):
     use_rank_filtering = col_1.toggle("Use rank filtering", value=True)
     with col_1.container(border=True):
         col_1_1, _ = st.columns([3, 1])
-        top_n = col_1_1.selectbox(f"Filter top-n", range(1, 11), index=4, key="rank_" + page_name,
+        top_n = col_1_1.selectbox(f"Filter (appeared at least once in) top-n",  range(1, 11) if "usa" in page_name else range(1,31), index=4, key="rank_" + page_name,
                                   disabled=not use_rank_filtering)
         include_all_years = col_1_1.radio("Select an option",
                                           ["Show Only Years When Names Are in Top-n",
                                            "Include All Years for Names Ever in Top-n"],
                                           key="include_all_years", disabled=not use_rank_filtering)
-        n_for_second_filter = col_1_1.selectbox(
-            'Second filter (Only applies if "include all years option" is selected',
+
+        secondary_top_k_filter = col_1_1.selectbox(
+            'Secondary filter (only applies if "include all years option" is selected',
             [
                 "No second filter",
                 "Always in top-10",
@@ -65,14 +66,21 @@ def render_rank_filtering_panel(col_1,page_name,names):
                 "Always in top-4000",
                 "Always in top-5000","Always in top-10000","Always in top-20000"
             ],
-            key="always_top_filter_" + page_name, disabled=not use_rank_filtering
+            key="always_top_filter_" + page_name, disabled=not use_rank_filtering or not include_all_years
         )
-    return selected_names,use_rank_filtering,top_n,include_all_years,n_for_second_filter
+        always_or_appeared_in_top_k_label= st.radio(
+            "Select how to apply the second filter:",  # Etiket
+            ["Show names that always appeared in top-k every year",
+        "Show names with missing years (NaN) that appeared in top-k when ranked"]  # Seçenekler listesi
+        )
+        always_or_appeared_in_top_k = (always_or_appeared_in_top_k_label == "Show names that always appeared in top-k every year")
+
+    return selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k
 
 def render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_selected):
     """ Helper function for rendering 'Rank Bump Plot' & 'Rank Bar & Line Plot' (sub-tabs 2.2 & 2.3 of 'Plots Tab')  and 'Name Trend Analysis' (1.3 of 'Clustering Tab') """
     col_1, col_2,col_3,col_4,col_5  = st.columns([3,1,2,1,1])
-    selected_names, use_rank_filtering, top_n, include_all_years, n_for_second_filter= render_rank_filtering_panel(col_1,page_name,names)
+    selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter,always_or_appeared_in_top_k= render_rank_filtering_panel(col_1,page_name,names)
 
     use_province_or_cluster, selected_n_cluster = None, None
     if tab_selected=="rank_bar_line" : # ratio is only used for line plot
@@ -97,4 +105,4 @@ def render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_se
     plot_style = ""
     if "line" in tab_selected:
         plot_style = col_5.radio("Select plot style:", ["Line plot","Bar plot"] )
-    return selected_names,use_rank_filtering,top_n,include_all_years,n_for_second_filter,use_province_or_cluster,show_column,selected_n_cluster,show_provinces_separately,plotter_engine,plot_style
+    return selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,selected_n_cluster,show_provinces_separately,plotter_engine,plot_style
