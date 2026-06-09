@@ -20,3 +20,4 @@ pyvis
 scikit-learn-extra==0.3.0
 umap-learn==0.5.11
 polars
+playwright

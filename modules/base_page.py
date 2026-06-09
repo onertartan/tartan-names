@@ -141,6 +141,7 @@ class BasePage(ABC):
 
     def tab_clustering(self, df, geo_scale, save_folder="", data_generator=None,*args):
         scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main(self.page_name)
+        return
         if not clustering_algorithm:
             return
         engine_class = get_engine_class(clustering_algorithm)
@@ -163,6 +164,10 @@ class BasePage(ABC):
                 return
             st.header(str(type(df_pivot))+str( df_pivot.shape))
             labels = engine.fit_predict(df_pivot)
+            # Convert to 1D if necessary
+            if isinstance(labels, pd.DataFrame):
+                # Assume the first column contains the cluster ID, or use a known column name
+                labels = labels.iloc[:, 0]
             df_pivot["clusters"] = labels
 
         col_plot, col_df = st.columns([7, 3])
@@ -185,11 +190,10 @@ class BasePage(ABC):
             with col_plot:
                 GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_cluster_map(self.gdf_clusters,
                                                                                                       self.gdf_centroids,
-                                                                                                      n_clusters,
-                                                                                                      year_label,
+                                                                                                      n_clusters,                                                                                                   year_label,
                                                                                                       self.geo_level)
                # plot_elections
-                GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_elections(self.gdf_clusters,n_clusters)
+                #GeoClusterPlotter(CLUSTER_COLOR_MAPPING, HA_POSITIONS, VA_POSITIONS).plot_elections(self.gdf_clusters,n_clusters)
             col_df.dataframe(df_pivot["clusters"])
         elif st.session_state.get("selected_tab_" + self.page_name, "") =="tab_synthetic_clustering":
             SyntheticDataPlotter().plot_synthetic_data(df_pivot,data_generator.ground_truth_labels)

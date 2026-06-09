@@ -461,7 +461,7 @@ def plot_umap_tsne(df_pivot, CLUSTER_COLOR_MAPPING, methods=["umap"],title="Proj
         ax.set_facecolor(PANEL_BG)
 
         # Plot all points (normal)
-        for cluster_id in range(1, n_clusters + 1):
+        for cluster_id in range(1, int(n_clusters) + 1):
             mask = labels == cluster_id
             df_cluster = df_pivot[mask]
             if any(mask):

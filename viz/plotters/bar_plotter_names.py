@@ -163,7 +163,7 @@ class MatplotlibPlotter(BarPlotter):
         fig.tight_layout(rect=(0, 0.02, 1, 0.92))
 
         col_plot.pyplot(fig)
-        fig.savefig("temp/eps/Figure5a.pdf", format="pdf",dpi=300, bbox_inches="tight")
+        fig.savefig("temp/eps/Figure5b.pdf", format="pdf",dpi=300, bbox_inches="tight")
 
         plt.close(fig)
 

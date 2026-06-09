@@ -131,13 +131,21 @@ class PageNames(BasePage):
         gdf_borders = self.gdf[geo_level]
 
         st.session_state["geo_scale"] = "state" if "usa" in self.page_name else "province"
+
         header = "Names & Surnames Analysis" if self.page_name == "names_surnames" else "Baby Names Analysis"
         st.header(header)
         start_year, end_year = self.data["name"].select(pl.col("year")).min().item(),  self.data["name"].select(pl.col("year")).max().item()
         sidebar_controls_basic_setup(start_year, end_year)
+
         cols = st.columns([1, 1, 3, 2])
 
         name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
+        """TEMP FOR PDF"""
+      #  name_surname_selection="name"
+       # selected_years=[2018,2024]
+       # gender_list_state_key="gender_radio_widget_baby_names"
+        #st.session_state[gender_list_state_key] ="male"
+        #df=pd.DataFrame(columns=["name"],data=["Ahmet"])
         df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, geo_level)
         tab_selected = render_tab_selection(page_name,geo_level)
         if "clustering" in tab_selected:  # tabs- 1.1, 1.2, 1.3
