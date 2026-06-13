@@ -173,7 +173,7 @@ class BaseClustering:
         random_states: range,
         k_values: range,
         model_kwargs: dict,
-        save_folder: str,
+        save_folder: str="",
         saved_file_suffix: str = "",
         data_generator:SyntheticDataGenerator = None,
         using_same_data = False,
@@ -194,6 +194,7 @@ class BaseClustering:
             random_states = range(1)  # Hierarchical is deterministic
 
         num_of_states, num_of_k, n_samples = len(random_states),len(k_values), df.shape[0]
+        st.write(f"Number of states: {num_of_states},num_of_k: {num_of_k},n_samples: {n_samples}")
         labels_all = {seed: {} for seed in random_states}
         labels_tensor = np.empty((num_of_states, num_of_k, n_samples), dtype=int)
 
@@ -276,7 +277,7 @@ class BaseClustering:
                 file_name="labels_tensor.npy",
                 mime="application/octet-stream"
             )
-        else:
+        elif save_folder!="":
             df_summary.to_csv(f"{save_folder}/{saved_file_suffix}.csv")
             pd.DataFrame(consensus_labels_all).to_csv(f"{save_folder}/consensus_labels_all_{saved_file_suffix}.csv")
 

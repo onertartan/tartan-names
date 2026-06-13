@@ -1,6 +1,7 @@
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from scipy.stats import zscore
 
+from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
 from clustering.scaling import scale
 from modules.base_page import BasePage
 import pandas as pd
@@ -18,11 +19,14 @@ from utils.base_page_names.names_helpers import process_for_subtabs_211_212, pre
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.gui_helpers.base_page_names.plot_helpers import create_title_for_plot
 from viz.gui_helpers.base_page.helpers import province_selector, sidebar_controls_basic_setup
-from viz.gui_helpers.base_page_names.helpers import render_tab_selection, render_gender_name_surname_filters, render_data_coverage_if_rank_available
-from viz.gui_helpers.base_page_names.render_plots_tab import render_rank_and_trend_sub_tabs, render_plot_map_sub_tab
+from viz.gui_helpers.clustering_helpers import render_data_coverage_if_rank_available
+from viz.gui_helpers.base_page_names.render_tabs_helpers import render_rank_and_trend_sub_tabs, render_plot_map_sub_tab, \
+    render_tab_selection, render_gender_name_surname_filters,  render_data_type
 from viz.plotters.bar_plotter_names import get_bar_plotter
 from viz.plotters.bump_plotter import get_bump_plotter
+from viz.plotters.dendogram_plotter import plot_dendrogram
 from viz.plotters.geo_names_plotter import get_map_plotter
+from viz.plotters.heatmap_plotter import plot_heatmap
 from viz.plotters.line_plotter_names import get_line_plotter
 from viz.plotters.line_plotter_name_clusters import get_line_plotter_for_temporal_name_clusters
 from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
@@ -158,7 +162,7 @@ class PageNames(BasePage):
             self.maintab2_subtab_1_2(df, page_name, tab_selected, geo_level)
 
     def maintab1_subtab_2_3(self, df, page_name, tab_selected, geo_level):
-        # Geographical clustering & Name Clustering & Trend Analysis
+        # Geographical clustering & Name Clustering
         if "rank" in df.columns:
             max_rank = df.select(pl.col("rank")).max().item()  # .item() tek bir değeri Python tipine çevirir
             use_data_option, top_n_names = render_data_coverage_if_rank_available(30)# 30 is compatible with Türkiye, max_rank can be 5000 in USA
@@ -173,11 +177,12 @@ class PageNames(BasePage):
             if df_pivot is not None:
                 plot_umap_tsne(df_pivot.copy(), CLUSTER_COLOR_MAPPING)
                 plot_mds_provinces(df_pivot)
+
     def maintab1_subtab_1(self, df, page_name, tab_selected, geo_level=None):
         """ Name Trend Analysis Tab: Uses the same ui with subtab2.1 rank bump"""
         clusters = []
         names = sorted(df["name"].unique(), key=locale.strxfrm)
-        selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter,always_or_appeared_in_top_k, use_province_or_cluster, show_column, \
+        selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter, always_or_appeared_in_top_k, use_province_or_cluster, show_column, \
             selected_n_cluster, show_provinces_separately, plotter_engine, plot_style = render_rank_and_trend_sub_tabs(
             page_name, clusters, names, geo_level, tab_selected)
         params = {"use_rank_filtering": use_rank_filtering,
@@ -187,261 +192,154 @@ class PageNames(BasePage):
                   "top_n": top_n,
                   "show_column": show_column,
                   "secondary_top_k_filter": secondary_top_k_filter,
-                  "always_or_appeared_in_top_k":always_or_appeared_in_top_k}
-        df = preprocess_for_rank_bar_tabs(df, **params)
-
-        pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
-        if len(pivot_df)<2 or len(pivot_df.columns)<2:
-            st.warning("Note: For temporal analysis you should select a range of years and multiple names.")
-            return
-
-        # pivot_df: years=rows, names=columns
-
-        #scaler = StandardScaler()
-        #scaled_values = scaler.fit_transform(pivot_df)  # scales per name (per column)
-#        scaled_values =pivot_df.apply(zscore, axis=0)
-
-        #log_df = np.log1p(pivot_df)  # log1p handles zeros gracefully
-       # scaled_values = log_df.apply(zscore, axis=0)
-
-       # scaled_values=np.log1p(pivot_df).diff()+0.0001
-
-        #scaled_values=pivot_df.diff().dropna()
-        #scaled_values=pivot_df
-
-        #scaled_values = pivot_df.pct_change().fillna(0)+0.0001
-        scaled_values=  TimeSeriesScalerMeanVariance().fit_transform(pivot_df.T)
-        scaled_values = scaled_values.squeeze().T
-
-        pivot_df_scaled = pd.DataFrame(
-            scaled_values,
-            index=pivot_df.index,  # years preserved
-            columns=pivot_df.columns  # names preserved
+                  "always_or_appeared_in_top_k": always_or_appeared_in_top_k}
+        run_clustering = st.button(
+            "Apply hierarchical clustering and visualize",
+            key="run_clustering_" + page_name,
         )
-        st.dataframe(pivot_df_scaled)
+        if run_clustering:
+            df = preprocess_for_rank_bar_tabs(df, **params)
 
+            pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
+            # pivot_df: years=rows, names=columns
 
-        corr_df = pivot_df_scaled.corr(method="pearson")
-        if corr_df.empty:
-            st.warning("Not enough numeric columns to compute Pearson correlation.")
-            return
-        distance_df = pivot_df_scaled.T
-     #   np.fill_diagonal(distance_df.values, 0)
-      #  condensed_distance= squareform(pdist(pivot_df_scaled.T.values, metric='euclidean'))
-
-        # Feature matrix: names=rows, years=columns — correct for pdist
-        feature_matrix = pivot_df_scaled.T.values  # shape (n_names, n_years)
-
-        # pdist returns condensed distance directly — no squareform needed for linkage
-        condensed_distance = pdist(feature_matrix, metric='euclidean')
-
-        # linkage expects condensed form — correct
-        linkage_matrix = linkage(condensed_distance, method="average")
-        # Original names order — for dendrogram labels and fcluster alignment
-        original_names = pivot_df_scaled.columns.tolist()
-
-        # Ordered names for heatmap — use Euclidean distance matrix, not corr_df
-        square_distance = squareform(condensed_distance)  # (n_names, n_names) — for heatmap
-        distance_matrix_df = pd.DataFrame(
-            square_distance,
-            index=original_names,
-            columns=original_names
-        )
-
-        ordered_names = np.array(original_names)[leaves_list(linkage_matrix)]
-        distance_matrix_df = distance_matrix_df.loc[ordered_names, ordered_names]
-        heatmap_df = distance_matrix_df
-        # Hierarchical clustering on 1 - correlation so similar names are adjacent.
-      #  distance_df = 1 - corr_df
-     #   np.fill_diagonal(distance_df.values, 0)
-      #  condensed_distance = squareform(distance_df.values, checks=False)
-       # linkage_matrix = linkage(condensed_distance, method="average")
-
-        # Save original order BEFORE reordering corr_df
-     #  original_names = corr_df.index.tolist()  # ← original order for dendrogram & fcluster
-    # # ordered_names = corr_df.index[leaves_list(linkage_matrix)]
-     #  corr_df = corr_df.loc[ordered_names, ordered_names]  # reordered only for heatmap
-     #  heatmap_df= corr_df
-        fig, ax = plt.subplots(figsize=(12, 10))
-        sns.heatmap(
-            heatmap_df,
-            ax=ax,
-            cmap="coolwarm",
-            center=0,
-            square=True,
-            linewidths=0.5,
-            cbar_kws={"label": "Pearson correlation"},
-        )
-        ax.set_title("Pearson Correlation Heatmap")
-        ax.set_xlabel("Name")
-        ax.set_ylabel("Name")
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-        fig, ax = plt.subplots(figsize=(12, 5))
-        max_val_slider = heatmap_df.max().max()
-        cluster_cutoff = st.slider(
-            "Dendrogram cut distance",
-            min_value=0.0,
-            max_value= max_val_slider,
-            value=max_val_slider/2,
-            step=0.05,
-        )
-        # Dendrogram uses ORIGINAL order — correct
-        dendrogram(
-            linkage_matrix,
-            labels=original_names,  # ← fixed
-            color_threshold=cluster_cutoff,
-            leaf_rotation=90,
-            ax=ax,
-        )
-        ax.axhline(cluster_cutoff, color="red", linestyle="--", linewidth=1)
-        ax.text(
-            0.99,
-            0.98,
-            f"cut = {cluster_cutoff:.3f}",
-            transform=ax.transAxes,
-            ha="right",
-            va="top",
-            fontsize=9,
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
-        )
-        ax.set_title("Hierarchical Clustering Dendrogram")
-        ax.set_xlabel("Name")
-        ax.set_ylabel("Distance")
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-
-        # fcluster labels align with original_names — correct
-        cluster_labels = fcluster(linkage_matrix, t=cluster_cutoff, criterion="distance")
-        clusters_df = pd.DataFrame(
-            {"name": original_names, "cluster": cluster_labels}  # ← fixed
-        ).sort_values(["cluster", "name"])
-
-        st.dataframe(clusters_df, use_container_width=True)
-
-        # Use the already computed distance matrix (squareform, with zeros on diagonal)
-        dist_matrix = distance_df.values  # shape (n_names, n_names)
-
-        silhouette_k_values = []
-        silhouette_vals = []
-
-        n_names = dist_matrix.shape[0]
-        st.header(str(dist_matrix.shape))
-        max_k = min(15, n_names - 1)
-
-        if max_k >= 2:
-            for k in range(2, max_k + 1):
-                labels = fcluster(linkage_matrix, t=k, criterion="maxclust")
-                unique, counts = np.unique(labels, return_counts=True)
-                # Only keep if we actually obtained k clusters and none is singletons-only
-               # if len(unique) != k or np.any(counts < 2):
-             #       continue
-                score = silhouette_score(dist_matrix, labels, metric="euclidean")
-                silhouette_k_values.append(k)
-                silhouette_vals.append(score)
-            if silhouette_vals:
-                fig, ax = plt.subplots(figsize=(10, 4))
-                ax.plot(silhouette_k_values, silhouette_vals, marker="o", linewidth=2)
-                ax.set_title("Silhouette Score by Number of Clusters")
-                ax.set_xlabel("k")
-                ax.set_ylabel("Silhouette score")
-                ax.set_xticks(silhouette_k_values)
-                ax.grid(True, axis="y", alpha=0.3)
-                st.pyplot(fig, use_container_width=True)
-                plt.close(fig)
+            if len(pivot_df) < 2 or len(pivot_df.columns) < 2:
+                st.warning(
+                    "Note: For temporal analysis you should select a range of years and rank filtering / multiple names.")
+                return
+            feature_type=render_data_type()
+            if feature_type != "Pearson Correlation":
+                scaled_values = TimeSeriesScalerMeanVariance().fit_transform(pivot_df.T).squeeze()
             else:
-                st.info("Silhouette score could not be computed for k=2..15 with the current data.")
-        else:
-            st.info("Not enough names to compute silhouette scores for k=2..15.")
+                scaled_values=pivot_df.T
+            # scaled_values rows are names, cols are years
+            pivot_df_scaled = pd.DataFrame(scaled_values.T, index=pivot_df.index, columns=pivot_df.columns)
 
-        dbi_k_values = []
-        dbi_vals = []
-        name_features = corr_df.loc[original_names, original_names].values
-        plot_DB = False
-        if max_k >= 2 and plot_DB:
-            for k in range(2, max_k + 1):
-                labels = fcluster(linkage_matrix, t=k, criterion="maxclust")
-                unique = np.unique(labels)
-                if len(unique) < 2 or len(unique) >= name_features.shape[0]:
-                    continue
-                score = davies_bouldin_score(name_features, labels)
-                dbi_k_values.append(k)
-                dbi_vals.append(score)
+            # pivot_df_scaled rows are years, cols are names
 
-            if dbi_vals:
-                fig, ax = plt.subplots(figsize=(10, 4))
-                ax.plot(dbi_k_values, dbi_vals, marker="o", linewidth=2)
-                ax.set_title("Davies-Bouldin Index by Number of Clusters")
-                ax.set_xlabel("k")
-                ax.set_ylabel("Davies-Bouldin index")
-                ax.set_xticks(dbi_k_values)
-                ax.grid(True, axis="y", alpha=0.3)
-                st.pyplot(fig, use_container_width=True)
-                plt.close(fig)
+            # scaler = StandardScaler()
+            # scaled_values = scaler.fit_transform(pivot_df)  # scales per name (per column)
+            #        scaled_values =pivot_df.apply(zscore, axis=0)
+
+            # log_df = np.log1p(pivot_df)  # log1p handles zeros gracefully
+            # scaled_values = log_df.apply(zscore, axis=0)
+
+            # scaled_values=np.log1p(pivot_df).diff()+0.0001
+
+            # scaled_values=pivot_df.diff().dropna()
+            # scaled_values=pivot_df
+
+            # scaled_values = pivot_df.pct_change().fillna(0)+0.0001
+
+            # Original names order — for dendrogram labels and fcluster alignment
+            original_names = pivot_df_scaled.columns.tolist()
+            years=pivot_df_scaled.index.tolist()
+
+            # PEARSON CORRELATION
+            corr_heatmap_df = pivot_df_scaled.corr(method="pearson")#corr_df
+            if corr_heatmap_df.empty:
+                st.warning("Not enough numeric columns to compute Pearson correlation.")
+                return
+            # Hierarchical clustering on 1 - correlation so similar names are adjacent.
+            distance_df = 1 - corr_heatmap_df
+            np.fill_diagonal(distance_df.values, 0)
+            condensed_distance = squareform(distance_df.values, checks=False)
+            linkage_matrix_corr = linkage(condensed_distance, method="average")
+
+            # TIMESERIESKMEANS
+
+            # Feature matrix: names=rows, years=columns — correct for pdist
+            ts_features = TimeSeriesScalerMeanVariance().fit_transform(pivot_df_scaled.T).squeeze()
+             # pdist returns condensed distance directly — no squareform needed for linkage
+            condensed_distance = pdist(ts_features, metric='euclidean')
+            # linkage expects condensed form — correct
+            linkage_matrix_ts = linkage(condensed_distance, method="average")
+            # Ordered names for heatmap — use Euclidean distance matrix, not corr_df
+            square_distance = squareform(condensed_distance)  # (n_names, n_names) —square_distance  for heatmap
+            # heatmap_df is distance_matrix_df
+            ts_heatmap_df  = pd.DataFrame(square_distance, index=original_names, columns=original_names)
+            # convert ts_features from numpy to pandas
+            ts_features=pd.DataFrame(ts_features, index=original_names, columns=years)
+
+            heatmap_df_list = [corr_heatmap_df,ts_heatmap_df]
+            titles = ["Pearson Correlation","TimeKMeans Feature Distance"]
+            linkage_matrices = [linkage_matrix_corr, linkage_matrix_ts]
+
+            for heatmap_df,linkage_matrix,title in zip(heatmap_df_list,linkage_matrices,titles):
+                ordered_names = np.array(original_names)[leaves_list(linkage_matrix)]
+                heatmap_df = heatmap_df.loc[ordered_names, ordered_names]
+                plot_heatmap(heatmap_df, "name", "name", title)
+
+            cluster_cutoff = plot_dendrogram(linkage_matrix_corr, max_val_slider=corr_heatmap_df.max().max(),labels=original_names)
+            # fcluster labels align with original_names — correct
+            cluster_labels_pearson = fcluster(linkage_matrix_corr, t=cluster_cutoff, criterion="distance")
+            clusters_df_pearson = pd.DataFrame({"name": original_names, "cluster": cluster_labels_pearson}).sort_values(["cluster", "name"])
+            # TimeSeriesKMeans
+            st.header("TIME SERIES K-MEANS")
+            n_names = ts_features.shape[0]
+            max_k_ts = min(15, n_names - 1)
+            model_kwargs = {"n_clusters": -1}
+            df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
+                TimeSeriesKMeansEngine.optimal_k_analysis(pivot_df_scaled, random_states=range(0, 3),
+                                                    k_values=range(2, max_k_ts + 1), model_kwargs=model_kwargs)
+
+            st.write(consensus_labels_all[5])
+
+            st.dataframe(ts_features)
+            st.header("ts_features.shape"+str(ts_features.shape))
+            ts_k_values = []
+            ts_silhouette_vals = []
+            n_series = ts_features.shape[0]
+            max_k_ts = min(15, n_series - 1)
+
+            if max_k_ts >= 2:
+                for k in range(2, max_k_ts + 1):
+                    ts_model = TimeSeriesKMeans(n_clusters=k, metric="euclidean", random_state=0)
+                    labels = ts_model.fit_predict(ts_features)
+                    unique_labels = np.unique(labels)
+                    if len(unique_labels) < 2 or len(unique_labels) >= n_series:
+                        continue
+                    score = silhouette_score(ts_features, labels, metric="euclidean")#tslearn_silhouette_score(features_df, labels, metric="euclidean", n_jobs=-1)
+                    ts_k_values.append(k)
+                    ts_silhouette_vals.append(score)
+
+                if ts_silhouette_vals:
+                    best_idx = int(np.argmax(ts_silhouette_vals))
+                    st.write(
+                        f"Best TimeSeriesKMeans k: {ts_k_values[best_idx]}, silhouette: {ts_silhouette_vals[best_idx]:.3f}")
+
+                    fig, ax = plt.subplots(figsize=(10, 4))
+                    ax.plot(ts_k_values, ts_silhouette_vals, marker="o", linewidth=2)
+                    ax.set_title("TimeSeriesKMeans Silhouette Score by Number of Clusters")
+                    ax.set_xlabel("k")
+                    ax.set_ylabel("Silhouette score")
+                    ax.set_xticks(ts_k_values)
+                    ax.grid(True, axis="y", alpha=0.3)
+                    st.pyplot(fig, use_container_width=True)
+                    plt.close(fig)
+                else:
+                    st.info(
+                        "TimeSeriesKMeans silhouette score could not be computed for k=2..15 with the current data.")
             else:
-                st.info("Davies-Bouldin Index could not be computed for k=2..15 with the current data.")
-        st.dataframe(clusters_df, use_container_width=True)
-        get_line_plotter_for_temporal_name_clusters(
-            plotter_engine,
-            pivot_df=pivot_df,
-            clusters_df=clusters_df,
-            title="Cluster Name Trajectories",
-        ).plot()
-        #TimeSeriesKMeans
-        ts_data = TimeSeriesScalerMeanVariance().fit_transform(pivot_df_scaled.T)
-        st.header("TIME SERIES K-MEANS")
+                st.info("Not enough time series to compute TimeSeriesKMeans silhouette scores for k=2..15.")
 
-        ts_k_values = []
-        ts_silhouette_vals = []
-        n_series = ts_data.shape[0]
-        max_k_ts = min(15, n_series - 1)
+            model = TimeSeriesKMeans(n_clusters=ts_k_values[best_idx], metric="euclidean", random_state=0)
+            # Perform time series clustering using k-means
+            clusters = model.fit_predict(ts_features) + 1
+            # Create clusters_df with name column
+            clusters_df_ts = pd.DataFrame({
+                'name': pivot_df.T.index,  # veya name sütununuz neredeyse
+                'cluster': clusters
+            })
+            st.header("clusters_df:")
+            st.dataframe(clusters_df_ts)
 
-        if max_k_ts >= 2:
-            for k in range(2, max_k_ts + 1):
-                ts_model = TimeSeriesKMeans(n_clusters=k, metric="euclidean", random_state=0)
-                labels = ts_model.fit_predict(ts_data)
-                unique_labels = np.unique(labels)
-                if len(unique_labels) < 2 or len(unique_labels) >= n_series:
-                    continue
-                score = tslearn_silhouette_score(ts_data, labels, metric="euclidean", n_jobs=-1)
-                ts_k_values.append(k)
-                ts_silhouette_vals.append(score)
-
-            if ts_silhouette_vals:
-                best_idx = int(np.argmax(ts_silhouette_vals))
-                st.write(f"Best TimeSeriesKMeans k: {ts_k_values[best_idx]}, silhouette: {ts_silhouette_vals[best_idx]:.3f}")
-
-                fig, ax = plt.subplots(figsize=(10, 4))
-                ax.plot(ts_k_values, ts_silhouette_vals, marker="o", linewidth=2)
-                ax.set_title("TimeSeriesKMeans Silhouette Score by Number of Clusters")
-                ax.set_xlabel("k")
-                ax.set_ylabel("Silhouette score")
-                ax.set_xticks(ts_k_values)
-                ax.grid(True, axis="y", alpha=0.3)
-                st.pyplot(fig, use_container_width=True)
-                plt.close(fig)
-            else:
-                st.info("TimeSeriesKMeans silhouette score could not be computed for k=2..15 with the current data.")
-        else:
-            st.info("Not enough time series to compute TimeSeriesKMeans silhouette scores for k=2..15.")
-
-        model = TimeSeriesKMeans(n_clusters=ts_k_values[best_idx], metric="euclidean", random_state=0)
-        # Perform time series clustering using k-means
-        clusters = model.fit_predict(ts_data) + 1
-        # Create clusters_df with name column
-        clusters_df = pd.DataFrame({
-            'name': pivot_df.T.index,  # veya name sütununuz neredeyse
-            'cluster': clusters
-        })
-        st.header("clusters_df:")
-        st.dataframe(clusters_df)
-
-        get_line_plotter_for_temporal_name_clusters(
-            plotter_engine,
-            pivot_df=pivot_df,
-            clusters_df=clusters_df,
-            title="Cluster Name Trajectories",
-        ).plot()
+            get_line_plotter_for_temporal_name_clusters(
+                plotter_engine,
+                pivot_df=pivot_df,
+                clusters_df=clusters_df_ts,
+                title="Cluster Name Trajectories",
+            ).plot()
 
     def maintab2_subtab3_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, page_name:str, geo_level:str):
         # Tab 2.3 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)

@@ -23,13 +23,9 @@ class TimeSeriesKMeansEngine(BaseClustering):
         n_init : int
             Number of random restarts.
         """
-        self.model = TimeSeriesKMeans(n_clusters=3, metric="dtw")
-        self.metric_for_silhouette = "dtw"
+        self.model = TimeSeriesKMeans(n_clusters=n_clusters, metric="euclidean",random_state=random_state)
+        self.metric_for_silhouette = "euclidean"
     # ------------------------------------------------------------------
     def get_centroids(self, X):
         # X parameters is not needed in KMeans, it is kept for compatibility
         return self.model.cluster_centers_
-    def fit_predict(self, df: pd.DataFrame) -> pd.DataFrame:
-        df = TimeSeriesScalerMeanVariance().fit_transform(df)
-        # Perform time series clustering using k-means
-        y_pred = self.model.fit_predict(df)

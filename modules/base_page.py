@@ -141,7 +141,7 @@ class BasePage(ABC):
 
     def tab_clustering(self, df, geo_scale, save_folder="", data_generator=None,*args):
         scaler, run_optimal_k_analysis, n_seeds, use_consensus, clustering_algorithm, kwargs= gui_clustering_main(self.page_name)
-        return
+
         if not clustering_algorithm:
             return
         engine_class = get_engine_class(clustering_algorithm)

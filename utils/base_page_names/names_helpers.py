@@ -87,23 +87,7 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
     # vectorized rank per year
     df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
     if use_rank_filtering:
-        """
-        if include_all_years_option == "Include All Years for Names Ever in Top-n":
-            # names that were ever in top-n across any year
-            ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
-            df = df.filter(pl.col("name").is_in(ever_top_n))
-            if n_for_second_filter and n_for_second_filter != "No second filter":
-                threshold = int(n_for_second_filter.split("top-")[1])
-                n_years = df.select(pl.col("year").n_unique()).item()
-                always_top_names = (
-                    df.filter(pl.col("rank") <= threshold)
-                    .group_by("name")
-                    .agg(pl.col("year").n_unique().alias("years_in_threshold"))
-                    .filter(pl.col("years_in_threshold") == n_years)
-                    .select("name")
-                )
-                df = df.filter(pl.col("name").is_in(always_top_names["name"]))
-        """
+
         if include_all_years_option == "Include All Years for Names Ever in Top-n":
 
             apply_filter_for_years_appearing=True

@@ -2,7 +2,8 @@ from modules.base_page_names import PageNames
 from modules.experimental.synthetic_data_generator import BlobsSyntheticDataGenerator
 import streamlit as st
 import polars as pl
-from viz.gui_helpers.base_page_names.helpers import render_gender_name_surname_filters, render_synthetic_data
+from viz.gui_helpers.base_page_names.render_tabs_helpers import render_gender_name_surname_filters, \
+    render_synthetic_data
 from viz.gui_helpers.base_page.helpers import sidebar_controls_basic_setup
 import extra_streamlit_components as stx
 

@@ -2,9 +2,6 @@ import streamlit as st
 import pandas as pd
 import polars as pl
 
-from viz.gui_helpers.base_page_names.helpers import render_top_n_selector
-
-
 
 def gui_clustering_up_col1(page_name):
     # First column of upper part in clustering showing scaling options
@@ -145,3 +142,12 @@ def dbscan_gui_options():
     db_metric = st.selectbox("Metric", options=["euclidean", "cosine"])
 
 
+def render_top_n_selector(max_n):
+    col1,col2=st.columns([15,85])
+    return col1.number_input("Top-n", min_value=1, max_value=max_n,  value=30,  key="top_n_names")
+
+
+def render_data_coverage_if_rank_available(max_rank):
+        use_data_option = st.radio("**Data coverage**", ["Use all data","Use top-n names"],index=1)
+        top_n_names = render_top_n_selector(max_rank)
+        return use_data_option, top_n_names
