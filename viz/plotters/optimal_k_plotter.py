@@ -65,10 +65,12 @@ class OptimalKPlotter:
         )
         # ---- per-seed rows
         st.header("XXXX:"+str(num_seeds_to_plot))
+        st.header(str(columns)+"etrics_all[key]"+str(len(metrics_all)))
         for seed in range(num_seeds_to_plot):
             for j, (key, title, _) in enumerate(columns):
                 ax = axs[seed, j]
                 if key.startswith("Silhouette"):
+                    st.write("key:"+str(key)+", seed:"+str(seed)+str(metrics_all))
                     ax.plot(k_values, metrics_all[key][seed], "o-")
                     ax.set_title(f"Seed {seed}: {title}", fontsize=TITLE_FONTSIZE)
 

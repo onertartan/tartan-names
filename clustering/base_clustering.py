@@ -184,7 +184,7 @@ class BaseClustering:
                        "Davies-Bouldin Index": [],
                        "Calinski-Harabasz Index": []
                        }
-        if cls.__name__ == "KMeansEngine":
+        if cls.__name__ == "KMeansEngine" or cls.__name__ == "TimeSeriesKMeansEngine":
             metrics_all["Inertia"] = []
         elif cls.__name__ == "GMMEngine":
             metrics_all["AIC"] = []
@@ -223,21 +223,21 @@ class BaseClustering:
                     model_kwargs["n_clusters"] = k
                 engine = cls(random_state=seed, **model_kwargs)
                 labels = engine.fit_predict(df)
-               # silhouettes_cosine.append(silhouette_score(df, labels, metric="cosine"))
+                silhouettes_cosine.append(silhouette_score(df, labels, metric="cosine"))
                 silhouettes_euclidean.append(silhouette_score(df, labels, metric="euclidean"))
                 db_scores.append(davies_bouldin_score(df, labels))
                 ch_scores.append(calinski_harabasz_score(df, labels))
                 labels_all[seed][k] = labels
                 labels_tensor[seed, k_idx, :] = labels
 
-                if cls.__name__ == "KMeansEngine":
+                if cls.__name__ == "KMeansEngine" or cls.__name__=="TimeSeriesKMeansEngine":
                     inertias.append(engine.model.inertia_)
                 elif cls.__name__ == "GMMEngine":
                     aics.append(engine.model.aic(df))
                     bics.append(engine.model.bic(df))
                     nlls.append(-engine.model.score(df) * n_samples)
 
-            if cls.__name__ == "KMeansEngine":
+            if cls.__name__ == "KMeansEngine"  or cls.__name__=="TimeSeriesKMeansEngine":
                 metrics_all["Inertia"].append(inertias)
             elif cls.__name__ == "GMMEngine":
                 metrics_all["AIC"].append(aics)
@@ -245,7 +245,7 @@ class BaseClustering:
                 metrics_all["NegLogLikelihood"].append(nlls)
 
 
-           # metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
+            metrics_all["Silhouette Score (cosine)"].append(silhouettes_cosine)
             metrics_all["Silhouette Score (euclidean)"].append(silhouettes_euclidean)
             metrics_all["Calinski-Harabasz Index"].append(ch_scores)
             metrics_all["Davies-Bouldin Index"].append(db_scores)
@@ -315,7 +315,7 @@ class BaseClustering:
                 "ARI_mean": ari_mean[idx],
                 "ARI_std": ari_std[idx]
             }
-            if cls.__name__ == "KMeansEngine":
+            if cls.__name__ == "KMeansEngine" or cls.__name__=="TimeSeriesKMeansEngine":
                 iner_m, iner_s = cls.mean_sd_at_k(metrics_all, "Inertia", idx)
                 row_dict["Inertia_mean"] = iner_m
                 row_dict["Inertia_std"] = iner_s

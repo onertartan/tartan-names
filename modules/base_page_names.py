@@ -16,6 +16,7 @@ from scipy.spatial.distance import squareform, pdist
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 from utils.base_page_names.names_helpers import process_for_subtabs_211_212, preprocess_for_nth_most_common_tab, \
     preprocess_for_rank_bar_tabs, rank_again
+from viz import OptimalKPlotter
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.gui_helpers.base_page_names.plot_helpers import create_title_for_plot
 from viz.gui_helpers.base_page.helpers import province_selector, sidebar_controls_basic_setup
@@ -278,14 +279,17 @@ class PageNames(BasePage):
             st.header("TIME SERIES K-MEANS")
             n_names = ts_features.shape[0]
             max_k_ts = min(15, n_names - 1)
+            num_seeds_to_plot=1
             model_kwargs = {"n_clusters": -1}
+            k_values= range(2, max_k_ts + 1)
+            random_states=range(0,3)
             df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
-                TimeSeriesKMeansEngine.optimal_k_analysis(pivot_df_scaled, random_states=range(0, 3),
-                                                    k_values=range(2, max_k_ts + 1), model_kwargs=model_kwargs)
-
-            st.write(consensus_labels_all[5])
-
-            st.dataframe(ts_features)
+                TimeSeriesKMeansEngine.optimal_k_analysis(pivot_df_scaled, random_states=random_states,
+                                                    k_values=k_values, model_kwargs=model_kwargs)
+            OptimalKPlotter.plot_optimal_k_analysis(TimeSeriesKMeansEngine, num_seeds_to_plot, k_values, random_states,
+                                                    metrics_all, metrics_mean, ari_mean, ari_std, model_kwargs)
+            OptimalKPlotter.print_optimal_k_analysis(df_summary, using_same_data=False)
+            return
             st.header("ts_features.shape"+str(ts_features.shape))
             ts_k_values = []
             ts_silhouette_vals = []
