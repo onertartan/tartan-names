@@ -1,28 +1,25 @@
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from scipy.stats import zscore
-
 from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
+from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical, \
+    trend_timeserieskmeans_hierarchical
 from clustering.scaling import scale
 from modules.base_page import BasePage
-import pandas as pd
 import streamlit as st
-import seaborn as sns
-import matplotlib.pyplot as plt
 import locale
-import numpy as np
 from scipy.cluster.hierarchy import dendrogram, linkage, leaves_list
 from scipy.cluster.hierarchy import fcluster
 from scipy.spatial.distance import squareform, pdist
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 from utils.base_page_names.names_helpers import process_for_subtabs_211_212, preprocess_for_nth_most_common_tab, \
-    preprocess_for_rank_bar_tabs, rank_again
+    preprocess_for_rank_bar_tabs, rank_again, preprocess_for_trend, window_ari_analysis
 from viz import OptimalKPlotter
 from viz.config import CLUSTER_COLOR_MAPPING, VA_POSITIONS, HA_POSITIONS
 from viz.gui_helpers.base_page_names.plot_helpers import create_title_for_plot
 from viz.gui_helpers.base_page.helpers import province_selector, sidebar_controls_basic_setup
+from viz.gui_helpers.base_page_names.render_tab_selection import render_tab_selection
+from viz.gui_helpers.base_page_names.tab_helpers_rank_and_trend import render_rank_and_trend_sub_tabs, get_window_size, \
+    get_n_cluster
 from viz.gui_helpers.clustering_helpers import render_data_coverage_if_rank_available
-from viz.gui_helpers.base_page_names.render_tabs_helpers import render_rank_and_trend_sub_tabs, render_plot_map_sub_tab, \
-    render_tab_selection, render_gender_name_surname_filters,  render_data_type
+from viz.gui_helpers.base_page_names.render_tabs_helpers import render_plot_map_sub_tab,  render_gender_name_surname_filters
 from viz.plotters.bar_plotter_names import get_bar_plotter
 from viz.plotters.bump_plotter import get_bump_plotter
 from viz.plotters.dendogram_plotter import plot_dendrogram
@@ -34,10 +31,7 @@ from viz.plotters.network_plotter import plot_umap_tsne, plot_mds_provinces
 import polars as pl
 import geopandas as gpd
 import numpy as np
-from tslearn.clustering import TimeSeriesKMeans, silhouette_score as tslearn_silhouette_score
-from tslearn.datasets import CachedDatasets
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance
-import matplotlib.pyplot as plt
 import pandas as pd
 
 locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
@@ -182,168 +176,67 @@ class PageNames(BasePage):
     def maintab1_subtab_1(self, df, page_name, tab_selected, geo_level=None):
         """ Name Trend Analysis Tab: Uses the same ui with subtab2.1 rank bump"""
         clusters = []
+
         names = sorted(df["name"].unique(), key=locale.strxfrm)
+        n_years=df["year"].n_unique()
         selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter, always_or_appeared_in_top_k, use_province_or_cluster, show_column, \
-            selected_n_cluster, show_provinces_separately, plotter_engine, plot_style = render_rank_and_trend_sub_tabs(
+            selected_n_cluster, show_provinces_separately, plotter_engine, plot_style,col2 = render_rank_and_trend_sub_tabs(
             page_name, clusters, names, geo_level, tab_selected)
         params = {"use_rank_filtering": use_rank_filtering,
-                  "include_all_years_option": st.session_state.get("include_all_years",
-                                                                   "Show Only Years When Names Are in Top-n"),
+                  "include_all_years_option": st.session_state.get("include_all_years", "Show Only Years When Names Are in Top-n"),
                   "selected_names": selected_names,
                   "top_n": top_n,
                   "show_column": show_column,
                   "secondary_top_k_filter": secondary_top_k_filter,
                   "always_or_appeared_in_top_k": always_or_appeared_in_top_k}
-        run_clustering = st.button(
-            "Apply hierarchical clustering and visualize",
-            key="run_clustering_" + page_name,
-        )
-        if run_clustering:
+        with col2:
+            run_hierarchical_clustering = st.button("Apply hierarchical clustering and visualize", key="run_hierarchical_clustering_" + page_name)
+            run_timeserieskmeans_clustering = st.button("Apply TimeSeriesKMeans clustering and visualize", key="run_timeserieskmeans_clustering_" + page_name)
+            window = get_window_size(n_years)
+            n_cluster = get_n_cluster()
+
+        if run_hierarchical_clustering or run_timeserieskmeans_clustering:
             df = preprocess_for_rank_bar_tabs(df, **params)
+            pivot_df,pivot_df_processed, years, original_names = preprocess_for_trend(df, window)
+            if run_hierarchical_clustering:#PEARSON CORRELATION
+                ordered_names, heatmap_df, linkage_matrix, df_cluster_labels_hierarchical = trend_correlation_hierarchical(pivot_df_processed,original_names,n_cluster)
+                # Call site — clean and unambiguous
+                plot_dendrogram(linkage_matrix, n_cluster, labels=original_names)
+                plot_heatmap(heatmap_df, "name", "name", "Pearson Correlation")
+            if run_timeserieskmeans_clustering:#TIMESERIESKMEANS
+                ordered_names,heatmap_df,linkage_matrix,df_cluster_labels_hierarchical,ts_features_df=trend_timeserieskmeans_hierarchical(pivot_df_processed, original_names, n_cluster, years)
+                plot_dendrogram(linkage_matrix, n_cluster, labels=original_names)
+                plot_heatmap(heatmap_df, "name", "name", "TimeSeriesKMeans Based Distance")
+                # TimeSeriesKMeans
+                st.header("TIME SERIES K-MEANS")
+                n_names = len(original_names)
+                max_k_ts = min(15, n_names - 1)
+                num_seeds_to_plot=3
+                model_kwargs = {"n_clusters": -1}
+                k_values= range(2, max_k_ts + 1)
+                random_states=range(0,4)
 
-            pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
-            # pivot_df: years=rows, names=columns
-
-            if len(pivot_df) < 2 or len(pivot_df.columns) < 2:
-                st.warning(
-                    "Note: For temporal analysis you should select a range of years and rank filtering / multiple names.")
-                return
-            feature_type=render_data_type()
-            if feature_type != "Pearson Correlation":
-                scaled_values = TimeSeriesScalerMeanVariance().fit_transform(pivot_df.T).squeeze()
-            else:
-                scaled_values=pivot_df.T
-            # scaled_values rows are names, cols are years
-            pivot_df_scaled = pd.DataFrame(scaled_values.T, index=pivot_df.index, columns=pivot_df.columns)
-
-            # pivot_df_scaled rows are years, cols are names
-
-            # scaler = StandardScaler()
-            # scaled_values = scaler.fit_transform(pivot_df)  # scales per name (per column)
-            #        scaled_values =pivot_df.apply(zscore, axis=0)
-
-            # log_df = np.log1p(pivot_df)  # log1p handles zeros gracefully
-            # scaled_values = log_df.apply(zscore, axis=0)
-
-            # scaled_values=np.log1p(pivot_df).diff()+0.0001
-
-            # scaled_values=pivot_df.diff().dropna()
-            # scaled_values=pivot_df
-
-            # scaled_values = pivot_df.pct_change().fillna(0)+0.0001
-
-            # Original names order — for dendrogram labels and fcluster alignment
-            original_names = pivot_df_scaled.columns.tolist()
-            years=pivot_df_scaled.index.tolist()
-
-            # PEARSON CORRELATION
-            corr_heatmap_df = pivot_df_scaled.corr(method="pearson")#corr_df
-            if corr_heatmap_df.empty:
-                st.warning("Not enough numeric columns to compute Pearson correlation.")
-                return
-            # Hierarchical clustering on 1 - correlation so similar names are adjacent.
-            distance_df = 1 - corr_heatmap_df
-            np.fill_diagonal(distance_df.values, 0)
-            condensed_distance = squareform(distance_df.values, checks=False)
-            linkage_matrix_corr = linkage(condensed_distance, method="average")
-
-            # TIMESERIESKMEANS
-
-            # Feature matrix: names=rows, years=columns — correct for pdist
-            ts_features = TimeSeriesScalerMeanVariance().fit_transform(pivot_df_scaled.T).squeeze()
-             # pdist returns condensed distance directly — no squareform needed for linkage
-            condensed_distance = pdist(ts_features, metric='euclidean')
-            # linkage expects condensed form — correct
-            linkage_matrix_ts = linkage(condensed_distance, method="average")
-            # Ordered names for heatmap — use Euclidean distance matrix, not corr_df
-            square_distance = squareform(condensed_distance)  # (n_names, n_names) —square_distance  for heatmap
-            # heatmap_df is distance_matrix_df
-            ts_heatmap_df  = pd.DataFrame(square_distance, index=original_names, columns=original_names)
-            # convert ts_features from numpy to pandas
-            ts_features=pd.DataFrame(ts_features, index=original_names, columns=years)
-
-            heatmap_df_list = [corr_heatmap_df,ts_heatmap_df]
-            titles = ["Pearson Correlation","TimeKMeans Feature Distance"]
-            linkage_matrices = [linkage_matrix_corr, linkage_matrix_ts]
-
-            for heatmap_df,linkage_matrix,title in zip(heatmap_df_list,linkage_matrices,titles):
-                ordered_names = np.array(original_names)[leaves_list(linkage_matrix)]
-                heatmap_df = heatmap_df.loc[ordered_names, ordered_names]
-                plot_heatmap(heatmap_df, "name", "name", title)
-
-            cluster_cutoff = plot_dendrogram(linkage_matrix_corr, max_val_slider=corr_heatmap_df.max().max(),labels=original_names)
-            # fcluster labels align with original_names — correct
-            cluster_labels_pearson = fcluster(linkage_matrix_corr, t=cluster_cutoff, criterion="distance")
-            clusters_df_pearson = pd.DataFrame({"name": original_names, "cluster": cluster_labels_pearson}).sort_values(["cluster", "name"])
-            # TimeSeriesKMeans
-            st.header("TIME SERIES K-MEANS")
-            n_names = ts_features.shape[0]
-            max_k_ts = min(15, n_names - 1)
-            num_seeds_to_plot=1
-            model_kwargs = {"n_clusters": -1}
-            k_values= range(2, max_k_ts + 1)
-            random_states=range(0,3)
-            df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
-                TimeSeriesKMeansEngine.optimal_k_analysis(pivot_df_scaled, random_states=random_states,
-                                                    k_values=k_values, model_kwargs=model_kwargs)
-            OptimalKPlotter.plot_optimal_k_analysis(TimeSeriesKMeansEngine, num_seeds_to_plot, k_values, random_states,
-                                                    metrics_all, metrics_mean, ari_mean, ari_std, model_kwargs)
-            OptimalKPlotter.print_optimal_k_analysis(df_summary, using_same_data=False)
-            return
-            st.header("ts_features.shape"+str(ts_features.shape))
-            ts_k_values = []
-            ts_silhouette_vals = []
-            n_series = ts_features.shape[0]
-            max_k_ts = min(15, n_series - 1)
-
-            if max_k_ts >= 2:
-                for k in range(2, max_k_ts + 1):
-                    ts_model = TimeSeriesKMeans(n_clusters=k, metric="euclidean", random_state=0)
-                    labels = ts_model.fit_predict(ts_features)
-                    unique_labels = np.unique(labels)
-                    if len(unique_labels) < 2 or len(unique_labels) >= n_series:
-                        continue
-                    score = silhouette_score(ts_features, labels, metric="euclidean")#tslearn_silhouette_score(features_df, labels, metric="euclidean", n_jobs=-1)
-                    ts_k_values.append(k)
-                    ts_silhouette_vals.append(score)
-
-                if ts_silhouette_vals:
-                    best_idx = int(np.argmax(ts_silhouette_vals))
-                    st.write(
-                        f"Best TimeSeriesKMeans k: {ts_k_values[best_idx]}, silhouette: {ts_silhouette_vals[best_idx]:.3f}")
-
-                    fig, ax = plt.subplots(figsize=(10, 4))
-                    ax.plot(ts_k_values, ts_silhouette_vals, marker="o", linewidth=2)
-                    ax.set_title("TimeSeriesKMeans Silhouette Score by Number of Clusters")
-                    ax.set_xlabel("k")
-                    ax.set_ylabel("Silhouette score")
-                    ax.set_xticks(ts_k_values)
-                    ax.grid(True, axis="y", alpha=0.3)
-                    st.pyplot(fig, use_container_width=True)
-                    plt.close(fig)
-                else:
-                    st.info(
-                        "TimeSeriesKMeans silhouette score could not be computed for k=2..15 with the current data.")
-            else:
-                st.info("Not enough time series to compute TimeSeriesKMeans silhouette scores for k=2..15.")
-
-            model = TimeSeriesKMeans(n_clusters=ts_k_values[best_idx], metric="euclidean", random_state=0)
-            # Perform time series clustering using k-means
-            clusters = model.fit_predict(ts_features) + 1
-            # Create clusters_df with name column
-            clusters_df_ts = pd.DataFrame({
-                'name': pivot_df.T.index,  # veya name sütununuz neredeyse
-                'cluster': clusters
-            })
-            st.header("clusters_df:")
-            st.dataframe(clusters_df_ts)
-
-            get_line_plotter_for_temporal_name_clusters(
-                plotter_engine,
-                pivot_df=pivot_df,
-                clusters_df=clusters_df_ts,
-                title="Cluster Name Trajectories",
-            ).plot()
+                df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
+                    TimeSeriesKMeansEngine.optimal_k_analysis(ts_features_df, random_states=random_states,
+                                                        k_values=k_values, model_kwargs=model_kwargs)
+                df_clusters_ts = pd.DataFrame({
+                    'name': original_names,  # veya name sütununuz neredeyse
+                    'cluster': consensus_labels_all[n_cluster]
+                })
+                get_line_plotter_for_temporal_name_clusters(
+                    plotter_engine,
+                    pivot_df=pivot_df ,
+                    clusters_df=df_clusters_ts,
+                    title="Cluster Name Trajectories",
+                ).plot()
+                st.write("Clustering Results Based on Consensus Labels")
+                st.dataframe(pd.DataFrame(index=original_names,data=consensus_labels_all))
+                OptimalKPlotter.plot_optimal_k_analysis(TimeSeriesKMeansEngine, num_seeds_to_plot, k_values, random_states,
+                                                        metrics_all, metrics_mean, ari_mean, ari_std, model_kwargs)
+                OptimalKPlotter.print_optimal_k_analysis(df_summary, using_same_data=True)
+            window_sensitivity_analysis = True
+            if window_sensitivity_analysis:
+                window_ari_analysis(df, n_cluster)
 
     def maintab2_subtab3_plot_map(self, df:pl.DataFrame, gdf_borders:gpd.GeoDataFrame, page_name:str, geo_level:str):
         # Tab 2.3 Map Plot (2.1.1.Select Baby Names if they are in top-n , 2.1.2. Nth Most Common)
@@ -390,7 +283,7 @@ class PageNames(BasePage):
         gender = st.session_state["gender_radio_widget_"+page_name]
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,\
-            selected_n_cluster,show_provinces_separately,plotter_engine,plot_style = render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_selected)
+            selected_n_cluster,show_provinces_separately,plotter_engine,plot_style, col2 = render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_selected)
         if "bump" in tab_selected: # sub-tab 2.1
             plotter_object = get_bump_plotter(plotter_engine,gender,page_name)
         else:  # "rank_bar_line_bar"  (sub-tab 2.3)

@@ -64,13 +64,10 @@ class OptimalKPlotter:
             sharex="col",
         )
         # ---- per-seed rows
-        st.header("XXXX:"+str(num_seeds_to_plot))
-        st.header(str(columns)+"etrics_all[key]"+str(len(metrics_all)))
         for seed in range(num_seeds_to_plot):
             for j, (key, title, _) in enumerate(columns):
                 ax = axs[seed, j]
                 if key.startswith("Silhouette"):
-                    st.write("key:"+str(key)+", seed:"+str(seed)+str(metrics_all))
                     ax.plot(k_values, metrics_all[key][seed], "o-")
                     ax.set_title(f"Seed {seed}: {title}", fontsize=TITLE_FONTSIZE)
 
@@ -144,6 +141,8 @@ class OptimalKPlotter:
 
     @staticmethod
     def print_optimal_k_analysis(df_summary,using_same_data=False):
+        # using_same_data: multiple runs with different random states on same data.
+        # if same data is used ARI can be calculated, otherwise not (e.g. synthetic data generator is used)
         col1, col2 = st.columns(2)
         st.write("Results")
         st.dataframe(OptimalKPlotter.style_metrics_dataframe(df_summary,using_same_data))

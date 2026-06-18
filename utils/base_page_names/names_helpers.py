@@ -1,10 +1,16 @@
 from typing import List
 
+import numpy as np
 import pandas as pd
 import polars as pl
 import geopandas as gpd
 
 import streamlit as st
+from sklearn.metrics import adjusted_rand_score
+from tslearn.preprocessing import TimeSeriesScalerMeanVariance
+
+from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
+from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical
 
 
 def rank_again(df: pl.DataFrame, geo_column: str) -> pl.DataFrame:
@@ -130,6 +136,108 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
 
     return df.to_pandas()
 
+
+def preprocess_for_trend(df:pd.DataFrame,window):
+    pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
+    # pivot_df: years=rows, names=columns
+    if len(pivot_df) < 2 or len(pivot_df.columns) < 2:
+        st.warning(
+            "Note: For temporal analysis you should select a range of years and rank filtering / multiple names.")
+        return
+    # Original names order — for dendrogram labels and fcluster alignment
+    original_names = pivot_df.columns.tolist()
+    years = pivot_df.index.tolist()
+    st.header("SHAPE OF pivot_df:" + str(pivot_df.shape))
+    if window > 1:
+        half_window = window // 2  # 11 için bu değer 5 olacaktır.
+        # Hareketli ortalama uygulama ve boş değerleri temizleme
+        pivot_df_processed = pivot_df.rolling(window=window, center=True).mean().dropna()
+        # start and end are trimmed due to the averaging
+        years = years[half_window:-half_window]
+    else:
+        pivot_df_processed = pivot_df
+    return pivot_df,pivot_df_processed,years, original_names
+
+
+def window_ari_analysis(df, n_cluster):
+    k_values = [n_cluster]  # fixed k across all windows
+    base_window = 11        # primary analysis window
+
+    hc_labels_per_window = {}
+    tsk_labels_per_window = {}
+
+    for window in range(1,20,2):
+        pivot_df, pivot_df_processed, years, original_names = preprocess_for_trend(df, window)
+
+        # HC labels
+        _, _, _, df_hc_labels = trend_correlation_hierarchical(
+            pivot_df_processed, original_names, n_cluster
+        )
+        hc_labels_per_window[window] = df_hc_labels  # index=name, column='cluster'
+
+        # TSK labels — scale from pivot_df_processed directly
+        ts_features = TimeSeriesScalerMeanVariance().fit_transform(
+            pivot_df_processed.T
+        ).squeeze()  # (n_names, n_years)
+
+        ts_features_df = pd.DataFrame(ts_features, index=original_names, columns=years)
+        _, _, _, _, _, consensus_labels_all = TimeSeriesKMeansEngine.optimal_k_analysis(
+            ts_features_df,
+            random_states=range(0, 100),
+            k_values=k_values,
+            model_kwargs={"n_clusters":-1}
+        )
+        tsk_labels_per_window[window] = pd.DataFrame(
+            index=ts_features_df.index,
+            data={"cluster": consensus_labels_all[n_cluster]}
+        )
+
+    # ARI comparisons — base window vs all windows
+    st.subheader("Sensitivity Analysis Results")
+
+    base_hc = hc_labels_per_window[base_window]
+    base_tsk = tsk_labels_per_window[base_window]
+
+    rows = []
+    for window in [5, 11, 21]:
+        hc_w = hc_labels_per_window[window]
+        tsk_w = tsk_labels_per_window[window]
+
+        # Align everything on a common name set, identical order, before scoring
+        common_hc_names = base_hc.index.intersection(hc_w.index)
+        common_tsk_names = base_tsk.index.intersection(tsk_w.index)
+        common_cross_names = hc_w.index.intersection(tsk_w.index)
+
+        if len(common_hc_names) < len(base_hc) or len(common_hc_names) < len(hc_w):
+            st.warning(
+                f"Window={window}: HC name mismatch — "
+                f"{len(common_hc_names)} common out of "
+                f"{len(base_hc)} (base) / {len(hc_w)} (window)."
+            )
+
+        ari_hc = adjusted_rand_score(
+            base_hc.loc[common_hc_names, "cluster"].astype(int),
+            hc_w.loc[common_hc_names, "cluster"].astype(int),
+        )
+        ari_tsk = adjusted_rand_score(
+            base_tsk.loc[common_tsk_names, "cluster"].astype(int),
+            tsk_w.loc[common_tsk_names, "cluster"].astype(int),
+        )
+        ari_cross = adjusted_rand_score(
+            hc_w.loc[common_cross_names, "cluster"].astype(int),
+            tsk_w.loc[common_cross_names, "cluster"].astype(int),
+        )
+
+        rows.append({
+            "Window": window,
+            f"ARI(HC_w{base_window}, HC_w)": round(ari_hc, 3),
+            f"ARI(TSK_w{base_window}, TSK_w)": round(ari_tsk, 3),
+            "ARI(HC_w, TSK_w)": round(ari_cross, 3),
+        })
+
+    sensitivity_df = pd.DataFrame(rows).set_index("Window")
+    st.dataframe(sensitivity_df, use_container_width=True)
+    return sensitivity_df
 
 def validate_df(df: pd.DataFrame):
     # not used currently

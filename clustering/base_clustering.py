@@ -194,7 +194,6 @@ class BaseClustering:
             random_states = range(1)  # Hierarchical is deterministic
 
         num_of_states, num_of_k, n_samples = len(random_states),len(k_values), df.shape[0]
-        st.write(f"Number of states: {num_of_states},num_of_k: {num_of_k},n_samples: {n_samples}")
         labels_all = {seed: {} for seed in random_states}
         labels_tensor = np.empty((num_of_states, num_of_k, n_samples), dtype=int)
 
@@ -206,8 +205,9 @@ class BaseClustering:
         status_text = st.empty()  # This will hold the "X / Y completed" message
         start_time = time.time()  # Record overall start time
         # ---- Run Clustering ----
-        for  seed in random_states:
-            st.header("Running for the random_state:"+str(seed))
+        for i,seed in enumerate(random_states):
+
+            #st.write(f"Running for the random_state:{i}/{len(random_states)}")
             silhouettes_cosine, silhouettes_euclidean, db_scores,ch_scores, inertias, aics, bics, nlls = [], [],[], [],[], [], [], []
 
             seed_start = time.time()
