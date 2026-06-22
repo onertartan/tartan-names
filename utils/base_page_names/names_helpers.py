@@ -1,14 +1,10 @@
 from typing import List
-
-import numpy as np
 import pandas as pd
 import polars as pl
 import geopandas as gpd
-
 import streamlit as st
 from sklearn.metrics import adjusted_rand_score
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance
-
 from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
 from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical
 
