@@ -1,5 +1,3 @@
-from pandas import pivot
-
 from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
 from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical, \
     trend_timeserieskmeans_hierarchical
@@ -7,10 +5,7 @@ from clustering.scaling import scale
 from modules.base_page import BasePage
 import streamlit as st
 import locale
-from scipy.cluster.hierarchy import dendrogram, linkage, leaves_list
-from scipy.cluster.hierarchy import fcluster
-from scipy.spatial.distance import squareform, pdist
-from sklearn.metrics import silhouette_score, davies_bouldin_score
+from utils import SessionAdapter
 from utils.base_page_names.names_helpers import process_for_subtabs_211_212, preprocess_for_nth_most_common_tab, \
     preprocess_for_rank_bar_tabs, rank_again, preprocess_for_trend, window_ari_analysis
 from viz import OptimalKPlotter
@@ -42,8 +37,11 @@ class PageNames(BasePage):
     geo_level = None
     country = "turkiye"
     # page_name initialized in sub-classes
+    def __init__(self):
+        super().__init__()
+        self.session = SessionAdapter(self.page_name)
 
-    def preprocessing_initial_filtering(self, name_surname_selection, selected_years, gender_list_state_key, cols, geo_column="province"):
+    def preprocessing_initial_filtering(self, name_surname_selection, selected_years, gender_list, cols, geo_column="province"):
         """
         Load the selected names/surnames dataset and apply the initial UI filters.
 
@@ -55,7 +53,7 @@ class PageNames(BasePage):
         ----------
         name_surname_selection(str) : Dataset key chosen in the UI, such as ``"name"`` or ``"surname"``.
         selected_years (list)       : Years selected by the user.
-        gender_list_state_key (str) : Session-state key that stores the selected genders.
+        gender_list (list)          : Selected gender values, e.g. ``["male", "female"]``.
         cols (list)                 : Streamlit columns used to place the geography selector.
         geo_column (str)            : Geography column to filter on, for example ``"province"`` or ``"state"``.
 
@@ -77,16 +75,15 @@ class PageNames(BasePage):
         # 5. Filter according to the gender
         # If surname is not selected there is a gender column (the line below is sufficent)  if name_surname_selection != "surname":
         if "gender" in df.columns:
-                df = df.filter( pl.col("gender").is_in(st.session_state[gender_list_state_key]) )
+                df = df.filter( pl.col("gender").is_in(gender_list) )
         return df
 
     def preprocess_clustering(self, df, selected_tab):
         page_name,geo_column = self.page_name, self.geo_level
         year = df.index.get_level_values(0).unique() # year(s)
         df_year = df.loc[year]
-        if page_name == "names_surnames" and "name_surname_rb" in st.session_state and st.session_state["name_surname_rb"] == "surname":
-            df_year = df.loc[year]
-        elif st.session_state["sex_" + page_name] == ["male", "female"]:  # if both sexes are selected
+
+        if self.session.get("gender_list") == ["male", "female"]:  # if both sexes are selected
             df_year_male, df_year_female = df[df["gender"] == "male"].loc[year], df[df["gender"] == "female"].loc[year]
             overlapping_names = set(df_year_male["name"]) & set(df_year_female["name"])
             nonoverlapping_names =set(df_year_male["name"]) - set(df_year_female["name"])
@@ -97,19 +94,13 @@ class PageNames(BasePage):
             df_year_female['name'] = df_year_female.apply(
                 lambda x: f"{x['name']}_male" if x['name'] in overlapping_names else x['name'], axis=1)
             df_year = pd.concat([df_year_male, df_year_female])
-     #   else:  # single gender selected for names  # gender selection handled in preprocessing_initial now
-     #       sex = st.session_state["sex_" + page_name]
-     #       df_year = df[df["sex"].isin(sex)].loc[year]
 
-        if selected_tab == "tab_temporal_clustering":
-            total_counts = df[["total_count"]].groupby(level=["year", geo_column]).first()
        # else: # Use top-30 names for clustering otherwise, pivot table becomes a very high-dimensional sparse matrix
        #     df=df.filter((pl.col("rank") <= 30))
         # Get unique cumulative total counts over years(for each province)
-        total_counts = df[["total_count"]].groupby(level=["year", geo_column]).first()
-        # INSTEAD OF AGGREGATING PROVINCE/STATE COUNTS OVER YEARS, KEEP YEAR COLUMN
-        pivot_df = df.pivot_table(index=['year', self.geo_level], columns='name', values='count', fill_value=0)  # fill_value: replaces NaN with 0
-        total_counts = total_counts.groupby(geo_column).sum()
+        df_total_counts = df[["total_count"]].groupby(level=["year", geo_column]).first()
+        st.dataframe(df_total_counts)
+        total_counts = df_total_counts.groupby(geo_column).sum()
         if isinstance(df_year.index, pd.MultiIndex):  # If applying temporal clustering (multiple years given as year)
             df_year = df_year.droplevel(0)  # Drop the first level year(position 0), if so index becomes province/state
 
@@ -140,14 +131,13 @@ class PageNames(BasePage):
 
         cols = st.columns([1, 1, 3, 2])
 
-        name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
+        name_surname_selection, selected_years, gender_list = render_gender_name_surname_filters(page_name,cols)
         """TEMP FOR PDF"""
       #  name_surname_selection="name"
        # selected_years=[2018,2024]
-       # gender_list_state_key="gender_radio_widget_baby_names"
-        #st.session_state[gender_list_state_key] ="male"
+       # gender_list=["male"]
         #df=pd.DataFrame(columns=["name"],data=["Ahmet"])
-        df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, geo_level)
+        df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list, cols, geo_level)
         tab_selected = render_tab_selection(page_name,geo_level)
         if "clustering" in tab_selected:  # tabs- 1.1, 1.2, 1.3
             self.maintab1_subtab_2_3(df, page_name, tab_selected, geo_level) # clustering tab
@@ -179,7 +169,6 @@ class PageNames(BasePage):
     def maintab1_subtab_1(self, df, page_name, tab_selected, geo_level=None):
         """ Name Trend Analysis Tab: Uses the same ui with subtab2.1 rank bump"""
         clusters = []
-
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         n_years=df["year"].n_unique()
         selected_names, use_rank_filtering, top_n, include_all_years, secondary_top_k_filter, always_or_appeared_in_top_k, use_province_or_cluster, show_column, \
@@ -237,10 +226,7 @@ class PageNames(BasePage):
                 df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
                     TimeSeriesKMeansEngine.optimal_k_analysis(ts_features_df, random_states=random_states,
                                                         k_values=k_values, model_kwargs=model_kwargs)
-                df_clusters_ts = pd.DataFrame({
-                    'name': original_names,  # veya name sütununuz neredeyse
-                    'cluster': consensus_labels_all[n_cluster]
-                })
+                df_clusters_ts = pd.DataFrame({'name': original_names, 'cluster': consensus_labels_all[n_cluster]})
                 get_line_plotter_for_temporal_name_clusters(
                     plotter_engine,
                     pivot_df=pivot_df ,
@@ -297,8 +283,10 @@ class PageNames(BasePage):
         """Rank Bump Plot , Rank Bar & Line Plot"""
         clusters = []
         if "n_clusters_" + page_name in st.session_state:
+            #clusters = range(1, self.session.get("n_clusters") + 1)
             clusters = range(1, st.session_state["n_clusters_" + page_name] + 1)
-        gender = st.session_state["gender_radio_widget_"+page_name]
+        #gender = st.session_state.get("sex_" + page_name, ["male", "female"])
+        gender = self.session.get("gender_radio_widget")
         names = sorted(df["name"].unique(), key=locale.strxfrm)
         selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,\
             selected_n_cluster,show_provinces_separately,plotter_engine,plot_style, col2 = render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_selected)

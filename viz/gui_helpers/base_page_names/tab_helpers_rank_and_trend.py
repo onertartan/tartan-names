@@ -36,6 +36,7 @@ def render_rank_and_trend_sub_tabs_helper_rank_filtering_panel(col_1, page_name,
                                           ["Show Only Years When Names Are in Top-n",
                                            "Include All Years for Names Ever in Top-n"],
                                           key="include_all_years", disabled=not use_rank_filtering)
+        include_all_years = include_all_years=="Include All Years for Names Ever in Top-n"
         thresholds = [10, 20, 50, 100, 200, 300, 400, 500, 600, 1000, 2000, 3000, 4000, 5000, 10000, 20000]
         options = ["No second filter"]
         for t in thresholds:
@@ -90,4 +91,12 @@ def render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_se
     plot_style = ""
     if "line" in tab_selected:
         plot_style = col_5.radio("Select plot style:", ["Line plot","Bar plot"] )
+
+    params = {"use_rank_filtering": use_rank_filtering,
+              "include_all_years_option": include_all_years,
+              "selected_names": selected_names,
+              "top_n": top_n,
+              "show_column": show_column,
+              "secondary_top_k_filter": secondary_top_k_filter,
+              "always_or_appeared_in_top_k": always_or_appeared_in_top_k}
     return selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,selected_n_cluster,show_provinces_separately,plotter_engine,plot_style,col_23

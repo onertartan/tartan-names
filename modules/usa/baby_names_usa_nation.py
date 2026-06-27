@@ -24,7 +24,7 @@ class PageBabyNamesNation(PageNames):
         sidebar_controls_basic_setup(start_year, end_year)
         cols = st.columns([1, 1, 3, 2])
 
-        name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
+        name_surname_selection, selected_years, gender_list = render_gender_name_surname_filters(page_name,cols)
 
         df = self.data["name"]
         # 4. Filter according to the selected year(s)
@@ -32,7 +32,7 @@ class PageBabyNamesNation(PageNames):
         # 5. Filter according to the gender
         # If surname is not selected there is a gender column (the line below is sufficent)  if name_surname_selection != "surname":
         if "gender" in df.columns:
-                df = df.filter( pl.col("gender").is_in(st.session_state[gender_list_state_key]) )
+                df = df.filter( pl.col("gender").is_in(gender_list) )
 
         tab_selected = render_tab_selection(page_name)
         if  tab_selected=="tab_name_trend_analysis":

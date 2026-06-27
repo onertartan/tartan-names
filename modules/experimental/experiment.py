@@ -51,8 +51,8 @@ class Experiment(PageNames):
         cols = st.columns([1, 1, 3, 2])
         tab_main_selected = self.render_tabs()
         if tab_main_selected == "tab_geo_clustering":
-            name_surname_selection, selected_years, gender_list_state_key = render_gender_name_surname_filters(page_name,cols)
-            df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list_state_key, cols, geo_level)
+            name_surname_selection, selected_years, gender_list = render_gender_name_surname_filters(page_name,cols)
+            df = self.preprocessing_initial_filtering(name_surname_selection, selected_years, gender_list, cols, geo_level)
             df = df.to_pandas().set_index(['year', geo_level]).sort_index()
             data_generator = None
         else: # make blobs synthetic data

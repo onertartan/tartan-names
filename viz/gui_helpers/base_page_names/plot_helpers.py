@@ -15,9 +15,16 @@ def get_title_statement(gender, page_name):
     if page_name == "baby_names":
         title_statement = "Baby " + title_statement
 
-    if len(gender) == 1 and title_statement != "Surnames":
-        gender = gender[0]
-        title_statement = " " + gender.capitalize() + " " + title_statement
+    if title_statement != "Surnames":
+        if isinstance(gender, str):
+            gender_values = [gender]
+        elif gender is None:
+            gender_values = []
+        else:
+            gender_values = list(gender)
+
+        if len(gender_values) == 1:
+            title_statement = " " + gender_values[0].capitalize() + " " + title_statement
 
     return title_statement
 
@@ -100,5 +107,4 @@ def _parse_blob_centers(centers_text: str, n_features: int):
         normalized_centers.append(list(row))
 
     return normalized_centers
-
 

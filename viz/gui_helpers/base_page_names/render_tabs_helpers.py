@@ -1,6 +1,13 @@
 import extra_streamlit_components as stx
 import streamlit as st
 
+# module level — built once
+GENDER_LABEL_TO_LIST = {
+    "Male": ["male"],
+    "Female": ["female"],
+    "Both genders": ["male", "female"],
+}
+
 def render_plot_map_sub_tab(names,page_name):
     # Expression depending on page
     expr = "names or surnames" if page_name == "names_surnames" else "baby names"
@@ -39,9 +46,56 @@ def render_plot_map_sub_tab(names,page_name):
 
 
 
-def render_gender_name_surname_filters(page_name,cols):
+# Maps the gender radio label to the list of gender values used for filtering.
+GENDER_LABEL_TO_LIST = {
+    "Male": ["male"],
+    "Female": ["female"],
+    "Both genders": ["male", "female"],
+}
+
+
+def _render_name_surname_selection(page_name, col):
+    """Render the name/surname radio (surname pages only) and return the selection."""
+    # data is a dictionary whose keys are names and surnames, values are corresponding dataframes
+    if "surnames" not in page_name:
+        return "name"
+    selection = col.radio("Select name or surname", ["Name", "Surname"],
+                          key="name_surname_selection").lower()
+    st.session_state["name_surname_rb"] = selection
+    return selection
+
+
+def _initial_gender_label(gender_list_key):
+    """Sync the widget's first value to any previously stored gender list."""
+    current_list = st.session_state.get(gender_list_key)
+    if current_list == ["male", "female"]:
+        return "Both genders"
+    if current_list == ["female"]:
+        return "Female"
+    return "Male"
+
+
+def _render_gender_selection(page_name, col, disabled):
+    """Render the gender radio and return the selected list of gender values."""
+    gender_list_key = "gender_list_" + page_name
+    widget_key = "gender_radio_widget_" + page_name  # used for sub-folder name in saving clustering results
+
+    # One-time initialization: if the widget hasn't been created yet, set its
+    # initial value based on the existing list data (if any).
+    if widget_key not in st.session_state:
+        st.session_state[widget_key] = _initial_gender_label(gender_list_key)
+
+    label = col.radio("Select Gender", list(GENDER_LABEL_TO_LIST), key=widget_key,
+                      label_visibility="collapsed", disabled=disabled)
+    # Surnames have no gender dimension → force both genders.
+    gender_list = ["male", "female"] if disabled else GENDER_LABEL_TO_LIST[label]
+    st.session_state[gender_list_key] = gender_list
+    return gender_list
+
+
+def render_gender_name_surname_filters(page_name, cols):
     """
-     Configure name/surname selection, temporal filtering, and gender selection state.
+    Configure name/surname selection, temporal filtering, and gender selection state.
 
     This helper centralizes UI rendering and session state management for
     name-based analyses across both "Names & Surnames" and "Baby Names" pages.
@@ -49,52 +103,14 @@ def render_gender_name_surname_filters(page_name,cols):
       (1) name vs. surname selection,
       (2) year range filtering,
       (3) gender selection with persistent session state.
+
+    Returns the selected gender values as a list, not a session-state key.
     """
-    name_surname_selection = "name"
-    # data is a dictionary whose keys are names and surnames, values are corresponding dataframes
-    # --- 1. Name/Surname Selection ---
-    if "surnames" in page_name:
-        name_surname_selection = cols[1].radio( "Select name or surname", ["Name", "Surname"], key="name_surname_selection").lower()
-        st.session_state["name_surname_rb"] = name_surname_selection
-
-    # --- 2. Date Filtering ---
-    # Ensure year_1 and year_2 exist in session state
+    name_surname_selection = _render_name_surname_selection(page_name, cols[1])
     selected_years = range(st.session_state["year_1"], st.session_state["year_2"] + 1)
-
-    # --- 3. Gender Selection Logic ---
-    disable = (name_surname_selection == "surname")
-
-    # Define keys for clarity
-    gender_list_state_key = "sex_" + page_name
-    widget_key = "gender_radio_widget_" + page_name # used for sub-folder name in saving clustering results
-
-    # 1. One-time Initialization
-    # If the widget hasn't been initialized yet, set its initial value
-    # based on the existing list data (if any).
-    if widget_key not in st.session_state:
-        # Default to "Both"
-        initial_val = "Male"
-        # If we have previous list data, sync the widget to match it
-        if gender_list_state_key in st.session_state:
-            current_list = st.session_state[gender_list_state_key]
-            if current_list == ["male","female"]:
-                initial_val = "Both genders"
-            elif current_list == ["female"]:
-                initial_val = "Female"
-
-        st.session_state[widget_key] = initial_val
-
-    # 2. Render Widget
-    gender_selection = cols[0].radio("Select Gender", ["Male", "Female","Both genders"], key=widget_key,label_visibility="collapsed",disabled=disable )
-    gender_selection_dict = {"Male":["male"],"Female":["female"],"Both genders":["male","female"]}
-    # 3. Update the Data List based on the Widget's new value
-    st.session_state[gender_list_state_key] = gender_selection_dict[gender_selection]
-    # --- 4. Override for Surnames ---
-    # If surname is selected, we force both genders (or ignore gender column)
-    if disable:
-        st.session_state[gender_list_state_key] = ["male", "female"]
-
-    return name_surname_selection, selected_years, gender_list_state_key
+    gender_list = _render_gender_selection(
+        page_name, cols[0], disabled=(name_surname_selection == "surname"))
+    return name_surname_selection, selected_years, gender_list
 
 
 
