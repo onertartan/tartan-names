@@ -421,8 +421,9 @@ def plot_umap_tsne(df_pivot, CLUSTER_COLOR_MAPPING, methods=["umap"],title="Proj
     labels = df_pivot["clusters"]
     n_clusters = df_pivot["clusters"].max()
     # ── Step 1: PCA to 50 dimensions ─────────────────────────────────
-    n_pca = len(df_pivot)-1
+    n_pca = min(df_features.shape[0], df_features.shape[1])-1
     pca = PCA(n_components=n_pca, random_state=336)
+    n_dim = min(df_features.shape)  # 37
     coords_pca = pca.fit_transform(df_features.values)
     explained = pca.explained_variance_ratio_.sum()
     st.caption(f"PCA retains {explained:.1%} of variance in {n_pca} components")

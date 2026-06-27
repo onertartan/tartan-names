@@ -1,3 +1,5 @@
+from pandas import pivot
+
 from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
 from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical, \
     trend_timeserieskmeans_hierarchical
@@ -166,7 +168,8 @@ class PageNames(BasePage):
 
         # Convert Polars dataframe to Pandas dataframe
         df = df.to_pandas().set_index(['year', geo_level]).sort_index()
-        save_folder =  "results/"+self.country+"/files"+st.session_state["gender_radio_widget_" + page_name].lower()
+        gender=st.session_state['gender_radio_widget_' + page_name].lower()
+        save_folder =  f"results/{self.country}/{tab_selected}/{gender}"
         df_pivot = self.tab_clustering(df, geo_level, save_folder,None,tab_selected) # df, geo_scale, save_folder="", data_generator=None,
         if tab_selected == "tab_geo_clustering":
             if df_pivot is not None:
@@ -190,19 +193,34 @@ class PageNames(BasePage):
                   "secondary_top_k_filter": secondary_top_k_filter,
                   "always_or_appeared_in_top_k": always_or_appeared_in_top_k}
         with col2:
-            run_hierarchical_clustering = st.button("Apply hierarchical clustering and visualize", key="run_hierarchical_clustering_" + page_name)
-            run_timeserieskmeans_clustering = st.button("Apply TimeSeriesKMeans clustering and visualize", key="run_timeserieskmeans_clustering_" + page_name)
+            plot_trend=st.button("Plot trend", key="plot_trend_" + page_name,use_container_width=True)
+            run_hierarchical_clustering = st.button("Apply hierarchical clustering and visualize", key="run_hierarchical_clustering_" + page_name,use_container_width=True)
+            run_timeserieskmeans_clustering = st.button("Apply TimeSeriesKMeans clustering and visualize", key="run_timeserieskmeans_clustering_" + page_name,use_container_width=True)
             window = get_window_size(n_years)
             n_cluster = get_n_cluster()
-
-        if run_hierarchical_clustering or run_timeserieskmeans_clustering:
+        col_df,_=st.columns([9,1])
+        if run_hierarchical_clustering or run_timeserieskmeans_clustering or plot_trend:
             df = preprocess_for_rank_bar_tabs(df, **params)
             pivot_df,pivot_df_processed, years, original_names = preprocess_for_trend(df, window)
+            if plot_trend:
+                with col_df:
+                     get_line_plotter_for_temporal_name_clusters(
+                        plotter_engine,
+                        pivot_df=pivot_df,
+                        clusters_df=pd.DataFrame({"cluster": 1,"name":pivot_df.columns}),
+                        title="Cluster Name Trajectories",
+                    ).plot()
             if run_hierarchical_clustering:#PEARSON CORRELATION
                 ordered_names, heatmap_df, linkage_matrix, df_cluster_labels_hierarchical = trend_correlation_hierarchical(pivot_df_processed,original_names,n_cluster)
                 # Call site — clean and unambiguous
                 plot_dendrogram(linkage_matrix, n_cluster, labels=original_names)
                 plot_heatmap(heatmap_df, "name", "name", "Pearson Correlation")
+                get_line_plotter_for_temporal_name_clusters(
+                    plotter_engine,
+                    pivot_df=pivot_df ,
+                    clusters_df=df_cluster_labels_hierarchical,
+                    title="Cluster Name Trajectories",
+                ).plot()
             if run_timeserieskmeans_clustering:#TIMESERIESKMEANS
                 ordered_names,heatmap_df,linkage_matrix,df_cluster_labels_hierarchical,ts_features_df=trend_timeserieskmeans_hierarchical(pivot_df_processed, original_names, n_cluster, years)
                 plot_dendrogram(linkage_matrix, n_cluster, labels=original_names)
@@ -214,7 +232,7 @@ class PageNames(BasePage):
                 num_seeds_to_plot=3
                 model_kwargs = {"n_clusters": -1}
                 k_values= range(2, max_k_ts + 1)
-                random_states=range(0,4)
+                random_states=range(0,100)
 
                 df_summary, metrics_all, metrics_mean, ari_mean, ari_std, consensus_labels_all = \
                     TimeSeriesKMeansEngine.optimal_k_analysis(ts_features_df, random_states=random_states,
@@ -234,7 +252,7 @@ class PageNames(BasePage):
                 OptimalKPlotter.plot_optimal_k_analysis(TimeSeriesKMeansEngine, num_seeds_to_plot, k_values, random_states,
                                                         metrics_all, metrics_mean, ari_mean, ari_std, model_kwargs)
                 OptimalKPlotter.print_optimal_k_analysis(df_summary, using_same_data=True)
-            window_sensitivity_analysis = True
+            window_sensitivity_analysis = False
             if window_sensitivity_analysis:
                 window_ari_analysis(df, n_cluster)
 

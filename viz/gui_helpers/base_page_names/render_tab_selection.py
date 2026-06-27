@@ -18,7 +18,7 @@ def render_tab_selection(page_name,geo_level=None):
 
     else:
         tabs=[stx.TabBarItemData(id="rank_bump", title="Rank Bump Plot", description=""),
-        stx.TabBarItemData(id="rank_bar_line", title="Rank Bar & Line Plot", description="")]
+        stx.TabBarItemData(id="rank_bar_line", title="Bar & Line Plot", description="")]
         if geo_level:
             tabs.append(stx.TabBarItemData(id="tab_map", title="Map Plot", description=""))
         st.session_state["selected_tab_" + page_name] = stx.tab_bar(data=tabs, default="rank_bump")

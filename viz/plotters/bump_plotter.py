@@ -495,7 +495,7 @@ class AltairBumpPlotter(BumpPlotter):
         )
 
         chart = (lines + points + first_year_labels + first_seen_labels + last_labels).properties(
-            width=1000, height=500,
+            width=1000, height=800,
             title=alt.TitleParams(text=self.title, fontSize=20, anchor="middle")
         ).configure_axisY(    labelAlign='left',     #
             labelPadding=25,
@@ -506,7 +506,6 @@ class AltairBumpPlotter(BumpPlotter):
         col_plot.altair_chart(chart, use_container_width=True)
         st.write(str(sorted(df["name"].unique().tolist())))
         st.write(len(df["name"].unique().tolist()))
-        st.dataframe(df)
         #EKSİK YILLAR RAPORU
         """
         # Aranan isimler listesi

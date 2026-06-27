@@ -56,7 +56,6 @@ class MatplotlibLinePlotter(LinePlotter):
 
         # optional: legend control (important for many names)
         ax.legend(loc="upper left", bbox_to_anchor=(1, 1))
-
         col_plot.pyplot(fig)
         plt.close(fig)
 
@@ -75,8 +74,8 @@ class SeabornLinePlotter(LinePlotter):
         ax.set_ylabel(show_column.title())
         # legend outside (critical for readability)
         ax.legend(loc="upper left", bbox_to_anchor=(1, 1))
-
         col_plot.pyplot(fig)
+
         plt.close(fig)
 
 class PlotlyLinePlotter(LinePlotter):
@@ -98,7 +97,6 @@ class PlotlyLinePlotter(LinePlotter):
             legend=dict(orientation="v"),
             hovermode="x unified"
         )
-
         col_plot.plotly_chart(fig, use_container_width=True)
 
 class PlotlyLinePlotter(LinePlotter):
@@ -116,8 +114,8 @@ class PlotlyLinePlotter(LinePlotter):
             title=self.title)
 
         fig.update_layout(legend=dict(orientation="v"), hovermode="x unified")
-
         col_plot.plotly_chart(fig, use_container_width=True)
+
 
 
 class AltairLinePlotter(LinePlotter):
@@ -136,7 +134,6 @@ class AltairLinePlotter(LinePlotter):
             )
             .properties(title=self.title)
         )
-
         col_plot.altair_chart(chart)
         st.dataframe(df)
 

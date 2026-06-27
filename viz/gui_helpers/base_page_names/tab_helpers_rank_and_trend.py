@@ -2,7 +2,7 @@ import extra_streamlit_components as stx
 import streamlit as st
 # TREND helpers
 def get_n_cluster():
-    return st.slider( label="Select number of clusters to observe)", min_value=2, max_value=15, value=1, step=1,key="n_cluster_trend" )
+    return st.slider( label="Select number of clusters to observe)", min_value=2, max_value=15, value=2, step=1,key="n_cluster_trend" )
 def get_window_size(n_max):
     col1,_=st.columns([1,2])
     max_window_size= max(2,min(n_max//5,21))

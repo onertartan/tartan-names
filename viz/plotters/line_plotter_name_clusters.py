@@ -61,7 +61,7 @@ class ClusterLinePlotter(abc.ABC):
         return sorted(set(ticks))
 
     def _legend_columns(self, item_count: int) -> int:
-        return max(1, (item_count + 9) // 10)
+        return max(1, (item_count + 9) // 40)
 
     def _name_palette(self, item_count: int) -> list[str]:
         if item_count <= 10:
@@ -144,10 +144,7 @@ class MatplotlibClusterPlotter(ClusterLinePlotter):
             ax.set_xlabel("Year")
         fig.tight_layout(rect=[0, 0, 1, 0.98])
 
-        if col_plot is not None:
-            col_plot.pyplot(fig, use_container_width=True)
-        else:
-            st.pyplot(fig, use_container_width=True)
+        col_plot.pyplot(fig, use_container_width=True)
         plt.close(fig)
 
 
@@ -224,10 +221,8 @@ class SeabornClusterPlotter(ClusterLinePlotter):
             ax.set_xlabel("Year")
         fig.tight_layout(rect=[0, 0, 1, 0.98])
 
-        if col_plot is not None:
-            col_plot.pyplot(fig, use_container_width=True)
-        else:
-            st.pyplot(fig, use_container_width=True)
+
+        col_plot.pyplot(fig)
         plt.close(fig)
 
 
@@ -312,10 +307,7 @@ class PlotlyClusterPlotter(ClusterLinePlotter):
             ),
             margin=dict(t=80, b=180, l=50, r=50),
         )
-        if col_plot is not None:
-            col_plot.plotly_chart(fig, use_container_width=True)
-        else:
-            st.plotly_chart(fig, use_container_width=True)
+        col_plot.plotly_chart(fig, use_container_width=True)
 
 
 class AltairClusterPlotter(ClusterLinePlotter):

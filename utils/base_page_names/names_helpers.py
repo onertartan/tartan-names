@@ -158,11 +158,11 @@ def preprocess_for_trend(df:pd.DataFrame,window):
 def window_ari_analysis(df, n_cluster):
     k_values = [n_cluster]  # fixed k across all windows
     base_window = 11        # primary analysis window
-
+    window_range = range(1,20,2)
     hc_labels_per_window = {}
     tsk_labels_per_window = {}
 
-    for window in range(1,20,2):
+    for window in window_range:
         pivot_df, pivot_df_processed, years, original_names = preprocess_for_trend(df, window)
 
         # HC labels
@@ -195,7 +195,7 @@ def window_ari_analysis(df, n_cluster):
     base_tsk = tsk_labels_per_window[base_window]
 
     rows = []
-    for window in [5, 11, 21]:
+    for window in window_range:
         hc_w = hc_labels_per_window[window]
         tsk_w = tsk_labels_per_window[window]
 
