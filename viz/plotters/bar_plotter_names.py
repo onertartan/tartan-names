@@ -10,9 +10,10 @@ import matplotlib.pyplot as plt
 import altair as alt
 import matplotlib.ticker as ticker
 from viz.gui_helpers.base_page_names.plot_helpers import get_title_statement
-from utils.base_page_names.names_helpers import validate_df
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
+from viz.gui_helpers.base_page_names.validate_df import validate_df
 
 _BAR_PALETTE = (
     "#4C78A8",  # blue

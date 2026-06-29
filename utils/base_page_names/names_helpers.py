@@ -7,7 +7,17 @@ from sklearn.metrics import adjusted_rand_score
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 from clustering.models.time_series_k_means import TimeSeriesKMeansEngine
 from clustering.models.trend_correlation_hierarchical import trend_correlation_hierarchical
+from viz.plotters.bar_plotter_names import get_bar_plotter
+from viz.plotters.bump_plotter import get_bump_plotter
+from viz.plotters.line_plotter_names import get_line_plotter
 
+
+def get_rank_plotter(tab_selected, plot_style, plotter_engine, gender, page_name):
+    if "bump" in tab_selected:
+        return get_bump_plotter(plotter_engine, gender, page_name)
+    if "Bar" in plot_style:
+        return get_bar_plotter(plotter_engine, gender, page_name)
+    return get_line_plotter(plotter_engine, gender, page_name)
 
 def rank_again(df: pl.DataFrame, geo_column: str) -> pl.DataFrame:
     accumulated = (
@@ -57,7 +67,7 @@ def preprocess_for_nth_most_common_tab(df: pl.DataFrame, gdf_borders:gpd.GeoData
     gdf_result = gdf_borders.merge(df_year_rank, on=geo_column)
     return gdf_result
 
-def process_for_subtabs_211_212(df, gdf_borders, names_from_multi_select, year, rank, geo_column):
+def process_for_subtabs_bump_and_line_plots(df, gdf_borders, names_from_multi_select, year, rank, geo_column):
     # Helper for Tab 2.1.1 (under 2.1 plot map tab)
     # If 'year' is a single value, wrap it in a list; otherwise use it as is
     year_list = year if isinstance(year, list) else [year]
@@ -89,10 +99,7 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
     # vectorized rank per year
     df = df.with_columns(pl.col("count").rank(method="min", descending=True).over("year").alias("rank"))
     if use_rank_filtering:
-
-        if include_all_years_option == "Include All Years for Names Ever in Top-n":
-
-            apply_filter_for_years_appearing=True
+        if include_all_years_option :
             ever_top_n = df.filter(pl.col("rank") <= top_n)["name"].unique()
             df = df.filter(pl.col("name").is_in(ever_top_n))
 
@@ -136,10 +143,7 @@ def preprocess_for_rank_bar_tabs(df: pl.DataFrame, use_rank_filtering:bool, incl
 def preprocess_for_trend(df:pd.DataFrame,window):
     pivot_df = df.pivot(index='year', columns='name', values='ratio').fillna(0)
     # pivot_df: years=rows, names=columns
-    if len(pivot_df) < 2 or len(pivot_df.columns) < 2:
-        st.warning(
-            "Note: For temporal analysis you should select a range of years and rank filtering / multiple names.")
-        return
+
     # Original names order — for dendrogram labels and fcluster alignment
     original_names = pivot_df.columns.tolist()
     years = pivot_df.index.tolist()
@@ -153,7 +157,6 @@ def preprocess_for_trend(df:pd.DataFrame,window):
     else:
         pivot_df_processed = pivot_df
     return pivot_df,pivot_df_processed,years, original_names
-
 
 def window_ari_analysis(df, n_cluster):
     k_values = [n_cluster]  # fixed k across all windows
@@ -234,9 +237,3 @@ def window_ari_analysis(df, n_cluster):
     sensitivity_df = pd.DataFrame(rows).set_index("Window")
     st.dataframe(sensitivity_df, use_container_width=True)
     return sensitivity_df
-
-def validate_df(df: pd.DataFrame):
-    # not used currently
-    required = {"year", "count", "name"}
-    if not required.issubset(df.columns):
-        raise ValueError(f"Missing columns: {required - set(df.columns)}")

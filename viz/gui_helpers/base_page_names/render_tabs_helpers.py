@@ -44,16 +44,6 @@ def render_plot_map_sub_tab(names,page_name):
 
 
 
-
-
-# Maps the gender radio label to the list of gender values used for filtering.
-GENDER_LABEL_TO_LIST = {
-    "Male": ["male"],
-    "Female": ["female"],
-    "Both genders": ["male", "female"],
-}
-
-
 def _render_name_surname_selection(page_name, col):
     """Render the name/surname radio (surname pages only) and return the selection."""
     # data is a dictionary whose keys are names and surnames, values are corresponding dataframes

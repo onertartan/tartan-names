@@ -7,7 +7,7 @@ from viz.gui_helpers.base_page_names.render_tabs_helpers import  render_gender_n
 
 class PageBabyNamesNation(PageNames):
     page_name = "baby_names_usa_nation"
-    geo_level= "state"
+    geo_level= None
     country = "usa"
     @staticmethod
     @st.cache_data
@@ -36,9 +36,9 @@ class PageBabyNamesNation(PageNames):
 
         tab_selected = render_tab_selection(page_name)
         if  tab_selected=="tab_name_trend_analysis":
-            self.maintab1_subtab_1(df, page_name, tab_selected)
+            self.tab_name_trend(df, page_name, tab_selected)
         else:
             # since the page relies on nation-level data instead of state-level, there is not map plotting (only line, rank bump etc.)
-            self.maintab2_subtab_1_2(df, page_name, tab_selected)
+            self.tabs_rank_and_line_plot(df, page_name, tab_selected)
 
 PageBabyNamesNation().run()

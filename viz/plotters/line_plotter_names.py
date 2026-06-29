@@ -10,8 +10,9 @@ import plotly.express as px
 from viz.gui_helpers.base_page_names.plot_helpers import (
     get_title_statement
 )
-from utils.base_page_names.names_helpers import validate_df
 import plotly.express as px
+
+from viz.gui_helpers.base_page_names.validate_df import validate_df
 
 
 class LinePlotter(abc.ABC):

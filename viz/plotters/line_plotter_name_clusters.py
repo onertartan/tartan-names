@@ -391,7 +391,7 @@ def get_line_plotter_for_temporal_name_clusters(
     engine: Literal["Matplotlib", "Seaborn", "Plotly", "Altair"],
     pivot_df: pd.DataFrame,
     clusters_df: pd.DataFrame,
-    title: str = "Name Clusters Over Time",
+    title: str = "Temporal Trajectories of Name Clusters",
 ) -> ClusterLinePlotter:
     return ENGINES[engine](pivot_df=pivot_df, clusters_df=clusters_df, title=title)
 

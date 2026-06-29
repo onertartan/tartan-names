@@ -99,4 +99,4 @@ def render_rank_and_trend_sub_tabs(page_name, clusters, names, geo_level, tab_se
               "show_column": show_column,
               "secondary_top_k_filter": secondary_top_k_filter,
               "always_or_appeared_in_top_k": always_or_appeared_in_top_k}
-    return selected_names,use_rank_filtering,top_n,include_all_years,secondary_top_k_filter,always_or_appeared_in_top_k,use_province_or_cluster,show_column,selected_n_cluster,show_provinces_separately,plotter_engine,plot_style,col_23
+    return params,use_province_or_cluster,show_column,selected_n_cluster,show_provinces_separately,plotter_engine,plot_style,col_23
