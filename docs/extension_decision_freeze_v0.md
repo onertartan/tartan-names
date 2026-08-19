@@ -11,6 +11,14 @@ Statü: **ONAY BEKLİYOR** (FROZEN değil).
 **Revizyon r3 (aynı gün; talimat `f9869428…`):** self-hash prosedürü
 kaldırıldı (harici .sha256); exact ICL tanımı §5'te DONDU; §9
 normatif/bilgilendirici olarak ayrıldı; source_status şeması temizlendi.
+**Revizyon r4 (2026-08-19; bağlayıcı talimat §9.2'de):** the prior
+misidentified ICL criterion was withdrawn and replaced with the
+MAP-classification `ICL_BIC` approximation (§5); S-04-önce failure
+sırası ve posterior clipping yasağı pinlendi; FCSP null semantiği
+`H0_no_structure` ile netleştirildi (§3; estimand değişmedi); Gap
+birincil atfı Tibshirani, Walther & Hastie (2001) olarak düzeltildi,
+`Gap_Wk_policy = unresolved` + Gap kolu NO-GO (§1.3); t5 kolu NO-GO
+(§1.3). Yeni yöntem yok; kapalı karar açılmadı.
 
 **Statü:** ONAY BEKLİYOR → Öner onayı bu belgedeki tüm pinlerin İMZASIDIR;
 onay sonrası SHA256 + git commit ile DONAR. Donduktan sonra yöntem
@@ -42,7 +50,7 @@ başlatmaz. Statü cümlesi (aynen, İngilizce pinli):
 |---|---|---|
 | PAM-Euclidean | winner_eligible=true (common layer, 5. algoritma) | pinler §6 |
 | GMM-native BIC/ICL | native_selector (Friedman DIŞI) | pinler §5 |
-| k_true=1 null bloğu | null_only | semantik §3 |
+| `H0_no_structure` saf-gürültü null bloğu (legacy/tabulation truth code: 1) | null_only | semantik §3 |
 | Observed-support m–k response surface | design block | destek §2, dil §7 |
 | φ×σ response surface | design block | destek §2 |
 
@@ -58,18 +66,35 @@ precision/recall/F1 (metrik) · VI-ayrıştırması (metrik).
 | Yöntem | status | source_status | Gate özeti |
 |---|---|---|---|
 | movMF (vMF karışımı) | conditional | pending (κ-dejenerans lit.) | κ-politikası memo |
-| Gap | conditional | verified (Şenbabaoğlu K≥2 + argmax; bioRxiv 002642v3) | 12-kalem gate (prereg'de; deployment-parity dahil) |
+| Gap | conditional — **arm NO-GO** | verified (primary: Tibshirani, Walther & Hastie 2001; operasyonel varyant: Şenbabaoğlu K≥2 + argmax, bioRxiv 002642v3) | 12-kalem gate (prereg'de; deployment-parity dahil); `Gap_Wk_policy = unresolved` |
 | Prediction Strength | conditional | verified (T&W 2005) | kapsam politikası; §8 yasak cümle |
 | PAC | conditional | verified (Şenbabaoğlu 2014; M3C operasyonel çerçeve) | varlık iddiası yalnız null blokla |
 | Fang–Wang | conditional | pending (künye Manus-DOI'den teyit) | (algoritma, projeksiyon-kuralı) çifti pini |
 | S_Dbw | conditional | **pending — yoğunluk-yarıçapı tanımı özgün makaleden** ("3-NN" iddiası şüpheli) | teyitsiz koşulmaz |
 | Krzanowski–Lai | conditional | verified (formül) | boşalan-düzeltme notu + W₁₁ sınır kuralı |
-| t₅ ağır kuyruk | conditional | not_applicable | ikinci halka DGP |
+| t₅ ağır kuyruk | conditional — **arm NO-GO** | not_applicable | ikinci halka DGP; `t5_arm_status = NO-GO until signed DGP preregistration` |
 | FPCA/B-spline | conditional | not_applicable | AYRI representation-sensitivity kolu; bolt-on değil |
 
 **Kaynak-teyit kuralı (bağlayıcı):** `source_status=pending` olan yöntem
 koşulmaz; teyit başarısızsa yöntem düşer ve **yerine yeni aday alınmaz**
 (`replacement_allowed=false`).
+
+**Gap kolu gate'i (bağlayıcı, aynen):** *Exact W_k definition, distance
+convention, reference generator, candidate space, decision rule, tie
+rule and failure policy must be approved and signed before the Gap arm
+can run. Claude Code must not choose among alternative W_k policies.*
+Yeni ikincil kaynak seçilmez; mevcut Şenbabaoğlu operasyonel kaynağı
+değiştirilmez.
+
+**t5 kolu gate'i (bağlayıcı):** zorunlu prereg alanları —
+distribution_family · degrees_of_freedom · location_convention ·
+variance_or_scale_convention · white_vs_AR_role ·
+AR_innovation_and_stationary_variance_policy ·
+AR_initialization_or_burnin · sigma_application_point ·
+row_z_normalization_order · RNG_namespace ·
+failure_and_nonfinite_policy. *Claude Code must not select, implement
+or run the t5 arm until the exact DGP fields are explicitly approved
+and signed by Öner.*
 
 ### 1.4 Average linkage (pin — onayla imzalanır)
 
@@ -116,10 +141,22 @@ Gözlenmeyen 4 kombinasyona extrapolation YASAK.
   prototipi YOK; donmuş beyaz/AR gürültü üreteci ve seri-bazlı z-norm
   (ddof=0) AYNEN korunur (somutlama: donmuş boru hattının prototipsiz
   hali).
-- **Primary endpoint:** **FCSP = P(k̂ > 1 | k_true = 1)** — terim:
+- **Primary endpoint:** **FCSP = P(k̂ > 1 | H0_no_structure)** — terim:
   *false cluster-structure selection probability*. "FDR" DENMEZ;
   multiple-testing FDR'ıyla karıştırılmaz (FCSP bir error-rate
-  estimandıdır).
+  estimandıdır). Semantik alanlar (bağlayıcı):
+  ```
+  null_state                 = H0_no_structure
+  null_DGP                   = no_cluster_pure_noise
+  null_truth_tabulation_code = 1
+  no_structure_decision      = (k_hat = 1)
+  false_structure_decision   = (k_hat > 1)
+  ```
+  Açıklayıcı pin (aynen): *Under the pure-noise null, the truth state
+  is H0_no_structure. A value of 1 may be retained solely as a storage
+  or tabulation code, while k_hat=1 is the selector's operational
+  no-structure decision. Neither convention asserts the existence of
+  one nontrivial generative latent cluster.*
 - **FCSP eligibility (bağlayıcı kural, aynen):** *FCSP-eligible
   selectors are only those within the frozen extension method-space
   whose preregistered native or arm-specific decision rule explicitly
@@ -132,7 +169,9 @@ Gözlenmeyen 4 kombinasyona extrapolation YASAK.
   raporlanmaz.
 - **Exact bilimsel destek (DONUK — memoya bırakılmaz):**
   ```
-  null_semantics        = no_cluster_pure_noise
+  null_state                 = H0_no_structure
+  null_DGP                   = no_cluster_pure_noise
+  null_truth_tabulation_code = 1
   n_null                = {30, 40, 50, 60, 80}   <- frozen Blok-A toplamlari
   noise_null            = {white, AR(phi=0.97)}  <- frozen ana gurultu seviyeleri
   sigma_null            = not_applicable
@@ -173,18 +212,54 @@ Gözlenmeyen 4 kombinasyona extrapolation YASAK.
 1. **Yön:** *pre-registered optimum direction under the stored
    criterion convention* — ham sklearn BIC **argmin**; dönüştürülmüş
    skor yalnız işaret dönüşümü açıkça tanımlı+saklıysa argmax.
-2. **Exact ICL tanımı (DONUK — bilimsel seçici tanımıdır, implementasyon
-   detayı değildir; freeze sonrası seçilemez):** saklanan konvansiyon
-   sklearn'dür: BIC_stored(k) = −2·log L̂ + p_k·log n (düşük-iyi).
-   **ICL_stored(k) = BIC_stored(k) + 2·E(k)**, burada
-   E(k) = −Σ_i Σ_c τ_ic·log τ_ic (doğal logaritma; 0·log 0 := 0;
-   τ_ic = yakınsamış en-iyi fit'in posterior sorumlulukları,
-   `predict_proba`). Yön: BIC ve ICL için **argmin**. Seçim kuralı:
-   k̂ = argmin (native 1..10; restricted 2..10); bağ → en küçük k
-   (np.isclose, rtol=1e-10, atol=1e-12 — donmuş bağ toleransı).
-   Birim test sonra yazılır; test edilecek matematiksel tanım BUDUR.
-   (Biernacki, Celeux & Govaert 2000'in düşük-iyi konvansiyona
-   eşlenmiş hali.)
+2. **ICL kriteri — MAP-classification `ICL_BIC` approximation, frozen
+   criterion definition (bilimsel seçici tanımıdır, implementasyon
+   detayı değildir; freeze sonrası seçilemez; r4'te düzeltildi — önceki
+   soft-entropy tanımı geri çekildi, "Exact ICL" adı KULLANILMAZ):**
+   posterior sorumluluklar τ_ic = P(z_i=c | x_i, θ̂_k) (`predict_proba`,
+   en iyi yakınsamış fit); her gözlem için MAP bileşeni
+   c*_i(k) = argmax_c τ_ic; classification uncertainty
+   **E_MAP(k) = −Σ_i log(max_c τ_ic)** — eşdeğer gösterim:
+   E_MAP(k) = −Σ_i Σ_c ẑ_ic·log τ_ic, ẑ_ic = 1[c = c*_i(k)].
+   Saklanan konvansiyon sklearn'dür:
+   BIC_stored(k) = −2·log L̂_k + p_k·log n (düşük-iyi).
+   **ICL_BIC,stored(k) = BIC_stored(k) + 2·E_MAP(k)**. Yön: BIC ve
+   ICL_BIC için **argmin** (anlamca eşdeğer ad: *BIC-approximated ICL
+   criterion*). **Failure/tie sırası (bağlayıcı, S-04 ÖNCE):** *Before
+   criterion minimization or tie-set construction, apply the frozen
+   S-04 non-finite/failure policy. The tie-selection block must not
+   independently or silently discard a non-finite candidate. The tie
+   algorithm receives only criterion values that remain eligible after
+   application of the frozen failure policy. If no eligible finite
+   criterion value remains, the selector is recorded as failed under
+   the frozen failure policy and no k_hat is produced.* Tie kuralı
+   (aynen): *The tie set consists of all candidate k values whose
+   eligible criterion value is `np.isclose` to the eligible global
+   minimum under `rtol=1e-10` and `atol=1e-12`; the smallest k in that
+   set is selected.* (Pseudo-code yeni exception sınıfı/mekanizma
+   dayatmaz; mevcut frozen S-04 temsili kullanılır.)
+   **Posterior doğrulama — clipping YOK (bağlayıcı):** *No epsilon
+   clipping or posterior-floor rule is introduced for the
+   MAP-classification ICL_BIC criterion. After verifying that each
+   posterior row is finite, nonnegative and approximately sums to 1,
+   E_MAP is computed directly from max_c tau_ic. For a valid posterior
+   row, max_c tau_ic >= 1/k and is therefore strictly positive. An
+   invalid posterior row is handled under the frozen failure/non-finite
+   policy rather than repaired by clipping.* Row-sum toleransı (aynen):
+   *The exact posterior row-sum validation tolerance is an
+   implementation validation detail to be pinned in the
+   preregistration/unit-test layer. It must not alter E_MAP, introduce
+   clipping, renormalize invalid rows or override the frozen S-04
+   failure policy.* Component-düzeyi MAP tie zorunlu bilimsel gate
+   değildir (E_MAP yalnız max posterior değerine bağlıdır);
+   deterministik davranış provenance'da belgelenebilir. Birim test
+   sonra yazılır; test edilecek bilimsel tanım BUDUR ve en az şunları
+   doğrular: `predict_proba` en iyi yakınsamış fit'e aittir; posterior
+   satırları finite/nonnegative/≈1-toplamlı; clipping/floor yok;
+   geçersiz satır → S-04; row-sum toleransı yalnız validation detayı;
+   **k=1'de E_MAP=0 ve ICL_BIC=BIC**; tie-set algoritması yukarıdaki
+   exact kural; bağda en küçük k; native 1..10 ve restricted 2..10
+   ayrı test edilir.
 3. Native primary aday uzayı **k = 1..10**.
 4. **Restricted sensitivity k = 2..10 ŞİMDİ ön-kayıtlıdır** (aynı
    değerlerde kısıtlı optimum; sonuç-sonrası seçim yok).
@@ -267,7 +342,7 @@ başına örnek sayısıdır — cluster-size imbalance faktörü DEĞİLDİR
 cf8b453f0a05e2e6fed0c8b73692c2a5361fdfe60a22b3c9fe8c612e0e13db67  01_kosum_protokolu_v5_3.md
 99c17c42711fd27dd2e55baf55f5ed41388b14a39a29e196f8eb1def34a5d0a7  kosum_protokolu_v5_3_sapma_eki_S01_S07_FINAL.md
 34e1217e1d36b7282311ca5e51ec25c2106ac43e75712ade15cfec446458fd64  run_matrix_v4.csv (FROZEN)
-0c80c1894ebe5cba00ed9e76d57aa5131c564365fbcfea1815db31fff39e3915  yol_haritasi_v4_FINAL_2026-08-18.md (r2, kanonik yürütme belgesi)
+4d217fb962226a3685fe95e96baa9813c7a022e8f6b385e20c78c2ceb15cddec  yol_haritasi_v4_FINAL_2026-08-18.md (r3, kanonik yürütme belgesi)
 ```
 
 ## 9.2 Informational provenance references (non-normative)
@@ -278,11 +353,12 @@ cf8b453f0a05e2e6fed0c8b73692c2a5361fdfe60a22b3c9fe8c612e0e13db67  01_kosum_proto
 eacbdfb0…  parca_B_cok_model_karsilastirma_2026-08-17.md
 03408f6c…  claude_prompt_v3_to_v4_FINAL_7_duzeltme.md (bağlayıcı talimat)
 f9869428…  v4_freeze_v0_chatgpt_nihai_degerlendirme.md (bağlayıcı talimat)
+f06809f169c7e4c81ae48a1149e318c7bc1f3c8cf0ef248906d6ad019ef42776  chatgpt_claude_prompt_v4r3_freeze_r4_ICL_FCSP_gap_t5_correction_FINAL_PREFLIGHT_2026-08-19.md (bağlayıcı talimat, r4)
 ```
 
 ## 10. Onay ve dondurma
 
-- [ ] **ÖNER ONAYI** — tarih/isim: ______________________
+- [X] **ÖNER ONAYI** — tarih/isim: 19.08.2026 EMRE ÖNER TARTAN
   (Onay, §1.4 average pini, §3 tek-prototip-null kararı ve tüm
   pinlerin imzası yerine geçer.)
 
