@@ -1,13 +1,24 @@
 # extension_decision_freeze_v0.md — Genişletme karar iskeleti (FREEZE)
 
+**Revizyon r2 (2026-08-18, v4-hizalı; talimat `03408f6c…`):** method-space
+dışı iki satır (r2-değerlendirme sızıntısı) kaldırıldı; FCSP eligibility
+genel bağlayıcı kurala bağlandı; null'un exact bilimsel desteği +
+sigma_null pini eklendi; tek-prototip kararı KESİNLEŞTİ
+(excluded_from_extension — now-or-never kapısı kapandı); m–k inferential
+kapısı kapatıldı; FAZ 5 gating'i eklendi; normatif bağımlılıklar
+tam-SHA256'ya çevrildi. Yeni yöntem eklenmedi; kapalı karar açılmadı.
+Statü: **ONAY BEKLİYOR** (FROZEN değil).
+**Revizyon r3 (aynı gün; talimat `f9869428…`):** self-hash prosedürü
+kaldırıldı (harici .sha256); exact ICL tanımı §5'te DONDU; §9
+normatif/bilgilendirici olarak ayrıldı; source_status şeması temizlendi.
+
 **Statü:** ONAY BEKLİYOR → Öner onayı bu belgedeki tüm pinlerin İMZASIDIR;
 onay sonrası SHA256 + git commit ile DONAR. Donduktan sonra yöntem
 LİSTESİ, eligibility atamaları, faktör destekleri, null semantiği ve
 yorum kısıtları değişmez; yalnız implementasyon detayı
 (`extension_prereg_v1.md` + pin memoları) kendi kapılarında kapanır.
 
-**Tarih:** 2026-08-18 · **Kaynak belge:** `yol_haritasi_v3_FINAL_2026-08-18.md`
-(`9c8e5d84…`) §FAZ 0.5 · **Zamanlama gerekçesi (bağlayıcı):** bu belge,
+**Tarih:** 2026-08-18 · **Kaynak belge:** `yol_haritasi_v4_FINAL_2026-08-18.md` (tam hash §9'da) §FAZ 0.5 · **Zamanlama gerekçesi (bağlayıcı):** bu belge,
 donmuş çalışmanın Friedman/GLMM/SSA-deployment İKİNCİL SONUÇLARI
 görülmeden hash'lenir; böylece genişletme yöntem uzayı o sonuçlarla
 data-inform EDİLEMEZ. Hash alınmadan ikincil sonuç ayrıntısına girilmez.
@@ -53,10 +64,8 @@ precision/recall/F1 (metrik) · VI-ayrıştırması (metrik).
 | Fang–Wang | conditional | pending (künye Manus-DOI'den teyit) | (algoritma, projeksiyon-kuralı) çifti pini |
 | S_Dbw | conditional | **pending — yoğunluk-yarıçapı tanımı özgün makaleden** ("3-NN" iddiası şüpheli) | teyitsiz koşulmaz |
 | Krzanowski–Lai | conditional | verified (formül) | boşalan-düzeltme notu + W₁₁ sınır kuralı |
-| t₅ ağır kuyruk | conditional | — | ikinci halka DGP |
-| FPCA/B-spline | conditional | — | AYRI representation-sensitivity kolu; bolt-on değil |
-| COP | conditional | pending (künye+formül) | teyitsiz koşulmaz |
-| crisp-XB | conditional | **pending — yayımlanmış crisp emsal şart** | emsalsiz girmez |
+| t₅ ağır kuyruk | conditional | not_applicable | ikinci halka DGP |
+| FPCA/B-spline | conditional | not_applicable | AYRI representation-sensitivity kolu; bolt-on değil |
 
 **Kaynak-teyit kuralı (bağlayıcı):** `source_status=pending` olan yöntem
 koşulmaz; teyit başarısızsa yöntem düşer ve **yerine yeni aday alınmaz**
@@ -111,18 +120,36 @@ Gözlenmeyen 4 kombinasyona extrapolation YASAK.
   *false cluster-structure selection probability*. "FDR" DENMEZ;
   multiple-testing FDR'ıyla karıştırılmaz (FCSP bir error-rate
   estimandıdır).
-- **FCSP-eligible:** yalnız k=1 dönebilen seçiciler (12-pinli Gap ·
-  GMM+BIC/ICL · açık k=1-fallback'li stability · Hennig–Lin
-  sarmalayıcısı). k=1 dönemeyen ortak CVI'lar "%100 yanlış-pozitif"
-  diye DEĞERLENDİRİLMEZ — aday-uzayları gereği estimanda uygun değiller.
-- **Tek-prototip null'u (now-or-never kararı):** DAHİL DEĞİL —
-  değerlendirildi ve primary null minimal tutularak dışlandı; ileride
-  eklenemez. [Öner onay öncesi tersine çevirebilir; çevirirse
-  "sensitivity" etiketiyle şimdi yazılır.]
-- Ertelenenler (prereg/pin-memo): exact RNG namespace, n/σ/φ düzey
-  seçimi (öneri: n'ler A-toplamlarıyla eşleme {30,40,50,60,80}),
-  failure alanları, test vektörleri — **null tasarım-memosu Öner
-  imzası gerektirir.**
+- **FCSP eligibility (bağlayıcı kural, aynen):** *FCSP-eligible
+  selectors are only those within the frozen extension method-space
+  whose preregistered native or arm-specific decision rule explicitly
+  permits k=1. No ad-hoc post-selection fallback to k=1 is allowed.*
+  Statüler: GMM-native BIC/ICL → eligible (native k=1..10); Gap →
+  koşullu-eligible YALNIZ null-arm aday uzayı ve karar kuralı ön-kayıtta
+  açıkça k=1 içeriyorsa; stability/diagnostic seçiciler → yalnız kendi
+  ön-kayıtlı arm-kuralları k=1 üretiyorsa. k=2..10 ile sınırlı ortak
+  CVI'lar FCSP estimandına uygun DEĞİLDİR ve "%100 yanlış-pozitif" diye
+  raporlanmaz.
+- **Exact bilimsel destek (DONUK — memoya bırakılmaz):**
+  ```
+  null_semantics        = no_cluster_pure_noise
+  n_null                = {30, 40, 50, 60, 80}   <- frozen Blok-A toplamlari
+  noise_null            = {white, AR(phi=0.97)}  <- frozen ana gurultu seviyeleri
+  sigma_null            = not_applicable
+  n_seeds_null          = 100
+  single_prototype_null = excluded_from_extension
+  ```
+  sigma_null gerekçesi (pinli cümle): *Under the pure-noise null,
+  multiplicative noise scale is exactly removed by per-series
+  z-normalization; therefore sigma is not a null-design factor and is
+  not crossed.* (z(σε)=z(ε), her σ>0; nominal σ=1 yalnız hesaplama
+  sabitidir, zorluk ekseni olarak raporlanmaz.) Null için ayrıca
+  φ∈{0.80,0.90,0.99} duyarlılık ızgarası EKLENMEZ (φ-robustness φ×σ
+  bloğunda). Tek-prototip null'u sensitivity olarak da koşulmaz;
+  sonradan eklenmez.
+- Memoya kalanlar (yalnız hesaplama/uygulama): RNG namespace haritası ·
+  output şeması · failure/undefined kodları · test vektörleri · exact
+  implementasyon kontrolleri.
 
 ## 4. Metrik rolleri (donuk) ve tanım pinleri
 
@@ -146,8 +173,18 @@ Gözlenmeyen 4 kombinasyona extrapolation YASAK.
 1. **Yön:** *pre-registered optimum direction under the stored
    criterion convention* — ham sklearn BIC **argmin**; dönüştürülmüş
    skor yalnız işaret dönüşümü açıkça tanımlı+saklıysa argmax.
-2. Exact ICL formülü + saklanan konvansiyonla işaret ilişkisi prereg'de
-   yazılır ve küçük sentetik örnekte birim testle doğrulanır.
+2. **Exact ICL tanımı (DONUK — bilimsel seçici tanımıdır, implementasyon
+   detayı değildir; freeze sonrası seçilemez):** saklanan konvansiyon
+   sklearn'dür: BIC_stored(k) = −2·log L̂ + p_k·log n (düşük-iyi).
+   **ICL_stored(k) = BIC_stored(k) + 2·E(k)**, burada
+   E(k) = −Σ_i Σ_c τ_ic·log τ_ic (doğal logaritma; 0·log 0 := 0;
+   τ_ic = yakınsamış en-iyi fit'in posterior sorumlulukları,
+   `predict_proba`). Yön: BIC ve ICL için **argmin**. Seçim kuralı:
+   k̂ = argmin (native 1..10; restricted 2..10); bağ → en küçük k
+   (np.isclose, rtol=1e-10, atol=1e-12 — donmuş bağ toleransı).
+   Birim test sonra yazılır; test edilecek matematiksel tanım BUDUR.
+   (Biernacki, Celeux & Govaert 2000'in düşük-iyi konvansiyona
+   eşlenmiş hali.)
 3. Native primary aday uzayı **k = 1..10**.
 4. **Restricted sensitivity k = 2..10 ŞİMDİ ön-kayıtlıdır** (aynı
    değerlerde kısıtlı optimum; sonuç-sonrası seçim yok).
@@ -182,10 +219,16 @@ the 11 observed (m,k) cells. Because total sample size is
 deterministically n=mk, the analysis does not identify independent
 marginal effects of m, k, and total n, and no extrapolation is made to
 unobserved (m,k) combinations."*
-Hesap biçimi: tek 11-seviye **`mk_cell`** kategorik faktörü; kontrastlar
-yalnız gözlenen destekte; "full factorial m×k interaction" dili YASAK;
-etkileşim inferansı istenirse estimable kontrast matrisi ÖNCEDEN
-yazılır. Hücre ağırlığı: eşit (tohum-içi toplama önce). Not: m sınıf
+Hesap biçimi (DONUK):
+```
+mk_analysis_role=response_surface . mk_factor=mk_cell (11 levels)
+formal_interaction_test=false . posthoc_interaction_contrast_selection=prohibited
+```
+*"No formal factorial interaction test is part of this extension. The
+m-k block is interpreted as an observed-support response surface over
+the 11 preregistered cells; post-hoc selection of interaction contrasts
+is prohibited."* "full factorial m×k interaction" dili YASAK. Hücre
+ağırlığı: eşit (tohum-içi toplama önce). Not: m sınıf
 başına örnek sayısıdır — cluster-size imbalance faktörü DEĞİLDİR
 (dengesizlik donmuş Blok-B 3:1/5:1 duyarlılığıdır).
 
@@ -209,35 +252,46 @@ başına örnek sayısıdır — cluster-size imbalance faktörü DEĞİLDİR
   NO-GO yapar; global STOP yalnız frozen-regression bozulması ·
   çekirdek pin eksiği · manifest/namespace çakışması · bu belge
   hash'lenmeden ikincil sonuca girilmesi.
+- **FAZ 5 bağımlılığı:** actual SSA deployment (kümeleme sonucu, k̂,
+  üyelik, Transfer-QC yorumu) YALNIZ bu belge hash'lendikten sonra;
+  öncesinde yalnız hazırlık (girdi varlığı/SHA256, betik, ortam,
+  dry-config).
 - Seed/RNG ilkesi: genişletme YENİ namespace kullanır; donmuş
   (seed_key, tohum) uzayıyla çakışma yasak (exact harita prereg'de).
 - Bu belgeden sonra yeni hakemlik/EK döngüsü açılmaz; ayrıntılar
   doğrudan `extension_prereg_v1.md` ve pin memolarına işlenir.
 
-## 9. Referans belgeler (bilgi; bu belgeyle birlikte arşivlenir)
+## 9.1 Normative frozen dependencies (tam SHA256; uyuşmazlıkta STOP)
 
 ```
-9c8e5d84…  yol_haritasi_v3_FINAL_2026-08-18.md   (kanonik yürütme belgesi)
-456769cc…  parca_B_claude_nihai_cevap_r2.md      (konsolide yöntem değerlendirmesi)
+cf8b453f0a05e2e6fed0c8b73692c2a5361fdfe60a22b3c9fe8c612e0e13db67  01_kosum_protokolu_v5_3.md
+99c17c42711fd27dd2e55baf55f5ed41388b14a39a29e196f8eb1def34a5d0a7  kosum_protokolu_v5_3_sapma_eki_S01_S07_FINAL.md
+34e1217e1d36b7282311ca5e51ec25c2106ac43e75712ade15cfec446458fd64  run_matrix_v4.csv (FROZEN)
+0c80c1894ebe5cba00ed9e76d57aa5131c564365fbcfea1815db31fff39e3915  yol_haritasi_v4_FINAL_2026-08-18.md (r2, kanonik yürütme belgesi)
+```
+
+## 9.2 Informational provenance references (non-normative)
+
+```
+456769cc…  parca_B_claude_nihai_cevap_r2.md
 4c05ecc9…  genisletme_konsolide_nihai_karar_2026-08-16.md
 eacbdfb0…  parca_B_cok_model_karsilastirma_2026-08-17.md
-8c23c693…  coklu_model_yol_haritasi_nihai_suzme_chatgpt.md
-cf8b453f…  01_kosum_protokolu_v5_3.md  ·  99c17c42…  sapma eki S01–S07
-34e1217e…  run_matrix_v4.csv (FROZEN)
+03408f6c…  claude_prompt_v3_to_v4_FINAL_7_duzeltme.md (bağlayıcı talimat)
+f9869428…  v4_freeze_v0_chatgpt_nihai_degerlendirme.md (bağlayıcı talimat)
 ```
 
 ## 10. Onay ve dondurma
 
-- ÖNER ONAYI — tarih/isim: 2026-08-18, Öner
+- [ ] **ÖNER ONAYI** — tarih/isim: ______________________
   (Onay, §1.4 average pini, §3 tek-prototip-null kararı ve tüm
   pinlerin imzası yerine geçer.)
 
-Onay sonrası Claude Code'da:
+Onay sonrası Claude Code'da (self-hash YASAK — hash belge DIŞINDA):
 ```bash
-sha256sum extension_decision_freeze_v0.md
-git add extension_decision_freeze_v0.md && git commit -m "extension_decision_freeze_v0: FROZEN (SHA256 <hash>)"
+sha256sum extension_decision_freeze_v0.md > extension_decision_freeze_v0.md.sha256
+git add extension_decision_freeze_v0.md extension_decision_freeze_v0.md.sha256
+git commit -m "extension_decision_freeze_v0: FROZEN"   # + istenirse tag
 ```
-Hash bu bölümün altına elle işlenir; belge o andan itibaren
-**FROZEN**'dır — değişiklik = yeni tarihli sapma kaydı.
-
-FROZEN SHA256: ______________________________________________
+Freeze hash is stored externally in `extension_decision_freeze_v0.md.sha256`.
+Belge o commit'ten itibaren **FROZEN**'dır; değişiklik = yeni tarihli
+sapma kaydı.
