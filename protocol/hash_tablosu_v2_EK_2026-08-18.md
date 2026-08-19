@@ -5,7 +5,7 @@ Mevcut kanonik tabloya tarihli ektir; onceki satirlar degistirilmez.
 | SHA256 | dosya                                                    |
 |---|----------------------------------------------------------|
 | 1d4d1095bc6bb68be277a36793dff6d7fbe5db6ae75d62db467367290c98d615 | results/protocol_v5_3/results_cvi.parquet                |
-| fd58994b23c0a3e22e300b0672b9cb7786599a9d88a617686eac7c44a762c002 | results/protocol_v5_3/results_alcd..g.parquet            |
+| fd58994b23c0a3e22e300b0672b9cb7786599a9d88a617686eac7c44a762c002 | results/protocol_v5_3/results_alg.parquet (ad yazım düzeltmesi, 2026-08-19) |
 | 0aa5477f3201f0e78113adf8abd126ccbedd35b9f222b2a856e484ed174eacb9 | results/protocol_v5_3/results_candidates.parquet         |
 | ed4c25202c9b26335ed12819c41fe12829495832c9a6625d2906412f1fae9165 | results/protocol_v5_3/results_dataqc.parquet             |
 | 37ff4b0c693d8903c4aadc04dfb99162aafc0a70e0b93d720974bfa2e7c471db | results/protocol_v5_3/winner_population_accuracy_8x4.csv |
