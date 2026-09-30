@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_step2_adequacy_harness_r4_2026-09-24.py", line 3357, in <module>
+    main()
+  File "G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_step2_adequacy_harness_r4_2026-09-24.py", line 3006, in main
+    assert record_test("T-CANON", h1 == h2), \
+AssertionError: RUN1/RUN2 canonical document mismatch -> STOP

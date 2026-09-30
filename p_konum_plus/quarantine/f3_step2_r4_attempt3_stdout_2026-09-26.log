@@ -1,0 +1,69 @@
+PIN-F2-IMPORT-HASH = 01714752eacda37a21fbcc0946c96be4f6b25d2a74b7bbe3da6fe0887df10077
+PIN-SPLINE-IMPORT-HASH = b31e5a6b69e5bbd96bce07a8634fb9474672ec5d6538d929287193d83ecdc64d
+PIN-SPLINE-LOADER prelude nodes = 21 (authorized list match: True)
+PID = 27308 ; START = 2026-09-26T14:55:16.188961 ; CMDLINE = G:/PycharmProjects/pkp-worktree/p_konum_plus/calibration/f3_step2_adequacy_harness_r4_2026-09-24.py ; INTERPRETER = C:\Users\Neo\AppData\Local\Programs\Python\Python311\python.exe
+RESTART_LAYER_ACTIVE = True
+GRID_SIZES = P-01 731 ; P-02 261
+FIXTURE_MANIFEST_SHA256 = c0b38cebcddfeded6423f0ca592c322272cf3e8ab0a16836c89a90eb1ffe11f8
+MANIFEST_WRITTEN_BEFORE_EXECUTION = true
+PRE_EXECUTION_CUSTODY_RECORD_VERIFIED = true (p_konum_plus/provenance/f3_step2_r4_preexecution_custody_2026-09-24.md)
+DISPATCH_PRECONDITIONS_P1_P4 = ALL PASS (observed hashes equal pins; 5 instruments verified)
+NR-01(i) = True (hash 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403; telemetry-fields True)
+NR-01(ii) [T-2a] = True (hybrid_canonical 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403)
+SPLINE_NONREGRESSION (NR-SPL) = True (30 rows)
+T-LOADER-NODES = PASS (node-list equality asserted at load time; 73 node_hashes entries for 73 executed nodes)
+T_MASK_FULL_EXT = {"pass_": true}
+PIN-MASKED-OBJECTIVE full == frozen: True ; L_O<=L_FULL: True ; PIN-FEATURE-START-MASKED: True
+PROGRESS SPL ctx 1 FIX-A5-TRUE a5true:left:full
+PROGRESS SPL ctx 2 FIX-A5-TRUE a5true:left:probeL
+PROGRESS SPL ctx 3 FIX-A5-TRUE a5true:right:full
+PROGRESS SPL ctx 4 FIX-A5-TRUE a5true:right:probeR
+PROGRESS SPL ctx 5 INJ-EXC-CAPTURE-S1 exc:s1
+PROGRESS SPL ctx 6 INJ-EXC-CAPTURE-S2 exc:s2
+PROGRESS SPL ctx 7 INJ-EXC-UNRELATED-TYPE exc:unrel
+PROGRESS SPL ctx 8 INJ-EXC-CAPTURE-S1 exc:s1
+PROGRESS SPL ctx 9 INJ-EXC-CAPTURE-S2 exc:s2
+PROGRESS SPL ctx 10 INJ-EXC-UNRELATED-TYPE exc:unrel
+T_A5_SUPPORT = {"threshold_equality_included": true, "next_float_below_excluded": true, "disconnected_components_united": true, "inside_left_true_L": true, "inside_left_false_R": true, "middle_false_both": true, "constant_reference_S_equals_G": true, "nan_reference_violates": true, "wrong_length_violates": true, "inf_reference_violates": true, "pass_": true}
+A5_UNIT_TESTS = {"UT_A5_II_pass": true, "UT_A5_III_pass": true, "note": "unit tests; A.5(i) is exercised on the real path (S-1=(a)); these two probe A.5(ii)/(iii) directly"}
+UT_PROBE_DECOUPLE = {"UT_PROBE_DECOUPLE_pass": true, "full_eligible": false, "probe_eligible": true, "probe_success_c4a": true, "rmse_computable": false, "second_half_v4_membership": [], "second_half_pass": true, "note": "first half: probe_success is probe-level only (X-04). second half RUNS this cycle (S-R2-1 = PI_RULE, D-5 S4(d)): the no-full-data-reference trajectory is absent from V4 by flag membership, checked through the real crit_stats + uset_c4b product path"}
+UT_USET_CONSTRUCTION = {"a": {"ok": true, "U2": 9, "U5": 10, "expect": {"U2": 9, "U5": 10}}, "b": {"ok": true, "U5": 9, "expect": {"U5": 9}}, "c": {"ok": true, "U2": [1, 2, 3, 4, 5, 6, 7, 8, 9], "expect": {"U2_excludes": 0}}, "d": {"ok": true, "U4": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "revalidation_flags_member": true, "expect": {"U4_includes": 0, "revalidation_flags_member": 0}}, "e": {"ok": true, "U2": [1, 2, 3, 4, 5, 6, 7, 8, 9], "U5": [1, 2, 3, 4, 5, 6, 7, 8, 9], "expect": {"U2_excludes": 0, "U5_excludes": 0}}}
+T_COMPARATOR_NAN = {"guard_refuses_nan": true, "guard_refuses_none": true, "guard_refuses_inf": true, "guard_accepts_finite": true, "python_nan_comparison_is_resolved_like": true, "pass_": true, "note": "pass_ computed from the real guard's behavior, not a literal (R3A-04); the guard is the same _guarded_scalar_ok the D-P04 comparator calls in-product"}
+T_STARTS_DEFAULT (FIX-STARTS-FULL) = {"P-01": {"start_bank_size": 732, "expected": 732, "pass_": true, "retained_count": 731, "feature_start_rejected": false}, "P-02": {"start_bank_size": 262, "expected": 262, "pass_": true, "retained_count": 261, "feature_start_rejected": false}}
+T_STARTS_DUP (FIX-STARTS-DUP) = {"index0": {"feature_start_rejected": true, "reason": "DUPLICATE", "pass_": true}, "index145": {"feature_start_rejected": true, "reason": "DUPLICATE", "pass_": true}}
+FIX_A5_TRUE = {"left": {"a5_i": true, "support_size": 15, "P-01": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "P-02": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "SPL": {"full_valid": true, "probe_valid": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "pass_": true}, "right": {"a5_i": true, "support_size": 15, "P-01": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "P-02": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "SPL": {"full_valid": true, "probe_valid": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "pass_": true}}
+EXC_INJECTION_FIXTURES = {"S1": {"count": 1, "stages": [1], "pass_": true}, "S2": {"count": 2, "stages": [1, 2], "pass_": true}, "UNRELATED_TYPE": {"caught_not_crashed": true, "exception_type_recorded": "ValueError", "context_unverifiable": true, "pass_": true}, "passes_identical": true, "pass2": {"S1": {"count": 1, "stages": [1], "pass_": true}, "S2": {"count": 2, "stages": [1, 2], "pass_": true}, "UNRELATED_TYPE": {"caught_not_crashed": true, "exception_type_recorded": "ValueError", "context_unverifiable": true, "pass_": true}}}
+UT_EXC_UNRELATED_REFERENCE = {"case_1a_propagated": true, "case_1b_propagated": true, "pass_": true}
+PROGRESS SPL ctx 11 SCEN-A run1:F0:full
+PROGRESS SPL ctx 12 SCEN-A run1:F0:fold0
+PROGRESS SPL ctx 13 SCEN-A run1:F0:fold1
+PROGRESS SPL ctx 14 SCEN-A run1:F0:fold2
+PROGRESS SPL ctx 15 SCEN-A run1:F0:fold3
+PROGRESS SPL ctx 16 SCEN-A run1:F0:fold4
+PROGRESS SPL ctx 17 SCEN-A run1:F0:probeL
+PROGRESS SPL ctx 18 SCEN-A run1:F0:probeR
+PROGRESS SPL ctx 19 SCEN-A run1:M0:full
+PROGRESS SPL ctx 20 SCEN-A run1:M0:fold0
+PROGRESS SPL ctx 21 SCEN-A run1:M0:fold1
+PROGRESS SPL ctx 22 SCEN-A run1:M0:fold2
+PROGRESS SPL ctx 23 SCEN-A run1:M0:fold3
+PROGRESS SPL ctx 24 SCEN-A run1:M0:fold4
+PROGRESS SPL ctx 25 SCEN-A run1:M0:probeL
+PROGRESS SPL ctx 26 SCEN-A run1:M0:probeR
+PROGRESS SPL ctx 27 SCEN-B run1:F0:full
+PROGRESS SPL ctx 28 SCEN-B run1:F0:fold0
+PROGRESS SPL ctx 29 SCEN-B run1:F0:fold1
+PROGRESS SPL ctx 30 SCEN-B run1:F0:fold2
+PROGRESS SPL ctx 31 SCEN-B run1:F0:fold3
+PROGRESS SPL ctx 32 SCEN-B run1:F0:fold4
+PROGRESS SPL ctx 33 SCEN-B run1:F0:probeL
+PROGRESS SPL ctx 34 SCEN-B run1:F0:probeR
+PROGRESS SPL ctx 35 SCEN-B run1:M0:full
+PROGRESS SPL ctx 36 SCEN-B run1:M0:fold0
+PROGRESS SPL ctx 37 SCEN-B run1:M0:fold1
+PROGRESS SPL ctx 38 SCEN-B run1:M0:fold2
+PROGRESS SPL ctx 39 SCEN-B run1:M0:fold3
+PROGRESS SPL ctx 40 SCEN-B run1:M0:fold4
+PROGRESS SPL ctx 41 SCEN-B run1:M0:probeL
+PROGRESS SPL ctx 42 SCEN-B run1:M0:probeR
+PROGRESS SPL ctx 43 SCEN-A run2:F0:full

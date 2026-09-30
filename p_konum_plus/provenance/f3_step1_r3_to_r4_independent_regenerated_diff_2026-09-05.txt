@@ -1,0 +1,325 @@
+# independent regenerated unified diff (3-line context), git diff --no-index
+# parent = f3_step1_r1_corrected_ratification_candidate_r3_2026-09-03.md  sha256 350bc15e5c18e3dddb219e5e6b54926910fbac6b0f98ed8b498f128fe3fb95ad
+# child  = f3_step1_r1_corrected_ratification_candidate_r4_2026-09-05.md  sha256 5e594136d6c27adcf6cade9c52c1fb83e5183312899fb46bb96b8cc2c695f4ad
+# auditor = Claude (independent/advisory), 2026-09-05; not expected to be byte-equal to Claude Code's semantic_diff txt (a8ba561e…)
+--- r3.md
++++ r4.md
+@@ -1,27 +1,42 @@
+-# p_konum_plus — F3 STEP 1 — Corrected Ratification Candidate r3 (standalone)
++# p_konum_plus — F3 STEP 1 — Corrected Ratification Candidate r4 (standalone)
+ 
+ ```text
+ artifact_role = standalone PI ratification candidate for
+                 D-P03-1..7, D-P04, D-P05
+ status        = NON-NORMATIVE recommendation; nothing here is PI-accepted
+-date          = 2026-09-03
+-revision      = r3
++date          = 2026-09-05
++revision      = r4
+ 
+ parent =
+-f3_step1_r1_corrected_ratification_candidate_r2_2026-09-03.md
++f3_step1_r1_corrected_ratification_candidate_r3_2026-09-03.md
+ 
+ parent_sha256 =
+-b8ce7667200787eeda6e71b6d8ede6aebc9bb4fd1b05344dc31f62f361bc399c
++350bc15e5c18e3dddb219e5e6b54926910fbac6b0f98ed8b498f128fe3fb95ad
+ 
+ revision_reason =
+-F3-STEP1-PROV-03 reference-only qualification-provenance correction
+-
+-scientific_change = false
++D-P04-COMMON-SUPPORT-01 (consulted-level common-valid supports);
++F3-STEP1-FAILBRANCH-01 (PI-owned D-P04 floor/failure rows);
++F3-STEP1-C3-ACF-01 (D-C3-ACF-ESTIMATOR PI row);
++F3-STEP1-C4B-SEPARATE-P04-01 (conditional exactness dependency recorded);
++K-05 (informational branch-complete disclosure)
++
++scientific_change = false        (no prior PI choice overwritten; new PI-owned
++                                  rows exposed, not decided)
+ execution_change = false
+ methodology_change = false
+ 
+-lineage       = r1 (6e7b5634…) -> r2 (parent, remains historical provenance)
+-                -> r3 (this file)
++current_gate_state (r4; the r3-era RATIFICATION_READY=true is historical
++status only and is NOT propagated):
++  D-P04-COMMON-SUPPORT-01 = CORRECTED_IN_r4_PENDING_INDEPENDENT_AUDIT
++  F3-STEP1-FAILBRANCH-01  = EXPOSED_AS_PI_OWNED_IN_r4_PENDING_INDEPENDENT_AUDIT
++  F3-STEP1-C3-ACF-01      = EXPOSED_AS_D_C3_ACF_ESTIMATOR_IN_r4_PENDING_INDEPENDENT_AUDIT
++  F3-STEP1-C4B-SEPARATE-P04-01 = CONDITIONAL_PI_EXACTNESS_REQUIRED_IF_SEPARATE_SELECTED
++  K-05 = INFORMATIONAL_RECORDED_WITH_BRANCH_SEMANTICS
++  RATIFICATION_READY = false (pending r4 independent audit + PI owner closure)
++  F3_EXECUTION_READY = false ; F3_started = false
++
++lineage       = r1 (6e7b5634…) -> r2 (b8ce7667…) -> r3 (parent, remains
++                historical provenance) -> r4 (this file)
+ governing     = v11 (d136502f…, v11_wins=true); F2 FINAL FREEZE r1 (ee2cb99d…);
+                 v6 prompt (418092db…); narrow-correction prompt (b0d55ba0…)
+                 + ADDENDUM A r1
+@@ -136,6 +151,65 @@ POST_V11_EXECUTION_PIN unless labelled otherwise.
+ - Explicit label: C3 measures EXCESS first-order residual structure relative
+   to the same WC-ALC-shaped benchmark, not morphology membership.
+ - P04 scalar: max over sexes of median|phi|_F,s; tolerance tau_3.
++- exact estimator convention: pinned by the PI-owned row D-C3-ACF-ESTIMATOR
++  below (r4 addition; F3-STEP1-C3-ACF-01 — no exact upstream pin exists in
++  v11 / F2 FREEZE r1 / r3).
++
++#### D-C3-ACF-ESTIMATOR (r4 addition — PI-owned; F3-STEP1-C3-ACF-01)
++
++```text
++recommended =
++  For each valid full-data residual series r_0,...,r_{T-1}:
++    r_bar = (1/T) * sum_{t=0}^{T-1} r_t
++    phi_i = abs( sum_{t=0}^{T-2} (r_t - r_bar)(r_{t+1} - r_bar)
++                 / sum_{t=0}^{T-1} (r_t - r_bar)^2 )
++    T = 146
++  family residual: r_t = z_t - ghat_t, ghat = frozen full-data best-eligible
++    family prediction on the full 146-point grid under the frozen z_ddof0
++    prediction rule.
++  spline residual: defined analogously from the valid full-data
++    adequacy-benchmark spline prediction.
++  The identical estimator convention is used for family and spline.
++  interpretation = classical lag-1 sample ACF convention using the
++    full-series residual mean and the standard/biased autocovariance
++    denominator.
++
++bounded alternatives =
++  (b) adjusted lag denominator:
++      phi_adjusted = phi_classical * T/(T-1) = phi_classical * 146/145
++  (c) Pearson lagged-vector correlation:
++      phi_Pearson = abs(corr((r_0,...,r_{T-2}), (r_1,...,r_{T-1})))
++      with the two lagged subvectors separately centered and separately
++      scaled.
++
++zero-variance / undefined rule (binding, all conventions):
++  if sum_{t=0}^{T-1}(r_t - r_bar)^2 = 0 or the statistic is non-finite:
++      phi_i = undefined
++  and the existing D-P03-7 undefined-statistic / completeness governance
++  applies. No new numerical zero-variance tolerance is introduced at STEP-1.
++  No silent substitution (phi_i = 0; NaN-as-valid; epsilon denominator;
++  sentinel) unless separately PI-approved.
++
++RATIONALE (recorded):
++  The estimator choice is not cosmetic. Under the frozen F2 convention both
++  the observed z-trajectory and the full-grid prediction are z_ddof0
++  standardized on the full 146-point grid, so the full-grid residual mean is
++  theoretically zero (mean(r) = mean(z) - mean(ghat) = 0 - 0 = 0) up to
++  floating-point error. The estimator choice is therefore NOT justified by a
++  generally nonzero full-grid residual mean. Nevertheless the conventions
++  are not equivalent: (b) rescales the classical lag-1 ACF by the fixed
++  factor T/(T-1) = 146/145; (c) separately centers and scales the two lagged
++  subvectors, whose means and variances generally differ after the first/
++  last residual is removed, even when the full residual vector has mean
++  zero. The three conventions can therefore produce different C3 values and
++  must be pinned outcome-blind before F3 execution. The scientific estimator
++  formula is pinned in F3 STEP-1; the exact library/API call is a CLASS_C
++  implementation pin fixed in the subsequent implementation step, provided
++  it is mathematically verified to implement the PI-ratified formula
++  exactly.
++
++PI_action = ACCEPT / MODIFY
++```
+ 
+ ### C4 — censored-case / window-truncation identifiability
+ F1-consistency (binding): nothing imputed; missing != zero; no [0,4]
+@@ -220,6 +294,17 @@ feature start of D-P05 §6 items (v6 §6.2/§6.3) and full-grid admissibility
+   = max over sexes of C4b_F,s (tau_4b_RMSE = 0.02,
+   OWNER_SCIENTIFIC_TOLERANCE; alternatives 0.01/0.05); sub-level order 4a
+   before 4b; under REPORT_ONLY the 4b sub-level is removed.
++- SEPARATE-specific P04 status (r4; F3-STEP1-C4B-SEPARATE-P04-01):
++  the c4b P04 scalar above is defined for the single-scalar WORSE/MEAN
++  aggregations. r3 defines NO rule converting the two side-specific
++  sex-level statistics (LEFT, RIGHT) into the single D-P04 4b comparison
++  quantity under AGG-L1 = SEPARATE, and the P03 statement "SEPARATE passes
++  iff both sides pass" does not imply one. AGG-L1-SEPARATE remains an
++  existing bounded PI alternative, but if selected it cannot be treated as
++  execution-exact until the PI supplies an exact D-P04 4b rule; no
++  scalar-combination rule (max-over-sides, mean-over-sides, side-lexicographic,
++  both-sides-equivalent, or other) is invented here.
++  status = CONDITIONAL_PI_EXACTNESS_REQUIRED_IF_SEPARATE_SELECTED.
+ 
+ ### C5 — parameter stability (unchanged from r1)
+ - statistic: from the 5 P05 training fits, s_stab,i = max over the family's 4
+@@ -406,6 +491,161 @@ family-ID order "P-01" < "P-02", only after all scientific comparisons remain
+ equivalent; legacy-neutral; no Ward+CH privilege [V11_LITERAL constraints].
+ PI_action = ACCEPT / MODIFY.
+ 
++### 9.1 Consulted-level semantics (r4 addition — D-P04-COMMON-SUPPORT-01)
++
++```text
++A D-P04 level is CONSULTED only if all earlier D-P04 levels were equivalent
++within their frozen tau rule. Once a D-P04 level resolves the comparison,
++the procedure terminates.
++
++Unconsulted later levels:
++  impose no common-support requirement
++  impose no floor requirement
++  cannot trigger STOP
++  need not be recomputed for decision purposes
++
++The exact consulted path must be recorded in provenance/reporting.
++```
++
++### 9.2 Criterion-specific common-valid supports for CONSULTED levels (r4 addition)
++
++P03 family-vs-spline pairing does NOT imply D-P04 P-01-vs-P-02 pairing.
++Therefore, for every subset-defined D-P04 level that is actually CONSULTED,
++BOTH candidate scalars are recomputed on the SAME criterion-specific
++common-valid support (per sex stratum s):
++
++```text
++C1:  full-denominator level (coverage_F,s over n_s); not subset-defined;
++     no common-support recomputation applies.
++C6:  structural level (frozen parameter counts); not subset-defined.
++
++C2:  U2_s = { i : P-01 has the required valid C2 statistic
++              AND P-02 has the required valid C2 statistic
++              AND the spline benchmark has the required valid C2 statistic }
++C3:  U3_s = { i : P-01 valid C3 statistic AND P-02 valid C3 statistic
++              AND spline valid C3 statistic }
++C5:  U5_s = { i : P-01 valid C5 statistic AND P-02 valid C5 statistic }
++
++C4b:
++  if PI-ratified C4b_status = REPORT_ONLY:
++    C4b is removed from D-P04; no C4b common-support requirement, floor, or
++    failure-action rule applies.
++  if PI-ratified C4b_status = P03_GATE:
++    if PI-ratified AGG-L1 = WORSE or AGG-L1 = MEAN:
++      U4_s = { i : P-01 LEFT and RIGHT probes successful
++                AND P-02 LEFT and RIGHT probes successful
++                AND spline LEFT and RIGHT probes successful }
++      recompute BOTH P-01 and P-02 C4b scalars on this same U4_s using the
++      PI-ratified aggregation:
++        WORSE -> r_i = max(RMSE_edge_LEFT_i, RMSE_edge_RIGHT_i)
++        MEAN  -> r_i = (RMSE_edge_LEFT_i + RMSE_edge_RIGHT_i)/2
++    if PI-ratified AGG-L1 = SEPARATE:
++      U4L_s = { i : P-01 LEFT probe succeeds AND P-02 LEFT probe succeeds
++                 AND spline LEFT probe succeeds }
++      U4R_s = { i : P-01 RIGHT probe succeeds AND P-02 RIGHT probe succeeds
++                 AND spline RIGHT probe succeeds }
++      recompute BOTH P-01 and P-02 LEFT sex-level statistics on the same
++      U4L_s and BOTH RIGHT sex-level statistics on the same U4R_s.
++      IMPORTANT: this does NOT define how the two side-specific sex-level
++      statistics become the single D-P04 4b comparison level; that rule is
++      absent upstream — see the SEPARATE-specific status in §3-C4b
++      (CONDITIONAL_PI_EXACTNESS_REQUIRED_IF_SEPARATE_SELECTED).
++
++Prohibited on every CONSULTED subset-defined level:
++  candidate-specific-set P-01-vs-P-02 comparison
++  imputation
++  numerical sentinel
++  post-hoc support substitution
++```
++
++AGG-L1-MEAN above is the existing r3 D-P03-5 bounded alternative, preserved
++exactly as such; it is not a new r4 scientific option.
++
++### 9.3 D-P04_COMMON_SUPPORT_FLOOR (r4 addition — PI-owned)
++
++```text
++recommended =
++  apply the PI-ratified global c_complete to every CONSULTED subset-defined
++  D-P04 common-valid set
++
++bounded alternative =
++  no additional D-P04 common-support floor; still recompute both candidate
++  scalars on the same common-valid set; mandatory disclosure of
++  |U_j,s| / n_s for every CONSULTED level
++
++PI_action = ACCEPT / MODIFY
++status = pending until explicit PI action after independent audit
++```
++
++No new numeric D-P04 floor literal is introduced. The theoretical
++intersection lower bound 2*c_complete - 1 is mathematics/provenance only,
++never an accepted floor. If the PI later accepts the recommended branch and
++the PI-ratified global literal is c_complete = 0.90, then conditionally
++|U_j,s|/n_s >= 0.90 for every CONSULTED subset-defined level — a conditional
++implication only; 0.90 is not pre-ratified here.
++
++### 9.4 D-P04_COMMON_SUPPORT_FAILURE_ACTION (r4 addition — PI-owned; F3-STEP1-FAILBRANCH-01)
++
++The existing STOP/redesign branch covers only the case where no family
++passes P03; it does not cover a D-P04 common-support-floor failure. This
++branch is therefore exposed as PI-owned, not invented as predeclared:
++
++```text
++Applicability =
++  only if D-P04_COMMON_SUPPORT_FLOOR is ratified as "apply global c_complete"
++
++recommended =
++  if a CONSULTED subset-defined common-valid set fails the ratified
++  common-support floor:
++      D-P04 = NOT_COMPARISON_READY
++      no automated winner
++      STOP and return to PI governance
++      no threshold relaxation
++      no fallback to candidate-specific supports
++      no silent skip to later D-P04 levels
++
++bounded alternative =
++  PI must provide an exact replacement action rule
++
++PI_action = ACCEPT / MODIFY
++status = pending until explicit PI action after independent audit
++```
++
++### 9.5 K-05 — informational disclosure (branch-complete; no gate change)
++
++```text
++classification = informational ; scientific_change = false
++c_ident, c_complete, C4a, C4b are NOT changed because of K-05.
++
++If PI-ratified C4b_status = P03_GATE:
++  if PI-ratified AGG-L1 = WORSE or MEAN:
++    the applicable C4b paired-valid set contains only trajectories whose
++    family LEFT and RIGHT probes are successful; therefore
++    C4b completeness share >= c_complete
++      => family C4a successful-probe share >= c_complete.
++  if PI-ratified AGG-L1 = SEPARATE:
++    if LEFT common/paired-valid share >= c_complete AND RIGHT
++    common/paired-valid share >= c_complete, then family LEFT and RIGHT
++    success counts are each >= c_complete*n_s, hence over the full 2*n_s
++    probe denominator the family C4a successful-probe share >= c_complete.
++  Thus, under P03_GATE: if the applicable C4b completeness condition passes
++  AND the PI-ratified c_complete > c_ident, then c_ident is structurally
++  non-binding on that path.
++
++If PI-ratified C4b_status = REPORT_ONLY:
++  C4b completeness is not a P03/P04 gate; the implication above does NOT
++  make c_ident non-binding; c_ident remains independently binding through
++  C4a.
++
++Conditional current-recommendation example only (tied to a FUTURE PI
++ratification, not presently ratified): IF the PI later ratifies
++C4b_status = P03_GATE, c_complete = 0.90, c_ident = 0.85, THEN for
++WORSE/MEAN — and for SEPARATE when both side-specific completeness
++conditions pass — the C4a successful-probe share >= 0.90 > 0.85, so C4a is
++structurally non-binding after the applicable C4b completeness condition
++passes.
++```
++
+ ## 10. Ratification table
+ 
+ | decision_id | final_exact_recommendation | bounded_alternative_set | PI_action |
+@@ -417,9 +657,18 @@ PI_action = ACCEPT / MODIFY.
+ | D-P03-5 | §3-C4: C4b_status = P03_GATE; AGG-L1-WORSE; A.5 edge rule | REPORT_ONLY; AGG-L1-SEPARATE / AGG-L1-MEAN | ACCEPT / MODIFY |
+ | D-P03-6 | 6A within-WC-ALC claim | 6B diagnostic reference | ACCEPT / MODIFY |
+ | D-P03-7 | Option A + c_complete = 0.90 (new owner literal) | Option B; reuse c_cov | ACCEPT / MODIFY |
+-| D-P04 | §9 lexicographic rule | T-B composite (rejected); tau alternatives | ACCEPT / MODIFY |
++| D-P04 | §9 lexicographic rule + §9.1/§9.2 consulted-level common-valid supports | T-B composite (rejected); tau alternatives | ACCEPT / MODIFY |
++| D-P04_COMMON_SUPPORT_FLOOR | §9.3: apply PI-ratified global c_complete to every CONSULTED subset-defined common-valid set | no additional floor; same-set recomputation + mandatory per-level share disclosure | ACCEPT / MODIFY |
++| D-P04_COMMON_SUPPORT_FAILURE_ACTION | §9.4: NOT_COMPARISON_READY + STOP to PI governance; no relaxation/fallback/skip (applicable only if the floor row is ratified as "apply global c_complete") | PI supplies an exact replacement action rule | ACCEPT / MODIFY |
++| D-C3-ACF-ESTIMATOR | §3-C3 packet: classical lag-1 sample ACF (full-series mean, standard/biased denominator, T = 146) + binding zero-variance/undefined rule | (b) adjusted T/(T-1) = 146/145 denominator; (c) Pearson lagged-vector correlation | ACCEPT / MODIFY |
+ | D-P05 | §8 scheme | K = 10; g_sens PI option | ACCEPT / MODIFY |
+ 
++Conditional exactness dependency (not a PI row): F3-STEP1-C4B-SEPARATE-P04-01
++— if the PI selects AGG-L1 = SEPARATE, an exact SEPARATE-specific D-P04 C4b
++comparison rule must first be supplied by the PI (§3-C4b, §9.2); no such rule
++is needed if SEPARATE is not selected. Status =
++CONDITIONAL_PI_EXACTNESS_REQUIRED_IF_SEPARATE_SELECTED.
++
+ main_risk (D-P03-5 row, binding wording): C4b = functional identifiability
+ under simulated censoring (probe fit vs the family's own full-data fit on the
+ masked edge). It does not measure edge accuracy, morphology fit / WC-ALC

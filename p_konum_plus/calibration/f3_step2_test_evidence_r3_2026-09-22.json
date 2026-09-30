@@ -1,0 +1,847 @@
+{
+ "a5": {
+  "UT_A5_III_pass": true,
+  "UT_A5_II_pass": true,
+  "note": "unit tests; A.5(i) is exercised on the real path (S-1=(a)); these two probe A.5(ii)/(iii) directly"
+ },
+ "a5_contract_violations": [],
+ "acf": [
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.fc7e3f1f8fc7ep-1",
+   "sha256_146_float64_le": "f3b5278ba1bae74d3a724f22309700ea4ac251e9ac402b799759c7ed6fb46ac0",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.f8fc7e3f1f8fcp-3",
+   "undefined": false,
+   "vector": "alternating"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.f57abd5eaf57bp-1",
+   "sha256_146_float64_le": "1b652c41cc86f3d7d76a3d3cef420f44095679f6049d9885bd17b8feecd33d24",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.0a8542a150a85p-2",
+   "undefined": false,
+   "vector": "linear"
+  },
+  {
+   "bitwise_equal": true,
+   "undefined": true,
+   "vector": "constant_den0"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.bd22375a8604ep-1",
+   "sha256_146_float64_le": "94dfb23a6dfb3e35653a784a31f759770a836c49f4ab2aff5fa86b80b99ae1bf",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.1698c39743c33p+2",
+   "undefined": false,
+   "vector": "mixed_trig"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.5fc3259e02705p-5",
+   "sha256_146_float64_le": "36d9a0e653e238a145c4d19056df593f18f3cfb74c3c895798111d09042cd6b6",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.57036f64d4be7p+2",
+   "undefined": false,
+   "vector": "SCEN-A:F0:P01"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.e6a291609c7c2p-6",
+   "sha256_146_float64_le": "720ca57c2cdd595ac31e7f1c909eb475ae1d94e21a030c7d0de3f4afc65298fa",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.9a7bbdac36236p+1",
+   "undefined": false,
+   "vector": "SCEN-A:F0:P02"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.a56bc8b7294bbp-3",
+   "sha256_146_float64_le": "9c91caf293a841d433b1f7f304ba697a1041e11360ad3d6727e28ddc00bb35a8",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.b5dd0cb0d2359p+1",
+   "undefined": false,
+   "vector": "SCEN-A:F0:SPL"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.6e244ea633d37p-4",
+   "sha256_146_float64_le": "c2c3c6ec47004caf0d20ca4aa818ce2e52cd22ab760a6d2bf659bbebc6af3cc7",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.34e6d141dfdffp-4",
+   "undefined": false,
+   "vector": "SCEN-A:M0:P01"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.5f00787b64b43p-4",
+   "sha256_146_float64_le": "2cf3bc1fd91c507d3b292cdfa12eb7f22cc2f1417fa64efd30c1ff3edf386994",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.3951e9b1c8224p+0",
+   "undefined": false,
+   "vector": "SCEN-A:M0:P02"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.dffbf906783a2p-5",
+   "sha256_146_float64_le": "3859b64135424b68416edd301bf1de5c15fc3f94a324422d972066cd79d03568",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.67b9375bb6c53p+0",
+   "undefined": false,
+   "vector": "SCEN-A:M0:SPL"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.df896e38a16f9p-4",
+   "sha256_146_float64_le": "c08d36cb6e6dd378190d8c059df50d1d7f5bca3bc30f46e3c687905dc00feac1",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.2ece634310422p+2",
+   "undefined": false,
+   "vector": "SCEN-B:F0:P01"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.0b78b4ac94b0ep-3",
+   "sha256_146_float64_le": "86ce60106dbb324a14998fb962d961f118855297e505f2001aed50d7e317e6fb",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.c334b17446b61p-1",
+   "undefined": false,
+   "vector": "SCEN-B:F0:P02"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.853360ea60d4ap-5",
+   "sha256_146_float64_le": "6368ab0a97468bb291520fb0fc940debfcc58ae8826915cbe3ba62f17045108e",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.c66654d0cca93p-3",
+   "undefined": false,
+   "vector": "SCEN-B:F0:SPL"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.4c29eaba032e7p-6",
+   "sha256_146_float64_le": "d615d5214855972c49e77cd4df2034563f1041395991f737a5f51d9d53a57568",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.8cd1de00cb8b9p-1",
+   "undefined": false,
+   "vector": "SCEN-B:M0:P01"
+  },
+  {
+   "bitwise_equal": true,
+   "phi": "0x1.dcc417f0ec7fap-7",
+   "sha256_146_float64_le": "cfc335505576fefa911de20c82d75f408aff620be73c113a00031ca220f7cde4",
+   "strict_vs_alt_b": true,
+   "strict_vs_alt_c": true,
+   "ulp_dev_vs_exact": "0x1.030ca88b92612p+2",
+   "undefined": false,
+   "vector": "SCEN-B:M0:P02"
+  }
+ ],
+ "comparator_nan": {
+  "note": "documents the underlying hazard; the corrected D-P04 code path never evaluates a scalar comparison on an unvalidated NaN (see Y-02/Y-03)",
+  "pass_": true,
+  "python_nan_comparison_is_resolved_like": true
+ },
+ "exc_captures": [
+  {
+   "exception_type": "RuntimeError",
+   "fixture": "SCEN-A",
+   "kind": "COVERED",
+   "mask_id": "run1:F0:full",
+   "message": "Maximum number of iterations reached.",
+   "mode": 113,
+   "s2_rule": "alpha: NOT accepted at stage 2; chain continues",
+   "sex": "F",
+   "stage": 2,
+   "traceback": "Traceback (most recent call last):\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r3_2026-09-22.py\", line 509, in wrapped_accept\n    return real_accept(c, z, O, A)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"p_konum_plus/calibration/f3_spline_solver_qualification_harness_r2_2026-09-03.py\", line 313, in accept\n    res, _ = kkt_res(c, z, O, A)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"p_konum_plus/calibration/f3_spline_solver_qualification_harness_r2_2026-09-03.py\", line 304, in kkt_res\n    _, res = nnls(A[act].T, g)\n             ^^^^^^^^^^^^^^^^^\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r3_2026-09-22.py\", line 609, in wrapped_nnls\n    return real_nnls(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r3_2026-09-22.py\", line 628, in wrapped_nnls\n    return real_nnls(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r3_2026-09-22.py\", line 609, in wrapped_nnls\n    return real_nnls(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\scipy\\optimize\\_nnls.py\", line 93, in nnls\n    raise RuntimeError(\"Maximum number of iterations reached.\")\nRuntimeError: Maximum number of iterations reached.\n",
+   "trajectory": 0
+  }
+ ],
+ "exc_injection_fixtures": {
+  "S1": {
+   "count": 1,
+   "pass_": true,
+   "stages": [
+    1
+   ]
+  },
+  "S2": {
+   "count": 2,
+   "pass_": true,
+   "stages": [
+    1,
+    2
+   ]
+  },
+  "UNRELATED_TYPE": {
+   "pass_": true,
+   "propagated_uncaught": true
+  }
+ },
+ "fix_a5_true": {
+  "left": {
+   "P-01": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_eligible": true,
+    "probe_eligible": true,
+    "probe_success_c4a": false
+   },
+   "P-02": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_eligible": true,
+    "probe_eligible": true,
+    "probe_success_c4a": false
+   },
+   "SPL": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_valid": true,
+    "probe_success_c4a": false,
+    "probe_valid": true
+   },
+   "a5_i": true,
+   "pass_": true,
+   "support_size": 15
+  },
+  "right": {
+   "P-01": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_eligible": true,
+    "probe_eligible": true,
+    "probe_success_c4a": false
+   },
+   "P-02": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_eligible": true,
+    "probe_eligible": true,
+    "probe_success_c4a": false
+   },
+   "SPL": {
+    "excluded_from_c4a_numerator": true,
+    "excluded_from_c4b_pair": true,
+    "full_valid": true,
+    "probe_success_c4a": false,
+    "probe_valid": true
+   },
+   "a5_i": true,
+   "pass_": true,
+   "support_size": 15
+  }
+ },
+ "io_free_assertion": "AST-walk (Call.func name/attr in {open,print,exit,write,writerow,writerows,sys.exit}); PASS, over ALL executed nodes",
+ "loader_node_hashes": {
+  "ACCEPT_RULE": {
+   "end_lineno": 111,
+   "lineno": 110,
+   "sha256": "a5388f4525b43844010030e3409661f65e116c577c940f53a126e18fd3b36b6f"
+  },
+  "B": {
+   "end_lineno": 48,
+   "lineno": 48,
+   "sha256": "cd812be96780222c2cf934de159dc5fbb6c44ac2d4ea5eb9e88f1fa2ddc8feb6"
+  },
+  "CASE_ACCEPT": {
+   "end_lineno": 120,
+   "lineno": 118,
+   "sha256": "54c350d3c8e0b2ab18e6cc15ca5ff1778d974a7131708d37efae8e2e3611da14"
+  },
+  "CFG_FIELDS": {
+   "end_lineno": 165,
+   "lineno": 125,
+   "sha256": "a0515aea10191b32cd32100dab70e4c4122c16b54d1df1b237c90d9be358b3d6"
+  },
+  "COEF_MAP": {
+   "end_lineno": 103,
+   "lineno": 102,
+   "sha256": "c0aea77aafb8b35e776f647411e489511d8de6d3e4778bd0896cd6fd75f8f090"
+  },
+  "CONFIGS": {
+   "end_lineno": 104,
+   "lineno": 104,
+   "sha256": "50bef036f6ed8e9968c3d558b6d452f1445355680ef353bf688c404c4ead3fbf"
+  },
+  "CUSTODY_PATH": {
+   "end_lineno": 31,
+   "lineno": 31,
+   "sha256": "56778f79e39cba436c0de6378e6af4373a141693445ce3bf72a02feab3426277"
+  },
+  "C_DEC": {
+   "end_lineno": 66,
+   "lineno": 66,
+   "sha256": "7576ef78e8f9ba79a8bec5b729d9df7a51062a3bb707afa7c83123106a519fa3"
+  },
+  "C_INC": {
+   "end_lineno": 67,
+   "lineno": 67,
+   "sha256": "b5a29c0d0c457e335b45470e37a370c89b8a8d23dfcd0a377ce75bde64f2fe6d"
+  },
+  "C_INT": {
+   "end_lineno": 65,
+   "lineno": 65,
+   "sha256": "170fb0313446766bb4974525e2a5c38a905325db3e098ae6e87b990abb53bf5d"
+  },
+  "C_RIGHT": {
+   "end_lineno": 68,
+   "lineno": 68,
+   "sha256": "808009b7052363c214c6ec0cb25474d1f5e97d4032b61b0b443c3502e3f1fd2a"
+  },
+  "D1": {
+   "end_lineno": 52,
+   "lineno": 52,
+   "sha256": "482439eea6c6e903e11d071ef1cd3c94c17223c8297b4849a9dc96f13f68ac39"
+  },
+  "D1_for_loop": {
+   "end_lineno": 55,
+   "lineno": 53,
+   "sha256": "c854473238e72359b9eac0ebd1c3de1c9dfd2b6fd1b72f27abef07853519ce09"
+  },
+  "DEG": {
+   "end_lineno": 36,
+   "lineno": 36,
+   "sha256": "66618fbc5ba7d296e028b3fa5fbcd6b5fef5445b2a8bdf8a0c5624c63715e4cf"
+  },
+  "EXPAND_TOL": {
+   "end_lineno": 43,
+   "lineno": 43,
+   "sha256": "a3e38ff1ae17126fa23a6672ffbf6df37dafecb4fb73367521ac13af3467d5fe"
+  },
+  "FEAS_TOL": {
+   "end_lineno": 40,
+   "lineno": 40,
+   "sha256": "5d11020ba40edb34a17748fd24d1822eb989ef4aeba1712b349c53e5869f3707"
+  },
+  "FIXTURES": {
+   "end_lineno": 101,
+   "lineno": 90,
+   "sha256": "766035505d2320796171fa0ce6465ca45b1cc90155c4cf2fd07151f781564579"
+  },
+  "Import@18": {
+   "end_lineno": 18,
+   "lineno": 18,
+   "sha256": "de2abade832c8e350a1bdc98cfcdb1e202ac4749c5fc51a4a970d41736b6df5c"
+  },
+  "Import@21": {
+   "end_lineno": 21,
+   "lineno": 21,
+   "sha256": "ab159f81f279e2664ad5dedfcb52b2fdfc9f411b53510899c5aaafe5e5b2909c"
+  },
+  "Import@22": {
+   "end_lineno": 22,
+   "lineno": 22,
+   "sha256": "ada1d9e0a360cda0fd1c8757d297aa74a4fc8d7193a69d3c28b43afc6950e9f9"
+  },
+  "Import@23": {
+   "end_lineno": 23,
+   "lineno": 23,
+   "sha256": "9e77b3746ea081eb4c557e71cc84ca29dc66a89d18a07e85dba66a336e7310ae"
+  },
+  "Import@24": {
+   "end_lineno": 24,
+   "lineno": 24,
+   "sha256": "6f11581db2b4487aaaf6eb8704a9acbe89cddd1ccde4652211c1a838bc70efde"
+  },
+  "ImportFrom@17": {
+   "end_lineno": 17,
+   "lineno": 17,
+   "sha256": "a6284e6d3d43bdfbf0da732945adb2b4f31147c92bea47aee100d7f556c22d00"
+  },
+  "ImportFrom@25": {
+   "end_lineno": 25,
+   "lineno": 25,
+   "sha256": "d78c49b01a24370f193604eb52867a47cfe3e17db814d0111b178b840cbe7dc9"
+  },
+  "ImportFrom@26": {
+   "end_lineno": 26,
+   "lineno": 26,
+   "sha256": "f61f58c2bbb835eb1b812fad49d37124b48796982809675709d8e95722d5aa2c"
+  },
+  "KAPPA": {
+   "end_lineno": 39,
+   "lineno": 39,
+   "sha256": "5698d5d8283953a305a53610718d2b5f84356c907c1e8e3c846f567e192bc64c"
+  },
+  "KKT_TOL": {
+   "end_lineno": 44,
+   "lineno": 44,
+   "sha256": "33928492feff7ba24186ddae02c949ebd05bd578e8fa72e10abe80d0f4b3997f"
+  },
+  "KNOTS": {
+   "end_lineno": 37,
+   "lineno": 37,
+   "sha256": "6010a5b63ff86701d93ae6d73a7ef23c68dc32919607e7248d3ca96d4344c9e2"
+  },
+  "MANIFEST_HEADER": {
+   "end_lineno": 182,
+   "lineno": 167,
+   "sha256": "b09a193de554b436fffb585e86ce4eda7cfd0fc3596f94ad49c05231f26601d7"
+  },
+  "MANIFEST_PATH": {
+   "end_lineno": 29,
+   "lineno": 29,
+   "sha256": "1206d012c49d0c41def550e2ea7fb087150dde651e20648d7a50cfb641097219"
+  },
+  "MASKS": {
+   "end_lineno": 78,
+   "lineno": 73,
+   "sha256": "7c29009b39e3e4782db6ce77137aaec82b42b78d437c5be8258c42b86cc9feac"
+  },
+  "MASK_RULE": {
+   "end_lineno": 80,
+   "lineno": 79,
+   "sha256": "7e95fe5fa22022693d6525014c7d9aaa4ffd303fa18f1d3f6c6f4a6d55fc20ae"
+  },
+  "MODE_REJECT": {
+   "end_lineno": 115,
+   "lineno": 114,
+   "sha256": "0ef3fab378abe43aae52536283419274a3d5ca8554987204e80b230a9f9b587a"
+  },
+  "MODE_TOL_RULE": {
+   "end_lineno": 123,
+   "lineno": 123,
+   "sha256": "a220afce60fde2a7460d7521b82a0d13060adf22f8d868ae77dda0f5b9df4903"
+  },
+  "NBASIS": {
+   "end_lineno": 38,
+   "lineno": 38,
+   "sha256": "77b92bf55584458af104d373c305f63a0974766063c7ad865278ce5766094cc3"
+  },
+  "OBJ_RULE": {
+   "end_lineno": 122,
+   "lineno": 122,
+   "sha256": "c42765a97d1c21e759b2a2814d3322c5700fb7bd88894fb40dbf059ad50e0640"
+  },
+  "POLISH_TOL": {
+   "end_lineno": 42,
+   "lineno": 42,
+   "sha256": "9baa6a32670095fb7534981c1199625f06ff6b24027e79167645bc29f25e2608"
+  },
+  "REF_ACT_TOL": {
+   "end_lineno": 41,
+   "lineno": 41,
+   "sha256": "96c4e32ac950417bf3c760cf2dbc9c1caa452058824742747b9c9b4bddeb4505"
+  },
+  "REF_RULE": {
+   "end_lineno": 117,
+   "lineno": 116,
+   "sha256": "608fdf1b26b3a142d69269cf5c26756d11b20c155e48b711db31ba4aa6d11a37"
+  },
+  "REPO": {
+   "end_lineno": 28,
+   "lineno": 28,
+   "sha256": "647c6e78051dbbac2e3d1f9e96d10bd7e7ff2384574156731a241a8b5f953535"
+  },
+  "RESULTS_PATH": {
+   "end_lineno": 30,
+   "lineno": 30,
+   "sha256": "859f98422b075c58d866c04f50c574d50a95923bac8f3ff9ca63d6305b3b074e"
+  },
+  "RES_HEADER": {
+   "end_lineno": 419,
+   "lineno": 408,
+   "sha256": "789bcd394c465defd20e70226524602b5b02987f48a9d110a4e991fabb2b5ae5"
+  },
+  "SLSQP_OPTS": {
+   "end_lineno": 46,
+   "lineno": 46,
+   "sha256": "0fdaeb16e558c4c75f47a178ab685df9c81746e7c2729a610d254bf67273f47f"
+  },
+  "STAGE3_ACCEPT": {
+   "end_lineno": 113,
+   "lineno": 112,
+   "sha256": "a3f08a16e1c6512bc29efb6613a80ac0c4f120c0fc87f6190e2afaace6193cb6"
+  },
+  "SUITE_ACCEPT": {
+   "end_lineno": 121,
+   "lineno": 121,
+   "sha256": "41bc1f6529660b217c298e4a49ad573cbbfc329c0bcab9711b52566e4d9de911"
+  },
+  "T": {
+   "end_lineno": 34,
+   "lineno": 34,
+   "sha256": "a008c623846e15707c5c39860cb9df30ea801d2644522cbb0816ce941a613bbb"
+  },
+  "TC_OPTS": {
+   "end_lineno": 45,
+   "lineno": 45,
+   "sha256": "890a3c460bc01a801fe15ebd6f3c152b1fac9db50ae9ba0b6650d4003b86d3e4"
+  },
+  "U": {
+   "end_lineno": 35,
+   "lineno": 35,
+   "sha256": "eb46c483469ae1d41ee5ad194ef17334d662e2bbe15ee6272ccb29e8bb60e036"
+  },
+  "accept": {
+   "end_lineno": 314,
+   "lineno": 308,
+   "sha256": "75f68c2e4978998b3982e00cdb4e715d6ebb987dcf9f9cfd153f44ab1c6507b8"
+  },
+  "amat": {
+   "end_lineno": 60,
+   "lineno": 57,
+   "sha256": "5ce00c62a8fc9905aec96db0103a4d9f5c756ac9ed5f6887aad16526af825381"
+  },
+  "assert_B_allclose": {
+   "end_lineno": 50,
+   "lineno": 50,
+   "sha256": "70d94560f735edf0d5a34f5e49b857a83613236f3dea8c7c160976200476f448"
+  },
+  "assert_B_shape": {
+   "end_lineno": 49,
+   "lineno": 49,
+   "sha256": "c7af0599003a221b16a268eacadefdfa8b6c235e9e914e6466ccb9b29b38098d"
+  },
+  "build_case": {
+   "end_lineno": 288,
+   "lineno": 279,
+   "sha256": "c7b7f52b217ba949d0b7b88d9439eef2afc41117bb4532e4ae3e837be62cdfa6"
+  },
+  "build_manifest_rows": {
+   "end_lineno": 211,
+   "lineno": 184,
+   "sha256": "d1ee315dae1518b74d764314f32bf3ddbecad3a6ce665ce939a9b1f128bad07b"
+  },
+  "bump": {
+   "end_lineno": 71,
+   "lineno": 70,
+   "sha256": "375189dd07741387580e1fc9e459c00c70854866dd689780d1c6bf3ddee59a03"
+  },
+  "docstring": {
+   "end_lineno": 16,
+   "lineno": 1,
+   "sha256": "a59e3833286dc8b1beec9ea53e0a1f261cc6d9cf9a4131b90b16df00ba47f200"
+  },
+  "fixture_mode": {
+   "end_lineno": 107,
+   "lineno": 106,
+   "sha256": "25700ea681a555ad5a82d6a547a2fd7e63ef317ff9af98ba793a22c259206574"
+  },
+  "gradf": {
+   "end_lineno": 295,
+   "lineno": 294,
+   "sha256": "1ae5da4a853e6b5902d55ede52e7d85b12712fc010f1f7c84aaba7cf0422d49e"
+  },
+  "kkt_res": {
+   "end_lineno": 306,
+   "lineno": 300,
+   "sha256": "ec9daab93ee531bdddbfece40f51a741a7942afb329726510e81a6bb091be14b"
+  },
+  "maxviol": {
+   "end_lineno": 298,
+   "lineno": 297,
+   "sha256": "38f4c3dea97f2a39620027681e9a2712c157446b75320532bd437db41b3670af"
+  },
+  "modeidx_of": {
+   "end_lineno": 88,
+   "lineno": 87,
+   "sha256": "ae1cc9c120cffa95d3b8ddb8a19279c01f3bdcbb9fe3127a9e91d0e68b7f02fd"
+  },
+  "polish": {
+   "end_lineno": 362,
+   "lineno": 352,
+   "sha256": "08ba5fc7cf1fc8323f8fb4e249cc4d0ccce3cac77f9b582e4817adb84a7d9b46"
+  },
+  "raw_of": {
+   "end_lineno": 85,
+   "lineno": 82,
+   "sha256": "281522996342c28b2078da078c2f5bf0b29113bf255dd518b466ba8e0543e11a"
+  },
+  "ref_all": {
+   "end_lineno": 422,
+   "lineno": 422,
+   "sha256": "cd77a809b4d3ed8e350d03f4ee65b2eb8cb5a732e500cc9332e9100a8cbabba0"
+  },
+  "reference": {
+   "end_lineno": 332,
+   "lineno": 316,
+   "sha256": "720a0f5dbca32d07c55816469873800b1c8ffb917f5aef76fddbcfdad1875ea7"
+  },
+  "repeat_all": {
+   "end_lineno": 423,
+   "lineno": 423,
+   "sha256": "61c1ec2855f5499b23a4cc7e138b95c18041877446cf3bd35a93b1c86adc92d1"
+  },
+  "res_rows": {
+   "end_lineno": 420,
+   "lineno": 420,
+   "sha256": "a910b6fb5550388544cddb8772e507d5e8eff3b8f92e26cbd31f8ce7fea94001"
+  },
+  "rss_of": {
+   "end_lineno": 292,
+   "lineno": 290,
+   "sha256": "9fe09956ac0552b2d75b4867377a15dac57a25b070c88f9256c9609a109c2c4f"
+  },
+  "run_slsqp": {
+   "end_lineno": 340,
+   "lineno": 334,
+   "sha256": "93f2d2d4756ba702ab6c7eba06f8f4fa1b63be7f9d024e58119bd3bc139b37be"
+  },
+  "run_tc": {
+   "end_lineno": 350,
+   "lineno": 342,
+   "sha256": "f61df4b9ec1af0645ea97880965c2cf8c13783c8b721d08035c3e9071b7da646"
+  },
+  "solver_config": {
+   "end_lineno": 406,
+   "lineno": 364,
+   "sha256": "d5692535dfd9e542046b6b2c283caa6e4cc38121147fe36f3597a1aef7151908"
+  },
+  "thread_env_loop": {
+   "end_lineno": 20,
+   "lineno": 19,
+   "sha256": "2f0305955d92bfb1d6e877238ad14c66d76ab17226112a6a90fc889161affd11"
+  },
+  "zddof0": {
+   "end_lineno": 63,
+   "lineno": 62,
+   "sha256": "b7b800bc02a62ff210088adb146bca64508a0e56de11e8dfd48bdab31f40d97d"
+  }
+ },
+ "residual_link": {
+  "SCEN-A:F0:P01": {
+   "fitter": "P01",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "36d9a0e653e238a145c4d19056df593f18f3cfb74c3c895798111d09042cd6b6",
+   "trajectory": 0
+  },
+  "SCEN-A:F0:P02": {
+   "fitter": "P02",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "720ca57c2cdd595ac31e7f1c909eb475ae1d94e21a030c7d0de3f4afc65298fa",
+   "trajectory": 0
+  },
+  "SCEN-A:F0:SPL": {
+   "fitter": "SPL",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "9c91caf293a841d433b1f7f304ba697a1041e11360ad3d6727e28ddc00bb35a8",
+   "trajectory": 0
+  },
+  "SCEN-A:M0:P01": {
+   "fitter": "P01",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:M0:full",
+   "sex": "M",
+   "sha256": "c2c3c6ec47004caf0d20ca4aa818ce2e52cd22ab760a6d2bf659bbebc6af3cc7",
+   "trajectory": 0
+  },
+  "SCEN-A:M0:P02": {
+   "fitter": "P02",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:M0:full",
+   "sex": "M",
+   "sha256": "2cf3bc1fd91c507d3b292cdfa12eb7f22cc2f1417fa64efd30c1ff3edf386994",
+   "trajectory": 0
+  },
+  "SCEN-A:M0:SPL": {
+   "fitter": "SPL",
+   "fixture": "SCEN-A",
+   "mask_id": "run1:M0:full",
+   "sex": "M",
+   "sha256": "3859b64135424b68416edd301bf1de5c15fc3f94a324422d972066cd79d03568",
+   "trajectory": 0
+  },
+  "SCEN-B:F0:P01": {
+   "fitter": "P01",
+   "fixture": "SCEN-B",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "c08d36cb6e6dd378190d8c059df50d1d7f5bca3bc30f46e3c687905dc00feac1",
+   "trajectory": 0
+  },
+  "SCEN-B:F0:P02": {
+   "fitter": "P02",
+   "fixture": "SCEN-B",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "86ce60106dbb324a14998fb962d961f118855297e505f2001aed50d7e317e6fb",
+   "trajectory": 0
+  },
+  "SCEN-B:F0:SPL": {
+   "fitter": "SPL",
+   "fixture": "SCEN-B",
+   "mask_id": "run1:F0:full",
+   "sex": "F",
+   "sha256": "6368ab0a97468bb291520fb0fc940debfcc58ae8826915cbe3ba62f17045108e",
+   "trajectory": 0
+  },
+  "SCEN-B:M0:P01": {
+   "fitter": "P01",
+   "fixture": "SCEN-B",
+   "mask_id": "run1:M0:full",
+   "sex": "M",
+   "sha256": "d615d5214855972c49e77cd4df2034563f1041395991f737a5f51d9d53a57568",
+   "trajectory": 0
+  },
+  "SCEN-B:M0:P02": {
+   "fitter": "P02",
+   "fixture": "SCEN-B",
+   "mask_id": "run1:M0:full",
+   "sex": "M",
+   "sha256": "cfc335505576fefa911de20c82d75f408aff620be73c113a00031ca220f7cde4",
+   "trajectory": 0
+  }
+ },
+ "solver_b_function_hashes": {
+  "accept": "75f68c2e4978998b3982e00cdb4e715d6ebb987dcf9f9cfd153f44ab1c6507b8",
+  "amat": "5ce00c62a8fc9905aec96db0103a4d9f5c756ac9ed5f6887aad16526af825381",
+  "gradf": "1ae5da4a853e6b5902d55ede52e7d85b12712fc010f1f7c84aaba7cf0422d49e",
+  "kkt_res": "ec9daab93ee531bdddbfece40f51a741a7942afb329726510e81a6bb091be14b",
+  "maxviol": "38f4c3dea97f2a39620027681e9a2712c157446b75320532bd437db41b3670af",
+  "polish": "08ba5fc7cf1fc8323f8fb4e249cc4d0ccce3cac77f9b582e4817adb84a7d9b46",
+  "rss_of": "9fe09956ac0552b2d75b4867377a15dac57a25b070c88f9256c9609a109c2c4f",
+  "run_slsqp": "93f2d2d4756ba702ab6c7eba06f8f4fa1b63be7f9d024e58119bd3bc139b37be",
+  "run_tc": "f61df4b9ec1af0645ea97880965c2cf8c13783c8b721d08035c3e9071b7da646",
+  "solver_config": "d5692535dfd9e542046b6b2c283caa6e4cc38121147fe36f3597a1aef7151908"
+ },
+ "spline_call_telemetry_sample_count": 10512,
+ "starts_dup": {
+  "index0": {
+   "feature_start_rejected": true,
+   "pass_": true,
+   "reason": "DUPLICATE"
+  },
+  "index145": {
+   "feature_start_rejected": true,
+   "pass_": true,
+   "reason": "DUPLICATE"
+  }
+ },
+ "starts_full": {
+  "P-01": {
+   "expected": 732,
+   "feature_start_rejected": false,
+   "pass_": true,
+   "retained_count": 731,
+   "start_bank_size": 732
+  },
+  "P-02": {
+   "expected": 262,
+   "feature_start_rejected": false,
+   "pass_": true,
+   "retained_count": 261,
+   "start_bank_size": 262
+  }
+ },
+ "t_mask_full_ext": {
+  "pass_": true
+ },
+ "uset_construction": {
+  "a": {
+   "U2": 9,
+   "U5": 10,
+   "expect": {
+    "U2": 9,
+    "U5": 10
+   },
+   "ok": true
+  },
+  "b": {
+   "U5": 9,
+   "expect": {
+    "U5": 9
+   },
+   "ok": true
+  },
+  "c": {
+   "U2": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "expect": {
+    "U2_excludes": 0
+   },
+   "ok": true
+  },
+  "d": {
+   "U4": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "expect": {
+    "U4_excludes": 0
+   },
+   "ok": true
+  },
+  "e": {
+   "U2": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "U5": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "expect": {
+    "U2_excludes": 0,
+    "U5_excludes": 0
+   },
+   "ok": true
+  }
+ },
+ "ut_exc_unrelated_reference": {
+  "case_1a_propagated": true,
+  "case_1b_propagated": true,
+  "pass_": true
+ },
+ "ut_probe_decouple": {
+  "UT_PROBE_DECOUPLE_pass": true,
+  "full_eligible": false,
+  "note": "first half: probe_success is probe-level only (X-04). second half (C4b-pairing absence) is what a full no-full-data-reference state would show; under S-R2-1=DEFERRED_THIS_CYCLE the actual C4b criterion for such a state returns STOP_EXACTNESS_PENDING rather than silently omitting the pair, so this half is evidence at the probe_success/rmse_computable level only, not a fixture-level C4b outcome (\u00a712 B item 2)",
+  "probe_eligible": true,
+  "probe_success_c4a": true,
+  "rmse_computable": false
+ },
+ "wrapper_restore_ok": true
+}

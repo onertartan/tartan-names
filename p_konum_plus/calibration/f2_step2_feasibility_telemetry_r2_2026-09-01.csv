@@ -1,0 +1,11 @@
+fixture_id,family,start_id,optimizer_path,status,message,success,nit,nfev,njev,wall_clock_seconds
+FIX-P01-BENIGN,P-01,grid[0],primary,2,`xtol` termination condition is satisfied.,True,152,915,183,0.3894603999942774
+FIX-P01-BENIGN,P-01,grid[365],primary,1,`gtol` termination condition is satisfied.,True,294,1515,303,0.8445989000028931
+FIX-P01-BENIGN,P-01,grid[730],primary,2,`xtol` termination condition is satisfied.,True,117,165,33,0.15172729999176227
+FIX-P01-BENIGN,P-01,feature,primary,2,`xtol` termination condition is satisfied.,True,114,845,169,0.28948019999370445
+FIX-P02-BENIGN,P-02,grid[0],primary,2,`xtol` termination condition is satisfied.,True,253,1835,367,0.8554607999976724
+FIX-P02-BENIGN,P-02,grid[130],primary,2,`xtol` termination condition is satisfied.,True,137,1020,204,0.453026699993643
+FIX-P02-BENIGN,P-02,grid[260],primary,2,`xtol` termination condition is satisfied.,True,195,1405,281,0.6517237999942154
+FIX-P02-BENIGN,P-02,feature,primary,2,`xtol` termination condition is satisfied.,True,194,1450,290,0.6153936999908183
+FIX-FALLBACK-FAULT-INJECTION,P-01,designated_start_idx0,primary,-1,EXCEPTION:RuntimeError:FAULT_INJECTION_TEST_ONLY,False,-1,-1,-1,nan
+FIX-FALLBACK-FAULT-INJECTION,P-01,designated_start_idx0,fallback,0,Optimization terminated successfully,True,28,166,-1,0.03956859999743756
