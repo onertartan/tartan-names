@@ -1,3 +1,4 @@
 # p_konum_plus is a hash-pinned archive: store and check out EXACT bytes.
-# No EOL conversion anywhere in this repository.
-* -text
+# EOL conversion stays DISABLED for the archive only; the application code
+# keeps the repository default.
+p_konum_plus/** -text
