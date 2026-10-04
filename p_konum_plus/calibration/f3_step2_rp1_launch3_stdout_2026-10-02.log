@@ -1,0 +1,23 @@
+LAUNCH_NUMBER = 3 ; logs = p_konum_plus/calibration/f3_step2_rp1_launch3_stdout_2026-10-02.log / p_konum_plus/calibration/f3_step2_rp1_launch3_stderr_2026-10-02.log
+REAL_DATA_MODE = False
+PIN-F2-IMPORT-HASH = 01714752eacda37a21fbcc0946c96be4f6b25d2a74b7bbe3da6fe0887df10077
+PIN-SPLINE-IMPORT-HASH = b31e5a6b69e5bbd96bce07a8634fb9474672ec5d6538d929287193d83ecdc64d
+PIN-SPLINE-LOADER prelude nodes = 21 (authorized list match: True)
+PID = 26784 ; START = 2026-10-03T15:46:53.866378 ; CMDLINE = p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py ; INTERPRETER = C:\Users\Neo\AppData\Local\Programs\Python\Python311\python.exe
+RESTART_LAYER_ACTIVE = True
+GRID_SIZES = P-01 731 ; P-02 261
+FIXTURE_MANIFEST_SHA256 = 5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe
+MANIFEST_REUSED_UNCHANGED_FROM_R4_1 = true (regenerated in memory and verified equal; file not rewritten)
+PRE_EXECUTION_CUSTODY_RECORD_VERIFIED = true (p_konum_plus/provenance/f3_step2_rp1_preexecution_custody_attempt3_2026-10-02.md)
+DISPATCH_PRECONDITIONS_P1_P4 = ALL PASS (observed hashes equal pins; 25 verified: D-3, r4 instruction, D-5, A-1, D-2, r4-1 instruction, D-6, A-2, A-3, r4-2 instruction, D-7, A-4, reused generator, reused manifest, r4-1 results baseline, rp1 instruction, D-10, D-9, D-8, A-5, r4-2 results/telemetry/test-evidence baseline, F1 freeze record)
+NR-01(i) = True (hash 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403; telemetry-fields True)
+NR-01(ii) [T-2a] = True (hybrid_canonical 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403)
+SPLINE_NONREGRESSION (NR-SPL) = True (30 rows)
+T-LOADER-NODES = PASS (node-list equality asserted at load time; 73 node_hashes entries for 73 executed nodes)
+T_MASK_FULL_EXT = {"pass_": true}
+T_F1_LOADER_SYNTH = {"eligible_count": {"expected": 6, "got": 6, "ok": true}, "partial_excluded": {"expected": true, "got": true, "ok": true}, "denominator_includes_partial": {"expected": true, "got": true, "ok": true}, "z_qc_pass": {"expected": true, "got": true, "ok": true}, "gate_pass": {"expected": true, "got": true, "ok": true}, "MISSING_YEAR": {"expected": "MISSING_YEAR", "got": "MISSING_YEAR", "ok": true}, "DUPLICATE_KEY": {"expected": "DUPLICATE_KEY", "got": "DUPLICATE_KEY", "ok": true}, "ZERO_DENOMINATOR": {"expected": "ZERO_DENOMINATOR", "got": "ZERO_DENOMINATOR", "ok": true}, "ZERO_VARIANCE": {"expected": "ZERO_VARIANCE", "got": "ZERO_VARIANCE", "ok": true}, "COUNT_BELOW_PUBLICATION_FLOOR": {"expected": "COUNT_BELOW_PUBLICATION_FLOOR", "got": "COUNT_BELOW_PUBLICATION_FLOOR", "ok": true}, "BAD_FORMAT": {"expected": "BAD_FORMAT", "got": "BAD_FORMAT", "ok": true}, "RAW_FILE_HASH_MISMATCH": {"expected": "RAW_FILE_HASH_MISMATCH", "got": "RAW_FILE_HASH_MISMATCH", "ok": true}, "TOLERANCE_BREACH": {"expected": "Z_MEAN_QC", "got": "Z_MEAN_QC", "ok": true}, "pass_": true}
+T_CONTEXT_ID_UNIQUE = {"rows": 144, "expected_rows": 144, "all_unique": true, "pass_": true}
+T_INADMISSIBLE_OBSERVABLE = {"family": {"witness_found": false, "witness": null, "eligible_not_counted": true, "nonconverged_not_counted": true, "infeasible_not_counted": true}, "spline": {"clean_not_accepted_counted": true, "accepted_stage1_not_counted": true, "accepted_primary_not_counted": true, "dirty_return_not_counted": true}, "witness_on_frozen_lattice": false, "pass_": true}
+PROGRESS SPL ctx 1 T-STORE-READ tsr:full
+PROGRESS SPL ctx 2 T-STORE-READ tsr:full
+T_STORE_READ_ACCOUNTING = {"units_written_by_fit1": 0, "expected_reads": 0, "served_to_fit2": 146, "fine_counter": 292, "per_read_rows_wellformed": true, "fit1_read_nothing": false, "fit2_equals_fit1": true, "pass_": false}
