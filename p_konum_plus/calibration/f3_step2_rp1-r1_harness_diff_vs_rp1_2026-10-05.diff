@@ -1,0 +1,1489 @@
+# rp1-r1 harness diff vs rp1 (39c733a3...) -- ANNOTATED (RP1A-06)
+# base   = f3_step2_adequacy_harness_rp1_2026-10-02.py (39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09)
+# target = f3_step2_adequacy_harness_rp1-r1_2026-10-05.py (cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb)
+# NOTE: '#HUNK n LABEL <tag>' lines are ANNOTATIONS inserted before each @@ hunk;
+# strip lines starting with '#HUNK' to recover the clean unified diff.
+# labels: C-1..C-6 (rp1 items; expected only in the vs-r4-2 diff) / R-1..R-5 (rp1-r1 items)
+# / S5-WIRING (instruction S5: run, custody, logs, paths, attempt metadata)
+# / S9-WIRING (report & end state: D-12 pins, preconditions, status fields).
+--- p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py	2026-10-04 15:07:39.662918500 +0300
++++ p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py	2026-10-07 14:51:12.994085800 +0300
+#HUNK 1 LABEL R-4 (keywords:1)
+@@ -91,7 +91,10 @@
+ import numpy as np
+ import scipy
+ 
+-REPO = "G:/PycharmProjects/pkp-worktree"
++# R-4 (rp1-r1, RP1A-07): the repo root is overridable, so an auditor can
++# run this UNCHANGED harness against a disposable copy without editing it.
++# The default keeps the executor's own behaviour exactly.
++REPO = os.environ.get("F3_REPO_ROOT", "G:/PycharmProjects/pkp-worktree")
+ os.chdir(REPO)
+ 
+ # ------------------------- Y-01 (b)(c)(d): process provenance ---------------
+#HUNK 2 LABEL S5-WIRING (keywords:28)
+@@ -126,77 +129,60 @@
+ # (not just a name), the store is one disclosed, empty-at-first directory,
+ # and every stored unit carries the pid/start-time of the process that
+ # computed it -- this is what Y-01 corrects relative to r2's layer.
+-# rp1 attempt 5 (T-RP-1 = ACTIVE_FROM_START, D-10 §2; rp1 instruction C-6):
+-# the restart layer stays ACTIVE -- for rp1 only, this replaces D-3 §8.3's
+-# "Attempt 1 runs without it"; every other §8.3 rule (keys, store,
+-# provenance, separation, interruption, check, progress, wording) applies
+-# unchanged.
+-# Attempt 1 (pid 11116) STOPPED on a genuine code defect in T-NONREG-R4-2's
+-# own bookkeeping (3 representation bugs, none scientific); fixed for
+-# attempt 2. See quarantine/f3_step2_rp1_attempt1_nonreg_bug_note_2026-10-02.md.
+-# Attempt 2 (pid 13328) RAN TO A CLEAN EXIT 0 but was missing "T-RP-1" from
+-# end_state.narrowed_evidence (a delivered-field defect, fixed for attempt 3).
+-# See quarantine/f3_step2_rp1_attempt2_narrowed_evidence_note_2026-10-02.md.
+-# Attempt 3 (pid 23540, interrupted; resumed as pid 26784) was hit by TWO
+-# further defects, both the executor's: (a) the resume reused launch number
+-# 3 instead of a new one, so the interrupted process's console output was
+-# overwritten -- an R41A-02(c) violation (disclosed, not hidden;
+-# computational provenance survives via the store manifest; the
+-# interruption itself landed at SPL ctx 22, SCEN-A run1:M0:fold0, mid-write
+-# on the P-02 fitter variant -- corrected here from this comment's own
+-# earlier "ctx 20", which the attempt-3 quarantine note also still carries
+-# uncorrected; see the attempt log's erratum line for the forensic evidence);
+-# (b) the resumed process then STOPPED on a genuine logic bug in
+-# T-STORE-READ-ACCOUNTING itself: it assumed fit1 always computes fresh,
+-# which fails on a resume where fit1's 146 modes were themselves already
+-# cached by the interrupted process. Fixed for attempt 4: the test's
+-# invariant no longer requires fit1 to write anything; it only requires fit2
+-# to be served ALL modes from the store, which holds whether fit1 was a
+-# fresh compute or itself a cache hit. See
+-# quarantine/f3_step2_rp1_attempt3_store_read_resume_bug_note_2026-10-02.md.
+-# Attempt 4 (pid 26524) RAN TO A CLEAN EXIT 0 -- T-NONREG-R4-2 passed
+-# (s_findings=0, u_findings=0), T-STORE-READ-ACCOUNTING passed cold
+-# (fit1_reads=0, served_to_fit2=146), narrowed_evidence correct. The
+-# executor then found, by a deliverable-by-deliverable scan against rp1
+-# instruction §8 ordered by the PI, that STORE_READ_LOG_PATH (the B'
+-# deliverable C-1 names: "a new deliverable lists every read") was declared
+-# as a path constant but never written to -- STORE_READ_LOG stayed an
+-# in-process list, counted (total_rows) but never persisted as a CSV. A
+-# delivered-file omission, same class as attempt 2's narrowed_evidence gap;
+-# fixed for attempt 5 by writing the CSV with a row-count assert against
+-# total_rows and the fine_counts sum.
+-# None of the four defects (attempts 1-4) touched any scientific content
+-# (evaluations/stops/canonical/residual/determinism).
+-# The rp1 store is its own directory, EMPTY at attempt 5's first launch; the
+-# r4-2/r4-1/r4 stores stay where they are, untouched and unread.
++# rp1-r1 attempt 2 (T-RP-1 = ACTIVE_FROM_START, carried from D-10 §2 into
++# D-12/rp1-r1 instruction §4): the restart layer stays ACTIVE -- this is a
++# child of the rp1 harness (39c733a3...), itself the child of r4-2
++# (b988e962...). rp1-r1 is the FIRST B-correction cycle of rp1 (D-11 r1 §6
++# counts from here), closing RP1A-01/02/03 (R-1/R-2/R-3) with RP1A-04/05/06
++# riding along (PI-d) and RP1A-07's auditor-only evidence-limit procedure
++# (R-4). D-11 r1 governs this cycle's review-and-audit discipline.
++# Attempt 1 (pid 34228) ran the ENTIRE computation successfully --
++# T-F1-LOADER-SYNTH (21/21 cases incl. the 8 new R-2 branches),
++# T-F1-HANDOFF-SYNTH (144/144 real-mode contexts), T-CONTEXT-ID-UNIQUE,
++# DETERMINISM=True, residual series unchanged -- then STOPPED at
++# T-NONREG-R4-2 with s_findings=[] and 6 U findings, all three BUGS IN THE
++# R-3 COMPARISON LOGIC ITSELF, not in any computation: (a) the COUNT kind
++# re-canonicalized an already-canonicalized leaf string, so it could never
++# match; (b) a bare "exc_injection_fixtures" EQUAL declaration (meant only
++# for test_evidence.json's copy) collided with results.json's copy of the
++# same key, stopping recursion before results.json's own
++# exc_injection_fixtures.pass_key_namespaces_disjoint ADDITION leaf was
++# reached; (c) three new test_evidence.json capture-record fields
++# (exc_captures, exc_captures_run2, exc_captures_unit_phase) were declared
++# EQUAL instead of provenance-stripped, the same shape solver_exceptions
++# already handles. Fixed for attempt 2; none of the three touched any
++# computation -- see
++# quarantine/f3_step2_rp1-r1_attempt1_nonreg_e_declaration_bugs_note_2026-10-06.md.
++# The rp1-r1 store is its own directory, EMPTY at attempt 2's first launch;
++# the rp1/r4-2/r4-1/r4 stores stay where they are, untouched and unread.
+ RESTART_LAYER_ACTIVE = True
+ 
+-# rp1 attempt 5 supersedes the attempt-4 harness (the STORE_READ_LOG B'
+-# deliverable fix).
+-SUPERSEDES_HARNESS_SHA256 = "47b42533fb99be264ca68c9936f0954054f55d1fbb40d6fa50a638e897b26561"
+-SUPERSEDES_CUSTODY_SHA256 = "49cc92c9f05fdc903479ceefc94011ade198d0eedc03f411c4c062c68bffa165"
+-SUPERSEDES_NOTE_PATH = "p_konum_plus/quarantine/f3_step2_rp1_attempt4_store_read_log_missing_note_2026-10-03.md"
+-ATTEMPT_NUMBER = 5
++# rp1-r1 attempt 2 supersedes the attempt-1 harness (the three R-3
++# comparison-logic fixes).
++SUPERSEDES_HARNESS_SHA256 = "4bffb33aec4bfee48e2ed57bf3546988d809a4b49f2fe830e7e691713640114d"
++SUPERSEDES_CUSTODY_SHA256 = "dc10e08c48ee5dcf74fcf1202a324fdcfce097fd61530e9eced5d5f3b9bf612d"
++SUPERSEDES_NOTE_PATH = "p_konum_plus/quarantine/f3_step2_rp1-r1_attempt1_nonreg_e_declaration_bugs_note_2026-10-06.md"
++ATTEMPT_NUMBER = 2
+ # R41A-02(c): every launch writes its OWN stdout/stderr pair with a
+ # launch-numbered name; no log file is ever overwritten. The launch number
+-# comes from the ENVIRONMENT (F3_RP1_LAUNCH, set by the caller alongside the
+-# redirection), NOT from a source constant: a resumed launch of the SAME
++# comes from the ENVIRONMENT (F3_RP1R1_LAUNCH, set by the caller alongside
++# the redirection), NOT from a source constant: a resumed launch of the SAME
+ # attempt must not change the harness bytes, or it would change the
+ # fingerprint and orphan the attempt's own store units. The value is
+ # disclosed in the process block and the attempt log; the caller refuses an
+ # existing log pair before starting the process.
+-LAUNCH_NUMBER = int(os.environ.get("F3_RP1_LAUNCH", "0"))
++LAUNCH_NUMBER = int(os.environ.get("F3_RP1R1_LAUNCH", "0"))
+ # (asserted >= 1 at the top of main(); importing the module for unit tests
+ # does not require the variable)
+ LAUNCH_STDOUT_PATH = (f"p_konum_plus/calibration/"
+-                      f"f3_step2_rp1_launch{LAUNCH_NUMBER}_stdout_2026-10-02.log")
++                      f"f3_step2_rp1-r1_launch{LAUNCH_NUMBER}_stdout_2026-10-05.log")
+ LAUNCH_STDERR_PATH = (f"p_konum_plus/calibration/"
+-                      f"f3_step2_rp1_launch{LAUNCH_NUMBER}_stderr_2026-10-02.log")
++                      f"f3_step2_rp1-r1_launch{LAUNCH_NUMBER}_stderr_2026-10-05.log")
+ 
+ import pickle
+-# r4-2's OWN restart store. Created empty only if an interruption activates
+-# the restart layer; the r4-1 and r4 stores are never read or moved.
+-RESTART_STORE_DIR = "p_konum_plus/calibration/.rp1_restart_store_2026-10-02"
++# rp1-r1's OWN restart store, tagged separately from rp1's. Created empty at
++# the first launch; the rp1/r4-2/r4-1/r4 stores are never read or moved.
++RESTART_STORE_DIR = "p_konum_plus/calibration/.rp1-r1_restart_store_2026-10-05"
+ _CODE_ENV_FINGERPRINT = [None]     # set once in main(), after W-3 hashes are known
+ 
+ 
+#HUNK 3 LABEL R-1 (keywords:3)
+@@ -339,6 +325,8 @@
+     # rp1 (instruction §4-§5): the C-item tests and the r4-2 non-regression.
+     "T-STORE-READ-ACCOUNTING", "T-KEY-NAMESPACE", "T-F1-LOADER-SYNTH",
+     "T-CONTEXT-ID-UNIQUE", "T-INADMISSIBLE-OBSERVABLE", "T-NONREG-R4-2",
++    # rp1-r1 (R-1..R-5): the B-correction tests.
++    "T-F1-HANDOFF-SYNTH", "T-F1-CONTRACT-GAP", "T-F1-REPRO-GATE-SYNTH",
+ ]
+ 
+ UNITS_COMPUTED_THIS_PROCESS = {"run1": 0, "run2": 0, "nr_gates": 0, "unit_tests": 0,
+#HUNK 4 LABEL S5-WIRING (keywords:48)
+@@ -383,26 +371,26 @@
+ MANIFEST_REUSED_PATH = "p_konum_plus/calibration/f3_step2_fixture_manifest_r4-1_2026-09-29.csv"
+ MANIFEST_HASH_REUSED = "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe"
+ 
+-# r4-2 correction revision inside the r4 cycle (non-retroactivity: every
+-# r4-2 deliverable is a NEW file tagged r4-2; nothing under r4 or r4-1 is
+-# touched, renamed or moved).
+-DATE_TAG = "2026-10-02"
+-MANIFEST_PATH = MANIFEST_REUSED_PATH          # reused unchanged (§5 item 3)
++# rp1-r1: the FIRST B-correction cycle of rp1 (non-retroactivity: every
++# rp1-r1 deliverable is a NEW file tagged rp1-r1; nothing under rp1, r4-2,
++# r4-1 or r4 is touched, renamed or moved).
++DATE_TAG = "2026-10-05"
++MANIFEST_PATH = MANIFEST_REUSED_PATH          # reused unchanged (§4 last paragraph)
+ # R41A-02(a): ONE custody file PER ATTEMPT, the name carrying the attempt
+ # number, so no custody record is ever overwritten. main() only VERIFIES the
+ # record of its own attempt; the external W-3 writer creates it.
+ CUSTODY_PATH = (f"p_konum_plus/provenance/"
+-                f"f3_step2_rp1_preexecution_custody_attempt{ATTEMPT_NUMBER}_{DATE_TAG}.md")
+-TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_telemetry_rp1_{DATE_TAG}.csv"
+-RESULTS_PATH = f"p_konum_plus/calibration/f3_step2_results_rp1_{DATE_TAG}.json"
+-RESIDUAL_PATH = f"p_konum_plus/calibration/f3_step2_residual_series_rp1_{DATE_TAG}.json"
+-TEST_EVIDENCE_PATH = f"p_konum_plus/calibration/f3_step2_test_evidence_rp1_{DATE_TAG}.json"
+-PERCALL_TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1_{DATE_TAG}.csv"
+-ATTEMPT_LOG_PATH = f"p_konum_plus/provenance/f3_step2_rp1_attempt_log_{DATE_TAG}.md"
+-STORE_MANIFEST_PATH = f"p_konum_plus/calibration/f3_step2_rp1_restart_store_manifest_{DATE_TAG}.csv"
+-REGISTER_PATH = f"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1_{DATE_TAG}.md"
+-NONREG_PATH = f"p_konum_plus/calibration/f3_step2_rp1_nonregression_vs_r4_{DATE_TAG}.csv"
+-NONREG_R41_PATH = f"p_konum_plus/calibration/f3_step2_rp1_nonregression_vs_r4-1_{DATE_TAG}.csv"
++                f"f3_step2_rp1-r1_preexecution_custody_attempt{ATTEMPT_NUMBER}_{DATE_TAG}.md")
++TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_telemetry_rp1-r1_{DATE_TAG}.csv"
++RESULTS_PATH = f"p_konum_plus/calibration/f3_step2_results_rp1-r1_{DATE_TAG}.json"
++RESIDUAL_PATH = f"p_konum_plus/calibration/f3_step2_residual_series_rp1-r1_{DATE_TAG}.json"
++TEST_EVIDENCE_PATH = f"p_konum_plus/calibration/f3_step2_test_evidence_rp1-r1_{DATE_TAG}.json"
++PERCALL_TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r1_{DATE_TAG}.csv"
++ATTEMPT_LOG_PATH = f"p_konum_plus/provenance/f3_realdata_prep_rp1-r1_attempt_log_{DATE_TAG}.md"
++STORE_MANIFEST_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_restart_store_manifest_{DATE_TAG}.csv"
++REGISTER_PATH = f"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1-r1_{DATE_TAG}.md"
++NONREG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4_{DATE_TAG}.csv"
++NONREG_R41_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-1_{DATE_TAG}.csv"
+ # the audited r4 results, for the R4A-01(f) non-regression comparison
+ # (read-only, pinned by the start-state inventory)
+ R4_RESULTS_PATH = "p_konum_plus/calibration/f3_step2_results_r4_2026-09-24.json"
+#HUNK 5 LABEL S9-WIRING (keywords:15)
+@@ -420,16 +408,32 @@
+ R4_2_TELEMETRY_HASH = "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d"
+ R4_2_TEST_EVIDENCE_PATH = "p_konum_plus/calibration/f3_step2_test_evidence_r4-2_2026-09-30.json"
+ R4_2_TEST_EVIDENCE_HASH = "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf"
+-NONREG_R42_PATH = f"p_konum_plus/calibration/f3_step2_rp1_nonregression_vs_r4-2_{DATE_TAG}.csv"
++NONREG_R42_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-2_{DATE_TAG}.csv"
+ # C-1: the per-read store log (deliverable B')
+-STORE_READ_LOG_PATH = f"p_konum_plus/calibration/f3_step2_rp1_store_read_log_{DATE_TAG}.csv"
++STORE_READ_LOG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_store_read_log_{DATE_TAG}.csv"
+ # §5 class E: the expectations manifest, WRITTEN BEFORE THE RUN (external
+ # file; the harness only READS it -- an E difference not matching a
+ # declaration in this file is a finding)
+-EXPECTATIONS_E_PATH = f"p_konum_plus/calibration/f3_step2_rp1_expectations_{DATE_TAG}.json"
+-# this cycle's dispatched pin set (rp1 instruction §1 / D-10 §1)
++EXPECTATIONS_E_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r1_expectations_{DATE_TAG}.json"
++# standing, unchanged (rp1-r1 instruction: "every rule of it stands for
++# rp1-r1 unless a section below replaces it by name")
+ RP1_INSTRUCTION_PATH = "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1_INSTRUCTION_2026-10-02.md"
+ RP1_INSTRUCTION_HASH = "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5"
++# this cycle's own dispatched pin set (rp1-r1 instruction §1 / D-12)
++RP1R1_INSTRUCTION_PATH = "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R1_INSTRUCTION_DRAFT_r2_2026-10-05.md"
++RP1R1_INSTRUCTION_HASH = "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d"
++D11R1_PATH = "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md"
++D11R1_HASH = "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639"
++D12_DISPATCH_RECORD_PATH = "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_pi_dispatch_record_2026-10-05.md"
++D12_DISPATCH_RECORD_HASH = "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364"
++AUDIT_RECORD_PATH = "p_konum_plus/prompts/f3_realdata_prep_rp1_independent_audit_gpt_codex_DRAFT_r1_2026-10-05.md"
++AUDIT_RECORD_HASH = "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989"
++REVIEW_RECORD_PATH = "p_konum_plus/prompts/RP1-R1_Talimat_Taslagi_Degerlendirmesi_2026-10-05.md"
++REVIEW_RECORD_HASH = "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef"
++RP1_TRANSMISSION_LIST_PATH = "p_konum_plus/provenance/f3_realdata_prep_rp1_transmission_list_2026-10-04.md"
++RP1_TRANSMISSION_LIST_HASH = "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9"
++RP1_HARNESS_PATH = "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py"
++RP1_HARNESS_HASH = "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09"
+ D10_DISPATCH_RECORD_PATH = "p_konum_plus/prompts/f3_realdata_prep_rp1_pi_dispatch_record_2026-10-02.md"
+ D10_DISPATCH_RECORD_HASH = "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34"
+ D9_PATH = "p_konum_plus/prompts/f3_step2_qualification_pi_decision_record_2026-10-02.md"
+#HUNK 6 LABEL R-5 (keywords:1)
+@@ -881,6 +885,8 @@
+             wall_clock_seconds=wall,
+             objective=(float(fun_val) if math.isfinite(float(fun_val)) else None),
+             phase=CURRENT_PHASE[0], pid=PID, start_iso=PROCESS_START_ISO,
++            source="fresh",    # R-5 (rp1-r1): every call here IS a real,
++                               # just-computed optimizer call in THIS process
+         ))
+         return r
+     spl["minimize"] = wrapped_minimize
+#HUNK 7 LABEL R-1 (keywords:3)
+@@ -1043,6 +1049,13 @@
+ FIDELITY_DECLARED = []     # list of (fixture_id, traj, family, context) injection sites declared
+ FIDELITY_EXECUTED = []     # the same, confirmed reached + recognized (injmap.get(...) matched)
+ 
++# R-1 (rp1-r1): every (fixture_id, mask_id, family, x_sha256) run_real_
++# scenario ACTUALLY passed to fit_family/fit_spline this process, appended
++# by mid() whenever a scenario carries real_x. T-F1-HANDOFF-SYNTH reads
++# this (sliced to its own call) to prove the consumer ran on the loader's
++# own arrays and ids, not merely that the dry table looks right.
++REAL_MODE_IDS_PASSED = []
++
+ 
+ # ------------------------- X-03/X-04 family fit driver -----------------
+ def fit_family(f2m, grids, fixture_id, family, x, obs_idx, telemetry,
+#HUNK 8 LABEL R-5 (keywords:1)
+@@ -1255,8 +1268,13 @@
+                 # context came back "valid".
+                 if cr.get("kind") == "UNRELATED":
+                     any_mode_unrelated = True
++            # R-5 (rp1-r1): these calls were NOT made by this process --
++            # they are replayed from the stored unit's own telemetry.
++            # Append a copy (never mutate the stored dict) with source
++            # overridden to "replay"; every other field is the stored
++            # unit's own value, unchanged.
+             for tc in tel_calls:
+-                SPLINE_TELEMETRY_CALLS.append(tc)
++                SPLINE_TELEMETRY_CALLS.append(dict(tc, source="replay"))
+         else:
+             _ACCEPT_CALL_COUNT[0] = 0
+             _SPL_CTX.update(fixture=fixture_id, mask_id=mask_id, mode=m)
+#HUNK 9 LABEL R-1 (keywords:20)
+@@ -2083,14 +2101,61 @@
+     return out
+ 
+ 
++class F1ContractGap(Exception):
++    """R-1(iii): f1_build_scenarios must set every key run_real_scenario
++    reads from a scenario. A key the consumer reads and the builder did
++    not set raises THIS, never a default and never a bare KeyError."""
++    def __init__(self, key):
++        self.key = key
++        super().__init__("F1ContractGap: %s" % key)
++
++
++# R-1(iii): the complete key set run_real_scenario reads from a scenario,
++# each traced to the ratified contract by the comment at its read site
++# below. real_x / real_mask_ids are READ (via .get, not required) only to
++# decide which of the two paths (real-mode handoff vs. the unchanged
++# synthetic path) applies; their absence is a valid scenario, not a gap.
++RUN_REAL_SCENARIO_REQUIRED_KEYS = ["fixture_id", "strata", "start_bank", "injections"]
++
++
+ def run_real_scenario(f2m, spl, grids, sc, run_label, a5_findings):
+-    def mid(suffix):
+-        return run_label + ":" + suffix
++    # R-1(iii): contract-gap STOP, checked before any other read of sc.
++    for _k in RUN_REAL_SCENARIO_REQUIRED_KEYS:
++        if _k not in sc:
++            raise F1ContractGap(_k)
++    # R-1(i)/PI-b: if this scenario carries real_x (f1_build_scenarios'
++    # output), every fit call of a trajectory uses that trajectory's real
++    # array and a FAMILY-QUALIFIED mask id (PI-b's literal reading of C-4:
++    # "family is part of every real-mode (fixture_id, mask_id)"), built by
++    # the SAME function f1_context_id_table uses for its dry table. Without
++    # real_x the scenario is the unchanged r4-2/rp1 synthetic path, and mid()
++    # is byte-for-byte what it always was -- synthetic-path mask ids are NOT
++    # changed (PI-b).
++    real_x = sc.get("real_x")
++    real_mask_ids = sc.get("real_mask_ids")
++
++    def mid(suffix, family=None):
++        if real_x is None:
++            return run_label + ":" + suffix
++        assert family is not None, (
++            "R-1(ii) STOP: a real-mode mask id requires its family")
++        sx_, ti_s = suffix[0], suffix[1:].split(":", 1)[0]
++        ctx = suffix.split(":", 1)[1]
++        base = real_mask_ids[(sx_, int(ti_s))]
++        mask_id = "real:%s:%s:%s" % (base, family, ctx)
++        xh = hashlib.sha256(np.asarray(real_x[(sx_, int(ti_s))],
++                                       dtype=np.float64).tobytes()).hexdigest()
++        REAL_MODE_IDS_PASSED.append((sc["fixture_id"], mask_id, family, xh))
++        return mask_id
+     telemetry, construction_audit = [], []
+     n_s = len(sc["strata"]["F"])
+-    start_bank = sc["start_bank"]
++    start_bank = sc["start_bank"]      # ratified contract: FULL_LATTICE (full
++                                        # start lattice) for real mode, same
++                                        # rule the synthetic path already uses
+     injmap = {}
+-    for i in sc["injections"]:
++    for i in sc["injections"]:         # ratified contract: NO injections on
++                                        # real data (D-9/rp1 instruction); []
++                                        # for every real-mode scenario
+         injmap.setdefault((i["traj"], i["family"], i["context"]), i["mode"])
+         FIDELITY_DECLARED.append((sc["fixture_id"], i["traj"], i["family"], i["context"]))
+     strata_recs = {}
+#HUNK 10 LABEL R-1 (keywords:5)
+@@ -2121,7 +2186,10 @@
+                 for k in ("P01", "P02", "SPL")}
+         for ti, (kind, seed, sigma) in enumerate(sc["strata"][sx]):
+             gen = sys.modules[GEN_MODULE_NAME]
+-            x = gen.make_traj(kind, seed, sigma)
++            # R-1(i): real_x present -> consume the loader's array for this
++            # trajectory; gen.make_traj is NOT called for it. Absent -> the
++            # unchanged r4-2/rp1 synthetic path.
++            x = real_x[(sx, ti)] if real_x is not None else gen.make_traj(kind, seed, sigma)
+             trg = (sx, ti)
+             S_i, viol = a5_support_safe(x, sc["fixture_id"], sx, ti, a5_findings)
+             if S_i is None:
+#HUNK 11 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2138,7 +2206,7 @@
+             for family in ("P-01", "P-02"):
+                 fk = FAM_KEYS[family]
+                 full = fit_family(f2m, grids, sc["fixture_id"], family, x,
+-                                  FULL_O, telemetry, mid(f"{sx}{ti}:full"),
++                                  FULL_O, telemetry, mid(f"{sx}{ti}:full", family),
+                                   start_bank=start_bank)
+                 recs[fk]["full"].append(full["eligible"])
+                 phi = (acf_classical(x - full["ghat"])
+#HUNK 12 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2162,7 +2230,7 @@
+                     if (trg, family, fname) in injmap:
+                         FIDELITY_EXECUTED.append((sc["fixture_id"], trg, family, fname))
+                     r = fit_family(f2m, grids, sc["fixture_id"], family, x,
+-                                   train, telemetry, mid(f"{sx}{ti}:{fname}"),
++                                   train, telemetry, mid(f"{sx}{ti}:{fname}", family),
+                                    start_bank=start_bank,
+                                    inject_fault=inj == "F2_FAULT_INJECTION",
+                                    inject_fs_reject=inj == "TEST_ONLY_INJECTION")
+#HUNK 13 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2184,7 +2252,7 @@
+                         FIDELITY_EXECUTED.append(
+                             (sc["fixture_id"], trg, family, "probe" + side))
+                     r = fit_family(f2m, grids, sc["fixture_id"], family, x,
+-                                   obsP, telemetry, mid(f"{sx}{ti}:probe{side}"),
++                                   obsP, telemetry, mid(f"{sx}{ti}:probe{side}", family),
+                                    start_bank=start_bank,
+                                    inject_fault=inj == "F2_FAULT_INJECTION")
+                     probe_raw = bool(r["eligible"])
+#HUNK 14 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2198,7 +2266,7 @@
+             if (trg, "SPL", "full") in injmap:
+                 FIDELITY_EXECUTED.append((sc["fixture_id"], trg, "SPL", "full"))
+             spf = fit_spline(spl, sc["fixture_id"], x, FULL_O, telemetry,
+-                             mid(f"{sx}{ti}:full"), inject_failure=spf_inj)
++                             mid(f"{sx}{ti}:full", "SPL"), inject_failure=spf_inj)
+             # R41A-01 (r4-2): ANY STOP_EXACTNESS_PENDING on the full context
+             # -> pending, carrying that event's own tag (natural or injected).
+             # The declared spline-failure injection returns
+#HUNK 15 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2225,7 +2293,7 @@
+                 if (trg, "SPL", fname) in injmap:
+                     FIDELITY_EXECUTED.append((sc["fixture_id"], trg, "SPL", fname))
+                 r = fit_spline(spl, sc["fixture_id"], x, train, telemetry,
+-                               mid(f"{sx}{ti}:{fname}"), inject_failure=inj)
++                               mid(f"{sx}{ti}:{fname}", "SPL"), inject_failure=inj)
+                 if r["valid"]:
+                     pred_cv[held] = r["ghat"][held]
+                 else:
+#HUNK 16 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2243,7 +2311,7 @@
+             for side, obsP, edge, a5_i in (("L", LEFT_PROBE_O, np.arange(0, 15), a5_i_L),
+                                            ("R", RIGHT_PROBE_O, np.arange(131, 146), a5_i_R)):
+                 r = fit_spline(spl, sc["fixture_id"], x, obsP, telemetry,
+-                               mid(f"{sx}{ti}:probe{side}"))
++                               mid(f"{sx}{ti}:probe{side}", "SPL"))
+                 # R41A-01 (r4-2): either probe unverifiable -> pending, tag
+                 # carried; natural wins over injected (merge_pending_tags).
+                 probe_tags.append(spl_pending_tag(r.get("failure")))
+#HUNK 17 LABEL R-1 (keywords:6)
+@@ -2841,6 +2909,50 @@
+     return True
+ 
+ 
++class F1ReproGateFailure(Exception):
++    """R-1(iv): the deferred F1 reproduction gate. STOP semantics -- never
++    re-tuned, never imputed. The reason is the message's first token."""
++
++
++def f1_repro_gate(raw_dir, hash_table_rows, eligible_manifest_rows):
++    """R-1(iv), the gate rp1 instruction §4 C-3's last paragraph deferred:
++    BEFORE any F1 read in a later cycle, (1) verify the COMPLETE file list
++    of the hash table against raw_dir (missing, extra or mismatching file
++    -> STOP) and (2) reproduce the eligible manifest byte-exact (-> STOP on
++    any mismatch). In rp1-r1 this runs ONLY on a synthetic hash table and a
++    synthetic eligible manifest built from the T-F1-LOADER-SYNTH fixtures
++    (S-e = SYNTHETIC_ONLY_IN_RP1, carried unchanged): no real F1 file, hash
++    table or eligible manifest is ever opened here.
++
++    hash_table_rows: list of (filename, sha256). eligible_manifest_rows:
++    list of (sex, name) expected eligible, any order (sorted before
++    comparison). Returns True; never returns False -- a mismatch raises."""
++    on_disk = set(os.listdir(raw_dir))
++    named = set(fname for fname, _ in hash_table_rows)
++    missing = named - on_disk
++    if missing:
++        raise F1ReproGateFailure("F1_REPRO_GATE_MISSING_FILE %s" % sorted(missing))
++    extra = on_disk - named
++    if extra:
++        raise F1ReproGateFailure("F1_REPRO_GATE_EXTRA_FILE %s" % sorted(extra))
++    for fname, expected_hash in hash_table_rows:
++        p = os.path.join(raw_dir, fname)
++        observed = hashlib.sha256(open(p, "rb").read()).hexdigest()
++        if observed != expected_hash:
++            raise F1ReproGateFailure(
++                "F1_REPRO_GATE_HASH_MISMATCH %s observed=%s expected=%s"
++                % (fname, observed, expected_hash))
++    shares, _denom = f1_load_raw_dir(raw_dir)
++    z = f1_normalize(shares)
++    observed_eligible = sorted(z.keys())
++    expected_eligible = sorted(tuple(r) for r in eligible_manifest_rows)
++    if observed_eligible != expected_eligible:
++        raise F1ReproGateFailure(
++            "F1_REPRO_GATE_ELIGIBLE_MISMATCH observed=%s expected=%s"
++            % (observed_eligible, expected_eligible))
++    return True
++
++
+ def f1_build_scenarios(z_by_traj):
+     """The scenario structure run_real_scenario consumes, from normalized
+     trajectories. Per-scenario parameters NOT chosen here: the start bank,
+#HUNK 18 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2869,8 +2981,13 @@
+ 
+ 
+ def f1_context_id_table(scenarios):
+-    """C-4 / T-CONTEXT-ID-UNIQUE: the dry-constructed list of every
+-    (fixture_id, mask_id, family) identity the real mode would fit."""
++    """R-1(ii) / T-CONTEXT-ID-UNIQUE (replaces rp1's): the dry-constructed
++    list of every (fixture_id, mask_id) identity the real mode would fit,
++    where mask_id itself is family-qualified (PI-b's literal reading of
++    C-4: family is part of every real-mode (fixture_id, mask_id), not a
++    separate field read alongside it). Built by the SAME string rule
++    run_real_scenario's mid() uses in real mode, so the dry table and what
++    the consumer actually passes can never diverge by construction."""
+     rows = []
+     contexts = (["full"] + ["fold%d" % k for k in range(5)]
+                 + ["probeL", "probeR"])
+#HUNK 19 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2881,7 +2998,7 @@
+                 for fam in ("P-01", "P-02", "SPL"):
+                     for ctx in contexts:
+                         rows.append((sc["fixture_id"],
+-                                     "real:%s:%s" % (base, ctx), fam))
++                                     "real:%s:%s:%s" % (base, fam, ctx), fam))
+     return rows
+ 
+ 
+#HUNK 20 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -2934,12 +3051,15 @@
+     results["partial_excluded"] = dict(
+         expected=True, got=("F", "Partial") not in z,
+         ok=("F", "Partial") not in z)
++    # R-2 (rp1-r1): the per-year denominator the test computes INDEPENDENTLY
++    # from the fixture rows (summing every F-sex row of 1949, Partial
++    # included) must equal the loader's own denominator EXACTLY -- no
++    # constant ok.
++    _expected_denom_1949_f = sum(c for n, s, c in base[1949] if s == "F")
++    _got_denom_1949_f = denom[(1949, "F")]
+     results["denominator_includes_partial"] = dict(
+-        expected=True,
+-        got=denom[(1949, "F")] > sum(c for n, s, c in base[1949]
+-                                     if s == "F" and n != "Partial") - 1
+-            and any(n == "Partial" for n, s, c in base[1949]),
+-        ok=True)
++        expected=_expected_denom_1949_f, got=_got_denom_1949_f,
++        ok=_got_denom_1949_f == _expected_denom_1949_f)
+     results["z_qc_pass"] = dict(expected=True,
+                                 got=all(f1_post_z_qc(v, "t") for v in z.values()),
+                                 ok=True)
+#HUNK 21 LABEL R-2 (keywords:4)
+@@ -2973,12 +3093,18 @@
+         b = dict(b); b[1890] = b[1890] + [("Low", "F", 4)]; return b
+     def _bad_fmt(b):
+         b = dict(b); b[1900] = b[1900] + [("Bad,Extra", "F", 7)]; return b
++    # R-2 (rp1-r1): reachable through the public loader with an invalid sex
++    # code (step 2's semantic check, distinct from BAD_FORMAT's field-count
++    # check).
++    def _bad_semantics(b):
++        b = dict(b); b[1910] = b[1910] + [("Xx", "Q", 7)]; return b
+     expect("MISSING_YEAR", _drop_year, "MISSING_YEAR")
+     expect("DUPLICATE_KEY", _dup, "DUPLICATE_KEY")
+     expect("ZERO_DENOMINATOR", _zero_denom, "ZERO_DENOMINATOR")
+     expect("ZERO_VARIANCE", _zero_var, "ZERO_VARIANCE")
+     expect("COUNT_BELOW_PUBLICATION_FLOOR", _bad_floor, "COUNT_BELOW_PUBLICATION_FLOOR")
+     expect("BAD_FORMAT", _bad_fmt, "BAD_FORMAT")
++    expect("BAD_SEMANTICS", _bad_semantics, "BAD_SEMANTICS")
+     for label, build, token in cases:
+         d = os.path.join(out_dir, label.lower())
+         try:
+#HUNK 22 LABEL R-2 (keywords:35)
+@@ -3000,6 +3126,71 @@
+     results["RAW_FILE_HASH_MISMATCH"] = dict(
+         expected="RAW_FILE_HASH_MISMATCH", got=got,
+         ok=got == "RAW_FILE_HASH_MISMATCH")
++    # R-2 (rp1-r1): RAW_FILE_MISSING, reachable through the public gate --
++    # a hash table entry naming a file not on disk.
++    missing_table = table + [("yob9999_NONEXISTENT.txt", "0" * 64)]
++    try:
++        f1_verify_raw_files(good_dir, missing_table)
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["RAW_FILE_MISSING"] = dict(expected="RAW_FILE_MISSING", got=got,
++                                       ok=got == "RAW_FILE_MISSING")
++    # R-2 (rp1-r1): the remaining branches are UNREACHABLE through the
++    # public pipeline from well-formed integer-count files (a share built
++    # from count/denominator of non-negative integers is always finite and
++    # non-negative; a z-normalized vector's std and norm are tied to its
++    # mean by construction) -- each guard is called DIRECTLY on a crafted
++    # input that trips it, per rp1-r1 instruction R-2's own exception
++    # clause.
++    shares_nan = dict(shares)
++    shares_nan[("F", "NanCase")] = [float("nan")] * F1_T
++    try:
++        f1_normalize(shares_nan)
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["NONFINITE_PRE_Z_NAN"] = dict(expected="NONFINITE_PRE_Z", got=got,
++                                          ok=got == "NONFINITE_PRE_Z")
++    shares_inf = dict(shares)
++    shares_inf[("F", "InfCase")] = [float("inf")] * F1_T
++    try:
++        f1_normalize(shares_inf)
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["NONFINITE_PRE_Z_INF"] = dict(expected="NONFINITE_PRE_Z", got=got,
++                                          ok=got == "NONFINITE_PRE_Z")
++    shares_neg = dict(shares)
++    shares_neg[("F", "NegCase")] = [-0.1] * F1_T
++    try:
++        f1_normalize(shares_neg)
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["NEGATIVE_SHARE"] = dict(expected="NEGATIVE_SHARE", got=got,
++                                     ok=got == "NEGATIVE_SHARE")
++    try:
++        f1_post_z_qc(np.full(F1_T, np.nan), "nonfinite_post_z")
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["NONFINITE_POST_Z"] = dict(expected="NONFINITE_POST_Z", got=got,
++                                       ok=got == "NONFINITE_POST_Z")
++    try:
++        f1_post_z_qc(np.zeros(F1_T), "z_std_qc")   # mean=0 (passes), std=0 (fails)
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["Z_STD_QC"] = dict(expected="Z_STD_QC", got=got, ok=got == "Z_STD_QC")
++    _z0 = np.asarray(z[sorted(z)[0]], dtype=float)   # a real, validly normalized z
++    _z_normqc = _z0 * (1.0 + 1e-9)        # mean/std stay within 1e-8; norm does not
++    try:
++        f1_post_z_qc(_z_normqc, "z_norm_qc")
++        got = "NO_FAILURE"
++    except F1QCFailure as e:
++        got = str(e).split()[0]
++    results["Z_NORM_QC"] = dict(expected="Z_NORM_QC", got=got, ok=got == "Z_NORM_QC")
+     # tolerance breach: the step-11 literal, called directly with a z the
+     # branch can see (cannot arise from integer counts without a defect)
+     zbad = np.asarray(z[sorted(z)[0]]) + 1e-6
+#HUNK 23 LABEL R-1 (keywords:22)
+@@ -3015,18 +3206,130 @@
+     return results, scen
+ 
+ 
+-def t_context_id_unique(scenarios):
+-    """T-CONTEXT-ID-UNIQUE (rp1 C-4) -- MANDATORY: dry construction of the
+-    real-mode context identity list on the T-F1-LOADER-SYNTH output; every
+-    (fixture_id, mask_id, family) occurs exactly once."""
+-    rows = f1_context_id_table(scenarios)
++def t_f1_handoff_synth(f2m, spl, grids, scenarios):
++    """T-F1-HANDOFF-SYNTH (rp1-r1 R-1(i)/(ii)) -- MANDATORY: the
++    T-F1-LOADER-SYNTH scenario, through f1_build_scenarios ->
++    run_real_scenario, in its own key namespace. Proves the consumer
++    actually ran on the loader's own arrays (the x hashes it fitted equal
++    real_x's hashes) and ids (the (fixture_id, mask_id, family) set it
++    passed equals the dry table) -- not merely that the dry table looks
++    right on its own."""
++    sc = scenarios[0]
++    saved = KEY_SCOPE[0]
++    before = len(REAL_MODE_IDS_PASSED)
++    exc_repr = None
++    try:
++        KEY_SCOPE[0] = "f1handoff__"
++        run_real_scenario(f2m, spl, grids, sc, "f1handoff", [])
++    except Exception as e:
++        exc_repr = "%s: %s" % (type(e).__name__, e)
++    finally:
++        KEY_SCOPE[0] = saved
++    captured = REAL_MODE_IDS_PASSED[before:]
++    actual_rows = sorted(set((fid, mid_, fam) for fid, mid_, fam, _xh in captured))
++    dry_rows = sorted(set(f1_context_id_table(scenarios)))
++    expected_xhashes = set(
++        hashlib.sha256(np.asarray(sc["real_x"][k], dtype=np.float64).tobytes()).hexdigest()
++        for k in sc["real_x"])
++    captured_xhashes = set(xh for _fid, _mid, _fam, xh in captured)
++    xhashes_ok = bool(captured_xhashes and captured_xhashes <= expected_xhashes
++                      and captured_xhashes == expected_xhashes)
++    rows_ok = bool(actual_rows == dry_rows)
++    return dict(
++        ran_without_exception=(exc_repr is None), exception=exc_repr,
++        captured_rows=len(actual_rows), dry_rows=len(dry_rows),
++        actual_rows_equal_dry_table=rows_ok,
++        xhashes_match_loader=xhashes_ok,
++        _actual_rows=actual_rows,       # consumed by T-CONTEXT-ID-UNIQUE below
++        pass_=bool(exc_repr is None and rows_ok and xhashes_ok))
++
++
++def t_context_id_unique(scenarios, actual_rows):
++    """T-CONTEXT-ID-UNIQUE (rp1-r1 R-1(ii), REPLACES rp1's C-4 test): on
++    the ids run_real_scenario ACTUALLY passed in T-F1-HANDOFF-SYNTH (not
++    merely the dry table), every (fixture_id, mask_id) is unique per sex,
++    trajectory, family and context -- mask_id is itself family-qualified
++    (PI-b), so uniqueness of the (fixture_id, mask_id) PAIR alone already
++    implies uniqueness per family too."""
++    rows = list(actual_rows)
+     unique = len(rows) == len(set(rows))
++    dry = f1_context_id_table(scenarios)
+     per_traj = 3 * 8                    # 3 families x (full + 5 folds + 2 probes)
+     n_traj = sum(len(sc["strata"][sx]) for sc in scenarios for sx in SEXES)
+     expected_rows = n_traj * per_traj
++    matches_dry = bool(set(rows) == set(dry))
+     return dict(rows=len(rows), expected_rows=expected_rows,
+-                all_unique=unique,
+-                pass_=bool(unique and len(rows) == expected_rows))
++                all_unique=unique, matches_dry_table=matches_dry,
++                pass_=bool(unique and len(rows) == expected_rows and matches_dry))
++
++
++def t_f1_contract_gap(f2m, spl, grids, scenarios):
++    """T-F1-CONTRACT-GAP (rp1-r1 R-1(iii)) -- MANDATORY: a scenario with
++    one consumer-read key removed STOPs with F1ContractGap naming that
++    key -- never a default, never a bare KeyError."""
++    base_sc = scenarios[0]
++    cases = {}
++    for key in RUN_REAL_SCENARIO_REQUIRED_KEYS:
++        sc = dict(base_sc)
++        del sc[key]
++        try:
++            run_real_scenario(f2m, spl, grids, sc, "f1gap", [])
++            cases[key] = dict(raised=False, key_named=None, ok=False)
++        except F1ContractGap as e:
++            cases[key] = dict(raised=True, key_named=e.key, ok=(e.key == key))
++        except Exception as e:
++            cases[key] = dict(raised=False, key_named=None, ok=False,
++                              wrong_exception="%s: %s" % (type(e).__name__, e))
++    return dict(cases=cases, pass_=bool(all(v["ok"] for v in cases.values())))
++
++
++def t_f1_repro_gate_synth(out_dir):
++    """T-F1-REPRO-GATE-SYNTH (rp1-r1 R-1(iv)) -- MANDATORY: the deferred
++    F1 reproduction gate exercised on a synthetic hash table + synthetic
++    eligible manifest built from T-F1-LOADER-SYNTH's own "good" fixtures
++    (S-e: no real F1 file, hash table or eligible manifest is read here).
++    Complete list passes; each single defect STOPs with its own named
++    reason."""
++    good_dir = os.path.join(out_dir, "good")
++    files = sorted(f for f in os.listdir(good_dir) if f.endswith(".txt"))
++    hash_table = [(f, hashlib.sha256(open(os.path.join(good_dir, f), "rb").read()).hexdigest())
++                  for f in files]
++    shares, _denom = f1_load_raw_dir(good_dir)
++    z = f1_normalize(shares)
++    eligible_manifest = sorted(z.keys())
++    cases = {}
++
++    def run(ht, em):
++        try:
++            f1_repro_gate(good_dir, ht, em)
++            return dict(raised=False, reason=None)
++        except F1ReproGateFailure as e:
++            return dict(raised=True, reason=str(e))
++
++    r = run(hash_table, eligible_manifest)
++    cases["complete"] = dict(**r, ok=(not r["raised"]))
++
++    r = run(hash_table + [("yob9999_NONEXISTENT.txt", "0" * 64)], eligible_manifest)
++    cases["missing_file"] = dict(**r, ok=(r["raised"]
++                                          and r["reason"].startswith("F1_REPRO_GATE_MISSING_FILE")))
++
++    r = run(hash_table[:-1], eligible_manifest)
++    cases["extra_file"] = dict(**r, ok=(r["raised"]
++                                        and r["reason"].startswith("F1_REPRO_GATE_EXTRA_FILE")))
++
++    fname0, h0 = hash_table[0]
++    bad_h0 = ("0" if h0[0] != "0" else "1") + h0[1:]
++    r = run([(fname0, bad_h0)] + hash_table[1:], eligible_manifest)
++    cases["hash_changed"] = dict(**r, ok=(r["raised"]
++                                          and r["reason"].startswith("F1_REPRO_GATE_HASH_MISMATCH")))
++
++    bad_manifest = eligible_manifest[:-1]    # one eligible entry dropped
++    r = run(hash_table, bad_manifest)
++    cases["eligible_manifest_changed"] = dict(
++        **r, ok=(r["raised"]
++                and r["reason"].startswith("F1_REPRO_GATE_ELIGIBLE_MISMATCH")))
++
++    return dict(cases=cases, pass_=bool(all(v["ok"] for v in cases.values())))
+ 
+ 
+ # ================= C-5 (rp1): PI-2 (iii) observability ======================
+#HUNK 24 LABEL R-5 (keywords:25)
+@@ -3145,58 +3448,102 @@
+ 
+ 
+ # ---------------- C-1 (rp1): T-STORE-READ-ACCOUNTING -----------------------
+-def t_store_read_accounting(spl):
+-    """T-STORE-READ-ACCOUNTING (rp1 C-1) -- MANDATORY.
+-
+-    Inside the unit-test phase, ONE TEST_ONLY spline context is fitted TWICE
+-    with IDENTICAL keys under the active restart layer, in this test's own
+-    key namespace ("tstoreread__"). The invariant checked -- robust to BOTH
+-    a cold attempt (fit1 computes all T=len(FULL_O) modes fresh) and a
+-    resumed attempt (fit1 itself is served from a store an EARLIER process
+-    of this same attempt already populated, so fit1 reads instead of
+-    writes): fit2 is served EVERY mode from the store, none recomputed --
+-    served_to_fit2 == T, every served-row scoped/attributed correctly, and
+-    fit2's result identical to fit1's. Whether fit1 itself was a cache hit
+-    or a fresh compute (fit1_reads) is reported but not required to be zero,
+-    since a resume legitimately makes it nonzero (R3A-06/C-1 provenance
+-    still distinguishes the two: writer_pid in each row names whichever
+-    process actually computed that mode). The declared re-read of the SAME
+-    computation is what C-1 counts; it is legal ONLY inside this namespace
+-    (T-KEY-NAMESPACE rule). The test's units stay in the store and in the
+-    store manifest.
+-    """
++def _t_store_read_accounting_case(spl, scope, prime_first):
++    """One case of T-STORE-READ-ACCOUNTING (rp1-r1 R-5), in its own key
++    scope so the cold and warm cases never share a key (T-KEY-NAMESPACE).
++    prime_first=True simulates "units already present, as after a restart"
++    by fitting once BEFORE fit1 under the SAME scope/keys, so fit1 below is
++    a guaranteed cache hit -- without needing an actual process restart."""
+     T_modes = len(FULL_O)
+     gen = sys.modules[GEN_MODULE_NAME]
+     x = gen.make_step("left")           # TEST_CONSTANT input, as INJ-EXC uses
++    xhash = hashlib.sha256(np.asarray(x, dtype=np.float64).tobytes()).hexdigest()[:16]
+     _saved = KEY_SCOPE[0]
++    _saved_phase = CURRENT_PHASE[0]      # R-5 (rp1-r1): own phase label
+     tel = []
+     try:
+-        KEY_SCOPE[0] = "tstoreread__"
++        KEY_SCOPE[0] = scope
++        CURRENT_PHASE[0] = "t_store_read_accounting"
++        if prime_first:
++            fit_spline(spl, "T-STORE-READ", x, FULL_O, [], "tsr:full")
+         reads_before_fit1 = len(STORE_READ_LOG)
+         fit1 = fit_spline(spl, "T-STORE-READ", x, FULL_O, tel, "tsr:full")
+         fit1_reads = len(STORE_READ_LOG) - reads_before_fit1
+         reads_before_fit2 = len(STORE_READ_LOG)
++        n_percall_before_fit2 = len(SPLINE_TELEMETRY_CALLS)
+         fit2 = fit_spline(spl, "T-STORE-READ", x, FULL_O, tel, "tsr:full")
+         new_rows = STORE_READ_LOG[reads_before_fit2:]
+         served = len(new_rows)
+-        rows_ok = all(r["scope_or_phase"] == "tstoreread__"
++        rows_ok = all(r["scope_or_phase"] == scope
+                       and r["key_family"] == "splmode"
+                       and r["reader_pid"] == PID
+                       and r["writer_pid"] is not None
+                       for r in new_rows)
+-        fine = READS_FINE.get(("tstoreread__", "splmode", PID), 0)
++        fine = READS_FINE.get((scope, "splmode", PID), 0)
+         same_result = (fit1.get("valid") == fit2.get("valid")
+                        and fit1.get("mode") == fit2.get("mode")
+                        and fit1.get("rss") == fit2.get("rss"))
++        # R-5 (rp1-r1): fit2's percall rows must be tagged "replay" (never
++        # "fresh" -- this IS the deliberate re-read C-1 counts), and must
++        # equal, row for row, the telemetry the read units themselves
++        # store -- whether fit1 computed those units fresh in THIS process
++        # (cold) or itself read them from a store an earlier process of
++        # this same attempt left (warm, simulated here by prime_first).
++        fit2_percall_rows = SPLINE_TELEMETRY_CALLS[n_percall_before_fit2:]
++        all_replay = bool(fit2_percall_rows) and all(
++            r.get("source") == "replay" for r in fit2_percall_rows)
++        stored_tel_calls = []
++        for m in range(T_modes):
++            mkey = "splmode_T-STORE-READ_tsr:full_%d_%s" % (m, xhash)
++            cached = ckpt_load(mkey)
++            if cached is not None:
++                stored_tel_calls.extend(cached[6])   # tel_calls, index 6
++        def _content(rows):
++            return sorted(json.dumps(
++                {k: v for k, v in r.items() if k != "source"},
++                sort_keys=True, default=str) for r in rows)
++        replay_matches_stored = bool(
++            _content(fit2_percall_rows) == _content(stored_tel_calls))
+     finally:
+         KEY_SCOPE[0] = _saved
++        CURRENT_PHASE[0] = _saved_phase
+     pass_ = bool(served == T_modes and fine >= served
+-                 and rows_ok and same_result)
++                 and rows_ok and same_result
++                 and all_replay and replay_matches_stored)
+     return dict(modes=T_modes, fit1_reads=fit1_reads,
+                 resumed_warm_start=(fit1_reads > 0),
+                 served_to_fit2=served, fine_counter=fine,
+                 per_read_rows_wellformed=rows_ok,
+-                fit2_equals_fit1=same_result, pass_=pass_)
++                fit2_equals_fit1=same_result,
++                fit2_replay_rows=len(fit2_percall_rows),
++                fit2_replay_rows_tagged_replay=all_replay,
++                replay_matches_stored_telemetry=replay_matches_stored,
++                pass_=pass_)
++
++
++def t_store_read_accounting(spl):
++    """T-STORE-READ-ACCOUNTING (rp1 C-1; rp1-r1 R-5) -- MANDATORY.
++
++    Runs the cold case (fit1 computes all T=len(FULL_O) modes fresh in
++    THIS process) and the warm case (fit1 itself is served from a store a
++    PRIOR fit already populated -- simulated by priming the same keys
++    before fit1, so the warm path is exercised every run, not only on an
++    actual restart) -- each in its own key scope so they never share a key.
++    Both must show: fit2 served EVERY mode from the store, none recomputed
++    (served_to_fit2 == T); fit2's result identical to fit1's; fit2's
++    percall rows tagged "replay" and equal, row for row, to the telemetry
++    the read units themselves store. fit1_reads is reported, not required
++    to be zero -- a resume (or the warm case here) legitimately makes it
++    nonzero; R3A-06/C-1 provenance still distinguishes the two via
++    writer_pid. The declared re-read of the SAME computation is what C-1
++    counts; legal ONLY inside these namespaces (T-KEY-NAMESPACE rule). The
++    test's units stay in the store and in the store manifest.
++    """
++    cold = _t_store_read_accounting_case(spl, "tstoreread_cold__", prime_first=False)
++    warm = _t_store_read_accounting_case(spl, "tstoreread_warm__", prime_first=True)
++    pass_ = bool(cold["pass_"] and warm["pass_"]
++                 and cold["fit1_reads"] == 0 and warm["fit1_reads"] > 0)
++    return dict(cold=cold, warm=warm, pass_=pass_)
+ 
+ 
+ # ------------------------- Y-04 exception-injection fixtures ---------------
+#HUNK 25 LABEL S5-WIRING (keywords:3)
+@@ -3652,18 +3999,19 @@
+ # ------------------------- main --------------------------------------------
+ def main():
+     # R41A-02(c): a run REQUIRES its launch number from the environment; the
+-    # caller sets F3_R42_LAUNCH and redirects to the matching log pair.
++    # caller sets F3_RP1R1_LAUNCH and redirects to the matching log pair.
+     assert LAUNCH_NUMBER >= 1, (
+-        "R41A-02(c) STOP: set F3_RP1_LAUNCH to this launch's number (>= 1) "
++        "R41A-02(c) STOP: set F3_RP1R1_LAUNCH to this launch's number (>= 1) "
+         "and redirect stdout/stderr to the matching launch-numbered log pair")
+     print("LAUNCH_NUMBER = %d ; logs = %s / %s"
+           % (LAUNCH_NUMBER, LAUNCH_STDOUT_PATH, LAUNCH_STDERR_PATH))
+-    # C-3 (rp1 instruction §0/§4): the real-data switch MUST be False in
+-    # every rp1 launch; rp1 never reads, opens or hash-checks a real SSA/F1
+-    # file. Asserted at the very top so a code defect that flips the switch
+-    # stops the cycle before any other work.
++    # C-3 (rp1 instruction §0/§4, carried unchanged into rp1-r1 instruction
++    # §0): the real-data switch MUST be False in every rp1-r1 launch;
++    # rp1-r1 never reads, opens or hash-checks a real SSA/F1 file. Asserted
++    # at the very top so a code defect that flips the switch stops the
++    # cycle before any other work.
+     assert REAL_DATA_MODE is False, (
+-        "C-3 STOP: REAL_DATA_MODE must stay False in rp1 (S-e = "
++        "C-3 STOP: REAL_DATA_MODE must stay False in rp1-r1 (S-e = "
+         "SYNTHETIC_ONLY_IN_RP1); real_data_access stays false")
+     print("REAL_DATA_MODE = " + str(REAL_DATA_MODE))
+     sys.path.insert(0, "p_konum_plus/calibration")
+#HUNK 26 LABEL S9-WIRING (keywords:20)
+@@ -3781,16 +4129,25 @@
+             (R4_2_RESULTS_PATH, R4_2_RESULTS_HASH, "r4-2 results (non-regression baseline)"),
+             (R4_2_TELEMETRY_PATH, R4_2_TELEMETRY_HASH, "r4-2 telemetry"),
+             (R4_2_TEST_EVIDENCE_PATH, R4_2_TEST_EVIDENCE_HASH, "r4-2 test evidence"),
+-            (F1_FREEZE_RECORD_PATH, F1_FREEZE_RECORD_HASH, "F1 freeze record")):
++            (F1_FREEZE_RECORD_PATH, F1_FREEZE_RECORD_HASH, "F1 freeze record"),
++            # rp1-r1's own dispatched pin set (rp1-r1 instruction §1)
++            (D11R1_PATH, D11R1_HASH, "D-11 r1"),
++            (RP1_TRANSMISSION_LIST_PATH, RP1_TRANSMISSION_LIST_HASH, "rp1 transmission list"),
++            (RP1_HARNESS_PATH, RP1_HARNESS_HASH, "rp1 harness"),
++            (RP1R1_INSTRUCTION_PATH, RP1R1_INSTRUCTION_HASH, "rp1-r1 instruction"),
++            (D12_DISPATCH_RECORD_PATH, D12_DISPATCH_RECORD_HASH, "D-12"),
++            (AUDIT_RECORD_PATH, AUDIT_RECORD_HASH, "rp1 audit (input)"),
++            (REVIEW_RECORD_PATH, REVIEW_RECORD_HASH, "rp1-r1 DRAFT review (input)")):
+         obs_h = sha256_of(ipath)
+         assert obs_h == ihash, (
+             "P-1..P-4 STOP: %s observed %s != pinned %s" % (iname, obs_h, ihash))
+     print("DISPATCH_PRECONDITIONS_P1_P4 = ALL PASS (observed hashes equal pins; "
+-          "25 verified: D-3, r4 instruction, D-5, A-1, D-2, r4-1 instruction, "
++          "31 verified: D-3, r4 instruction, D-5, A-1, D-2, r4-1 instruction, "
+           "D-6, A-2, A-3, r4-2 instruction, D-7, A-4, reused generator, "
+           "reused manifest, r4-1 results baseline, rp1 instruction, D-10, "
+           "D-9, D-8, A-5, r4-2 results/telemetry/test-evidence baseline, "
+-          "F1 freeze record)")
++          "F1 freeze record, D-11 r1, rp1 transmission list, rp1 harness, "
++          "rp1-r1 instruction, D-12, rp1 audit, rp1-r1 DRAFT review)")
+ 
+     CURRENT_PHASE[0] = "nr_gates"
+     gates_cached = ckpt_load("nrgates_all")
+#HUNK 27 LABEL R-1 (keywords:14)
+@@ -3848,10 +4205,26 @@
+                            for dp, dn, fns in os.walk(f1_synth_dir) for fn in fns
+                            if fn != "SYNTH_FIXTURE_MANIFEST.json")),
+                   _f, indent=1, sort_keys=True)
+-    ctx_unique = t_context_id_unique(f1_scen)
++    # rp1-r1 R-1: handoff BEFORE context-id-unique (the latter now checks
++    # the former's captured ids, not just the dry table) and the contract-
++    # gap / repro-gate tests, each closing before anything depends on them.
++    f1_handoff = t_f1_handoff_synth(f2m, spl, grids, f1_scen)
++    print("T_F1_HANDOFF_SYNTH = " + json.dumps(
++        {k: v for k, v in f1_handoff.items() if not k.startswith("_")}, default=str))
++    assert record_test("T-F1-HANDOFF-SYNTH", f1_handoff["pass_"]), \
++        "T-F1-HANDOFF-SYNTH FAIL -> STOP"
++    ctx_unique = t_context_id_unique(f1_scen, f1_handoff["_actual_rows"])
+     print("T_CONTEXT_ID_UNIQUE = " + json.dumps(ctx_unique))
+     assert record_test("T-CONTEXT-ID-UNIQUE", ctx_unique["pass_"]), \
+         "T-CONTEXT-ID-UNIQUE FAIL -> STOP"
++    f1_contract_gap = t_f1_contract_gap(f2m, spl, grids, f1_scen)
++    print("T_F1_CONTRACT_GAP = " + json.dumps(f1_contract_gap))
++    assert record_test("T-F1-CONTRACT-GAP", f1_contract_gap["pass_"]), \
++        "T-F1-CONTRACT-GAP FAIL -> STOP"
++    f1_repro_gate_synth = t_f1_repro_gate_synth(f1_synth_dir)
++    print("T_F1_REPRO_GATE_SYNTH = " + json.dumps(f1_repro_gate_synth))
++    assert record_test("T-F1-REPRO-GATE-SYNTH", f1_repro_gate_synth["pass_"]), \
++        "T-F1-REPRO-GATE-SYNTH FAIL -> STOP"
+     inad_obs = t_inadmissible_observable(f2m, grids)
+     print("T_INADMISSIBLE_OBSERVABLE = " + json.dumps(inad_obs, default=str))
+     assert record_test("T-INADMISSIBLE-OBSERVABLE", inad_obs["pass_"]), \
+#HUNK 28 LABEL R-5 (keywords:1)
+@@ -4550,7 +4923,8 @@
+     # keeps the phase/pid of the process that originally computed it.
+     percall_fields = ["phase", "pid", "start_iso", "fixture", "sex", "trajectory",
+                       "mask_id", "mode", "method", "status", "message", "nit",
+-                      "nfev", "njev", "wall_clock_seconds", "objective"]
++                      "nfev", "njev", "wall_clock_seconds", "objective",
++                      "source"]      # R-5 (rp1-r1): fresh | replay
+     with open(PERCALL_TELEMETRY_PATH, "w", newline="", encoding="utf-8") as f:
+         w = csv.DictWriter(f, fieldnames=percall_fields, lineterminator="\n",
+                            extrasaction="ignore", restval="")
+#HUNK 29 LABEL S9-WIRING (keywords:17)
+@@ -4767,17 +5141,17 @@
+           % (len(coverage_final), json.dumps(derived_downgrades)))
+ 
+     # rp1 instruction §9 (carrying forward R41A-03's rule): the end state
+-    # must name THIS cycle's OWN dispatch record -- D-10, by its OBSERVED
+-    # hash, not D-7 (r4-2's own record, still checked as a precondition
+-    # above since it is historical and read-only). Re-read it here rather
+-    # than reusing the precondition result; assert the value written equals
+-    # the observed one -- the instruction asks for the check, not just the
+-    # value.
+-    _d10_observed = sha256_of(D10_DISPATCH_RECORD_PATH)
+-    assert _d10_observed == D10_DISPATCH_RECORD_HASH, (
+-        "rp1 STOP: D-10 observed %s != pinned %s"
+-        % (_d10_observed, D10_DISPATCH_RECORD_HASH))
+-    print("PI_DISPATCH_RECORD (D-10) observed = " + _d10_observed
++    # must name THIS cycle's OWN dispatch record -- D-12, by its OBSERVED
++    # hash, not D-10 (rp1's own record, still checked as a precondition
++    # above since it is historical and read-only) and not D-7 (r4-2's).
++    # Re-read it here rather than reusing the precondition result; assert
++    # the value written equals the observed one -- the instruction asks
++    # for the check, not just the value.
++    _d12_observed = sha256_of(D12_DISPATCH_RECORD_PATH)
++    assert _d12_observed == D12_DISPATCH_RECORD_HASH, (
++        "rp1-r1 STOP: D-12 observed %s != pinned %s"
++        % (_d12_observed, D12_DISPATCH_RECORD_HASH))
++    print("PI_DISPATCH_RECORD (D-12) observed = " + _d12_observed
+           + " ; S-R2-1 source (D-5) = " + DISPATCH_RECORD_HASH)
+ 
+     results = dict(
+#HUNK 30 LABEL S9-WIRING (keywords:9)
+@@ -4853,16 +5227,20 @@
+         f1_loader_synth=dict(pass_=f1_synth_results["pass_"],
+                              cases={k: v for k, v in f1_synth_results.items()
+                                     if k != "pass_"}),
++        f1_handoff_synth={k: v for k, v in f1_handoff.items()
++                          if not k.startswith("_")},
+         context_id_unique=ctx_unique,
++        f1_contract_gap=f1_contract_gap,
++        f1_repro_gate_synth=f1_repro_gate_synth,
+         inadmissible_observable=inad_obs,
+         inadmissible_completed_counts=dict(INADMISSIBLE_COMPLETED),
+         end_state=dict(
+-            # rp1 instruction §9: the end state names ITS OWN dispatch record
+-            # -- D-10, by its OBSERVED hash (carrying forward R41A-03's rule,
+-            # which r4-2 applied to D-7). The S-R2-1 source (D-5) keeps its
+-            # own field, as every cycle since r4-1 has kept it.
+-            PI_dispatch_record_hash=_d10_observed,
+-            PI_dispatch_record_path=D10_DISPATCH_RECORD_PATH,
++            # rp1-r1 instruction §8: the end state names ITS OWN dispatch
++            # record -- D-12, by its OBSERVED hash (carrying forward
++            # R41A-03's rule, which rp1 applied to D-10). The S-R2-1 source
++            # (D-5) keeps its own field, as every cycle since r4-1 has kept it.
++            PI_dispatch_record_hash=_d12_observed,
++            PI_dispatch_record_path=D12_DISPATCH_RECORD_PATH,
+             S_R2_1_source_dispatch_record_hash=DISPATCH_RECORD_HASH,
+             S_R2_1_source_dispatch_record_path=DISPATCH_RECORD_PATH,
+             # R3A-11, r4: BOTH fields computed from the test registry --
+#HUNK 31 LABEL S9-WIRING (keywords:15)
+@@ -4900,15 +5278,15 @@
+                               or not six["mandatory_tests_all_run"])
+                           else "CORRECTED_PENDING_INDEPENDENT_AUDIT")
+     results["end_state"]["F3_STEP2_r4_status"] = f3_step2_r4_status
+-    # rp1 §9: the value actually written must be the observed D-10 hash, and
+-    # the S-R2-1 source must stand in its own field, never in this one.
+-    assert six["PI_dispatch_record_hash"] == sha256_of(D10_DISPATCH_RECORD_PATH), (
+-        "rp1 STOP: end_state.PI_dispatch_record_hash = %s but D-10 observes %s"
+-        % (six["PI_dispatch_record_hash"], sha256_of(D10_DISPATCH_RECORD_PATH)))
++    # rp1-r1 §8: the value actually written must be the observed D-12 hash,
++    # and the S-R2-1 source must stand in its own field, never in this one.
++    assert six["PI_dispatch_record_hash"] == sha256_of(D12_DISPATCH_RECORD_PATH), (
++        "rp1-r1 STOP: end_state.PI_dispatch_record_hash = %s but D-12 observes %s"
++        % (six["PI_dispatch_record_hash"], sha256_of(D12_DISPATCH_RECORD_PATH)))
+     assert six["S_R2_1_source_dispatch_record_hash"] == DISPATCH_RECORD_HASH
+     assert six["PI_dispatch_record_hash"] != six["S_R2_1_source_dispatch_record_hash"], (
+-        "rp1 STOP: the dispatch record and the S-R2-1 source must be "
+-        "distinct records this cycle (D-10 vs D-5)")
++        "rp1-r1 STOP: the dispatch record and the S-R2-1 source must be "
++        "distinct records this cycle (D-12 vs D-5)")
+     print("END_STATE = " + json.dumps(six, default=str))
+     print("F3_STEP2_r4_status = " + f3_step2_r4_status)
+ 
+#HUNK 32 LABEL R-3 (keywords:39)
+@@ -4928,57 +5306,144 @@
+     with open(R4_2_RESULTS_PATH, encoding="utf-8") as _f:
+         _r42_doc = json.load(_f)
+ 
++    _r42te_obs = sha256_of(R4_2_TEST_EVIDENCE_PATH)
++    assert _r42te_obs == R4_2_TEST_EVIDENCE_HASH, (
++        "rp1-r1 STOP: r4-2 test evidence observed %s != pinned %s"
++        % (_r42te_obs, R4_2_TEST_EVIDENCE_HASH))
++    with open(R4_2_TEST_EVIDENCE_PATH, encoding="utf-8") as _f:
++        _r42te_doc = json.load(_f)
++
++    # R-3 (rp1-r1, RP1A-03; replaces rp1 S5's comparison METHOD, not its
++    # classes): EXACT paths, never a prefix covering a subtree. Each
++    # declaration carries ONE expectation kind:
++    #   EQUAL        value must be the same as r4-2
++    #   ADDITION     absent in r4-2, must be present in rp1-r1
++    #   COUNT        must change from exactly a to exactly b
++    #   MAY_DIFFER    free; equal or different both satisfy it
++    # A path NOT declared here falls through to the dynamic tests_run.*
++    # pattern below, or is UNDECLARED -> any real difference there is U.
++    # EXPECTATIONS_E is a SOURCE CONSTANT: it exists before any run reads
++    # it, so "declared before the run" is true by construction, and the
++    # W-3 custody hash (computed from these very bytes) fixes it before
++    # launch 1. A key that is itself a dict ALSO serves as a STOP point for
++    # the recursive flattener below (_flatten_leaves): the whole subtree is
++    # compared as ONE value via canon(), not swallowed -- a difference
++    # ANYWHERE inside it still fails the declared expectation. This is used
++    # only for genuinely atomic, internally-consistent records (one
++    # deterministic unit test's complete result; a C-item/R-item addition
++    # block); process/environment/end_state are expanded to their actual
++    # leaves below precisely because those were the ones a blanket prefix
++    # previously swallowed real risk under (the reviewer's finding 3).
+     EXPECTATIONS_E = {
+-        # top-level or dotted-path prefixes expected to differ, with reasons.
+-        # A real diff under one of these prefixes is EXPECTED, not a finding;
+-        # a diff found ANYWHERE ELSE is UNEXPECTED (class U).
+-        "process": "this process's own identity, timing, paths and "
+-                   "C-1/C-6 counters (rp1 instruction S5)",
+-        "environment": "recorded as in v6 S8; stated field by field if it "
+-                       "differs (D-9 S2(a) binds code AND environment)",
+-        "opened_files_declared": "rp1's own file paths",
+-        "opened_files_audit_derived": "rp1's own file paths",
+-        "tests_run": "rp1 adds T-STORE-READ-ACCOUNTING, T-KEY-NAMESPACE, "
+-                    "T-F1-LOADER-SYNTH, T-CONTEXT-ID-UNIQUE, "
+-                    "T-INADMISSIBLE-OBSERVABLE, T-NONREG-R4-2 (C-1..C-6 "
+-                    "ADDITIONS, rp1 instruction S4)",
+-        "store_read_accounting": "C-1 ADDITION (not in r4-2)",
+-        "key_namespace_table": "C-2 ADDITION (not in r4-2)",
+-        "f1_loader_synth": "C-3 ADDITION (not in r4-2)",
+-        "context_id_unique": "C-4 ADDITION (not in r4-2)",
+-        "inadmissible_observable": "C-5 ADDITION (not in r4-2)",
+-        "inadmissible_completed_counts": "C-5 ADDITION (not in r4-2)",
+-        "exc_injection_fixtures.pass_key_namespaces_disjoint": "C-2(i) ADDITION (not in r4-2)",
+-        "end_state.PI_dispatch_record_hash": "rp1's own dispatch record is "
+-            "D-10, not D-7 (rp1 instruction S9)",
+-        "end_state.PI_dispatch_record_path": "rp1's own dispatch record path",
+-        "end_state.F3_STEP2_r4_status": "computed fresh from THIS run's test "
+-            "registry; expected equal unless a flag changed",
+-        "end_state.narrowed_evidence": "rp1 instruction C-6: T-RP-1 enters "
+-            "narrowed_evidence by value, exactly as T-R2-2 does; r4-2 (one "
+-            "value) vs rp1 (two values) is the expected addition, not a "
+-            "scientific change",
+-        # these three are computed from TESTS_RUN BEFORE T-NONREG-R4-2
+-        # itself is recorded (this very check), so they read stale/false
+-        # AT COMPARISON TIME by construction; main() refreshes them
+-        # immediately after this test is recorded (before the results file
+-        # is written), so the DELIVERED results.json carries the correct,
+-        # refreshed values -- only the live comparison here sees the stale
+-        # snapshot. Declaring them E here does not change what gets
+-        # delivered, only what this check is allowed to treat as expected.
+-        "end_state.corrections_complete": "stale at comparison time -- "
+-            "T-NONREG-R4-2 (this check) is not yet recorded in TESTS_RUN; "
+-            "refreshed immediately after, before the results file is written",
+-        "end_state.mandatory_tests_all_run": "stale at comparison time, same reason",
+-        "end_state.mandatory_tests_missing": "stale at comparison time, same reason",
++        # ---- process (own identity/timing/paths/counters) ----
++        "process.pid": ("MAY_DIFFER", "this process's own identity"),
++        "process.start": ("MAY_DIFFER", "this process's own timing"),
++        "process.end": ("MAY_DIFFER", "this process's own timing"),
++        "process.command_line": ("MAY_DIFFER", "this process's own invocation"),
++        "process.interpreter": ("MAY_DIFFER", "this process's own interpreter path"),
++        "process.restart_layer_active": ("EQUAL", "T-RP-1 ACTIVE_FROM_START, both cycles"),
++        "process.attempt_number": ("MAY_DIFFER", "own attempt counter; restarts at 1 for rp1-r1"),
++        "process.launch_number": ("MAY_DIFFER", "own launch counter"),
++        "process.launch_stdout_path": ("MAY_DIFFER", "own log path"),
++        "process.launch_stderr_path": ("MAY_DIFFER", "own log path"),
++        "process.supersedes_harness_sha256": ("MAY_DIFFER", "own supersession chain"),
++        "process.supersedes_note_path": ("MAY_DIFFER", "own supersession chain"),
++        "process.units_computed_this_process": ("MAY_DIFFER",
++            "rp1-r1 adds R-1 handoff/contract-gap/repro-gate units and cold+warm T-STORE-READ-ACCOUNTING (R-5)"),
++        "process.units_read_from_store": ("MAY_DIFFER", "same reason"),
++        "process.spline_telemetry_call_total": ("MAY_DIFFER", "same reason"),
++        "process.spline_telemetry_calls_by_phase": ("MAY_DIFFER",
++            "rp1-r1 adds a t_store_read_accounting phase label (R-5)"),
++        "process.spline_telemetry_calls_by_phase_pid": ("MAY_DIFFER", "same reason"),
++        "process.percall_telemetry_path": ("MAY_DIFFER", "own deliverable path"),
++        "process.attempt_log_path": ("MAY_DIFFER", "own deliverable path"),
++        "process.store_manifest_path": ("MAY_DIFFER", "own deliverable path"),
++        "process.store_manifest_sha256": ("MAY_DIFFER", "own store contents"),
++        "process.store_rows": ("MAY_DIFFER",
++            "rp1-r1's own store has new key families: R-1's f1handoff__/f1gap__ scopes, "
++            "cold/warm T-STORE-READ scopes (R-5)"),
++        "process.executor_models": ("EQUAL", "unchanged literal, carried from r4-1"),
++        # ---- environment -- D-9 S2(a) binds code AND environment ----
++        "environment.python": ("EQUAL", "D-9 S2(a) binds environment"),
++        "environment.numpy": ("EQUAL", "D-9 S2(a) binds environment"),
++        "environment.scipy": ("EQUAL", "D-9 S2(a) binds environment"),
++        "environment.platform": ("EQUAL", "D-9 S2(a) binds environment"),
++        "environment.OMP": ("EQUAL", "thread pin, fixed"),
++        "environment.OPENBLAS": ("EQUAL", "thread pin, fixed"),
++        "environment.MKL": ("EQUAL", "thread pin, fixed"),
++        "opened_files_declared": ("MAY_DIFFER", "rp1-r1's own file paths (more deliverables)"),
++        "opened_files_audit_derived": ("MAY_DIFFER", "rp1-r1's own file paths"),
++        # ---- C-item / R-item ADDITIONS (whole block, not in r4-2 at all) ----
++        "store_read_accounting": ("ADDITION", "C-1 ADDITION (not in r4-2)"),
++        "key_namespace_table": ("ADDITION", "C-2 ADDITION (not in r4-2)"),
++        "f1_loader_synth": ("ADDITION", "C-3 ADDITION (not in r4-2)"),
++        "f1_handoff_synth": ("ADDITION", "R-1 ADDITION (not in r4-2)"),
++        "context_id_unique": ("ADDITION", "C-4/R-1(ii) ADDITION (not in r4-2)"),
++        "f1_contract_gap": ("ADDITION", "R-1(iii) ADDITION (not in r4-2)"),
++        "f1_repro_gate_synth": ("ADDITION", "R-1(iv) ADDITION (not in r4-2)"),
++        "inadmissible_observable": ("ADDITION", "C-5 ADDITION (not in r4-2)"),
++        "inadmissible_completed_counts": ("ADDITION", "C-5 ADDITION (not in r4-2)"),
++        "exc_injection_fixtures.pass_key_namespaces_disjoint": ("ADDITION", "C-2(i) ADDITION (not in r4-2)"),
++        # ---- end_state, every field individually ----
++        "end_state.PI_dispatch_record_hash": ("MAY_DIFFER", "rp1-r1's own dispatch record is D-12, not D-7"),
++        "end_state.PI_dispatch_record_path": ("MAY_DIFFER", "rp1-r1's own dispatch record path"),
++        "end_state.S_R2_1_source_dispatch_record_hash": ("EQUAL", "always D-5, every cycle since r4-1"),
++        "end_state.S_R2_1_source_dispatch_record_path": ("EQUAL", "always D-5's path"),
++        "end_state.corrections_complete": ("MAY_DIFFER",
++            "stale at comparison time -- T-NONREG-R4-2 (this check) is not yet recorded in TESTS_RUN; "
++            "refreshed immediately after, before the results file is written"),
++        "end_state.mandatory_tests_all_run": ("MAY_DIFFER", "stale at comparison time, same reason"),
++        "end_state.mandatory_tests_missing": ("MAY_DIFFER", "stale at comparison time, same reason"),
++        "end_state.deferred_decisions": ("EQUAL", "both [] -- S-R2-1 is PI_RULE, not deferred"),
++        "end_state.narrowed_evidence": ("COUNT", ["T-R2-2"], ["T-R2-2", "T-RP-1"],
++            "rp1 instruction C-6, carried into rp1-r1: T-RP-1 enters narrowed_evidence by value"),
++        "end_state.uncovered_coverage_rows": ("EQUAL", "both carry the authored A.5 (iii) row, unchanged"),
++        "end_state.open_findings": ("EQUAL", "both [] -- no natural UNRELATED event in either run"),
++        "end_state.F3_STEP2_r4_status": ("EQUAL",
++            "both PARTIAL_PENDING_PI -- narrowed_evidence is non-empty in both"),
++        # ---- test_evidence.json: INJ-EXC capture counts, declared with VALUES ----
++        "exc_captures_unit_phase": ("EQUAL", "8 records, unchanged -- R-1/R-2/R-5 do not touch the INJ-EXC fixture mechanism"),
++        "exc_captures": ("EQUAL", "1 record, unchanged"),
++        "exc_captures_run2": ("EQUAL", "1 record, unchanged"),
++        "exc_captures_run1_eq_run2": ("EQUAL", "True, unchanged"),
++        # ---- test_evidence.json: remaining stable top-level keys ----
++        # each is ONE deterministic unit test's complete, internally-
++        # consistent result, untouched by R-1/R-2/R-5; declared whole
++        # (stop-point) rather than leaf-by-leaf, per the note above.
++        "a5": ("EQUAL", "unchanged deterministic unit test"),
++        "a5_contract_violations": ("EQUAL", "unchanged"),
++        "acf": ("EQUAL", "unchanged"),
++        "comparator_nan": ("EQUAL", "unchanged"),
++        "fix_a5_true": ("EQUAL", "unchanged"),
++        "io_free_assertion": ("EQUAL", "unchanged"),
++        "loader_node_hashes": ("EQUAL", "unchanged"),
++        "nonregression_vs_r4_1": ("EQUAL", "same frozen r4-1 baseline, same expected scientific identity"),
++        "residual_link": ("EQUAL", "unchanged"),
++        "solver_b_function_hashes": ("EQUAL", "unchanged"),
++        "spl_pending_realpath": ("EQUAL", "unchanged"),
++        "spline_call_telemetry_sample_count": ("MAY_DIFFER", "rp1-r1 adds new telemetry call sites (R-1/R-5)"),
++        "starts_dup": ("EQUAL", "unchanged"),
++        "starts_full": ("EQUAL", "unchanged"),
++        "t_a5_support": ("EQUAL", "unchanged"),
++        "t_mask_full_ext": ("EQUAL", "unchanged"),
++        "uset_construction": ("EQUAL", "unchanged"),
++        "ut_exc_unrelated_reference": ("EQUAL", "unchanged"),
++        "ut_probe_decouple": ("EQUAL", "unchanged"),
++        "wrapper_restore_ok": ("EQUAL", "unchanged"),
+     }
+ 
+-    def _solver_exceptions_content_equal(a_list, b_list):
+-        """solver_exceptions: a natural COVERED event reproduces identically
+-        under unchanged frozen code+data, but its OWN provenance (pid,
+-        start_iso, the traceback's file path -- which names the harness
+-        file, different between r4-2 and rp1) legitimately differs every
+-        run. Compare with those three fields stripped; a difference in
++    # R-3 (rp1-r1): every list-of-capture-records path whose records carry
++    # their OWN per-process provenance (pid, start_iso, and traceback,
++    # which names the harness file by path) and therefore legitimately
++    # differ every run regardless of content. solver_exceptions
++    # (results.json) and the three INJ-EXC capture lists (test_evidence.json)
++    # all share this shape.
++    _PROVENANCE_STRIPPED_LIST_PATHS = {
++        "solver_exceptions", "exc_captures", "exc_captures_run2",
++        "exc_captures_unit_phase"}
++
++    def _provenance_stripped_content_equal(a_list, b_list):
++        """Compare with pid/start_iso/traceback stripped; a difference in
+         anything else is content, not provenance, and is a real finding."""
+         def strip(rec):
+             return {k: v for k, v in rec.items()
+#HUNK 33 LABEL R-3 (keywords:20)
+@@ -4987,43 +5452,97 @@
+         sb = sorted(_cn(strip(r)) for r in (b_list or []))
+         return sa == sb
+ 
+-    def _classify_e(path):
+-        for prefix, reason in EXPECTATIONS_E.items():
+-            if path == prefix or path.startswith(prefix + "."):
+-                return reason
++    def _flatten_leaves(obj, prefix=""):
++        """R-3: full recursion into every nested dict, EXCEPT a path that
++        is itself an exact key of EXPECTATIONS_E -- there the WHOLE
++        subtree is one leaf (compared via canon()), by design (see the
++        comment above EXPECTATIONS_E). Non-dict values (including lists --
++        evaluations/stops are handled by the separate S-class check, which
++        re-keys them by fixture_id rather than list index) are leaves."""
++        if prefix and prefix in EXPECTATIONS_E:
++            return {prefix: _cn(obj)}
++        if isinstance(obj, dict) and obj:
++            out = {}
++            for k in sorted(obj.keys(), key=str):
++                p = "%s.%s" % (prefix, k) if prefix else str(k)
++                out.update(_flatten_leaves(obj[k], p))
++            return out
++        return {prefix or "(root)": _cn(obj)}
++
++    def _classify_e_typed(path, a_val):
++        if path in EXPECTATIONS_E:
++            return EXPECTATIONS_E[path]
++        if path.startswith("tests_run."):
++            # R-3: for every test present in r4-2, ran/passed must be
++            # EQUAL; a new rp1-r1-only test name is an ADDITION.
++            if a_val == "<ABSENT>":
++                return ("ADDITION", "rp1-r1 (R-1..R-5) test, not in r4-2")
++            return ("EQUAL", "every test present in r4-2 must show the same ran/passed in rp1-r1")
+         return None
+ 
+-    def _diff_one_level(a, b, prefix=""):
+-        """Top-level, then one level into dict values: every key present
+-        in EITHER side, every leaf compared via canon(). Deliberately not
+-        fully recursive beyond one level -- deep scientific content
+-        (evaluations/stops) is covered by the S-class check below with its
+-        own targeted, per-fixture comparison, which is more informative
+-        than a generic deep diff would be."""
+-        out = []
+-        keys = sorted(set(a) | set(b)) if isinstance(a, dict) and isinstance(b, dict) \
+-            else []
+-        if not keys:
+-            if _cn(a) != _cn(b):
+-                out.append((prefix or "(root)", a, b))
+-            return out
+-        for k in keys:
+-            p = "%s.%s" % (prefix, k) if prefix else k
+-            av, bv = a.get(k, "<ABSENT>"), b.get(k, "<ABSENT>")
+-            if av == "<ABSENT>" or bv == "<ABSENT>":
+-                out.append((p, av, bv))
++    def _expectation_held(kind_tuple, a_val, b_val):
++        kind = kind_tuple[0]
++        if kind == "MAY_DIFFER":
++            return True
++        if kind == "EQUAL":
++            return a_val == b_val
++        if kind == "ADDITION":
++            return a_val == "<ABSENT>" and b_val != "<ABSENT>"
++        if kind == "COUNT":
++            # a_val/b_val are ALREADY _cn()-canonicalized strings (they come
++            # straight out of _flatten_leaves); canonicalize only the
++            # declared literals, never re-canonicalize an already-canon
++            # string (that double application was attempt-1's bug: it
++            # compared json.dumps(canon("<a cn string>")) against
++            # json.dumps(canon(<raw list>)), which can never match).
++            _, exp_a, exp_b, _reason = kind_tuple
++            return a_val == _cn(exp_a) and b_val == _cn(exp_b)
++        return False
++
++    def _diff_full(a_doc, b_doc, exclude_keys):
++        """R-3: recursive, every leaf, path printed (results.json and
++        test_evidence.json both use this). Returns (e_rows, u_findings)."""
++        a = {k: v for k, v in a_doc.items() if k not in exclude_keys}
++        b = {k: v for k, v in b_doc.items() if k not in exclude_keys}
++        fa, fb = _flatten_leaves(a), _flatten_leaves(b)
++        paths = sorted(set(fa) | set(fb))
++        e_rows_, u_findings_ = [], []
++        for path in paths:
++            a_val = fa.get(path, "<ABSENT>")
++            b_val = fb.get(path, "<ABSENT>")
++            if a_val == b_val:
+                 continue
+-            if isinstance(av, dict) and isinstance(bv, dict) and not prefix:
+-                # one level deeper, only from the top (process/environment/
+-                # end_state need their sub-fields classified individually)
+-                for k2 in sorted(set(av) | set(bv)):
+-                    p2 = "%s.%s" % (p, k2)
+-                    v2a, v2b = av.get(k2, "<ABSENT>"), bv.get(k2, "<ABSENT>")
+-                    if _cn(v2a) != _cn(v2b):
+-                        out.append((p2, v2a, v2b))
+-            elif _cn(av) != _cn(bv):
+-                out.append((p, av, bv))
+-        return out
++            if path in _PROVENANCE_STRIPPED_LIST_PATHS:
++                if _provenance_stripped_content_equal(
++                        json.loads(a_val) if a_val != "<ABSENT>" else [],
++                        json.loads(b_val) if b_val != "<ABSENT>" else []):
++                    e_rows_.append(dict(
++                        path=path, classification="E", kind="EQUAL(content)", held=True,
++                        reason="a natural COVERED event's own provenance "
++                               "(pid/start_iso/traceback file path) differs per "
++                               "process; content verified identical after stripping those fields",
++                        r4_2=a_val[:500], rp1=b_val[:500]))
++                else:
++                    u_findings_.append(dict(path=path, r4_2=a_val[:500], rp1=b_val[:500]))
++                continue
++            kind_tuple = _classify_e_typed(path, a_val)
++            if kind_tuple is None:
++                u_findings_.append(dict(path=path, r4_2=a_val[:500], rp1=b_val[:500]))
++                continue
++            held = _expectation_held(kind_tuple, a_val, b_val)
++            reason = kind_tuple[-1]
++            if held:
++                e_rows_.append(dict(path=path, classification="E", kind=kind_tuple[0],
++                                    held=True, reason=reason,
++                                    r4_2=a_val[:500], rp1=b_val[:500]))
++            else:
++                # a declared expectation that did NOT hold is itself a
++                # finding (EQUAL that differs / ADDITION missing / COUNT
++                # with another value) -- R-3's own failure rule.
++                u_findings_.append(dict(path=path, r4_2=a_val[:500], rp1=b_val[:500],
++                                       declared_kind=kind_tuple[0],
++                                       declared_but_not_held=True))
++        return e_rows_, u_findings_
+ 
+     # S-class: the SCIENTIFIC objects, excluded from the generic diff above
+     # and checked here directly against r4-2, exactly as T-NONREG-R4-1
+#HUNK 34 LABEL R-3 (keywords:14)
+@@ -5056,34 +5575,46 @@
+             s_findings.append(dict(path=key, r4_2=_cn(_r42_doc.get(key)),
+                                    rp1=_cn(this_val)))
+ 
+-    # E/U-class: generic diff of everything else in the results dict.
+-    _results_minus_s = {k: v for k, v in results.items() if k not in _S_KEYS}
+-    _r42_minus_s = {k: v for k, v in _r42_doc.items() if k not in _S_KEYS}
+-    e_rows, u_findings = [], []
+-    for path, a_val, b_val in _diff_one_level(_r42_minus_s, _results_minus_s):
+-        if path == "solver_exceptions":
+-            # provenance-stripped content check, not a blanket E (see
+-            # _solver_exceptions_content_equal): a real content change
+-            # still surfaces as a finding even though this path is listed.
+-            if _solver_exceptions_content_equal(a_val, b_val):
+-                e_rows.append(dict(
+-                    path=path, classification="E",
+-                    reason="a natural COVERED event's own provenance "
+-                           "(pid/start_iso/traceback file path) differs per "
+-                           "process; content (fixture/mode/exception/message) "
+-                           "verified identical after stripping those fields",
+-                    r4_2=_cn(a_val)[:500], rp1=_cn(b_val)[:500]))
+-            else:
+-                u_findings.append(dict(path=path, r4_2=_cn(a_val)[:500],
+-                                       rp1=_cn(b_val)[:500]))
++    # E/U-class: FULL recursive diff of results.json (minus S-keys) and,
++    # new in rp1-r1 (R-3), test_evidence.json in full (no S-keys there).
++    e_rows, u_findings = _diff_full(_r42_doc, results, _S_KEYS)
++    te_e_rows, te_u_findings = _diff_full(_r42te_doc, test_evidence, set())
++    e_rows.extend(dict(r, path="test_evidence.%s" % r["path"]) for r in te_e_rows)
++    u_findings.extend(dict(r, path="test_evidence.%s" % r["path"]) for r in te_u_findings)
++
++    # R-3: telemetry CSV, row by row (key = fixture/fitter/mask_id/start_id,
++    # unique per row), column by column. Only columns declared E may
++    # differ; a row-count change is U unless declared (none is).
++    TELEMETRY_E_COLUMNS = {"wall_clock_seconds"}
++
++    def _tel_row_key(row):
++        return (row.get("fixture"), row.get("fitter"), row.get("mask_id"), row.get("start_id"))
++
++    with open(R4_2_TELEMETRY_PATH, encoding="utf-8") as _f:
++        _r42_tel_by_key = {_tel_row_key(r): r for r in csv.DictReader(_f)}
++    with open(TELEMETRY_PATH, encoding="utf-8") as _f:
++        _rp1r1_tel_by_key = {_tel_row_key(r): r for r in csv.DictReader(_f)}
++    if len(_r42_tel_by_key) != len(_rp1r1_tel_by_key):
++        u_findings.append(dict(path="telemetry.row_count",
++                               r4_2=str(len(_r42_tel_by_key)),
++                               rp1=str(len(_rp1r1_tel_by_key))))
++    for k in sorted(set(_r42_tel_by_key) | set(_rp1r1_tel_by_key), key=str):
++        ra, rb = _r42_tel_by_key.get(k), _rp1r1_tel_by_key.get(k)
++        if ra is None or rb is None:
++            u_findings.append(dict(path="telemetry.row%s" % (k,),
++                                   r4_2=_cn(ra), rp1=_cn(rb)))
+             continue
+-        reason = _classify_e(path)
+-        if reason:
+-            e_rows.append(dict(path=path, classification="E", reason=reason,
+-                               r4_2=_cn(a_val)[:500], rp1=_cn(b_val)[:500]))
+-        else:
+-            u_findings.append(dict(path=path, r4_2=_cn(a_val)[:500],
+-                                   rp1=_cn(b_val)[:500]))
++        for col in tel_fields:
++            va, vb = ra.get(col, ""), rb.get(col, "")
++            if va == vb:
++                continue
++            p = "telemetry.row%s.%s" % (k, col)
++            if col in TELEMETRY_E_COLUMNS:
++                e_rows.append(dict(path=p, classification="E", kind="MAY_DIFFER",
++                                   held=True, reason="declared telemetry column (R-3)",
++                                   r4_2=va, rp1=vb))
++            else:
++                u_findings.append(dict(path=p, r4_2=va, rp1=vb))
+ 
+     nonreg42_rows = (
+         [dict(path="evaluations/stops/canonical/determinism (S)",
+#HUNK 35 LABEL S5-WIRING (no keyword match; header/comment-only wiring)
+@@ -5091,8 +5622,10 @@
+              r4_2="", rp1="")] if not s_findings else
+         [dict(path=f["path"], classification="S_FINDING", reason="",
+              r4_2=f["r4_2"][:500], rp1=f["rp1"][:500]) for f in s_findings]
+-    ) + e_rows + [dict(path=f["path"], classification="U_FINDING", reason="",
+-                       r4_2=f["r4_2"], rp1=f["rp1"]) for f in u_findings]
++    ) + [dict(path=r["path"], classification=r["classification"], reason=r["reason"],
++             r4_2=r["r4_2"], rp1=r["rp1"]) for r in e_rows] \
++      + [dict(path=f["path"], classification="U_FINDING", reason="",
++             r4_2=f["r4_2"], rp1=f["rp1"]) for f in u_findings]
+ 
+     nonreg42_ok = bool(not s_findings and not u_findings)
+     print("NONREGRESSION_VS_R4_2 s_findings=%d e_declared=%d u_findings=%d"
+#HUNK 36 LABEL S5-WIRING (keywords:4)
+@@ -5108,10 +5641,14 @@
+             _w.writerow(r)
+     OPENED_FILES.append(NONREG_R42_PATH)
+     OPENED_FILES.append(R4_2_RESULTS_PATH)
++    OPENED_FILES.append(R4_2_TEST_EVIDENCE_PATH)
++    OPENED_FILES.append(R4_2_TELEMETRY_PATH)
+     print("NONREGRESSION_R4_2_WRITTEN = " + NONREG_R42_PATH
+           + " sha256=" + sha256_of(NONREG_R42_PATH))
+     results["nonregression_vs_r4_2"] = dict(
+         baseline=R4_2_RESULTS_PATH, baseline_sha256=_r42_obs,
++        test_evidence_baseline=R4_2_TEST_EVIDENCE_PATH, test_evidence_baseline_sha256=_r42te_obs,
++        telemetry_baseline=R4_2_TELEMETRY_PATH,
+         s_findings=s_findings, e_declared=len(e_rows), u_findings=u_findings,
+         pass_=nonreg42_ok)
+     assert record_test("T-NONREG-R4-2", nonreg42_ok), (

@@ -1,0 +1,204 @@
+LAUNCH_NUMBER = 1 ; logs = p_konum_plus/calibration/f3_step2_rp1-r1_launch1_stdout_2026-10-05.log / p_konum_plus/calibration/f3_step2_rp1-r1_launch1_stderr_2026-10-05.log
+REAL_DATA_MODE = False
+PIN-F2-IMPORT-HASH = 01714752eacda37a21fbcc0946c96be4f6b25d2a74b7bbe3da6fe0887df10077
+PIN-SPLINE-IMPORT-HASH = b31e5a6b69e5bbd96bce07a8634fb9474672ec5d6538d929287193d83ecdc64d
+PIN-SPLINE-LOADER prelude nodes = 21 (authorized list match: True)
+PID = 34228 ; START = 2026-10-06T10:55:39.541069 ; CMDLINE = p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py ; INTERPRETER = C:\Users\Neo\AppData\Local\Programs\Python\Python311\python.exe
+RESTART_LAYER_ACTIVE = True
+GRID_SIZES = P-01 731 ; P-02 261
+FIXTURE_MANIFEST_SHA256 = 5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe
+MANIFEST_REUSED_UNCHANGED_FROM_R4_1 = true (regenerated in memory and verified equal; file not rewritten)
+PRE_EXECUTION_CUSTODY_RECORD_VERIFIED = true (p_konum_plus/provenance/f3_step2_rp1-r1_preexecution_custody_attempt1_2026-10-05.md)
+DISPATCH_PRECONDITIONS_P1_P4 = ALL PASS (observed hashes equal pins; 31 verified: D-3, r4 instruction, D-5, A-1, D-2, r4-1 instruction, D-6, A-2, A-3, r4-2 instruction, D-7, A-4, reused generator, reused manifest, r4-1 results baseline, rp1 instruction, D-10, D-9, D-8, A-5, r4-2 results/telemetry/test-evidence baseline, F1 freeze record, D-11 r1, rp1 transmission list, rp1 harness, rp1-r1 instruction, D-12, rp1 audit, rp1-r1 DRAFT review)
+NR-01(i) = True (hash 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403; telemetry-fields True)
+NR-01(ii) [T-2a] = True (hybrid_canonical 6f197b74e3d42248393e5534efd25ef937d394d7fa50c7bcb81558cfcddd5403)
+SPLINE_NONREGRESSION (NR-SPL) = True (30 rows)
+T-LOADER-NODES = PASS (node-list equality asserted at load time; 73 node_hashes entries for 73 executed nodes)
+T_MASK_FULL_EXT = {"pass_": true}
+T_F1_LOADER_SYNTH = {"eligible_count": {"expected": 6, "got": 6, "ok": true}, "partial_excluded": {"expected": true, "got": true, "ok": true}, "denominator_includes_partial": {"expected": 21146, "got": 21146, "ok": true}, "z_qc_pass": {"expected": true, "got": true, "ok": true}, "gate_pass": {"expected": true, "got": true, "ok": true}, "MISSING_YEAR": {"expected": "MISSING_YEAR", "got": "MISSING_YEAR", "ok": true}, "DUPLICATE_KEY": {"expected": "DUPLICATE_KEY", "got": "DUPLICATE_KEY", "ok": true}, "ZERO_DENOMINATOR": {"expected": "ZERO_DENOMINATOR", "got": "ZERO_DENOMINATOR", "ok": true}, "ZERO_VARIANCE": {"expected": "ZERO_VARIANCE", "got": "ZERO_VARIANCE", "ok": true}, "COUNT_BELOW_PUBLICATION_FLOOR": {"expected": "COUNT_BELOW_PUBLICATION_FLOOR", "got": "COUNT_BELOW_PUBLICATION_FLOOR", "ok": true}, "BAD_FORMAT": {"expected": "BAD_FORMAT", "got": "BAD_FORMAT", "ok": true}, "BAD_SEMANTICS": {"expected": "BAD_SEMANTICS", "got": "BAD_SEMANTICS", "ok": true}, "RAW_FILE_HASH_MISMATCH": {"expected": "RAW_FILE_HASH_MISMATCH", "got": "RAW_FILE_HASH_MISMATCH", "ok": true}, "RAW_FILE_MISSING": {"expected": "RAW_FILE_MISSING", "got": "RAW_FILE_MISSING", "ok": true}, "NONFINITE_PRE_Z_NAN": {"expected": "NONFINITE_PRE_Z", "got": "NONFINITE_PRE_Z", "ok": true}, "NONFINITE_PRE_Z_INF": {"expected": "NONFINITE_PRE_Z", "got": "NONFINITE_PRE_Z", "ok": true}, "NEGATIVE_SHARE": {"expected": "NEGATIVE_SHARE", "got": "NEGATIVE_SHARE", "ok": true}, "NONFINITE_POST_Z": {"expected": "NONFINITE_POST_Z", "got": "NONFINITE_POST_Z", "ok": true}, "Z_STD_QC": {"expected": "Z_STD_QC", "got": "Z_STD_QC", "ok": true}, "Z_NORM_QC": {"expected": "Z_NORM_QC", "got": "Z_NORM_QC", "ok": true}, "TOLERANCE_BREACH": {"expected": "Z_MEAN_QC", "got": "Z_MEAN_QC", "ok": true}, "pass_": true}
+PROGRESS SPL ctx 1 F3-REAL real:F0:F_Zq00:SPL:full
+PROGRESS SPL ctx 2 F3-REAL real:F0:F_Zq00:SPL:fold0
+PROGRESS SPL ctx 3 F3-REAL real:F0:F_Zq00:SPL:fold1
+PROGRESS SPL ctx 4 F3-REAL real:F0:F_Zq00:SPL:fold2
+PROGRESS SPL ctx 5 F3-REAL real:F0:F_Zq00:SPL:fold3
+PROGRESS SPL ctx 6 F3-REAL real:F0:F_Zq00:SPL:fold4
+PROGRESS SPL ctx 7 F3-REAL real:F0:F_Zq00:SPL:probeL
+PROGRESS SPL ctx 8 F3-REAL real:F0:F_Zq00:SPL:probeR
+PROGRESS SPL ctx 9 F3-REAL real:F1:F_Zq01:SPL:full
+PROGRESS SPL ctx 10 F3-REAL real:F1:F_Zq01:SPL:fold0
+PROGRESS SPL ctx 11 F3-REAL real:F1:F_Zq01:SPL:fold1
+PROGRESS SPL ctx 12 F3-REAL real:F1:F_Zq01:SPL:fold2
+PROGRESS SPL ctx 13 F3-REAL real:F1:F_Zq01:SPL:fold3
+PROGRESS SPL ctx 14 F3-REAL real:F1:F_Zq01:SPL:fold4
+PROGRESS SPL ctx 15 F3-REAL real:F1:F_Zq01:SPL:probeL
+PROGRESS SPL ctx 16 F3-REAL real:F1:F_Zq01:SPL:probeR
+PROGRESS SPL ctx 17 F3-REAL real:F2:F_Zq02:SPL:full
+PROGRESS SPL ctx 18 F3-REAL real:F2:F_Zq02:SPL:fold0
+PROGRESS SPL ctx 19 F3-REAL real:F2:F_Zq02:SPL:fold1
+PROGRESS SPL ctx 20 F3-REAL real:F2:F_Zq02:SPL:fold2
+PROGRESS SPL ctx 21 F3-REAL real:F2:F_Zq02:SPL:fold3
+PROGRESS SPL ctx 22 F3-REAL real:F2:F_Zq02:SPL:fold4
+PROGRESS SPL ctx 23 F3-REAL real:F2:F_Zq02:SPL:probeL
+PROGRESS SPL ctx 24 F3-REAL real:F2:F_Zq02:SPL:probeR
+PROGRESS SPL ctx 25 F3-REAL real:M0:M_Zq00:SPL:full
+PROGRESS SPL ctx 26 F3-REAL real:M0:M_Zq00:SPL:fold0
+PROGRESS SPL ctx 27 F3-REAL real:M0:M_Zq00:SPL:fold1
+PROGRESS SPL ctx 28 F3-REAL real:M0:M_Zq00:SPL:fold2
+PROGRESS SPL ctx 29 F3-REAL real:M0:M_Zq00:SPL:fold3
+PROGRESS SPL ctx 30 F3-REAL real:M0:M_Zq00:SPL:fold4
+PROGRESS SPL ctx 31 F3-REAL real:M0:M_Zq00:SPL:probeL
+PROGRESS SPL ctx 32 F3-REAL real:M0:M_Zq00:SPL:probeR
+PROGRESS SPL ctx 33 F3-REAL real:M1:M_Zq01:SPL:full
+PROGRESS SPL ctx 34 F3-REAL real:M1:M_Zq01:SPL:fold0
+PROGRESS SPL ctx 35 F3-REAL real:M1:M_Zq01:SPL:fold1
+PROGRESS SPL ctx 36 F3-REAL real:M1:M_Zq01:SPL:fold2
+PROGRESS SPL ctx 37 F3-REAL real:M1:M_Zq01:SPL:fold3
+PROGRESS SPL ctx 38 F3-REAL real:M1:M_Zq01:SPL:fold4
+PROGRESS SPL ctx 39 F3-REAL real:M1:M_Zq01:SPL:probeL
+PROGRESS SPL ctx 40 F3-REAL real:M1:M_Zq01:SPL:probeR
+PROGRESS SPL ctx 41 F3-REAL real:M2:M_Zq02:SPL:full
+PROGRESS SPL ctx 42 F3-REAL real:M2:M_Zq02:SPL:fold0
+PROGRESS SPL ctx 43 F3-REAL real:M2:M_Zq02:SPL:fold1
+PROGRESS SPL ctx 44 F3-REAL real:M2:M_Zq02:SPL:fold2
+PROGRESS SPL ctx 45 F3-REAL real:M2:M_Zq02:SPL:fold3
+PROGRESS SPL ctx 46 F3-REAL real:M2:M_Zq02:SPL:fold4
+PROGRESS SPL ctx 47 F3-REAL real:M2:M_Zq02:SPL:probeL
+PROGRESS SPL ctx 48 F3-REAL real:M2:M_Zq02:SPL:probeR
+T_F1_HANDOFF_SYNTH = {"ran_without_exception": true, "exception": null, "captured_rows": 144, "dry_rows": 144, "actual_rows_equal_dry_table": true, "xhashes_match_loader": true, "pass_": true}
+T_CONTEXT_ID_UNIQUE = {"rows": 144, "expected_rows": 144, "all_unique": true, "matches_dry_table": true, "pass_": true}
+T_F1_CONTRACT_GAP = {"cases": {"fixture_id": {"raised": true, "key_named": "fixture_id", "ok": true}, "strata": {"raised": true, "key_named": "strata", "ok": true}, "start_bank": {"raised": true, "key_named": "start_bank", "ok": true}, "injections": {"raised": true, "key_named": "injections", "ok": true}}, "pass_": true}
+T_F1_REPRO_GATE_SYNTH = {"cases": {"complete": {"raised": false, "reason": null, "ok": true}, "missing_file": {"raised": true, "reason": "F1_REPRO_GATE_MISSING_FILE ['yob9999_NONEXISTENT.txt']", "ok": true}, "extra_file": {"raised": true, "reason": "F1_REPRO_GATE_EXTRA_FILE ['yob2025.txt']", "ok": true}, "hash_changed": {"raised": true, "reason": "F1_REPRO_GATE_HASH_MISMATCH yob1880.txt observed=cb7a3ce1f47026a74a6a3fe0f6946f76c87a7ed1e0e2a09c7e9c39e69b66b115 expected=0b7a3ce1f47026a74a6a3fe0f6946f76c87a7ed1e0e2a09c7e9c39e69b66b115", "ok": true}, "eligible_manifest_changed": {"raised": true, "reason": "F1_REPRO_GATE_ELIGIBLE_MISMATCH observed=[('F', 'Zq00'), ('F', 'Zq01'), ('F', 'Zq02'), ('M', 'Zq00'), ('M', 'Zq01'), ('M', 'Zq02')] expected=[('F', 'Zq00'), ('F', 'Zq01'), ('F', 'Zq02'), ('M', 'Zq00'), ('M', 'Zq01')]", "ok": true}}, "pass_": true}
+T_INADMISSIBLE_OBSERVABLE = {"family": {"witness_found": false, "witness": null, "eligible_not_counted": true, "nonconverged_not_counted": true, "infeasible_not_counted": true}, "spline": {"clean_not_accepted_counted": true, "accepted_stage1_not_counted": true, "accepted_primary_not_counted": true, "dirty_return_not_counted": true}, "witness_on_frozen_lattice": false, "pass_": true}
+PROGRESS SPL ctx 49 T-STORE-READ tsr:full
+PROGRESS SPL ctx 50 T-STORE-READ tsr:full
+PROGRESS SPL ctx 51 T-STORE-READ tsr:full
+PROGRESS SPL ctx 52 T-STORE-READ tsr:full
+PROGRESS SPL ctx 53 T-STORE-READ tsr:full
+T_STORE_READ_ACCOUNTING = {"cold": {"modes": 146, "fit1_reads": 0, "resumed_warm_start": false, "served_to_fit2": 146, "fine_counter": 146, "per_read_rows_wellformed": true, "fit2_equals_fit1": true, "fit2_replay_rows": 164, "fit2_replay_rows_tagged_replay": true, "replay_matches_stored_telemetry": true, "pass_": true}, "warm": {"modes": 146, "fit1_reads": 146, "resumed_warm_start": true, "served_to_fit2": 146, "fine_counter": 292, "per_read_rows_wellformed": true, "fit2_equals_fit1": true, "fit2_replay_rows": 164, "fit2_replay_rows_tagged_replay": true, "replay_matches_stored_telemetry": true, "pass_": true}, "pass_": true}
+T_SPL_PENDING_REALPATH = {"cases": [{"case": "baseline", "expected": {}, "got": {}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "natural full", "expected": {"P01:C3:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C3:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "got": {"P01:C3:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C3:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(F3-STEP2-EXACT-04)"}, {"case": "natural fold", "expected": {"P01:C2:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C2:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "got": {"P01:C2:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C2:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "natural probe", "expected": {"P01:C4b:M": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C4b:M": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "got": {"P01:C4b:M": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C4b:M": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "injected full", "expected": {"P01:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "got": {"P01:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}, {"case": "injected fold", "expected": {"P01:C2:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C2:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "got": {"P01:C2:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C2:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "injected probe", "expected": {"P01:C4b:M": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C4b:M": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "got": {"P01:C4b:M": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C4b:M": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "declared spline failure", "expected": {}, "got": {}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["FAIL", "FAIL"], "mechanism": "STOP_BOTH_FAIL_REDESIGN"}, {"case": "natural and injected, same sex", "expected": {"P01:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "got": {"P01:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P01:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)", "P02:C3:F": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "P02:C4b:F": "STOP_EXACTNESS_PENDING(F3-STEP2-EXACT-04)"}, "ok": true, "pending_cells_with_a_verdict": [], "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(F3-STEP2-EXACT-04)"}], "all_cases_ok": true, "restored": {"fit_family": true, "fit_spline": true, "fidelity_declared": true, "fidelity_executed": true, "telemetry": true, "exc_captures": true, "progress_counter": true, "phase": true}, "pass_": true}
+PIN-MASKED-OBJECTIVE full == frozen: True ; L_O<=L_FULL: True ; PIN-FEATURE-START-MASKED: True
+PROGRESS SPL ctx 54 FIX-A5-TRUE a5true:left:full
+PROGRESS SPL ctx 55 FIX-A5-TRUE a5true:left:probeL
+PROGRESS SPL ctx 56 FIX-A5-TRUE a5true:right:full
+PROGRESS SPL ctx 57 FIX-A5-TRUE a5true:right:probeR
+PROGRESS SPL ctx 58 INJ-EXC-CAPTURE-S1 exc:s1
+PROGRESS SPL ctx 59 INJ-EXC-CAPTURE-S2 exc:s2
+PROGRESS SPL ctx 60 INJ-EXC-UNRELATED-TYPE exc:unrel
+PROGRESS SPL ctx 61 INJ-EXC-CAPTURE-S1 exc:s1
+PROGRESS SPL ctx 62 INJ-EXC-CAPTURE-S2 exc:s2
+PROGRESS SPL ctx 63 INJ-EXC-UNRELATED-TYPE exc:unrel
+T_A5_SUPPORT = {"threshold_equality_included": true, "next_float_below_excluded": true, "disconnected_components_united": true, "inside_left_true_L": true, "inside_left_false_R": true, "middle_false_both": true, "constant_reference_S_equals_G": true, "nan_reference_violates": true, "wrong_length_violates": true, "inf_reference_violates": true, "pass_": true}
+A5_UNIT_TESTS = {"UT_A5_II_pass": true, "UT_A5_III_pass": true, "note": "unit tests; A.5(i) is exercised on the real path (S-1=(a)); these two probe A.5(ii)/(iii) directly"}
+UT_PROBE_DECOUPLE = {"UT_PROBE_DECOUPLE_pass": true, "full_eligible": false, "probe_eligible": true, "probe_success_c4a": true, "rmse_computable": false, "second_half_v4_membership": [], "second_half_pass": true, "note": "first half: probe_success is probe-level only (X-04). second half RUNS this cycle (S-R2-1 = PI_RULE, D-5 S4(d)): the no-full-data-reference trajectory is absent from V4 by flag membership, checked through the real crit_stats + uset_c4b product path"}
+UT_USET_CONSTRUCTION = {"a": {"ok": true, "U2": 9, "U5": 10, "expect": {"U2": 9, "U5": 10}}, "b": {"ok": true, "U5": 9, "expect": {"U5": 9}}, "c": {"ok": true, "U2": [1, 2, 3, 4, 5, 6, 7, 8, 9], "expect": {"U2_excludes": 0}}, "d": {"ok": true, "U4": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "revalidation_flags_member": true, "expect": {"U4_includes": 0, "revalidation_flags_member": 0}}, "e": {"ok": true, "U2": [1, 2, 3, 4, 5, 6, 7, 8, 9], "U5": [1, 2, 3, 4, 5, 6, 7, 8, 9], "expect": {"U2_excludes": 0, "U5_excludes": 0}}}
+T_COMPARATOR_NAN = {"guard_refuses_nan": true, "guard_refuses_none": true, "guard_refuses_inf": true, "guard_accepts_finite": true, "python_nan_comparison_is_resolved_like": true, "guarded_comparator_label": "STOP_CONTRACT_VIOLATION_INCONSISTENT_U", "guarded_comparator_label_is_inconsistent_u": true, "pass_": true, "note": "pass_ from the real guard's behavior AND an end-to-end run_dp04 call asserting the R4A-03 label CONTRACT_VIOLATION_INCONSISTENT_U (D-3 Y-03(iii))"}
+T_STARTS_DEFAULT (FIX-STARTS-FULL) = {"P-01": {"start_bank_size": 732, "expected": 732, "pass_": true, "retained_count": 731, "feature_start_rejected": false}, "P-02": {"start_bank_size": 262, "expected": 262, "pass_": true, "retained_count": 261, "feature_start_rejected": false}}
+T_STARTS_DUP (FIX-STARTS-DUP) = {"index0": {"feature_start_rejected": true, "reason": "DUPLICATE", "pass_": true}, "index145": {"feature_start_rejected": true, "reason": "DUPLICATE", "pass_": true}}
+FIX_A5_TRUE = {"left": {"a5_i": true, "support_size": 15, "P-01": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "P-02": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "SPL": {"full_valid": true, "probe_valid": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "pass_": true}, "right": {"a5_i": true, "support_size": 15, "P-01": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "P-02": {"full_eligible": true, "probe_eligible": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "SPL": {"full_valid": true, "probe_valid": true, "probe_success_c4a": false, "excluded_from_c4a_numerator": true, "excluded_from_c4b_pair": true}, "pass_": true}}
+EXC_INJECTION_FIXTURES = {"S1": {"count": 1, "stages": [1], "pass_": true}, "S2": {"count": 2, "stages": [1, 2], "pass_": true}, "UNRELATED_TYPE": {"caught_not_crashed": true, "exception_type_recorded": "ValueError", "context_unverifiable": true, "eval_level_dependent_criteria_pending": {"INJ-SPL-PENDING-FULL": {"C3": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4b": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}, "INJ-SPL-PENDING-FOLD": {"C2": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}, "INJ-SPL-PENDING-PROBE": {"C4b": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}}, "eval_level_ok": true, "pass_": true}, "passes_identical": true, "pass_key_namespaces_disjoint": true, "pass2": {"S1": {"count": 1, "stages": [1], "pass_": true}, "S2": {"count": 2, "stages": [1, 2], "pass_": true}, "UNRELATED_TYPE": {"caught_not_crashed": true, "exception_type_recorded": "ValueError", "context_unverifiable": true, "eval_level_dependent_criteria_pending": {"INJ-SPL-PENDING-FULL": {"C3": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4b": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}, "INJ-SPL-PENDING-FOLD": {"C2": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}, "INJ-SPL-PENDING-PROBE": {"C4b": {"status": "STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)", "has_passed_field": false, "pending_not_passfail": true}, "C4a_stays_pass": true, "p03": ["PENDING", "PENDING"], "mechanism": "MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)"}}, "eval_level_ok": true, "pass_": true}}}
+UT_EXC_UNRELATED_REFERENCE = {"case_1a_propagated": true, "case_1b_propagated": true, "pass_": true}
+PROGRESS SPL ctx 64 SCEN-A run1:F0:full
+PROGRESS SPL ctx 65 SCEN-A run1:F0:fold0
+PROGRESS SPL ctx 66 SCEN-A run1:F0:fold1
+PROGRESS SPL ctx 67 SCEN-A run1:F0:fold2
+PROGRESS SPL ctx 68 SCEN-A run1:F0:fold3
+PROGRESS SPL ctx 69 SCEN-A run1:F0:fold4
+PROGRESS SPL ctx 70 SCEN-A run1:F0:probeL
+PROGRESS SPL ctx 71 SCEN-A run1:F0:probeR
+PROGRESS SPL ctx 72 SCEN-A run1:M0:full
+PROGRESS SPL ctx 73 SCEN-A run1:M0:fold0
+PROGRESS SPL ctx 74 SCEN-A run1:M0:fold1
+PROGRESS SPL ctx 75 SCEN-A run1:M0:fold2
+PROGRESS SPL ctx 76 SCEN-A run1:M0:fold3
+PROGRESS SPL ctx 77 SCEN-A run1:M0:fold4
+PROGRESS SPL ctx 78 SCEN-A run1:M0:probeL
+PROGRESS SPL ctx 79 SCEN-A run1:M0:probeR
+PROGRESS SPL ctx 80 SCEN-B run1:F0:full
+PROGRESS SPL ctx 81 SCEN-B run1:F0:fold0
+PROGRESS SPL ctx 82 SCEN-B run1:F0:fold1
+PROGRESS SPL ctx 83 SCEN-B run1:F0:fold2
+PROGRESS SPL ctx 84 SCEN-B run1:F0:fold3
+PROGRESS SPL ctx 85 SCEN-B run1:F0:fold4
+PROGRESS SPL ctx 86 SCEN-B run1:F0:probeL
+PROGRESS SPL ctx 87 SCEN-B run1:F0:probeR
+PROGRESS SPL ctx 88 SCEN-B run1:M0:full
+PROGRESS SPL ctx 89 SCEN-B run1:M0:fold0
+PROGRESS SPL ctx 90 SCEN-B run1:M0:fold1
+PROGRESS SPL ctx 91 SCEN-B run1:M0:fold2
+PROGRESS SPL ctx 92 SCEN-B run1:M0:fold3
+PROGRESS SPL ctx 93 SCEN-B run1:M0:fold4
+PROGRESS SPL ctx 94 SCEN-B run1:M0:probeL
+PROGRESS SPL ctx 95 SCEN-B run1:M0:probeR
+PROGRESS SPL ctx 96 SCEN-A run2:F0:full
+PROGRESS SPL ctx 97 SCEN-A run2:F0:fold0
+PROGRESS SPL ctx 98 SCEN-A run2:F0:fold1
+PROGRESS SPL ctx 99 SCEN-A run2:F0:fold2
+PROGRESS SPL ctx 100 SCEN-A run2:F0:fold3
+PROGRESS SPL ctx 101 SCEN-A run2:F0:fold4
+PROGRESS SPL ctx 102 SCEN-A run2:F0:probeL
+PROGRESS SPL ctx 103 SCEN-A run2:F0:probeR
+PROGRESS SPL ctx 104 SCEN-A run2:M0:full
+PROGRESS SPL ctx 105 SCEN-A run2:M0:fold0
+PROGRESS SPL ctx 106 SCEN-A run2:M0:fold1
+PROGRESS SPL ctx 107 SCEN-A run2:M0:fold2
+PROGRESS SPL ctx 108 SCEN-A run2:M0:fold3
+PROGRESS SPL ctx 109 SCEN-A run2:M0:fold4
+PROGRESS SPL ctx 110 SCEN-A run2:M0:probeL
+PROGRESS SPL ctx 111 SCEN-A run2:M0:probeR
+PROGRESS SPL ctx 112 SCEN-B run2:F0:full
+PROGRESS SPL ctx 113 SCEN-B run2:F0:fold0
+PROGRESS SPL ctx 114 SCEN-B run2:F0:fold1
+PROGRESS SPL ctx 115 SCEN-B run2:F0:fold2
+PROGRESS SPL ctx 116 SCEN-B run2:F0:fold3
+PROGRESS SPL ctx 117 SCEN-B run2:F0:fold4
+PROGRESS SPL ctx 118 SCEN-B run2:F0:probeL
+PROGRESS SPL ctx 119 SCEN-B run2:F0:probeR
+PROGRESS SPL ctx 120 SCEN-B run2:M0:full
+PROGRESS SPL ctx 121 SCEN-B run2:M0:fold0
+PROGRESS SPL ctx 122 SCEN-B run2:M0:fold1
+PROGRESS SPL ctx 123 SCEN-B run2:M0:fold2
+PROGRESS SPL ctx 124 SCEN-B run2:M0:fold3
+PROGRESS SPL ctx 125 SCEN-B run2:M0:fold4
+PROGRESS SPL ctx 126 SCEN-B run2:M0:probeL
+PROGRESS SPL ctx 127 SCEN-B run2:M0:probeR
+EXC_CAPTURES_RUN1_EQ_RUN2 = True (run1=1, run2=1)
+T_EXPECT_ALL = declared/ran 36/36 ; EXPECTATION_FAIL = []
+T_SCHEMA = {"seen": {"fits.theta": true, "fits.L": true, "fits.start_bank_size": true, "fits.feature_start_rejected": true, "fits.mode": true, "fits.rss": true, "fits.equivalent_modes": true, "fits.per_mode_valid": true, "disc_f3_03_complement.C2": true, "disc_f3_03_complement.C3": true, "disc_f3_03_complement.C4b": true, "invalid_counts_by_criterion": true, "probe_failure_shares": true, "k05_result": true}, "missing": []}
+EXC_CAPTURES (RUN1) = 1 record(s)
+EXC_CAPTURES injected=0 natural=1
+NATURAL_SOLVER_B_UNVERIFIABLE_ACCEPTANCE_EVENTS = [{"fixture": "SCEN-A", "sex": "F", "trajectory": 0, "mask_id": "run1:F0:full", "mode": 113, "stage": 2, "exception_type": "RuntimeError", "message": "Maximum number of iterations reached.", "traceback": "Traceback (most recent call last):\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r1_2026-10-05.py\", line 814, in wrapped_accept\n    return real_accept(c, z, O, A)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"p_konum_plus/calibration/f3_spline_solver_qualification_harness_r2_2026-09-03.py\", line 313, in accept\n    res, _ = kkt_res(c, z, O, A)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"p_konum_plus/calibration/f3_spline_solver_qualification_harness_r2_2026-09-03.py\", line 304, in kkt_res\n    _, res = nnls(A[act].T, g)\n             ^^^^^^^^^^^^^^^^^\n  File \"G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r1_2026-10-05.py\", line 920, in wrapped_nnls\n    return real_nnls(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\scipy\\optimize\\_nnls.py\", line 93, in nnls\n    raise RuntimeError(\"Maximum number of iterations reached.\")\nRuntimeError: Maximum number of iterations reached.\n", "kind": "COVERED", "phase": "run1", "pid": 34228, "start_iso": "2026-10-06T10:55:39.541069", "s2_rule": "alpha: NOT accepted at stage 2; chain continues"}]
+NATURAL_UNRELATED_EVENTS = 0 ; exactness_findings = []
+NONREGRESSION_VS_R4 shared=34 new=3 dropped=0 findings=0 real_path_spline_pending=0
+NONREGRESSION_WRITTEN = p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4_2026-10-05.csv sha256=41dca0ba7fab7a40c289ca8140643f818164721e80be25eceec72cd5234b542a
+NONREGRESSION_VS_R4_1 compared=37 findings=0 stops_equal=True
+NONREGRESSION_R4_1_WRITTEN = p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-1_2026-10-05.csv sha256=0192f7dd92431adba0afb59fe86fbf18c458b96d3c19938081eecd34227c161d
+PIN-ACF bitwise-equal(all)=True strict-vs-(b),(c)(all)=True
+RESIDUAL_SERIES_WRITTEN = p_konum_plus/calibration/f3_step2_residual_series_rp1-r1_2026-10-05.json sha256=3ee624f3a3e0ddb9acef9e0f23988417a308e8b003d756823b8a5c521afd9d4f
+T_RESIDUAL_LINK_KEYS = 11
+INJ-C1-FAIL mechanism = ONLY_P02_PASSES (p03={'P01': 'FAIL', 'P02': 'PASS'})
+INJ-DP04-C1 mechanism (S-R2-1 PI_RULE) = RESOLVED_MECHANISM_P01
+UNCONSULTED_NOT_RECOMPUTED_EVIDENCE (INJ-DP04-C2-DIVERGE) = {"C1": 0, "C2": 1, "C3": 0, "C4a": 0, "C4b": 0, "C5": 0, "C6": 0}
+INJ-DP04-C2-DIVERGE |U2| = 8 confirmed (Y-02 membership-first)
+INJ-U-POST-CONSTRUCTION-INVALID -> CONTRACT_VIOLATION_INCONSISTENT_U confirmed
+INJ-C4B-NOREF mechanism (S-R2-1 PI_RULE) = TERMINAL_FALLBACK_MECHANISM_P01
+SCEN-B mechanism (S-R2-1 PI_RULE; V4 empty in M) = STOP_BOTH_FAIL_REDESIGN
+FIDELITY = 5/5 (implemented) ; 5/5 (executed) [declared injection sites]
+RUN1_CANONICAL_SHA256 = 556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77
+RUN2_CANONICAL_SHA256 = 556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77
+DETERMINISM = True
+T_NONREG_R4_1 = {"baseline": "p_konum_plus/calibration/f3_step2_results_r4-1_2026-09-29.json", "baseline_sha256": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385", "compared": 37, "stops_equal": true, "run1_canonical_expected": "556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77", "run1_canonical_observed": "556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77", "run1_canonical_unchanged": true, "residual_series_expected": "3ee624f3a3e0ddb9acef9e0f23988417a308e8b003d756823b8a5c521afd9d4f", "residual_series_observed": "3ee624f3a3e0ddb9acef9e0f23988417a308e8b003d756823b8a5c521afd9d4f", "residual_series_unchanged": true}
+T_WRAPPER_RESTORE = True
+TEST_EVIDENCE_WRITTEN = p_konum_plus/calibration/f3_step2_test_evidence_rp1-r1_2026-10-05.json sha256=a09c60c297cecf49614282eb8656894e67110f87020e0f397fdbd00fc25a2689
+PERCALL_TELEMETRY_WRITTEN = p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r1_2026-10-05.csv sha256=dd4e40d84d676dd3a38280704a7a6f4dfe533c83f68059f16db539264b2f5c43
+PERCALL_TELEMETRY_ROWS = 22217
+T_CALLCOUNT per phase = {"nr_gates": 9283, "run1": 5256, "run2": 5256, "t_store_read_accounting": 820, "unit_tests": 1602}
+T_CALLCOUNT per phase/pid = {"nr_gates/34228": 9283, "run1/34228": 5256, "run2/34228": 5256, "t_store_read_accounting/34228": 820, "unit_tests/34228": 1602}
+STORE_MANIFEST_WRITTEN = p_konum_plus/calibration/f3_step2_rp1-r1_restart_store_manifest_2026-10-05.csv sha256=6244e7895f080272a48b34ecc1e8f16d103e281e39d98d296acecfcd86295bc3 rows=67313
+STORE_READ_LOG_WRITTEN = p_konum_plus/calibration/f3_step2_rp1-r1_store_read_log_2026-10-05.csv sha256=8cac80b3cc91e903946951b3a0965f90e001770eff23d1625c71de8ee69b2595 rows=730
+COVERAGE_DERIVED = 64 rows ; downgraded_to_UNCOVERED = []
+PI_DISPATCH_RECORD (D-12) observed = 2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364 ; S-R2-1 source (D-5) = 0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851
+END_STATE = {"PI_dispatch_record_hash": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364", "PI_dispatch_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_pi_dispatch_record_2026-10-05.md", "S_R2_1_source_dispatch_record_hash": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851", "S_R2_1_source_dispatch_record_path": "p_konum_plus/prompts/f3_step2_r4_pi_dispatch_record_2026-09-24.md", "corrections_complete": false, "mandatory_tests_all_run": false, "mandatory_tests_missing": ["T-NONREG-R4-2"], "deferred_decisions": [], "narrowed_evidence": ["T-R2-2", "T-RP-1"], "uncovered_coverage_rows": ["A.5 (iii) inadmissible refit"], "open_findings": [], "F3_STEP2_r4_status": "PARTIAL_PENDING_PI"}
+F3_STEP2_r4_status = PARTIAL_PENDING_PI
+NONREGRESSION_VS_R4_2 s_findings=0 e_declared=2110 u_findings=6
+NONREGRESSION_R4_2_U_FINDINGS = [{"path": "end_state.narrowed_evidence", "r4_2": "[\"T-R2-2\"]", "rp1": "[\"T-R2-2\", \"T-RP-1\"]", "declared_kind": "COUNT", "declared_but_not_held": true}, {"path": "exc_injection_fixtures", "r4_2": "{\"S1\": {\"count\": 1, \"pass_\": true, \"stages\": [1]}, \"S2\": {\"count\": 2, \"pass_\": true, \"stages\": [1, 2]}, \"UNRELATED_TYPE\": {\"caught_not_crashed\": true, \"context_unverifiable\": true, \"eval_level_dependent_criteria_pending\": {\"INJ-SPL-PENDING-FOLD\": {\"C2\": {\"has_passed_field\": false, \"pending_not_passfail\": true, \"status\": \"STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)\"}, \"C4a_stays_pass\": true, \"mechanism\": \"MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)\", \"p03\": [\"PENDING\", \"PENDING\"]}", "rp1": "{\"S1\": {\"count\": 1, \"pass_\": true, \"stages\": [1]}, \"S2\": {\"count\": 2, \"pass_\": true, \"stages\": [1, 2]}, \"UNRELATED_TYPE\": {\"caught_not_crashed\": true, \"context_unverifiable\": true, \"eval_level_dependent_criteria_pending\": {\"INJ-SPL-PENDING-FOLD\": {\"C2\": {\"has_passed_field\": false, \"pending_not_passfail\": true, \"status\": \"STOP_EXACTNESS_PENDING(TEST_ONLY_INJECTED)\"}, \"C4a_stays_pass\": true, \"mechanism\": \"MECHANISM_UNDETERMINED_PENDING_EXACTNESS(TEST_ONLY_INJECTED)\", \"p03\": [\"PENDING\", \"PENDING\"]}", "declared_kind": "EQUAL", "declared_but_not_held": true}, {"path": "test_evidence.exc_captures", "r4_2": "[{\"exception_type\": \"RuntimeError\", \"fixture\": \"SCEN-A\", \"kind\": \"COVERED\", \"mask_id\": \"run1:F0:full\", \"message\": \"Maximum number of iterations reached.\", \"mode\": 113, \"phase\": \"run1\", \"pid\": 10412, \"s2_rule\": \"alpha: NOT accepted at stage 2; chain continues\", \"sex\": \"F\", \"stage\": 2, \"start_iso\": \"2026-09-30T20:38:58.140644\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"G:\\\\PycharmProjects\\\\pkp-worktree\\\\p_konum_plus\\\\calibration\\\\f3_step2_adequacy_harness_r4-2_2026-09-30.py\\\", lin", "rp1": "[{\"exception_type\": \"RuntimeError\", \"fixture\": \"SCEN-A\", \"kind\": \"COVERED\", \"mask_id\": \"run1:F0:full\", \"message\": \"Maximum number of iterations reached.\", \"mode\": 113, \"phase\": \"run1\", \"pid\": 34228, \"s2_rule\": \"alpha: NOT accepted at stage 2; chain continues\", \"sex\": \"F\", \"stage\": 2, \"start_iso\": \"2026-10-06T10:55:39.541069\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"G:\\\\PycharmProjects\\\\pkp-worktree\\\\p_konum_plus\\\\calibration\\\\f3_step2_adequacy_harness_rp1-r1_2026-10-05.py\\\", l", "declared_kind": "EQUAL", "declared_but_not_held": true}, {"path": "test_evidence.exc_captures_run2", "r4_2": "[{\"exception_type\": \"RuntimeError\", \"fixture\": \"SCEN-A\", \"kind\": \"COVERED\", \"mask_id\": \"run2:F0:full\", \"message\": \"Maximum number of iterations reached.\", \"mode\": 113, \"phase\": \"run2\", \"pid\": 10412, \"s2_rule\": \"alpha: NOT accepted at stage 2; chain continues\", \"sex\": \"F\", \"stage\": 2, \"start_iso\": \"2026-09-30T20:38:58.140644\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"G:\\\\PycharmProjects\\\\pkp-worktree\\\\p_konum_plus\\\\calibration\\\\f3_step2_adequacy_harness_r4-2_2026-09-30.py\\\", lin", "rp1": "[{\"exception_type\": \"RuntimeError\", \"fixture\": \"SCEN-A\", \"kind\": \"COVERED\", \"mask_id\": \"run2:F0:full\", \"message\": \"Maximum number of iterations reached.\", \"mode\": 113, \"phase\": \"run2\", \"pid\": 34228, \"s2_rule\": \"alpha: NOT accepted at stage 2; chain continues\", \"sex\": \"F\", \"stage\": 2, \"start_iso\": \"2026-10-06T10:55:39.541069\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"G:\\\\PycharmProjects\\\\pkp-worktree\\\\p_konum_plus\\\\calibration\\\\f3_step2_adequacy_harness_rp1-r1_2026-10-05.py\\\", l", "declared_kind": "EQUAL", "declared_but_not_held": true}, {"path": "test_evidence.exc_captures_unit_phase", "r4_2": "[{\"exception_type\": \"RuntimeError\", \"fixture\": \"INJ-EXC-CAPTURE-S1\", \"kind\":
+NONREGRESSION_R4_2_WRITTEN = p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-2_2026-10-05.csv sha256=2c2c855e0df7af987029db5fef68029a426aaa1c5db11ad6569146028649185b

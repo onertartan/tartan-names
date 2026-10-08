@@ -1,0 +1,8 @@
+Zq00,F,8792
+Zq00,M,955
+Zq01,F,5695
+Zq01,M,4357
+Zq02,F,9098
+Zq02,M,312
+Partial,F,2012
+Bad,Extra,F,7
