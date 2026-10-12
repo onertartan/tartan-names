@@ -1,0 +1,156 @@
+{
+  "created_utc": "2026-10-11T13:13:32.993497+00:00",
+  "observed_failure": "T-NONREG-R4-2; return_code=1; 22 U findings",
+  "defect": "22 missing test_evidence namespace ADDITION declarations for the new Q1-Q11 ran/passed leaves",
+  "old_harness_sha256": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+  "new_harness_sha256": "d34676d0e60c6a2a160a8b7c9180d37409b244ed5e5a1b1d50073b18051c5bb3",
+  "all_22_absent_in_r4_2": true,
+  "existing_test_flag_changes": [],
+  "added_declarations": [
+    {
+      "path": "tests_run.T-RP1R2-Q1.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q1.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q1 introduces T-RP1R2-Q1; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q1.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q1.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q1 introduces T-RP1R2-Q1; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q10.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q10.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q10 introduces T-RP1R2-Q10; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q10.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q10.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q10 introduces T-RP1R2-Q10; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q11.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q11.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q11 introduces T-RP1R2-Q11; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q11.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q11.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q11 introduces T-RP1R2-Q11; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q2.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q2.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q2 introduces T-RP1R2-Q2; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q2.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q2.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q2 introduces T-RP1R2-Q2; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q3.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q3.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q3 introduces T-RP1R2-Q3; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q3.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q3.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q3 introduces T-RP1R2-Q3; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q4.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q4.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q4 introduces T-RP1R2-Q4; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q4.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q4.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q4 introduces T-RP1R2-Q4; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q5.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q5.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q5 introduces T-RP1R2-Q5; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q5.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q5.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q5 introduces T-RP1R2-Q5; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q6.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q6.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q6 introduces T-RP1R2-Q6; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q6.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q6.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q6 introduces T-RP1R2-Q6; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q7.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q7.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q7 introduces T-RP1R2-Q7; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q7.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q7.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q7 introduces T-RP1R2-Q7; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q8.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q8.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q8 introduces T-RP1R2-Q8; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q8.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q8.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q8 introduces T-RP1R2-Q8; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q9.passed",
+      "id": "test_evidence:tests_run.T-RP1R2-Q9.passed",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q9 introduces T-RP1R2-Q9; its new test_evidence tests_run.passed leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    },
+    {
+      "path": "tests_run.T-RP1R2-Q9.ran",
+      "id": "test_evidence:tests_run.T-RP1R2-Q9.ran",
+      "kind": "ADDITION",
+      "reason": "Section 0 declaration-defect correction after attempt 1: section 4 Q9 introduces T-RP1R2-Q9; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes."
+    }
+  ],
+  "previous_results_declarations_unchanged": true,
+  "previous_test_evidence_declarations_unchanged": true,
+  "entire_source_ast_unchanged_except_22_added_declarations": true,
+  "attempt1_quarantine": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11",
+  "baseline_test_evidence_sha256": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+  "attempt1_test_evidence_sha256": "4147d3e9b71b0ae9d434c17bca73b1d08bff3adde593b2b24e6303d26fd9be04",
+  "attempt1_nonregression_sha256": "74edfbffe1be79df185e7ed2c9915959c107354aa8c7735a6535a7e900c72cf2",
+  "difference_list": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r2_attempt1_22_u_findings_2026-10-11.csv",
+  "exact_diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r2_attempt2_declaration_only_diff_2026-10-11.diff",
+  "attempt2_launch_blocker": "ATTEMPT_NUMBER remains literal 1; no environment override exists. Custody path and delivered process.attempt_number depend on it. User prohibits any other code change.",
+  "attempt2_started": false,
+  "real_data_access": false,
+  "status": "PARTIAL_PENDING_PI"
+}

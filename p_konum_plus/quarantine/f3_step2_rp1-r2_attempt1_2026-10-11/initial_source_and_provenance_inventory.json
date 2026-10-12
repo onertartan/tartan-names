@@ -1,0 +1,362 @@
+[
+  {
+    "path": "calibration\\f3_rp1-r2_gate_tools_2026-10-10.py",
+    "sha256": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+    "bytes": 12470
+  },
+  {
+    "path": "calibration\\f3_rp1-r2_gate_tools_2026-10-10.py.sha256",
+    "sha256": "45ae6ab8be455560fb4ba05381d281dfa9a41242c005bb982796c642ba0b9e28",
+    "bytes": 101
+  },
+  {
+    "path": "calibration\\f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py",
+    "sha256": "eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8",
+    "bytes": 4698
+  },
+  {
+    "path": "calibration\\f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py.sha256",
+    "sha256": "dcbb82ab426d53976c0ca650287270aa0a016b197e961d82bae2411c064f8fe5",
+    "bytes": 121
+  },
+  {
+    "path": "calibration\\f3_rp1-r2_technical_tests_2026-10-10.py",
+    "sha256": "cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b",
+    "bytes": 10054
+  },
+  {
+    "path": "calibration\\f3_rp1-r2_technical_tests_2026-10-10.py.sha256",
+    "sha256": "f966e918e61734f2b4062592427fb31d4405812f901a4f83fbc17e1d234b23dd",
+    "bytes": 106
+  },
+  {
+    "path": "calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+    "sha256": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+    "bytes": 584033
+  },
+  {
+    "path": "calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py.sha256",
+    "sha256": "42aa0d3df316271970fb0ddc57cc0d15d9ba3ec4795ddf1c4caf3c58c068b1d8",
+    "bytes": 113
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md",
+    "sha256": "e970ae4abc5288b8149cfe65ff779b68c54ab81bcd4307da20314dff534efea1",
+    "bytes": 14310
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md.sha256",
+    "sha256": "a604f342eca50b52d7380459a660031f727a4b221bf13abd446a1c4acc3b3d36",
+    "bytes": 117
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_authored_edits_2026-10-10.json",
+    "sha256": "f65516d69d45ff10bf8b6f82324baa4c2e9bff03b57dc7cd90727f88e2ccaa74",
+    "bytes": 35331
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_authored_edits_2026-10-10.json.sha256",
+    "sha256": "93332a760fc190a7725eeee94dc2857c28cce27246c878ae3e9164aef857497e",
+    "bytes": 121
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_d14_intake_receipt_2026-10-10.json",
+    "sha256": "8d5f3bdf5787c4a31cfc89fadb36a18937fd5a038485cce8fddbaac2f6012b5b",
+    "bytes": 1216
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_d14_intake_receipt_2026-10-10.json.sha256",
+    "sha256": "e0aa42be518a4d43c37048893729b2a8eaf5171abc3561250d927a2241f8087b",
+    "bytes": 125
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_d14_preconditions_before_small_tests_2026-10-10.json",
+    "sha256": "6230751ccde8863e784777e982ec67c8e5f4a1cf4b8b767b6aee8cf7b481e3a0",
+    "bytes": 14136
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_d14_preconditions_before_small_tests_2026-10-10.json.sha256",
+    "sha256": "026cf9e2545fed38c1316050455840310b0aad398a74ff3693ddb4d0c5215711",
+    "bytes": 144
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_diff_custody_2026-10-10.json",
+    "sha256": "b0d2355bd7d80119bc22d23432ef1022a9805a21ab56614bdb976956277174c9",
+    "bytes": 1399
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_diff_custody_2026-10-10.json.sha256",
+    "sha256": "9bfa6da573d626d0c391fd39ebd914ff671323509e8193990798036e6993412f",
+    "bytes": 119
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_existing_synthetic_fixture_custody_2026-10-10.csv",
+    "sha256": "8d53be1a8e7a20c7b8161f9a1b39551d4a9f5ffdae6fb8e4bbc825a4d31924b7",
+    "bytes": 165250
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_existing_synthetic_fixture_custody_2026-10-10.csv.sha256",
+    "sha256": "286eda467e3a16cf6d81158fb2a6ecc399d9fffdb634fe404fff0338bf9b9173",
+    "bytes": 140
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_2026-10-10.diff",
+    "sha256": "bf5057f4101d68157c147010bc7145c2437bc011a1181933b2b6ea3c6bb72ccf",
+    "bytes": 397792
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_2026-10-10.diff.sha256",
+    "sha256": "98af196d2dbfbe8f7f9645083aa9d6aa4d607f6ed5430ebffdedf889bb38831e",
+    "bytes": 128
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_labels_2026-10-10.csv",
+    "sha256": "1023a2f33b8913f4e7cd2dcc038b91dde0e7137b530bc8c481354d6334c9614d",
+    "bytes": 21151
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_labels_2026-10-10.csv.sha256",
+    "sha256": "4e9660e6c700e5b89740d9b6baccdffcf731eb6e4e0f0d0a95c0427d0fcccc48",
+    "bytes": 134
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_2026-10-10.diff",
+    "sha256": "31555bb578e911a8164c7bb21c7366dd546aad5c2fe257ba455003eb85724a70",
+    "bytes": 351021
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_2026-10-10.diff.sha256",
+    "sha256": "083e7dfb16e7f8ce57d5485e59d9e1360c94804681ce3806b6c857d542202c30",
+    "bytes": 130
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_labels_2026-10-10.csv",
+    "sha256": "dcd6689b37ed0bdb6e2827179f44ed5d1f5715fb6efc5b7ab530456365cb8b1c",
+    "bytes": 14663
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_labels_2026-10-10.csv.sha256",
+    "sha256": "a038a248969fc7a6c6144db289e86f4255347034679459d606591b0c929656c5",
+    "bytes": 136
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_historical_count_errata_2026-10-10.json",
+    "sha256": "6475bb97d3f4e183b1bbb167b29205458fa9cfb4f627152a2149ab66a2be16af",
+    "bytes": 1329
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_historical_count_errata_2026-10-10.json.sha256",
+    "sha256": "85a2a1c87b99dfbead06413cfd7c47156223932aa96ca0c9d6a44031f65065cc",
+    "bytes": 130
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_ir1-13_stop_record_2026-10-10.md",
+    "sha256": "a239b1b1f3d63f8665fc2e1e20852803ba1709ef8991f599f79daffd7a54a42b",
+    "bytes": 1359
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_ir1-13_stop_record_2026-10-10.md.sha256",
+    "sha256": "6117785020d92227addee77f926a565ae89b18434aa0efe19f0549a24dd64bb2",
+    "bytes": 123
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_launch_authorization_2026-10-10.json",
+    "sha256": "8d054a7a577cd1c841dbb6c626a3cb43d8f65effbd015b937ee3fe8f1b5a5b23",
+    "bytes": 517
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_launch_authorization_2026-10-10.json.sha256",
+    "sha256": "f1e38af5dd33ffdf67f4e087a4fb2c543391a95a9189bf2a94ae6f993e15dce9",
+    "bytes": 127
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_ledger_2026-10-10.json",
+    "sha256": "0002c79be1d6ea3faad9ce364dc157687f62a4eab4aa30d05857f2c0c14d1f4e",
+    "bytes": 20066
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_ledger_2026-10-10.json.sha256",
+    "sha256": "0afdaf7d1cea07651c490eb7242646e07d97493ba39848ae1f065c91f1692ada",
+    "bytes": 113
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_byte_verification_2026-10-10.json",
+    "sha256": "3f61e79859e340a06c035df451f38004445bfa2f5d79a3078c958a004b153f7b",
+    "bytes": 1039
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_byte_verification_2026-10-10.json.sha256",
+    "sha256": "b35bdf2d1829061782db38d65448646176b77c1d6a9ba40c86d175cded13a2ea",
+    "bytes": 134
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_checks_after_d14_2026-10-10.json",
+    "sha256": "a62060950708aa9e4b757a84bbc8a49959ece8347c4b21b5b05ef110d6cc56ad",
+    "bytes": 16349
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_checks_after_d14_2026-10-10.json.sha256",
+    "sha256": "5ee1a73bdb61757379a0f4c6c09ae8ce99bb4b089df09f3bc3cec7663a15b4bd",
+    "bytes": 134
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_leaf_expectations_2026-10-10.json",
+    "sha256": "841afd0835b02550b31d9b87f34b79c644c064682aaace8c7d824bd35a3de3f8",
+    "bytes": 237696
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_leaf_expectations_2026-10-10.json.sha256",
+    "sha256": "621723a9fb041837bec082479c93ce8c3a912f2f578b4278f2fc9135a3d643c9",
+    "bytes": 134
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_report_2026-10-10.md",
+    "sha256": "f5266f74552fd26c4175a1541f2cea9638a07f8e0b36d43d7fd7c4578a66e27f",
+    "bytes": 6302
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_report_2026-10-10.md.sha256",
+    "sha256": "98f1bd314a42fe2d26b3c1e038311fc6b494daeef5e55d65b8726c52975e4498",
+    "bytes": 121
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_transmission_list_2026-10-10.csv",
+    "sha256": "68ab9d9182ee93d65c93a906c6833790e48ece9b2a83bc07d20b41ed28d635ce",
+    "bytes": 6615
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_prelaunch_transmission_list_2026-10-10.csv.sha256",
+    "sha256": "55359ef3bfa7a6030fbb502090105b276f89ba3b055273f6dc16c041586d4b88",
+    "bytes": 133
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_requirement_map_2026-10-10.csv",
+    "sha256": "48010327f3d2062b6cd353f2d7c439169784605d5b6d4e8d633478315b7dc18d",
+    "bytes": 5452
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_requirement_map_2026-10-10.csv.sha256",
+    "sha256": "28f16e9045abe9ababed4f68bb0bc5aa690bfb494e550eeb11e76214900aa262",
+    "bytes": 121
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_requirement_map_after_d14_2026-10-10.csv",
+    "sha256": "ecfca8106f0cf929874f629ae530ecd933c7a065eb90bba49d04d3f0d938b8f5",
+    "bytes": 5472
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_requirement_map_after_d14_2026-10-10.csv.sha256",
+    "sha256": "20cc57bbdbe9329fceb731da35932a2db5d6f3cb3cfa8714200eb394eea1ac87",
+    "bytes": 132
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_runtime_fixture_custody_launch1_2026-10-10.csv",
+    "sha256": "d03afe422a6c95d27280c4a46f0dba28776e689a2619a2e8e8d79ab1b542f558",
+    "bytes": 380395
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_runtime_fixture_custody_launch1_2026-10-10.csv.sha256",
+    "sha256": "7439962e0d5d45a138c7e7722ce2427a96bf90831100ca88bf1c68b1f107bdea",
+    "bytes": 138
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json",
+    "sha256": "84b47f6e75d4feb981910f74237ff0d11f2733ced424e4a4d7cf5cd26ecc16ec",
+    "bytes": 331
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json.sha256",
+    "sha256": "e0f1813f23f09f4e56d769568f04d8489fe5939318d062e06d20cb496b182aea",
+    "bytes": 121
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_start_state_inventory_2026-10-10.md",
+    "sha256": "4560e80e3c4995a94aa0164ef0d6825bcd9d946ca9069c78797271b5a8f1bb57",
+    "bytes": 32736
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_start_state_inventory_2026-10-10.md.sha256",
+    "sha256": "15a9683d17a1bea0d3f38c0112e77b79f3657a8bb14894839a75ae0978103769",
+    "bytes": 126
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_static_source_observations_2026-10-10.json",
+    "sha256": "740061efee9d5911606f6a920e0ee44574916a4e4ebdfabf2754e961d8c14a4d",
+    "bytes": 9133
+  },
+  {
+    "path": "provenance\\f3_realdata_prep_rp1-r2_static_source_observations_2026-10-10.json.sha256",
+    "sha256": "e78a3d7e04ebcc5377f47a81800d2f494b95c405494bbd347a7c97472df7897d",
+    "bytes": 133
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_attempt1_launch1_controller_start_2026-10-10.json",
+    "sha256": "53ff9cf8286457acb06443570a3d3146609f4bc8e2613ec214e00e96a4606e5b",
+    "bytes": 841
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_attempt1_launch1_controller_start_2026-10-10.json.sha256",
+    "sha256": "ea9e152d6a07fccd0ce6f4c60787d3e61f951d07b0a6fb2f53852bf193d5b9d2",
+    "bytes": 132
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_attempt1_launch1_controller_stderr_2026-10-10.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_attempt1_launch1_controller_stdout_2026-10-10.log",
+    "sha256": "e94d126de11adbcf2a8a35ad7ddb695fb653f939768b89527183472ee2dcc60f",
+    "bytes": 1455
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_end_2026-10-10.json",
+    "sha256": "1dd44f8f13692ea7b2575c02bb93442694d319f9974c748722340686e20d6f8f",
+    "bytes": 1524
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_end_2026-10-10.json.sha256",
+    "sha256": "dddb41494c8d87393fa64caeb262b2548f60e17a07315be155af3312a9bbf7f7",
+    "bytes": 111
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_pid_2026-10-10.json",
+    "sha256": "2282650f6b4b3b64b330179bf9ef6eb0867a3e87bed288c08f18399aac9d5fbf",
+    "bytes": 34
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_pid_2026-10-10.json.sha256",
+    "sha256": "d6d5bb2c4bdca04065bef4264fa358973ed49bdedae5d38228f0201b2befbfa0",
+    "bytes": 111
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_start_2026-10-10.json",
+    "sha256": "f4a910b046dc26f4dc62e28f801da4982584333e014e65e42fe808867acf2449",
+    "bytes": 1304
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_start_2026-10-10.json.sha256",
+    "sha256": "64dd6ab9bfe748b3c355bde66fb899287e04f9f4dba979bb1994dec2ebe38188",
+    "bytes": 113
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_w3_writer_2026-10-10.json",
+    "sha256": "ec972fce5e416fd5df1aa098fb70e7dd9ac5af553ccf2da8db834376905f0bbb",
+    "bytes": 600
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_launch1_w3_writer_2026-10-10.json.sha256",
+    "sha256": "f2971c973805f82a668bc018e471f70c2475d829e934bfefc126ac7038b27e4f",
+    "bytes": 117
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_preexecution_custody_attempt1_launch1_2026-10-10.md",
+    "sha256": "6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469",
+    "bytes": 14944
+  },
+  {
+    "path": "provenance\\f3_step2_rp1-r2_preexecution_custody_attempt1_launch1_2026-10-10.md.sha256",
+    "sha256": "94c59c2f1109e08a14c406f21145b3ed6edb5079c1b792da85fefe362a7ed3e0",
+    "bytes": 135
+  }
+]

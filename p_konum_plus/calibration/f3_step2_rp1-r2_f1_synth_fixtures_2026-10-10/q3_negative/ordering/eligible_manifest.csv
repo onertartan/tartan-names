@@ -1,0 +1,7 @@
+trajectory_id,sex,name,year_min,year_max,T,source_scope,eligibility_rule_id,trajectory_value_id,source_record_status,n_observed_years,n_missing_total,eligible,exclusion_reason
+F_QB,F,QB,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,
+F_QA,F,QA,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,
+F_QC,F,QC,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,
+M_QD,M,QD,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,
+M_QE,M,QE,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,
+M_QF,M,QF,1880,2025,146,TEST_ONLY_SYNTHETIC,OD5_FULL_observed_support_1880_2025,OD3_released_record_share_by_year_and_sex,SYNTHETIC_PUBLISHED,146,0,true,

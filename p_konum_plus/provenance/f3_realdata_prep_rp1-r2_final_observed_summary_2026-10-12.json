@@ -1,0 +1,117 @@
+{
+  "created_utc": "2026-10-12T10:49:59.111030+00:00",
+  "rp1_r2_status": "PARTIAL_PENDING_PI",
+  "final_attempt": 2,
+  "final_launch": 1,
+  "pid": 17884,
+  "exit_code": 0,
+  "start_utc": "2026-10-11T14:12:36.798018+00:00",
+  "end_utc": "2026-10-12T00:18:03.422231+00:00",
+  "elapsed_seconds": 36326.624213,
+  "recorded_tests": 50,
+  "passed_tests": 50,
+  "technical_cases": 48,
+  "technical_q3_cases": 8,
+  "nonregression_rows": 219434,
+  "e_declared": 219433,
+  "s_findings": 0,
+  "u_findings": 0,
+  "telemetry_rows": 12298,
+  "percall_rows": 22217,
+  "family_rows": 47706,
+  "timing_rows": 6,
+  "store_manifest_rows": 67316,
+  "store_read_rows": 733,
+  "fixture_input_files": 2204,
+  "run1_canonical_sha256": "556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77",
+  "run2_canonical_sha256": "556106e7c4609ade0f43990f7572f19a8c60e2babec25028115d003ae1254c77",
+  "result_sha256": "81e1b523cc41561edabbea9098696646355b811d4b1ce86493bf10fae7e63818",
+  "harness_sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+  "ledger_status_counts": {
+    "IMPLEMENTED_PENDING_VERIFICATION": 24,
+    "CLOSED (prior auditor decision only)": 2,
+    "OPEN": 5
+  },
+  "result_end_state": {
+    "F3_STEP2_r4_status": "PARTIAL_PENDING_PI",
+    "PI_dispatch_record_hash": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f",
+    "PI_dispatch_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md",
+    "S_R2_1_source_dispatch_record_hash": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851",
+    "S_R2_1_source_dispatch_record_path": "p_konum_plus/prompts/f3_step2_r4_pi_dispatch_record_2026-09-24.md",
+    "corrections_complete": true,
+    "deferred_decisions": [],
+    "mandatory_tests_all_run": true,
+    "mandatory_tests_missing": [],
+    "narrowed_evidence": [
+      "T-R2-2",
+      "T-RP-1"
+    ],
+    "open_findings": [],
+    "rp1_r2_open_findings": [
+      "RP1A-01",
+      "RP1A-02",
+      "RP1A-03",
+      "RP1A-04",
+      "RP1A-05",
+      "RP1A-06",
+      "R42A-03 (b)",
+      "R42A-09",
+      "D-9 \u00a72(a) binding of rp1/rp1-r1 bytes",
+      "A.5 (iii) inadmissible refit",
+      "IR1-04",
+      "IR1-13",
+      "F1 input-hash-table sidecar"
+    ],
+    "rp1_r2_status": "PARTIAL_PENDING_PI",
+    "standalone_evidence_status": "NOT OBSERVED",
+    "uncovered_coverage_rows": [
+      "A.5 (iii) inadmissible refit"
+    ]
+  },
+  "real_data_access": false,
+  "environment": {
+    "MKL": "1",
+    "OMP": "1",
+    "OPENBLAS": "1",
+    "numpy": "1.26.4",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.11.7",
+    "scipy": "1.14.1"
+  },
+  "historical_errata": {
+    "handoff_spline_rows": {
+      "historical_narrative": 8895,
+      "observed": 9223,
+      "path": "p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r1_2026-10-05.csv",
+      "sha256": "d9d1c2564c9a24cddf55f31f662f09a40d453308536d5fcbbfa0dcfdfe1f000a"
+    },
+    "warning_records": {
+      "historical_narrative": "42k+",
+      "observed": 33013,
+      "lines": 66026,
+      "runtime_warnings": 28,
+      "path": "p_konum_plus/calibration/f3_step2_rp1-r1_launch2_stderr_2026-10-05.log",
+      "sha256": "afc4a0410a2e16d0a52243194c5da267f79f76e5ad72079e9f9234ae0b38f58b"
+    },
+    "external_writer_pins": {
+      "historical_narrative": 31,
+      "observed": 20,
+      "path": "p_konum_plus/calibration/_w3_writer_rp1-r1_tmp.py",
+      "sha256": "30badd450c236b650614b38767d3ce83ecf13a36b0a8043beda4265dfd4eced0"
+    },
+    "upstream_inventory_count": {
+      "historical_narrative": 11,
+      "audit_corrected": 12,
+      "status": "Audit attribution; no historical document modified."
+    },
+    "scen_a_estimate_scope": "Historical SCEN-A family telemetry is MINI_BANK; a full-bank description is unsupported. New size estimate requires measured Q10 bytes; NOT OBSERVED.",
+    "missing_historical_custody": "Deleted dry-copy custody and historical ZIP associations: X / NOT OBSERVED. Existing untracked ZIPs are not used to reconstruct historical identity."
+  },
+  "final_ledger_open_findings": [
+    "R42A-09",
+    "D-9 \u00a72(a) binding of rp1/rp1-r1 bytes",
+    "A.5 (iii) inadmissible refit",
+    "IR1-13",
+    "F1 input-hash-table sidecar"
+  ]
+}

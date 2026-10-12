@@ -1,0 +1,24 @@
+{
+  "launch": 1,
+  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+  "code_sha256": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+  "directory": "G:\\PycharmProjects\\pkp-worktree",
+  "start_utc": "2026-10-10T17:23:57.871831+00:00",
+  "end_utc": "NOT OBSERVED (running)",
+  "stdout": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stdout_2026-10-10.log",
+  "stderr": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stderr_2026-10-10.log",
+  "output_scope": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration",
+  "outputs_discarded": false,
+  "outside_w3_attempt": false,
+  "real_data_access": false,
+  "interpreter": "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+  "authorization": {
+    "finding": "IR1-13",
+    "disposition": "RECORDED_LIMITATION",
+    "ledger_status": "OPEN / B",
+    "pi_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+    "pi_record_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+    "standalone_evidence_status": "NOT OBSERVED",
+    "executor_status": "PARTIAL_PENDING_PI"
+  }
+}

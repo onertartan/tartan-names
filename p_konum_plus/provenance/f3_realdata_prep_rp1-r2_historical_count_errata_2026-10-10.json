@@ -1,0 +1,29 @@
+{
+  "handoff_spline_rows": {
+    "historical_narrative": 8895,
+    "observed": 9223,
+    "path": "p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r1_2026-10-05.csv",
+    "sha256": "d9d1c2564c9a24cddf55f31f662f09a40d453308536d5fcbbfa0dcfdfe1f000a"
+  },
+  "warning_records": {
+    "historical_narrative": "42k+",
+    "observed": 33013,
+    "lines": 66026,
+    "runtime_warnings": 28,
+    "path": "p_konum_plus/calibration/f3_step2_rp1-r1_launch2_stderr_2026-10-05.log",
+    "sha256": "afc4a0410a2e16d0a52243194c5da267f79f76e5ad72079e9f9234ae0b38f58b"
+  },
+  "external_writer_pins": {
+    "historical_narrative": 31,
+    "observed": 20,
+    "path": "p_konum_plus/calibration/_w3_writer_rp1-r1_tmp.py",
+    "sha256": "30badd450c236b650614b38767d3ce83ecf13a36b0a8043beda4265dfd4eced0"
+  },
+  "upstream_inventory_count": {
+    "historical_narrative": 11,
+    "audit_corrected": 12,
+    "status": "Audit attribution; no historical document modified."
+  },
+  "scen_a_estimate_scope": "Historical SCEN-A family telemetry is MINI_BANK; a full-bank description is unsupported. New size estimate requires measured Q10 bytes; NOT OBSERVED.",
+  "missing_historical_custody": "Deleted dry-copy custody and historical ZIP associations: X / NOT OBSERVED. Existing untracked ZIPs are not used to reconstruct historical identity."
+}

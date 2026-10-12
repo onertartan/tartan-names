@@ -1,0 +1,10 @@
+{
+  "code_sha256": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e",
+  "directory": "G:\\PycharmProjects\\pkp-worktree",
+  "start_utc": "2026-10-11T14:12:36.011137+00:00",
+  "end_utc": "2026-10-11T14:12:36.699283+00:00",
+  "return_code": 0,
+  "stdout": "{\"custody\": \"G:\\\\PycharmProjects\\\\pkp-worktree\\\\p_konum_plus\\\\provenance\\\\f3_step2_rp1-r2_preexecution_custody_attempt2_launch1_2026-10-10.md\", \"sha256\": \"7d864db9c2e766ff1fc4d3ed77649e7a9a140249426d56e6d51779f7aa8efc8d\", \"launch\": 1, \"pin_checks\": 40}\n",
+  "stderr": "",
+  "kind": "EXTERNAL_W3_WRITER"
+}

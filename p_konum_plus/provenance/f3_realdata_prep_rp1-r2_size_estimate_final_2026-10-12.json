@@ -1,0 +1,130 @@
+{
+  "label": "ESTIMATE",
+  "scope": "Synthetic F1 handoff, both sexes, full frozen start banks and all measured consumer contexts, one process in the recorded binding environment. No real-data timing observed.",
+  "measured_trajectories": 6,
+  "measured_elapsed_seconds": 32060.741059200023,
+  "observed_finite_family_optimizer_seconds": 30477.418215909856,
+  "target_trajectory_count": 906,
+  "target_count_source": "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json",
+  "extrapolated_seconds": 4841171.899939204,
+  "method": "Sum per-trajectory elapsed seconds, divide by observed trajectory count, multiply by the frozen target count; informational linear extrapolation, no execution permission.",
+  "family_context": [
+    {
+      "family": "P-01",
+      "context": "fold0",
+      "finite_call_count": 4392,
+      "total_seconds": 2252.361277397722,
+      "mean_seconds": 0.5128327134329969
+    },
+    {
+      "family": "P-01",
+      "context": "fold1",
+      "finite_call_count": 4392,
+      "total_seconds": 2217.7827090041246,
+      "mean_seconds": 0.5049596331976605
+    },
+    {
+      "family": "P-01",
+      "context": "fold2",
+      "finite_call_count": 4392,
+      "total_seconds": 2166.0241901049158,
+      "mean_seconds": 0.49317490667233965
+    },
+    {
+      "family": "P-01",
+      "context": "fold3",
+      "finite_call_count": 4392,
+      "total_seconds": 2272.618294799584,
+      "mean_seconds": 0.517444966939796
+    },
+    {
+      "family": "P-01",
+      "context": "fold4",
+      "finite_call_count": 4392,
+      "total_seconds": 2219.254810799961,
+      "mean_seconds": 0.5052948112021769
+    },
+    {
+      "family": "P-01",
+      "context": "full",
+      "finite_call_count": 4392,
+      "total_seconds": 2208.345332302386,
+      "mean_seconds": 0.5028108680105614
+    },
+    {
+      "family": "P-01",
+      "context": "probeL",
+      "finite_call_count": 4392,
+      "total_seconds": 2262.8757302952,
+      "mean_seconds": 0.5152267145480874
+    },
+    {
+      "family": "P-01",
+      "context": "probeR",
+      "finite_call_count": 4392,
+      "total_seconds": 2211.458105004742,
+      "mean_seconds": 0.5035196049646498
+    },
+    {
+      "family": "P-02",
+      "context": "fold0",
+      "finite_call_count": 1572,
+      "total_seconds": 1152.268178501865,
+      "mean_seconds": 0.7329950244922805
+    },
+    {
+      "family": "P-02",
+      "context": "fold1",
+      "finite_call_count": 1571,
+      "total_seconds": 1890.6826236973284,
+      "mean_seconds": 1.2034898941421568
+    },
+    {
+      "family": "P-02",
+      "context": "fold2",
+      "finite_call_count": 1571,
+      "total_seconds": 1886.0968841024442,
+      "mean_seconds": 1.2005709001288631
+    },
+    {
+      "family": "P-02",
+      "context": "fold3",
+      "finite_call_count": 1571,
+      "total_seconds": 1975.5716416009236,
+      "mean_seconds": 1.2575249150865204
+    },
+    {
+      "family": "P-02",
+      "context": "fold4",
+      "finite_call_count": 1571,
+      "total_seconds": 1429.192209100118,
+      "mean_seconds": 0.9097340605347664
+    },
+    {
+      "family": "P-02",
+      "context": "full",
+      "finite_call_count": 1571,
+      "total_seconds": 1803.2756105993176,
+      "mean_seconds": 1.147852075492882
+    },
+    {
+      "family": "P-02",
+      "context": "probeL",
+      "finite_call_count": 1572,
+      "total_seconds": 1178.412849897286,
+      "mean_seconds": 0.7496264948456017
+    },
+    {
+      "family": "P-02",
+      "context": "probeR",
+      "finite_call_count": 1571,
+      "total_seconds": 1351.197768701939,
+      "mean_seconds": 0.8600876949089363
+    }
+  ],
+  "inputs": {
+    "p_konum_plus/calibration/f3_step2_handoff_family_telemetry_rp1-r2_2026-10-10.csv": "4fe656ccbada9b2b92618d35a384d158edc0fd54ff9d65be3238b5208157b26e",
+    "p_konum_plus/calibration/f3_step2_handoff_timings_rp1-r2_2026-10-10.csv": "587e9239ebc35d78edbd90907e8b887ed9445e366ba685d4388006bb2f81f79c"
+  },
+  "real_data_access": false
+}

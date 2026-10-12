@@ -1,0 +1,282 @@
+[
+  {
+    "requirement": "section8 wiring",
+    "old": "\"\"\"F3 STEP-2 adequacy-evaluation harness r4-2 (2026-09-30).\n\nSECOND correction revision INSIDE the r4 cycle (deliverables tagged r4-2).\nChild of f3_step2_adequacy_harness_r4-1_2026-09-29.py (parent\n4e0dc8cfb81543eeb95a46c609c5519fe32536f23c0a1433ef76d252b279388f -- the r4-1\nand r4 packages, every r3 file and every quarantined file are historical and\nread-only; nothing of them is overwritten, renamed or moved). The generator\n(68d126cf...) and the manifest (5c09c4f0...) are REUSED UNCHANGED: named by\npath and hash, regenerated in memory and verified equal, never copied.\n\nCloses R41A-01 .. R41A-06 of the r4-1 audit A-4 as scoped by D-7 S3 (R41A-08\nout of scope). R41A-01 makes the three spline-context pending flags fire on\nANY STOP_EXACTNESS_PENDING and CARRY the event's own tag, adds the real-path\nunit test T-SPL-PENDING-REALPATH, and pins the result against r4-1 with\nT-NONREG-R4-1 (no whitelist). R41A-02 gives every attempt its own custody\nfile and every launch its own log pair. R41A-03 makes the end state name its\nown dispatch record (D-7), with the S-R2-1 source (D-5) in a field of its own.\n\nBinding instruments (verified by SHA256 before the first computation, D-3 S3\n/ r4 instruction S1 / r4-1 instruction S1 / r4-2 instruction S1):\n  D-3  Claude_Code_F3_STEP2_R3_CORRECTION_EXECUTION_PROMPT_DRAFT_v2.md\n       5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5\n  r4   Claude_Code_F3_STEP2_R4_CORRECTION_INSTRUCTION_2026-09-24.md\n       e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387\n  D-5  f3_step2_r4_pi_dispatch_record_2026-09-24.md\n       0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851\n  r4-1 Claude_Code_F3_STEP2_R4-1_CORRECTION_INSTRUCTION_2026-09-29.md\n       283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330\n  D-6  f3_step2_r4-1_pi_dispatch_record_2026-09-29.md\n       a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0\n  r4-2 Claude_Code_F3_STEP2_R4-2_CORRECTION_INSTRUCTION_2026-09-30.md\n       d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe\n  D-7  f3_step2_r4-2_pi_dispatch_record_2026-09-30.md\n       a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb\n       (this revision's dispatch record; end_state.PI_dispatch_record_hash)\n  A-4  f3_step2_r4-1_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-30.md\n       ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82\n       (input, not directive)\n  A-1  f3_step2_r3_independent_audit_claude-fable-5-1_DRAFT_r1_2026-09-24.md\n       11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6\n       (input, not directive)\n  A-2  f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-28.md\n       b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a\n       (input, not directive)\n  A-3  f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r2_2026-09-28.md\n       9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9\n       (input, not directive)\nCloses R3A-01 .. R3A-12 of A-1 (from the r4 instruction S3) and R4A-01, -02,\n-03, -04, -10 of A-2/A-3 as scoped by D-6 S3 (R4A-08 out of scope). R4A-01\nroutes a spline-context UNRELATED-pending flag into the decision grammar; the\nR4A-01(f) non-regression comparison pins every shared fixture against the r4\nresults (a15b7eff). Implements S-R2-1 = PI_RULE (the rule text of D-5 S3,\ncarried unchanged by D-6 S2, word for word; tagged PI_RATIFIED still citing\nD-5). T-R2-2 = AUTHORIZE_RESTART, unchanged. PI-ratified content\n(S-1=(a), S-2=alpha, T-1=AUTHORIZE, T-2=T-2a, T-3=AUTHORIZE, T-4=T-4a,\nT-5=CONFIRM_WITHIN_SCOPE) is unchanged and carried from D-2. EXACT-03 is\nCLOSED with D-5 as its source (D-5 S4(d)); deferred_decisions = [].\nT-R2-2 = AUTHORIZE_RESTART as read from D-5.\n\nRun rules (D-3 S8, unchanged): r4 attempt 1 is ONE process from the\nbeginning with RESTART_LAYER_ACTIVE = False; a restart layer only after a\nrecorded INTERRUPTION and only as S8.3 says (fresh W-3 per revision, empty\nstore at the start of the cycle, per-unit provenance). The r3 store\ndirectory and the foreign entries under prefix 548ae790f6ac756a are\nquarantined and listed, never silently deleted (R3A-07 / r4 instruction S5).\n\nW-3 custody (R3A-07): the custody record is written ONCE per revision,\nOUTSIDE the run process, with observed values; main() VERIFIES it against\nthe live bytes and STOPS on any mismatch -- it never writes or overwrites\nthe record itself, so its declaration stays true for resumed launches.\n\"\"\"\n",
+    "new": "\"\"\"F3 rp1-r2 preparation: child of the pinned rp1-r1 harness.\n\nD-13 authorizes Q1-Q11 technical corrections; no real input is read.\nAll execution remains blocked pending the IR1-13 PI decision.\nHistorical source, scientific rules and evaluator arithmetic are preserved.\nThe other session's rp1-r2 draft is excluded from this implementation.\n\"\"\"\n"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "import pickle\n",
+    "new": "import pickle\n\nfrom pathlib import Path\nfrom typing import Any\n\nRP2_DEPENDENCY_PINS = {'f3_rp1-r2_gate_tools_2026-10-10.py': '72fb5ee72872ce68767f69fa06ff6fc96c1a37d5c3e4373e994b470697c1d14a', 'f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py': '7f27e8e611a1756b49dd9dbca1db5e0e35a2de66cd8dd058cb5090bb14e758b7', 'f3_rp1-r2_technical_tests_2026-10-10.py': 'bb1ad086bc786cbf5602112588ef104335a3281946988ef269004b90d3eed052'}\n\n\ndef load_rp2_dependency(filename: str) -> Any:\n    path = Path(__file__).with_name(filename)\n    observed = hashlib.sha256(path.read_bytes()).hexdigest()\n    assert observed == RP2_DEPENDENCY_PINS[filename], \"RP2_DEPENDENCY_HASH_STOP \" + filename\n    spec = importlib.util.spec_from_file_location(filename.replace(\"-\", \"_\"), path)\n    module = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(module)\n    return module\n\n\nRP2_TOOLS = load_rp2_dependency(\"f3_rp1-r2_gate_tools_2026-10-10.py\")\nRP2_GENERATOR = load_rp2_dependency(\"f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py\")\nRP2_TESTS = load_rp2_dependency(\"f3_rp1-r2_technical_tests_2026-10-10.py\")\nHANDOFF_TRAJECTORY_TIMINGS: list[dict[str, Any]] = []\n\n\ndef real_mask_id(base: str, family: str, context: str) -> str:\n    \"\"\"Q2: the sole builder called by the consumer and the dry table.\"\"\"\n    return \"real:%s:%s:%s\" % (base, family, context)\n\n\ndef store_read_aggregate(cold: dict[str, Any], warm: dict[str, Any]) -> bool:\n    \"\"\"Q7: cold may restore units computed earlier in this same attempt.\"\"\"\n    return bool(cold[\"pass_\"] and warm[\"pass_\"] and warm[\"fit1_reads\"] > 0)\n\n\ndef handoff_phase_valid(rows: list[dict[str, Any]]) -> bool:\n    return bool(rows) and all(row.get(\"phase\") == \"f1_handoff\" for row in rows)\n\n\ndef authorize_rp2_launch() -> dict[str, Any]:\n    \"\"\"Require an external, hash-bound PI disposition of IR1-13.\"\"\"\n    gate_path = Path(\"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_launch_authorization_2026-10-10.json\")\n    gate = json.loads(gate_path.read_text(encoding=\"utf8\"))\n    assert gate[\"launch_authorized\"] is True, \"IR1_13_STOP_BEFORE_LAUNCH\"\n    basis = Path(gate[\"pi_record_path\"])\n    assert basis.parts[:2] in ((\"p_konum_plus\", \"prompts\"), (\"p_konum_plus\", \"provenance\")), \"PI_RECORD_PATH_STOP\"\n    assert \"..\" not in basis.parts, \"PI_RECORD_PATH_STOP\"\n    observed = hashlib.sha256(basis.read_bytes()).hexdigest()\n    assert observed == gate[\"pi_record_sha256\"], \"IR1_13_PI_RECORD_HASH_STOP\"\n    assert \"IR1-13\" in basis.read_text(encoding=\"utf8\"), \"IR1_13_PI_RECORD_ITEM_STOP\"\n    return gate\n\n\ndef handoff_accounting(rows: list[dict[str, Any]]) -> dict[str, Any]:\n    \"\"\"Q10: optimizer events reconcile to actual handoff start-unit payloads.\"\"\"\n    expected = []\n    family_units = spline_units = 0\n    columns = (\"unit_key\", \"stage\", \"status\", \"nit\", \"nfev\", \"wall_clock_seconds\")\n    for path in sorted(Path(RESTART_STORE_DIR).glob(\"*.pkl\")):\n        payload = pickle.loads(path.read_bytes())\n        key = payload.get(\"key_name\", \"\")\n        if key.startswith(\"f1handoff__onestart_\"):\n            family_units += 1\n            for event in payload[\"value\"][2]:\n                expected.append(dict(unit_key=key, stage=event[\"optimizer_path\"],\n                                     **{field: event.get(field) for field in columns[2:]}))\n        elif key.startswith(\"f1handoff__splmode_\"):\n            spline_units += 1\n    def comparable(items: list[dict[str, Any]]) -> list[str]:\n        return sorted(json.dumps(canon({field: row.get(field) for field in columns}), sort_keys=True) for row in items)\n    observed_units = {row[\"unit_key\"] for row in rows}\n    ok = (bool(rows) and family_units == len(observed_units)\n          and comparable(rows) == comparable(expected)\n          and handoff_phase_valid(rows)\n          and all(row[\"source\"] in (\"fresh\", \"replay\") for row in rows))\n    return dict(pass_=ok, stored_family_units=family_units, stored_spline_units=spline_units,\n                observed_family_units=len(observed_units), expected_optimizer_rows=len(expected),\n                observed_optimizer_rows=len(rows))\n\n\ndef write_rp2_handoff_outputs(handoff: dict[str, Any]) -> dict[str, Any]:\n    \"\"\"Q10: keep family events and measured section boundaries as deliverables.\"\"\"\n    output_paths = {}\n    exports = (\n        (\"family\", HANDOFF_FAMILY_PATH, handoff[\"_family_telemetry\"],\n         [\"phase\", \"sex\", \"trajectory\", \"family\", \"context\", \"start_id\", \"stage\", \"status\", \"nit\", \"nfev\", \"wall_clock_seconds\", \"source\", \"unit_key\"]),\n        (\"timing\", HANDOFF_TIMING_PATH, handoff[\"_timings\"],\n         [\"phase\", \"sex\", \"trajectory\", \"start_iso\", \"end_iso\", \"start_clock\", \"end_clock\", \"elapsed_seconds\"]),\n    )\n    for name, filename, rows, fields in exports:\n        with open(filename, \"w\", encoding=\"ascii\", newline=\"\") as stream:\n            writer = csv.DictWriter(stream, fieldnames=fields, lineterminator=\"\\n\", extrasaction=\"ignore\")\n            writer.writeheader()\n            writer.writerows(rows)\n        digest = sha256_of(filename)\n        Path(filename + \".sha256\").write_text(digest + \"  \" + Path(filename).name + \"\\n\", encoding=\"ascii\")\n        output_paths[name] = dict(path=filename, sha256=digest, rows=len(rows))\n    accounting = handoff_accounting(handoff[\"_family_telemetry\"])\n    assert accounting[\"pass_\"], \"HANDOFF_ACCOUNTING_STOP\"\n    output_paths[\"accounting\"] = accounting\n    elapsed = sum(row[\"elapsed_seconds\"] for row in handoff[\"_timings\"])\n    family_seconds = sum(row[\"wall_clock_seconds\"] for row in handoff[\"_family_telemetry\"] if math.isfinite(row[\"wall_clock_seconds\"]))\n    estimate = dict(label=\"ESTIMATE\", scope=\"same binding environment and synthetic full-bank handoff; no real-data timing observed\",\n                    trajectories=len(handoff[\"_timings\"]), measured_elapsed_seconds=elapsed,\n                    observed_finite_family_optimizer_seconds=family_seconds,\n                    extrapolated_906_trajectory_seconds=(906 * elapsed / len(handoff[\"_timings\"])) if handoff[\"_timings\"] else None)\n    Path(HANDOFF_ESTIMATE_PATH).write_text(json.dumps(estimate, indent=2) + \"\\n\", encoding=\"ascii\")\n    return output_paths\n"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "ATTEMPT_NUMBER = 2",
+    "new": "ATTEMPT_NUMBER = 1"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "SUPERSEDES_HARNESS_SHA256 = \"4bffb33aec4bfee48e2ed57bf3546988d809a4b49f2fe830e7e691713640114d\"",
+    "new": "SUPERSEDES_HARNESS_SHA256 = \"cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "SUPERSEDES_CUSTODY_SHA256 = \"dc10e08c48ee5dcf74fcf1202a324fdcfce097fd61530e9eced5d5f3b9bf612d\"",
+    "new": "SUPERSEDES_CUSTODY_SHA256 = \"162dea604bf573e4a80470724824f1c98dc224e535e26cfde54ffc57d096f2ca\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "SUPERSEDES_NOTE_PATH = \"p_konum_plus/quarantine/f3_step2_rp1-r1_attempt1_nonreg_e_declaration_bugs_note_2026-10-06.md\"",
+    "new": "SUPERSEDES_NOTE_PATH = \"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md\""
+  },
+  {
+    "requirement": "Q11",
+    "old": "F3_RP1R1_LAUNCH",
+    "new": "F3_RP1R2_LAUNCH"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "DATE_TAG = \"2026-10-05\"",
+    "new": "DATE_TAG = \"2026-10-10\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "                f\"f3_step2_rp1-r1_preexecution_custody_attempt{ATTEMPT_NUMBER}_{DATE_TAG}.md\")",
+    "new": "                f\"f3_step2_rp1-r2_preexecution_custody_attempt{ATTEMPT_NUMBER}_{DATE_TAG}.md\")"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "TELEMETRY_PATH = f\"p_konum_plus/calibration/f3_step2_telemetry_rp1-r1_{DATE_TAG}.csv\"",
+    "new": "TELEMETRY_PATH = f\"p_konum_plus/calibration/f3_step2_telemetry_rp1-r2_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "RESULTS_PATH = f\"p_konum_plus/calibration/f3_step2_results_rp1-r1_{DATE_TAG}.json\"",
+    "new": "RESULTS_PATH = f\"p_konum_plus/calibration/f3_step2_results_rp1-r2_{DATE_TAG}.json\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "RESIDUAL_PATH = f\"p_konum_plus/calibration/f3_step2_residual_series_rp1-r1_{DATE_TAG}.json\"",
+    "new": "RESIDUAL_PATH = f\"p_konum_plus/calibration/f3_step2_residual_series_rp1-r2_{DATE_TAG}.json\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "TEST_EVIDENCE_PATH = f\"p_konum_plus/calibration/f3_step2_test_evidence_rp1-r1_{DATE_TAG}.json\"",
+    "new": "TEST_EVIDENCE_PATH = f\"p_konum_plus/calibration/f3_step2_test_evidence_rp1-r2_{DATE_TAG}.json\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "PERCALL_TELEMETRY_PATH = f\"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r1_{DATE_TAG}.csv\"",
+    "new": "PERCALL_TELEMETRY_PATH = f\"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r2_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "ATTEMPT_LOG_PATH = f\"p_konum_plus/provenance/f3_realdata_prep_rp1-r1_attempt_log_{DATE_TAG}.md\"",
+    "new": "ATTEMPT_LOG_PATH = f\"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_attempt_log_{DATE_TAG}.md\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "STORE_MANIFEST_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_restart_store_manifest_{DATE_TAG}.csv\"",
+    "new": "STORE_MANIFEST_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_restart_store_manifest_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "REGISTER_PATH = f\"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1-r1_{DATE_TAG}.md\"",
+    "new": "REGISTER_PATH = f\"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1-r2_{DATE_TAG}.md\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "NONREG_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4_{DATE_TAG}.csv\"",
+    "new": "NONREG_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "NONREG_R41_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-1_{DATE_TAG}.csv\"",
+    "new": "NONREG_R41_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4-1_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "NONREG_R42_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_nonregression_vs_r4-2_{DATE_TAG}.csv\"",
+    "new": "NONREG_R42_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4-2_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "STORE_READ_LOG_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_store_read_log_{DATE_TAG}.csv\"",
+    "new": "STORE_READ_LOG_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_store_read_log_{DATE_TAG}.csv\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "EXPECTATIONS_E_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r1_expectations_{DATE_TAG}.json\"",
+    "new": "EXPECTATIONS_E_PATH = f\"p_konum_plus/calibration/f3_step2_rp1-r2_expectations_{DATE_TAG}.json\""
+  },
+  {
+    "requirement": "Q11",
+    "old": "f3_step2_rp1-r2_preexecution_custody_attempt{ATTEMPT_NUMBER}_{DATE_TAG}.md",
+    "new": "f3_step2_rp1-r2_preexecution_custody_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_{DATE_TAG}.md"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "RESTART_STORE_DIR = \"p_konum_plus/calibration/.rp1-r1_restart_store_2026-10-05\"",
+    "new": "RESTART_STORE_DIR = \"p_konum_plus/calibration/.rp1-r2_restart_store_2026-10-10\""
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "f3_step2_rp1_f1_synth_fixtures_{DATE_TAG}",
+    "new": "f3_step2_rp1-r2_f1_synth_fixtures_{DATE_TAG}"
+  },
+  {
+    "requirement": "Q1",
+    "old": "    for _k in RUN_REAL_SCENARIO_REQUIRED_KEYS:\n        if _k not in sc:\n            raise F1ContractGap(_k)",
+    "new": "    RP2_TOOLS.check_intake(sc, F1ContractGap)"
+  },
+  {
+    "requirement": "Q2",
+    "old": "mask_id = \"real:%s:%s:%s\" % (base, family, ctx)",
+    "new": "mask_id = real_mask_id(base, family, ctx)"
+  },
+  {
+    "requirement": "Q2",
+    "old": "\"real:%s:%s:%s\" % (base, fam, ctx), fam))",
+    "new": "real_mask_id(base, fam, ctx), fam))"
+  },
+  {
+    "requirement": "Q10",
+    "old": "                                  fitter=family, L=L_masked_row,",
+    "new": "                                  fitter=family, L=L_masked_row,\n                                  source=\"replay\" if cached_start is not None else \"fresh\",\n                                  phase=CURRENT_PHASE[0], unit_key=KEY_SCOPE[0] + onekey,"
+  },
+  {
+    "requirement": "Q8",
+    "old": "        return payload[\"value\"]",
+    "new": "        return RP2_TOOLS.restored(payload[\"value\"])"
+  },
+  {
+    "requirement": "Q9",
+    "old": "def _key_family(name):\n    \"\"\"The key family of a unit name (T-KEY-NAMESPACE table rows).\"\"\"\n    base = name.split(\"__\", 1)[1] if name.startswith((\"excpass\", \"tstoreread\")) else name\n    for fam in (\"onestart\", \"splmode\", \"realscen\", \"nrgates_all\", \"unittests_all\"):\n        if base.startswith(fam):\n            return fam\n    return base.split(\"_\", 1)[0]",
+    "new": "def _key_family(name: str) -> str:\n    return RP2_TOOLS.family_of_key(name)"
+  },
+  {
+    "requirement": "Q9",
+    "old": "scope = KEY_SCOPE[0] or (CURRENT_PHASE[0] or \"unphased\")",
+    "new": "scope = \"f1handoff\" if KEY_SCOPE[0] == \"f1handoff__\" else KEY_SCOPE[0] or (CURRENT_PHASE[0] or \"unphased\")"
+  },
+  {
+    "requirement": "Q7",
+    "old": "    pass_ = bool(cold[\"pass_\"] and warm[\"pass_\"]\n                 and cold[\"fit1_reads\"] == 0 and warm[\"fit1_reads\"] > 0)",
+    "new": "    pass_ = store_read_aggregate(cold, warm)"
+  },
+  {
+    "requirement": "Q4",
+    "old": "results[\"z_qc_pass\"] = dict(expected=True,\n                                got=all(f1_post_z_qc(v, \"t\") for v in z.values()),\n                                ok=True)",
+    "new": "_z_qc = all(f1_post_z_qc(v, \"t\") for v in z.values())\n    results[\"z_qc_pass\"] = dict(expected=True, got=_z_qc, ok=_z_qc == True)"
+  },
+  {
+    "requirement": "Q4",
+    "old": "results[\"gate_pass\"] = dict(expected=True,\n                                got=f1_verify_raw_files(good_dir, table),\n                                ok=True)",
+    "new": "_gate_pass = f1_verify_raw_files(good_dir, table)\n    results[\"gate_pass\"] = dict(expected=True, got=_gate_pass, ok=_gate_pass == True)"
+  },
+  {
+    "requirement": "Q3",
+    "old": "def f1_repro_gate(raw_dir, hash_table_rows, eligible_manifest_rows):\n    \"\"\"R-1(iv), the gate rp1 instruction \u00a74 C-3's last paragraph deferred:\n    BEFORE any F1 read in a later cycle, (1) verify the COMPLETE file list\n    of the hash table against raw_dir (missing, extra or mismatching file\n    -> STOP) and (2) reproduce the eligible manifest byte-exact (-> STOP on\n    any mismatch). In rp1-r1 this runs ONLY on a synthetic hash table and a\n    synthetic eligible manifest built from the T-F1-LOADER-SYNTH fixtures\n    (S-e = SYNTHETIC_ONLY_IN_RP1, carried unchanged): no real F1 file, hash\n    table or eligible manifest is ever opened here.\n\n    hash_table_rows: list of (filename, sha256). eligible_manifest_rows:\n    list of (sex, name) expected eligible, any order (sorted before\n    comparison). Returns True; never returns False -- a mismatch raises.\"\"\"\n    on_disk = set(os.listdir(raw_dir))\n    named = set(fname for fname, _ in hash_table_rows)\n    missing = named - on_disk\n    if missing:\n        raise F1ReproGateFailure(\"F1_REPRO_GATE_MISSING_FILE %s\" % sorted(missing))\n    extra = on_disk - named\n    if extra:\n        raise F1ReproGateFailure(\"F1_REPRO_GATE_EXTRA_FILE %s\" % sorted(extra))\n    for fname, expected_hash in hash_table_rows:\n        p = os.path.join(raw_dir, fname)\n        observed = hashlib.sha256(open(p, \"rb\").read()).hexdigest()\n        if observed != expected_hash:\n            raise F1ReproGateFailure(\n                \"F1_REPRO_GATE_HASH_MISMATCH %s observed=%s expected=%s\"\n                % (fname, observed, expected_hash))\n    shares, _denom = f1_load_raw_dir(raw_dir)\n    z = f1_normalize(shares)\n    observed_eligible = sorted(z.keys())\n    expected_eligible = sorted(tuple(r) for r in eligible_manifest_rows)\n    if observed_eligible != expected_eligible:\n        raise F1ReproGateFailure(\n            \"F1_REPRO_GATE_ELIGIBLE_MISMATCH observed=%s expected=%s\"\n            % (observed_eligible, expected_eligible))\n    return True",
+    "new": "def f1_repro_gate(raw_dir: str, hash_table_rows: list[tuple[str, str]],\n                  eligible_manifest_path: str, manifest_hash: str = RP2_TOOLS.F1_MANIFEST_PIN,\n                  *, synthetic: bool = False) -> bool:\n    \"\"\"Q3: content re-derivation chosen by signed D-13 PI-b.\"\"\"\n    def eligible(directory: str) -> dict:\n        shares, _denominators = f1_load_raw_dir(directory)\n        return f1_normalize(shares)\n    return RP2_TOOLS.check_f1_manifest(raw_dir, hash_table_rows, eligible_manifest_path,\n                                      manifest_hash, eligible, F1ReproGateFailure, synthetic=synthetic)"
+  },
+  {
+    "requirement": "Q3",
+    "old": "def t_f1_repro_gate_synth(out_dir):\n    \"\"\"T-F1-REPRO-GATE-SYNTH (rp1-r1 R-1(iv)) -- MANDATORY: the deferred\n    F1 reproduction gate exercised on a synthetic hash table + synthetic\n    eligible manifest built from T-F1-LOADER-SYNTH's own \"good\" fixtures\n    (S-e: no real F1 file, hash table or eligible manifest is read here).\n    Complete list passes; each single defect STOPs with its own named\n    reason.\"\"\"\n    good_dir = os.path.join(out_dir, \"good\")\n    files = sorted(f for f in os.listdir(good_dir) if f.endswith(\".txt\"))\n    hash_table = [(f, hashlib.sha256(open(os.path.join(good_dir, f), \"rb\").read()).hexdigest())\n                  for f in files]\n    shares, _denom = f1_load_raw_dir(good_dir)\n    z = f1_normalize(shares)\n    eligible_manifest = sorted(z.keys())\n    cases = {}\n\n    def run(ht, em):\n        try:\n            f1_repro_gate(good_dir, ht, em)\n            return dict(raised=False, reason=None)\n        except F1ReproGateFailure as e:\n            return dict(raised=True, reason=str(e))\n\n    r = run(hash_table, eligible_manifest)\n    cases[\"complete\"] = dict(**r, ok=(not r[\"raised\"]))\n\n    r = run(hash_table + [(\"yob9999_NONEXISTENT.txt\", \"0\" * 64)], eligible_manifest)\n    cases[\"missing_file\"] = dict(**r, ok=(r[\"raised\"]\n                                          and r[\"reason\"].startswith(\"F1_REPRO_GATE_MISSING_FILE\")))\n\n    r = run(hash_table[:-1], eligible_manifest)\n    cases[\"extra_file\"] = dict(**r, ok=(r[\"raised\"]\n                                        and r[\"reason\"].startswith(\"F1_REPRO_GATE_EXTRA_FILE\")))\n\n    fname0, h0 = hash_table[0]\n    bad_h0 = (\"0\" if h0[0] != \"0\" else \"1\") + h0[1:]\n    r = run([(fname0, bad_h0)] + hash_table[1:], eligible_manifest)\n    cases[\"hash_changed\"] = dict(**r, ok=(r[\"raised\"]\n                                          and r[\"reason\"].startswith(\"F1_REPRO_GATE_HASH_MISMATCH\")))\n\n    bad_manifest = eligible_manifest[:-1]    # one eligible entry dropped\n    r = run(hash_table, bad_manifest)\n    cases[\"eligible_manifest_changed\"] = dict(\n        **r, ok=(r[\"raised\"]\n                and r[\"reason\"].startswith(\"F1_REPRO_GATE_ELIGIBLE_MISMATCH\")))\n\n    return dict(cases=cases, pass_=bool(all(v[\"ok\"] for v in cases.values())))",
+    "new": "def t_f1_repro_gate_synth(out_dir: str) -> dict[str, Any]:\n    return RP2_TESTS.reproduction_cases(globals(), out_dir)"
+  },
+  {
+    "requirement": "Q10",
+    "old": "        for ti, (kind, seed, sigma) in enumerate(sc[\"strata\"][sx]):\n            gen =",
+    "new": "        for ti, (kind, seed, sigma) in enumerate(sc[\"strata\"][sx]):\n            _trajectory_start = _time.perf_counter()\n            _trajectory_start_iso = _dt.datetime.now().isoformat()\n            gen ="
+  },
+  {
+    "requirement": "Q10",
+    "old": "        strata_recs[sx] = recs\n    return strata_recs",
+    "new": "            if real_x is not None:\n                _trajectory_end = _time.perf_counter()\n                HANDOFF_TRAJECTORY_TIMINGS.append(dict(phase=CURRENT_PHASE[0], sex=sx, trajectory=ti,\n                    start_iso=_trajectory_start_iso, end_iso=_dt.datetime.now().isoformat(),\n                    start_clock=_trajectory_start, end_clock=_trajectory_end, elapsed_seconds=_trajectory_end - _trajectory_start))\n        strata_recs[sx] = recs\n    return strata_recs"
+  },
+  {
+    "requirement": "Q10 with Q9 phase ranges",
+    "old": "def t_f1_handoff_synth(f2m, spl, grids, scenarios):\n    \"\"\"T-F1-HANDOFF-SYNTH (rp1-r1 R-1(i)/(ii)) -- MANDATORY: the\n    T-F1-LOADER-SYNTH scenario, through f1_build_scenarios ->\n    run_real_scenario, in its own key namespace. Proves the consumer\n    actually ran on the loader's own arrays (the x hashes it fitted equal\n    real_x's hashes) and ids (the (fixture_id, mask_id, family) set it\n    passed equals the dry table) -- not merely that the dry table looks\n    right on its own.\"\"\"\n    sc = scenarios[0]\n    saved = KEY_SCOPE[0]\n    before = len(REAL_MODE_IDS_PASSED)\n    exc_repr = None\n    try:\n        KEY_SCOPE[0] = \"f1handoff__\"\n        run_real_scenario(f2m, spl, grids, sc, \"f1handoff\", [])\n    except Exception as e:\n        exc_repr = \"%s: %s\" % (type(e).__name__, e)\n    finally:\n        KEY_SCOPE[0] = saved\n    captured = REAL_MODE_IDS_PASSED[before:]\n    actual_rows = sorted(set((fid, mid_, fam) for fid, mid_, fam, _xh in captured))\n    dry_rows = sorted(set(f1_context_id_table(scenarios)))\n    expected_xhashes = set(\n        hashlib.sha256(np.asarray(sc[\"real_x\"][k], dtype=np.float64).tobytes()).hexdigest()\n        for k in sc[\"real_x\"])\n    captured_xhashes = set(xh for _fid, _mid, _fam, xh in captured)\n    xhashes_ok = bool(captured_xhashes and captured_xhashes <= expected_xhashes\n                      and captured_xhashes == expected_xhashes)\n    rows_ok = bool(actual_rows == dry_rows)\n    return dict(\n        ran_without_exception=(exc_repr is None), exception=exc_repr,\n        captured_rows=len(actual_rows), dry_rows=len(dry_rows),\n        actual_rows_equal_dry_table=rows_ok,\n        xhashes_match_loader=xhashes_ok,\n        _actual_rows=actual_rows,       # consumed by T-CONTEXT-ID-UNIQUE below\n        pass_=bool(exc_repr is None and rows_ok and xhashes_ok))",
+    "new": "def t_f1_handoff_synth(f2m, spl, grids, scenarios):\n    \"\"\"T-F1-HANDOFF-SYNTH (rp1-r1 R-1(i)/(ii)) -- MANDATORY: the\n    T-F1-LOADER-SYNTH scenario, through f1_build_scenarios ->\n    run_real_scenario, in its own key namespace. Proves the consumer\n    actually ran on the loader's own arrays (the x hashes it fitted equal\n    real_x's hashes) and ids (the (fixture_id, mask_id, family) set it\n    passed equals the dry table) -- not merely that the dry table looks\n    right on its own.\"\"\"\n    sc = scenarios[0]\n    saved = KEY_SCOPE[0]\n    saved_phase = CURRENT_PHASE[0]\n    timing_start = len(HANDOFF_TRAJECTORY_TIMINGS)\n    family_telemetry = []\n    before = len(REAL_MODE_IDS_PASSED)\n    exc_repr = None\n    try:\n        KEY_SCOPE[0] = \"f1handoff__\"\n        CURRENT_PHASE[0] = \"f1_handoff\"\n        result = run_real_scenario(f2m, spl, grids, sc, \"f1handoff\", [])\n        for row in result[2]:\n            if row.get(\"fitter\") not in (\"P-01\", \"P-02\"):\n                continue\n            base, family, context = row[\"mask_id\"][5:].rsplit(\":\", 2)\n            sex, trajectory = next(key for key, value in sc[\"real_mask_ids\"].items() if value == base)\n            family_telemetry.append(dict(row, sex=sex, trajectory=trajectory, family=family, context=context, stage=row[\"optimizer_path\"]))\n    except Exception as e:\n        exc_repr = \"%s: %s\" % (type(e).__name__, e)\n    finally:\n        KEY_SCOPE[0] = saved\n        CURRENT_PHASE[0] = saved_phase\n    captured = REAL_MODE_IDS_PASSED[before:]\n    actual_rows = sorted(set((fid, mid_, fam) for fid, mid_, fam, _xh in captured))\n    dry_rows = sorted(set(f1_context_id_table(scenarios)))\n    expected_xhashes = set(\n        hashlib.sha256(np.asarray(sc[\"real_x\"][k], dtype=np.float64).tobytes()).hexdigest()\n        for k in sc[\"real_x\"])\n    captured_xhashes = set(xh for _fid, _mid, _fam, xh in captured)\n    xhashes_ok = bool(captured_xhashes and captured_xhashes <= expected_xhashes\n                      and captured_xhashes == expected_xhashes)\n    rows_ok = bool(actual_rows == dry_rows)\n    return dict(\n        ran_without_exception=(exc_repr is None), exception=exc_repr,\n        captured_rows=len(actual_rows), dry_rows=len(dry_rows),\n        actual_rows_equal_dry_table=rows_ok,\n        xhashes_match_loader=xhashes_ok,\n        _family_telemetry=family_telemetry, _timings=HANDOFF_TRAJECTORY_TIMINGS[timing_start:],\n        _actual_rows=actual_rows,       # consumed by T-CONTEXT-ID-UNIQUE below\n        pass_=bool(exc_repr is None and rows_ok and xhashes_ok))"
+  },
+  {
+    "requirement": "section5 launch gate",
+    "old": "def main():\n",
+    "new": "def main():\n    launch_authorization = authorize_rp2_launch()\n"
+  },
+  {
+    "requirement": "Q11",
+    "old": "        harness_hash, gen_hash, man_hash, F2_HASH, SPL_HASH,",
+    "new": "        harness_hash, gen_hash, man_hash, F2_HASH, SPL_HASH,\n        *[RP2_DEPENDENCY_PINS[name] for name in sorted(RP2_DEPENDENCY_PINS)],"
+  },
+  {
+    "requirement": "Q11",
+    "old": "    print(\"PRE_EXECUTION_CUSTODY_RECORD_VERIFIED = true (\" + CUSTODY_PATH + \")\")",
+    "new": "    assert RP2_TOOLS.launch_matches(_custody_field(\"launch_number\"), LAUNCH_NUMBER), \"W3_LAUNCH_MISMATCH\"\n    for filename, pin in RP2_DEPENDENCY_PINS.items():\n        assert _custody_field(filename) == pin, \"W3_DEPENDENCY_PIN_STOP \" + filename\n    print(\"PRE_EXECUTION_CUSTODY_RECORD_VERIFIED = true (\" + CUSTODY_PATH + \")\")"
+  },
+  {
+    "requirement": "section8 test wiring",
+    "old": "    inad_obs = t_inadmissible_observable(f2m, grids)",
+    "new": "    rp2_technical = RP2_TESTS.technical_cases(globals(), f1_scen, f1_handoff, f1_repro_gate_synth)\n    for requirement, evidence in rp2_technical.items():\n        assert record_test(\"T-RP1R2-\" + requirement, evidence[\"pass_\"]), \"RP2_TEST_STOP \" + requirement\n    handoff_outputs = write_rp2_handoff_outputs(f1_handoff)\n    inad_obs = t_inadmissible_observable(f2m, grids)"
+  },
+  {
+    "requirement": "section8 test wiring",
+    "old": "    \"T-F1-HANDOFF-SYNTH\", \"T-F1-CONTRACT-GAP\", \"T-F1-REPRO-GATE-SYNTH\",\n]",
+    "new": "    \"T-F1-HANDOFF-SYNTH\", \"T-F1-CONTRACT-GAP\", \"T-F1-REPRO-GATE-SYNTH\",\n] + [\"T-RP1R2-Q%d\" % i for i in range(1, 12)]"
+  },
+  {
+    "requirement": "Q8",
+    "old": "                  \"nit\", \"nfev\", \"njev\", \"wall_clock_seconds\", \"L\", \"predicates\"]",
+    "new": "                  \"nit\", \"nfev\", \"njev\", \"wall_clock_seconds\", \"L\", \"predicates\", \"source\"]"
+  },
+  {
+    "requirement": "Q8",
+    "old": "            w.writerow(row)\n    tel_hash =",
+    "new": "            w.writerow(dict(row, source=row.get(\"source\", \"fresh\")))\n    tel_hash ="
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "        executor_models=\"claude-opus-4-8[1m]; see r4-1 report\",",
+    "new": "        executor_models=\"Codex / GPT-6; current pkp-worktree executor attribution\","
+  },
+  {
+    "requirement": "Q5",
+    "old": "        spline_telemetry_calls_by_phase_pid=percall_by_phase_pid,",
+    "new": "        spline_telemetry_calls_by_phase_pid=[dict(phase=key.rsplit(\"/\", 1)[0], writer_pid=int(key.rsplit(\"/\", 1)[1]), count=count)\n            for key, count in sorted(percall_by_phase_pid.items())],"
+  },
+  {
+    "requirement": "Q5",
+    "old": "            fine_counts={\"%s|%s|%s\" % k: v for k, v in READS_FINE.items()},",
+    "new": "            fine_counts=[dict(scope=key[0], family=key[1], reader_pid=key[2], count=value)\n                         for key, value in sorted(READS_FINE.items())],"
+  },
+  {
+    "requirement": "section8 test wiring",
+    "old": "    with open(TEST_EVIDENCE_PATH, \"w\", encoding=\"utf-8\", newline=\"\\n\") as f:",
+    "new": "    test_evidence[\"rp1_r2_technical_tests\"] = rp2_technical\n    with open(TEST_EVIDENCE_PATH, \"w\", encoding=\"utf-8\", newline=\"\\n\") as f:"
+  },
+  {
+    "requirement": "section8 test wiring",
+    "old": "    six = results[\"end_state\"]",
+    "new": "    results[\"rp1_r2_technical_tests\"] = rp2_technical\n    results[\"handoff_outputs\"] = handoff_outputs\n    six = results[\"end_state\"]"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "    _d12_observed = sha256_of(D12_DISPATCH_RECORD_PATH)",
+    "new": "    _d13_path = \"p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md\"\n    _d12_observed = sha256_of(_d13_path)"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "    assert _d12_observed == D12_DISPATCH_RECORD_HASH,",
+    "new": "    assert _d12_observed == \"6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f\","
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "PI_dispatch_record_path=D12_DISPATCH_RECORD_PATH,",
+    "new": "PI_dispatch_record_path=_d13_path,"
+  },
+  {
+    "requirement": "section8 wiring",
+    "old": "    print(\"PI_DISPATCH_RECORD (D-12) observed = \"",
+    "new": "    print(\"PI_DISPATCH_RECORD (D-13) observed = \""
+  }
+]

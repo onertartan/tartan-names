@@ -1,0 +1,19 @@
+--- before_provenance_patch/f3_rp1-r2_launch_attempt_2026-10-10.py
++++ attempt2/f3_rp1-r2_launch_attempt_2026-10-10.py
+@@ -42,3 +42,5 @@
+     gate = helper_module.authorize_ir1_13(root)
+-    prefix = "f3_step2_rp1-r2_launch%d" % number
++    attempt_node = next(n for n in tree.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "ATTEMPT_NUMBER" for t in n.targets))
++    attempt = ast.literal_eval(attempt_node.value)
++    prefix = "f3_step2_rp1-r2_attempt%d_launch%d" % (attempt, number)
+     out = calibration / (prefix + "_stdout_2026-10-10.log")
+@@ -55,3 +57,3 @@
+     assert custody.returncode == 0, "W3_WRITER_STOP"
+-    metadata = dict(launch=number, code_path=str(harness), code_sha256=sha(harness), directory=str(root),
++    metadata = dict(attempt=attempt, launch=number, code_path=str(harness), code_sha256=sha(harness), directory=str(root),
+                     start_utc=dt.datetime.now(dt.timezone.utc).isoformat(), end_utc="NOT OBSERVED (running)",
+@@ -65,3 +67,3 @@
+         process = subprocess.Popen([sys.executable, str(harness)], cwd=root, env=environment, stdout=stdout, stderr=stderr)
+-        record(provenance / (prefix + "_pid_2026-10-10.json"), dict(pid=process.pid, launch=number))
++        record(provenance / (prefix + "_pid_2026-10-10.json"), dict(pid=process.pid, attempt=attempt, launch=number))
+         code = process.wait()

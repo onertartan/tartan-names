@@ -1,0 +1,287 @@
+# rp1-r2 pre-execution custody
+
+One immutable W-3 record for this actual launch; all earlier records are preserved.
+
+```text
+harness_sha256 = 4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d
+generator_sha256 = 68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830
+manifest_sha256 = 5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe
+code_env_fingerprint = f8755c5acf0c3286
+attempt_number = 2
+launch_number = 1
+f3_rp1-r2_gate_tools_2026-10-10.py = ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7
+f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py = eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8
+f3_rp1-r2_technical_tests_2026-10-10.py = cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b
+```
+
+```json
+{
+  "writer_sha256": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e",
+  "created_utc": "2026-10-11T14:12:36.650416+00:00",
+  "repo_root": "G:\\PycharmProjects\\pkp-worktree",
+  "environment": {
+    "python": "3.11.7",
+    "numpy": "1.26.4",
+    "scipy": "1.14.1",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "OMP": "1",
+    "OPENBLAS": "1",
+    "MKL": "1"
+  },
+  "pin_checks": [
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R3_CORRECTION_EXECUTION_PROMPT_DRAFT_v2.md",
+      "expected": "5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5",
+      "observed": "5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5",
+      "source": "D-3"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4_CORRECTION_INSTRUCTION_2026-09-24.md",
+      "expected": "e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387",
+      "observed": "e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387",
+      "source": "r4 instruction"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4_pi_dispatch_record_2026-09-24.md",
+      "expected": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851",
+      "observed": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851",
+      "source": "D-5"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r3_independent_audit_claude-fable-5-1_DRAFT_r1_2026-09-24.md",
+      "expected": "11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6",
+      "observed": "11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6",
+      "source": "A-1"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_pi_ratified_content_2026-09-07.md",
+      "expected": "da0c4064615263b1aef8884bc1a7fef64d319a40ff48e313c0bb19a522d1c498",
+      "observed": "da0c4064615263b1aef8884bc1a7fef64d319a40ff48e313c0bb19a522d1c498",
+      "source": "D-2"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-1_CORRECTION_INSTRUCTION_2026-09-29.md",
+      "expected": "283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330",
+      "observed": "283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330",
+      "source": "r4-1 instruction"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4-1_pi_dispatch_record_2026-09-29.md",
+      "expected": "a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0",
+      "observed": "a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0",
+      "source": "D-6"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-2_CORRECTION_INSTRUCTION_2026-09-30.md",
+      "expected": "d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe",
+      "observed": "d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe",
+      "source": "r4-2 instruction"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_dispatch_record_2026-09-30.md",
+      "expected": "a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb",
+      "observed": "a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb",
+      "source": "D-7"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4-1_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-30.md",
+      "expected": "ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82",
+      "observed": "ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82",
+      "source": "A-4 (input)"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_fixture_generator_r4-1_2026-09-29.py",
+      "expected": "68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830",
+      "observed": "68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830",
+      "source": "generator (reused r4-1)"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_fixture_manifest_r4-1_2026-09-29.csv",
+      "expected": "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe",
+      "observed": "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe",
+      "source": "manifest (reused r4-1)"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_results_r4-1_2026-09-29.json",
+      "expected": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385",
+      "observed": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385",
+      "source": "r4-1 results (baseline)"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-28.md",
+      "expected": "b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a",
+      "observed": "b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a",
+      "source": "A-2 (input)"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r2_2026-09-28.md",
+      "expected": "9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9",
+      "observed": "9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9",
+      "source": "A-3 (input)"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1_INSTRUCTION_2026-10-02.md",
+      "expected": "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5",
+      "observed": "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5",
+      "source": "rp1 instruction"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_pi_dispatch_record_2026-10-02.md",
+      "expected": "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34",
+      "observed": "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34",
+      "source": "D-10"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_qualification_pi_decision_record_2026-10-02.md",
+      "expected": "1ab17e44fd16d6c7f69a5563030ad854809e8569c3469275deda5c6f0aa304d3",
+      "observed": "1ab17e44fd16d6c7f69a5563030ad854809e8569c3469275deda5c6f0aa304d3",
+      "source": "D-9 (QUALIFIED)"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_decision_record_2026-10-01.md",
+      "expected": "aadf2840d7063dd2c13e829c23128f821115fd9839a63b748afc6ac28764e9ae",
+      "observed": "aadf2840d7063dd2c13e829c23128f821115fd9839a63b748afc6ac28764e9ae",
+      "source": "D-8"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_step2_r4-2_independent_audit_claude-opus-5-5_DRAFT_r1_2026-10-01.md",
+      "expected": "9111bc71933f0fccfab213f785bea1d3b0f27e3b34a5da00dae0f83a78b57575",
+      "observed": "9111bc71933f0fccfab213f785bea1d3b0f27e3b34a5da00dae0f83a78b57575",
+      "source": "A-5 (input)"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_results_r4-2_2026-09-30.json",
+      "expected": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba",
+      "observed": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba",
+      "source": "r4-2 results (non-regression baseline)"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_telemetry_r4-2_2026-09-30.csv",
+      "expected": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d",
+      "observed": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d",
+      "source": "r4-2 telemetry"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_test_evidence_r4-2_2026-09-30.json",
+      "expected": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+      "observed": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+      "source": "r4-2 test evidence"
+    },
+    {
+      "path": "p_konum_plus/calibration/f1_input_freeze_record_2026-08-28.md",
+      "expected": "5eceb198a04e31643cbf7aae02c381413ad820c5a706a5ca0d6ea31ef80088b0",
+      "observed": "5eceb198a04e31643cbf7aae02c381413ad820c5a706a5ca0d6ea31ef80088b0",
+      "source": "F1 freeze record"
+    },
+    {
+      "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+      "expected": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+      "observed": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+      "source": "D-11 r1"
+    },
+    {
+      "path": "p_konum_plus/provenance/f3_realdata_prep_rp1_transmission_list_2026-10-04.md",
+      "expected": "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9",
+      "observed": "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9",
+      "source": "rp1 transmission list"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py",
+      "expected": "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09",
+      "observed": "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09",
+      "source": "rp1 harness"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R1_INSTRUCTION_DRAFT_r2_2026-10-05.md",
+      "expected": "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d",
+      "observed": "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d",
+      "source": "rp1-r1 instruction"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_pi_dispatch_record_2026-10-05.md",
+      "expected": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364",
+      "observed": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364",
+      "source": "D-12"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_independent_audit_gpt_codex_DRAFT_r1_2026-10-05.md",
+      "expected": "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989",
+      "observed": "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989",
+      "source": "rp1 audit (input)"
+    },
+    {
+      "path": "p_konum_plus/prompts/RP1-R1_Talimat_Taslagi_Degerlendirmesi_2026-10-05.md",
+      "expected": "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef",
+      "observed": "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef",
+      "source": "rp1-r1 DRAFT review (input)"
+    },
+    {
+      "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md",
+      "expected": "bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5",
+      "observed": "bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5",
+      "source": "rp1-r2 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md",
+      "expected": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f",
+      "observed": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f",
+      "source": "rp1-r2 incoming f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md",
+      "expected": "f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913",
+      "observed": "f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913",
+      "source": "rp1-r2 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+      "expected": "82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e",
+      "observed": "82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e",
+      "source": "rp1-r2 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md"
+    },
+    {
+      "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+      "expected": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb",
+      "observed": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb",
+      "source": "rp1-r2 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py"
+    },
+    {
+      "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+      "expected": "98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956",
+      "observed": "98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956",
+      "source": "rp1-r2 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+      "expected": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+      "observed": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+      "source": "rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+      "expected": "4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955",
+      "observed": "4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955",
+      "source": "rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md"
+    },
+    {
+      "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+      "expected": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+      "observed": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+      "source": "D-14 IR1-13 RECORDED_LIMITATION"
+    }
+  ],
+  "launch_authorization": {
+    "finding": "IR1-13",
+    "disposition": "RECORDED_LIMITATION",
+    "ledger_status": "OPEN / B",
+    "pi_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+    "pi_record_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+    "standalone_evidence_status": "NOT OBSERVED",
+    "executor_status": "PARTIAL_PENDING_PI"
+  },
+  "launch_authorization_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+  "current_launch_started": false,
+  "real_data_access": false,
+  "store_at_first_launch": "EMPTY"
+}
+```

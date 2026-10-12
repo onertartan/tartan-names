@@ -1,0 +1,22 @@
+{
+    "observed_utc":  "2026-10-11T14:14:15.3995712Z",
+    "attempt":  2,
+    "launch":  1,
+    "pid":  17884,
+    "status":  "RUNNING",
+    "harness_sha256":  "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+    "custody_path":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_step2_rp1-r2_preexecution_custody_attempt2_launch1_2026-10-10.md",
+    "custody_sha256":  "7d864db9c2e766ff1fc4d3ed77649e7a9a140249426d56e6d51779f7aa8efc8d",
+    "supersedes_custody_sha256":  "6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469",
+    "full_run_exit_code":  "NOT OBSERVED (running)",
+    "full_run_result":  "NOT OBSERVED (running)",
+    "startup_custody_verified":  true,
+    "startup_dispatch_checks":  40,
+    "initial_spline_nonregression_passed":  true,
+    "initial_f1_loader_synthetic_passed":  true,
+    "prelaunch_store":  "ABSENT; W3 records EMPTY",
+    "real_data_access":  false,
+    "executor_status":  "PARTIAL_PENDING_PI",
+    "ir1_13":  "OPEN / B; D-14 RECORDED_LIMITATION",
+    "commit":  false
+}

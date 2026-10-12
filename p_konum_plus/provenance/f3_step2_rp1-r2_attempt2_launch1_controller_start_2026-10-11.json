@@ -1,0 +1,14 @@
+{
+    "attempt":  2,
+    "launch":  1,
+    "controller_pid":  17292,
+    "start_utc":  "2026-10-11T14:12:35.6012199Z",
+    "interpreter":  "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "launcher":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_launch_attempt_2026-10-10.py",
+    "launcher_sha256":  "172e3d9bc67c0e5f8ad3406232bf77ec8c37c374a2429cee52c6491377916462",
+    "directory":  "G:\\PycharmProjects\\pkp-worktree",
+    "stdout":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_step2_rp1-r2_attempt2_launch1_controller_stdout_2026-10-11.log",
+    "stderr":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_step2_rp1-r2_attempt2_launch1_controller_stderr_2026-10-11.log",
+    "prelaunch_store":  "ABSENT",
+    "real_data_access":  false
+}

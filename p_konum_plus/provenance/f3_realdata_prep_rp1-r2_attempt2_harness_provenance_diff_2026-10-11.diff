@@ -1,0 +1,30 @@
+--- before_provenance_patch/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py
++++ attempt2/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py
+@@ -97,6 +97,6 @@
+ # comparison-logic fixes).
+-SUPERSEDES_HARNESS_SHA256 = "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb"
+-SUPERSEDES_CUSTODY_SHA256 = "162dea604bf573e4a80470724824f1c98dc224e535e26cfde54ffc57d096f2ca"
++SUPERSEDES_HARNESS_SHA256 = "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c"
++SUPERSEDES_CUSTODY_SHA256 = "6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469"
+ SUPERSEDES_NOTE_PATH = "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md"
+-ATTEMPT_NUMBER = 1
++ATTEMPT_NUMBER = 2
+ # R41A-02(c): every launch writes its OWN stdout/stderr pair with a
+@@ -113,5 +113,5 @@
+ LAUNCH_STDOUT_PATH = (f"p_konum_plus/calibration/"
+-                      f"f3_step2_rp1-r2_launch{LAUNCH_NUMBER}_stdout_2026-10-10.log")
++                      f"f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stdout_2026-10-10.log")
+ LAUNCH_STDERR_PATH = (f"p_konum_plus/calibration/"
+-                      f"f3_step2_rp1-r2_launch{LAUNCH_NUMBER}_stderr_2026-10-10.log")
++                      f"f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stderr_2026-10-10.log")
+ 
+@@ -231,3 +231,3 @@
+ # the first launch; the rp1/r4-2/r4-1/r4 stores are never read or moved.
+-RESTART_STORE_DIR = "p_konum_plus/calibration/.rp1-r2_restart_store_2026-10-10"
++RESTART_STORE_DIR = "p_konum_plus/calibration/.rp1-r2_attempt2_restart_store_2026-10-10"
+ _CODE_ENV_FINGERPRINT = [None]     # set once in main(), after W-3 hashes are known
+@@ -4232,3 +4232,3 @@
+         f1_synth_dir,
+-        "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_runtime_fixture_custody_launch%d_2026-10-10.csv" % LAUNCH_NUMBER)
++        "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_runtime_fixture_custody_attempt%d_launch%d_2026-10-10.csv" % (ATTEMPT_NUMBER, LAUNCH_NUMBER))
+     print("RUNTIME_SYNTHETIC_FIXTURE_CUSTODY = " + json.dumps(runtime_fixture_custody))

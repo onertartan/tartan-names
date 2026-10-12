@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-10-10T17:17:41.895601+00:00",
+  "message_pin": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+  "source_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+  "placed_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+  "source_sidecar_equal_placed": true,
+  "decision": "RECORDED_LIMITATION",
+  "ledger_status": "OPEN / B",
+  "runtime_executions": 0,
+  "source_changes": {
+    "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+    "p_konum_plus/calibration/f3_rp1-r2_gate_tools_2026-10-10.py": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+    "p_konum_plus/calibration/f3_rp1-r2_launch_attempt_2026-10-10.py": "f74423713d61604fcf53c34a5b3eb851bd79d97611c4ad2f4ffc2f2d0a3b77da",
+    "p_konum_plus/calibration/f3_rp1-r2_write_custody_2026-10-10.py": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e"
+  },
+  "scientific_expectations_changed": false,
+  "reason": "User's signed D-14 authorizes the previously blocked preparation tests and attempt-1 launch when other prerequisites hold."
+}

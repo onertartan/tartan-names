@@ -1,0 +1,10 @@
+{
+  "finding": "IR1-13",
+  "disposition": "RECORDED_LIMITATION",
+  "ledger_status": "OPEN / B",
+  "pi_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+  "pi_record_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+  "role": "Descriptive receipt only. Consumers authorize by fixed D-14 bytes/sidecar; no free-standing flag.",
+  "standalone_historical_harness_sha256": "NOT OBSERVED",
+  "executor_status": "PARTIAL_PENDING_PI"
+}

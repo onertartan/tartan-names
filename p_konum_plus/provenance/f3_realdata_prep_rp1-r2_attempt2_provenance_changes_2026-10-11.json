@@ -1,0 +1,72 @@
+{
+  "created_utc": "2026-10-11T14:08:38.076946+00:00",
+  "authorization": "PI user message explicitly permits ATTEMPT_NUMBER=2 and attempt-bound supersession/names only",
+  "previous_stop": "Historical stop record retained unchanged; current user authorization resolves the attempt-counter prohibition",
+  "attempt": 2,
+  "first_launch": 1,
+  "prior_harness_sha256": "d34676d0e60c6a2a160a8b7c9180d37409b244ed5e5a1b1d50073b18051c5bb3",
+  "harness_sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+  "supersedes_harness_sha256": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+  "supersedes_custody_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_step2_rp1-r2_preexecution_custody_attempt1_launch1_2026-10-10.md",
+  "supersedes_custody_sha256": "6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469",
+  "old_launcher_sha256": "f74423713d61604fcf53c34a5b3eb851bd79d97611c4ad2f4ffc2f2d0a3b77da",
+  "launcher_sha256": "172e3d9bc67c0e5f8ad3406232bf77ec8c37c374a2429cee52c6491377916462",
+  "harness_exact_replacements": [
+    {
+      "before": "ATTEMPT_NUMBER = 1",
+      "after": "ATTEMPT_NUMBER = 2"
+    },
+    {
+      "before": "SUPERSEDES_HARNESS_SHA256 = \"cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb\"",
+      "after": "SUPERSEDES_HARNESS_SHA256 = \"92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c\""
+    },
+    {
+      "before": "SUPERSEDES_CUSTODY_SHA256 = \"162dea604bf573e4a80470724824f1c98dc224e535e26cfde54ffc57d096f2ca\"",
+      "after": "SUPERSEDES_CUSTODY_SHA256 = \"6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469\""
+    },
+    {
+      "before": "f3_step2_rp1-r2_launch{LAUNCH_NUMBER}_stdout_2026-10-10.log",
+      "after": "f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stdout_2026-10-10.log"
+    },
+    {
+      "before": "f3_step2_rp1-r2_launch{LAUNCH_NUMBER}_stderr_2026-10-10.log",
+      "after": "f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stderr_2026-10-10.log"
+    },
+    {
+      "before": "RESTART_STORE_DIR = \"p_konum_plus/calibration/.rp1-r2_restart_store_2026-10-10\"",
+      "after": "RESTART_STORE_DIR = \"p_konum_plus/calibration/.rp1-r2_attempt2_restart_store_2026-10-10\""
+    },
+    {
+      "before": "\"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_runtime_fixture_custody_launch%d_2026-10-10.csv\" % LAUNCH_NUMBER",
+      "after": "\"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_runtime_fixture_custody_attempt%d_launch%d_2026-10-10.csv\" % (ATTEMPT_NUMBER, LAUNCH_NUMBER)"
+    }
+  ],
+  "launcher_provenance_replacements": [
+    {
+      "before": "    prefix = \"f3_step2_rp1-r2_launch%d\" % number",
+      "after": "    attempt_node = next(n for n in tree.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == \"ATTEMPT_NUMBER\" for t in n.targets))\n    attempt = ast.literal_eval(attempt_node.value)\n    prefix = \"f3_step2_rp1-r2_attempt%d_launch%d\" % (attempt, number)"
+    },
+    {
+      "before": "metadata = dict(launch=number, code_path=",
+      "after": "metadata = dict(attempt=attempt, launch=number, code_path="
+    },
+    {
+      "before": "dict(pid=process.pid, launch=number)",
+      "after": "dict(pid=process.pid, attempt=attempt, launch=number)"
+    }
+  ],
+  "all_declarations_unchanged_from_22_addition_corrected_source": true,
+  "all_other_harness_bytes_unchanged": true,
+  "dependencies_unchanged": {
+    "f3_rp1-r2_gate_tools_2026-10-10.py": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+    "f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py": "eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8",
+    "f3_rp1-r2_technical_tests_2026-10-10.py": "cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b"
+  },
+  "writer_unchanged_sha256": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e",
+  "new_store": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\.rp1-r2_attempt2_restart_store_2026-10-10",
+  "new_store_state": "ABSENT",
+  "backup": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_rp1-r2_attempt2_before_provenance_patch_2026-10-11",
+  "outside_w3_comparator_outputs_imported": false,
+  "real_data_access": false,
+  "status": "PARTIAL_PENDING_PI"
+}

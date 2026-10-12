@@ -1,0 +1,27 @@
+{
+  "harness_sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+  "diffs": [
+    {
+      "baseline": "G:/PycharmProjects/pkp-worktree/p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+      "baseline_sha256": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb",
+      "diff": "G:/PycharmProjects/pkp-worktree/p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_2026-10-12.diff",
+      "labels": "G:/PycharmProjects/pkp-worktree/p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_labels_2026-10-12.csv",
+      "hunk_count": 60,
+      "covered_changed_lines": 5340,
+      "method": "Context 0; each old/new changed-line range has exactly one authored semantic-purpose label. Mixed hunks use separate range rows.",
+      "diff_sha256": "5f318979f2b85b8fa46ca28b8f1bcfda8926af28acb8bc37e7a02dc709adf4ee",
+      "labels_sha256": "9cd5763386a13f808a9b32524ecca1d2e388ef7471b537eda8e8d38362aa9a6f"
+    },
+    {
+      "baseline": "G:/PycharmProjects/pkp-worktree/p_konum_plus/calibration/f3_step2_adequacy_harness_r4-2_2026-09-30.py",
+      "baseline_sha256": "b988e9628731f6d0736ea3eaa4e9b4b5816ef5b15caf560a99c15e53933d0730",
+      "diff": "G:/PycharmProjects/pkp-worktree/p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_2026-10-12.diff",
+      "labels": "G:/PycharmProjects/pkp-worktree/p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_labels_2026-10-12.csv",
+      "hunk_count": 72,
+      "covered_changed_lines": 6198,
+      "method": "Context 0; each old/new changed-line range has exactly one authored semantic-purpose label. Mixed hunks use separate range rows.",
+      "diff_sha256": "3a388a47f1c546ace3fc1346a6e116090087eae3698256f4ad57a9966354a250",
+      "labels_sha256": "a2f611ce7a7b5a5f95c39be34b04eecd088266ab2531aa82a4e2a84353e74c7c"
+    }
+  ]
+}

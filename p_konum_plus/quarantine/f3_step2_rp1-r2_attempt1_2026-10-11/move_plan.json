@@ -1,0 +1,86 @@
+[
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_handoff_family_telemetry_rp1-r2_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_handoff_family_telemetry_rp1-r2_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_handoff_family_telemetry_rp1-r2_2026-10-10.csv.sha256",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_handoff_family_telemetry_rp1-r2_2026-10-10.csv.sha256"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_handoff_timings_rp1-r2_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_handoff_timings_rp1-r2_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_handoff_timings_rp1-r2_2026-10-10.csv.sha256",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_handoff_timings_rp1-r2_2026-10-10.csv.sha256"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_residual_series_rp1-r2_2026-10-10.json",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_residual_series_rp1-r2_2026-10-10.json"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stderr_2026-10-10.log",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_launch1_stderr_2026-10-10.log"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stderr_2026-10-10.log.sha256",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_launch1_stderr_2026-10-10.log.sha256"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stdout_2026-10-10.log",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_launch1_stdout_2026-10-10.log"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_launch1_stdout_2026-10-10.log.sha256",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_launch1_stdout_2026-10-10.log.sha256"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4-1_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4-1_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4-2_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4-2_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_restart_store_manifest_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_restart_store_manifest_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_store_read_log_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_store_read_log_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_spline_percall_telemetry_rp1-r2_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_spline_percall_telemetry_rp1-r2_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_telemetry_rp1-r2_2026-10-10.csv",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_telemetry_rp1-r2_2026-10-10.csv"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_test_evidence_rp1-r2_2026-10-10.json",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_test_evidence_rp1-r2_2026-10-10.json"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\.rp1-r2_restart_store_2026-10-10",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\.rp1-r2_restart_store_2026-10-10"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_f1_synth_fixtures_2026-10-10",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\calibration\\f3_step2_rp1-r2_f1_synth_fixtures_2026-10-10"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\provenance\\moved_f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json"
+    },
+    {
+        "source":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json.sha256",
+        "destination":  "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r2_attempt1_2026-10-11\\provenance\\moved_f3_realdata_prep_rp1-r2_size_estimate_2026-10-10.json.sha256"
+    }
+]

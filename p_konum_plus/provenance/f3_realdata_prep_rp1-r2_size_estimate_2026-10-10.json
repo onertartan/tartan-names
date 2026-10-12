@@ -1,0 +1,8 @@
+{
+  "label": "ESTIMATE",
+  "scope": "same binding environment and synthetic full-bank handoff; no real-data timing observed",
+  "trajectories": 6,
+  "measured_elapsed_seconds": 32060.741059200023,
+  "observed_finite_family_optimizer_seconds": 30477.418215909856,
+  "extrapolated_906_trajectory_seconds": 4841171.899939204
+}
