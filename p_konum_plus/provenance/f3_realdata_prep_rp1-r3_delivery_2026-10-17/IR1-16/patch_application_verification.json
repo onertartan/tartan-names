@@ -1,0 +1,47 @@
+{
+  "method": "Normalize CRLF to LF only in disposable baseline copy placed at target path; git -c core.autocrlf=false apply --unidiff-zero -p0; require actual resulting bytes SHA256 to equal approved target. No source/output changed.",
+  "checks": [
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_harness.diff",
+      "return_code": 0,
+      "target_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "target_hash_match": true,
+      "stderr": ""
+    },
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_r4-2_harness.diff",
+      "return_code": 0,
+      "target_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "target_hash_match": true,
+      "stderr": ""
+    },
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tools.diff",
+      "return_code": 0,
+      "target_sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "target_hash_match": true,
+      "stderr": ""
+    },
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tests.diff",
+      "return_code": 0,
+      "target_sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+      "target_hash_match": true,
+      "stderr": ""
+    },
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_launcher.diff",
+      "return_code": 0,
+      "target_sha256": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
+      "target_hash_match": true,
+      "stderr": ""
+    },
+    {
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_writer.diff",
+      "return_code": 0,
+      "target_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
+      "target_hash_match": true,
+      "stderr": ""
+    }
+  ]
+}

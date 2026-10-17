@@ -1,0 +1,336 @@
+"""D-20 C-5 evidence packaging only; this program cannot launch the harness."""
+from __future__ import annotations
+
+import ast
+import csv
+import datetime as dt
+import difflib
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import zipfile
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[2]
+C = ROOT / "p_konum_plus/calibration"
+P = ROOT / "p_konum_plus/provenance"
+Q = ROOT / "p_konum_plus/quarantine/f3_step2_rp1-r3_attempt1_2026-10-16"
+EXTERNAL = Path.home() / "Downloads/rp1r3_preflight"
+HOLD = P / "f3_realdata_prep_rp1-r3_attempt2_holdpoint_2026-10-16"
+CORE = [C / "f3_step2_adequacy_harness_rp1-r3_2026-10-15.py"] + [
+    C / ("f3_rp1-r3_" + stem + "_2026-10-15.py")
+    for stem in ("gate_tools", "technical_tests", "launch_attempt", "write_custody")]
+LOG = P / "f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md"
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def side(path: Path) -> None:
+    checksum = Path(str(path) + ".sha256")
+    value = sha(path)
+    if checksum.exists() and checksum.read_text(encoding="ascii").split() == [value, path.name]:
+        return
+    ending = "\r\n" if checksum.exists() and checksum.read_bytes().endswith(b"\r\n") else "\n"
+    checksum.write_bytes((value + "  " + path.name + ending).encode("ascii"))
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x", encoding="ascii", newline="\n") as stream:
+        stream.write(json.dumps(value, indent=2, ensure_ascii=True) + "\n")
+    side(path)
+
+
+def copy(source: Path, relative: str) -> Path:
+    target = HOLD / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("xb") as stream: stream.write(source.read_bytes())
+    assert sha(target) == sha(source)
+    original_sidecar = Path(str(source) + ".sha256")
+    if original_sidecar.exists() and original_sidecar.read_text(encoding="ascii").split() == [sha(source), source.name]:
+        Path(str(target) + ".sha256").write_bytes(original_sidecar.read_bytes())
+    else:
+        side(target)
+    return target
+
+
+def read_result(execution: str, name: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    folder = EXTERNAL / execution
+    metadata = json.loads((folder / "execution_record.json").read_bytes())
+    assert metadata["end"]["returncode"] == 0, execution
+    data = json.loads((folder / name).read_bytes())
+    code = Path(metadata["start"]["code_path"])
+    assert sha(code) == metadata["start"]["code_sha256"], "EXECUTED_CODE_CHANGED " + str(code)
+    for row in metadata["end"]["retained_outputs"]:
+        assert sha(Path(row["path"])) == row["sha256"], "RETAINED_OUTPUT_CHANGED"
+    return data, metadata
+
+
+def constants(source: str) -> dict[str, Any]:
+    result = {}
+    for node in ast.parse(source).body:
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            try: result[node.targets[0].id] = ast.literal_eval(node.value)
+            except (ValueError, TypeError): pass
+    return result
+
+
+def function_segments(source: str) -> dict[str, bytes]:
+    raw = source.encode("utf-8")
+    offsets = [0]
+    for line in raw.splitlines(keepends=True): offsets.append(offsets[-1] + len(line))
+    return {node.name: raw[offsets[node.lineno - 1] + node.col_offset:
+                           offsets[node.end_lineno - 1] + node.end_col_offset]
+            for node in ast.parse(source).body if isinstance(node, ast.FunctionDef)}
+
+
+def source_proof() -> dict[str, Any]:
+    before = (Q / "workspace" / CORE[0].relative_to(ROOT)).read_text(encoding="utf-8")
+    after = CORE[0].read_text(encoding="utf-8")
+    old, new = function_segments(before), function_segments(after)
+    assert old == new, "C6_HARNESS_FUNCTION_CHANGED"
+    allowed_globals = {"ATTEMPT_NUMBER", "RESTART_STORE_DIR", "RP2_DISPATCH_PINS",
+        "RP3_INCOMING_DISPATCH_PINS", "RP3_CARRIED_DISPATCH_PINS",
+        "SUPERSEDES_ATTEMPT1_WRITER_RECORD_PATH", "SUPERSEDES_ATTEMPT1_WRITER_RECORD_SHA256",
+        "SUPERSEDES_ATTEMPT1_W3_RECORD"}
+    def without_authorized_globals(text: str) -> str:
+        tree = ast.parse(text)
+        tree.body = [n for n in tree.body if not (isinstance(n, ast.Assign)
+            and any(isinstance(t, ast.Name) and t.id in allowed_globals for t in n.targets))]
+        return ast.dump(tree)
+    assert without_authorized_globals(before) == without_authorized_globals(after), "C6_OTHER_GLOBAL_CHANGED"
+    initial, current = constants(before), constants(after)
+    for key in ("SUPERSEDES_HARNESS_SHA256", "SUPERSEDES_CUSTODY_SHA256"):
+        assert initial[key] == current[key], "PARENT_CHAIN_CHANGED"
+    assert current["ATTEMPT_NUMBER"] == 2
+    assert current["SUPERSEDES_ATTEMPT1_WRITER_RECORD_SHA256"] == "5c9661045c6602195296689229834c4f178fb7cab03c9ad5fe3337aa2b9bf459"
+    assert current["SUPERSEDES_ATTEMPT1_W3_RECORD"] == "no attempt-1 W-3 record"
+    unchanged = {}
+    for path in CORE[1:4]:
+        baseline = Q / "workspace" / path.relative_to(ROOT)
+        assert path.read_bytes() == baseline.read_bytes(), "C6_DEPENDENCY_CHANGED"
+        unchanged[path.relative_to(ROOT).as_posix()] = sha(path)
+    writer_before = (Q / "workspace" / CORE[-1].relative_to(ROOT)).read_text(encoding="utf-8")
+    writer_after = CORE[-1].read_text(encoding="utf-8")
+    wa, wb = function_segments(writer_before), function_segments(writer_after)
+    writer_changed = sorted(name for name in wa if wa[name] != wb[name])
+    assert set(wa) == set(wb) and writer_changed == ["literal_constants", "main"]
+    def writer_without_wiring_functions(text: str) -> str:
+        tree = ast.parse(text)
+        tree.body = [n for n in tree.body if not (isinstance(n, ast.FunctionDef)
+                                                and n.name in ("literal_constants", "main"))]
+        return ast.dump(tree)
+    assert writer_without_wiring_functions(writer_before) == writer_without_wiring_functions(writer_after)
+    ledger = P / "f3_realdata_prep_rp1-r3_ledger_2026-10-15.json"
+    assert ledger.read_bytes() == (Q / "workspace" / ledger.relative_to(ROOT)).read_bytes(), "LEDGER_CHANGED"
+    tree = ast.parse(after)
+    own_path = next(ast.literal_eval(n.value) for n in ast.walk(tree) if isinstance(n, ast.Assign)
+                    and any(isinstance(t, ast.Name) and t.id == "_d13_path" for t in n.targets))
+    own_pin = "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a"
+    assert own_path == "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md"
+    assert sha(ROOT / own_path) == own_pin
+    assert any(isinstance(n, ast.Assert) and "_d12_observed" in ast.unparse(n.test)
+               and own_pin in ast.unparse(n.test) for n in ast.walk(tree))
+    return dict(harness_function_segments_unchanged=len(old), main_unchanged=old["main"] == new["main"],
+        run_real_scenario_unchanged=old["run_real_scenario"] == new["run_real_scenario"],
+        all_other_harness_globals_unchanged=True,
+        writer_changed_functions=writer_changed,
+        ledger_unchanged_sha256=sha(ledger),
+        expectations_and_declarations_unchanged=True, unchanged_gate_tests_launcher=unchanged,
+        parent_chain_unchanged=True, C2_D19_path=own_path, C2_D19_observed_sha256=own_pin)
+
+
+def diff_file(source: Path, category: str, old: Path | None, default_label: str) -> dict[str, Any]:
+    before = old.read_bytes().decode("utf-8").splitlines(keepends=True) if old else []
+    after = source.read_bytes().decode("utf-8").splitlines(keepends=True)
+    raw = list(difflib.unified_diff(before, after, fromfile="attempt1/" + source.relative_to(ROOT).as_posix() if old else "/dev/null",
+                                  tofile="attempt2/" + source.relative_to(ROOT).as_posix(), n=0))
+    labels = []
+    hunk = 0
+    line_no = 0
+    current_lines = []
+    header = ""
+
+    def flush() -> None:
+        if not header: return
+        label = default_label
+        if source == CORE[0]:
+            label = "C-1" if any("RP2_DISPATCH_PINS" in x or "RP3_INCOMING_DISPATCH_PINS" in x or "RP3_CARRIED_DISPATCH_PINS" in x for x in current_lines) else "C-4"
+        elif source == CORE[-1]:
+            label = "C-1" if any("statement.value" in x or "value = constants[statement.value" in x for x in current_lines) else "C-4"
+        labels.append(dict(hunk=hunk, header=header.rstrip(), label="R3-5 (D-20 " + label + ")"))
+
+    for line in raw:
+        if line.startswith("@@"):
+            flush()
+            hunk += 1
+            header, current_lines = line, []
+        elif header:
+            current_lines.append(line)
+        line_no += 1
+    flush()
+    target = HOLD / "diffs" / category / (source.name + ".diff")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("x", encoding="utf-8", newline="\n") as stream: stream.writelines(raw)
+    side(target)
+    with target.with_suffix(".labels.csv").open("x", encoding="ascii", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=["hunk", "header", "label"], lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(labels)
+    side(target.with_suffix(".labels.csv"))
+    assert len(labels) == sum(x.startswith("@@") for x in raw)
+    return dict(source=source.relative_to(ROOT).as_posix(), baseline_sha256=sha(old) if old else "<ABSENT>",
+                attempt2_sha256=sha(source), diff=target.relative_to(HOLD).as_posix(), diff_sha256=sha(target), labels=labels)
+
+
+def main() -> None:
+    assert not HOLD.exists(), "HOLD_POINT_EXISTS_DO_NOT_CHANGE_A_BYTE"
+    d20 = ROOT / "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md"
+    assert sha(d20) == "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2"
+    binding_path = P / "f3_realdata_prep_rp1-r3_attempt2_C5_source_binding_2026-10-16.json"
+    binding = json.loads(binding_path.read_bytes())
+    for rel, pin in binding["core_source_hashes"].items(): assert sha(ROOT / rel) == pin
+    for rel, pin in binding["historical_check_code_hashes"].items(): assert sha(ROOT / rel) == pin
+    c3, c3_meta = read_result("2026-10-16_attempt2_C3_execution03", "C3_literal_listing.json")
+    history, history_meta = read_result("2026-10-16_attempt2_C5_a1_execution01", "comparison_result.json")
+    synthetic, synthetic_meta = read_result("2026-10-16_attempt2_C5_a2_execution01", "synthetic_result.json")
+    rrs, rrs_meta = read_result("2026-10-16_attempt2_C5_rrs_execution01", "RRS_result.json")
+    w3, w3_meta = read_result("2026-10-16_attempt2_C5_w3_execution01", "W3_check_result.json")
+    assert history["passed"] and not history["further_findings"]
+    assert synthetic["passed"] and rrs["test"]["pass_"] and w3["passed"]
+    assert not c3["restoration_required"] and not c3["TEXT_literals_changed_from_attempt1"]
+    for dataset in (history, synthetic, rrs):
+        for path, pin in dataset["inputs"].items(): assert sha(Path(path)) == pin
+    proof = source_proof()
+    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() == "25c7d51a0d14e8935f464a7a52d6a49ef4383e2b"
+    assert not subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=ROOT).strip()
+    assert not (P / "f3_step2_rp1-r3_preexecution_custody_attempt2_launch1_2026-10-15.md").exists()
+    assert not (P / "f3_step2_rp1-r3_attempt2_launch1_start_2026-10-15.json").exists()
+    assert not (C / ".rp1-r3_attempt2_restart_store_2026-10-15").exists()
+    checks = dict(
+        a1=dict(passed=history["passed"], code_sha256=history_meta["start"]["code_sha256"],
+            input_hashes=history["inputs"], comparator_row_counts=history["comparator_row_counts"],
+            further_findings=len(history["further_findings"]), traceback_rows=len(history["normalized_trace_rows"]),
+            trace_classifications_match_delivered=history["trace_classifications_match_delivered"],
+            historical_postcomparison_finalization_findings=len(history["historical_postcomparison_finalization_findings"])),
+        a2=dict(passed=synthetic["passed"], code_sha256=synthetic_meta["start"]["code_sha256"], input_hashes=synthetic["inputs"],
+            tests=synthetic["tests"], namespaces={key: dict(declarations=len(value["declarations"]), rows=len(value["rows"]),
+                failures=len(value["failures"]), all_declarations_held=value["all_declarations_held"]) for key, value in synthetic["namespaces"].items()}),
+        RRS=dict(code_sha256=rrs_meta["start"]["code_sha256"], **rrs),
+        W3=dict(code_sha256=w3_meta["start"]["code_sha256"], **w3))
+    now = dt.datetime.now(dt.timezone.utc).isoformat()
+    state = dict(event="D20_ATTEMPT2_HOLD_POINT_READY_NO_LAUNCH", created_utc=now,
+        packager_code_sha256=sha(Path(__file__)),
+        authority_path=d20.relative_to(ROOT).as_posix(), authority_sha256=sha(d20), decision="B",
+        harness_sha256=sha(CORE[0]), writer_sha256=sha(CORE[-1]), source_proof=proof,
+        C3_counts=c3["count_by_class"], C3_real_input_hashes_NOT_OBSERVED=c3["real_input_hashes_not_observed"],
+        C3_TEXT_review_count=len(c3["TEXT_historical_descriptors_retained"]),
+        C5_all_passed=all((history["passed"], synthetic["passed"], rrs["test"]["pass_"], w3["passed"])),
+        active_W3_record_created=False, harness_launched=False, active_attempt_store_created=False,
+        actual_optimizer_calls=0, full_launch_authorized=False, commit=False, push=False,
+        instruction="Stop here; require separate PI approval naming this harness and all changed-file hashes. Any byte change requires a new hold point.")
+    with LOG.open("a", encoding="utf-8", newline="\n") as stream:
+        stream.write("\n```json\n" + json.dumps(state, indent=2, ensure_ascii=True) + "\n```\n")
+    side(LOG)
+    HOLD.mkdir()
+    write_json(HOLD / "holdpoint_state.json", state)
+    write_json(HOLD / "C5_results.json", checks)
+    copy(EXTERNAL / "2026-10-16_attempt2_C3_execution03/C3_literal_listing.csv", "C3_literal_listing.csv")
+    copy(EXTERNAL / "2026-10-16_attempt2_C3_execution03/C3_literal_listing.json", "C3_literal_listing.json")
+    write_json(HOLD / "C6_scope_proof.json", proof)
+    for execution in ("2026-10-16_attempt2_C3_execution03", "2026-10-16_attempt2_C5_a1_execution01",
+                      "2026-10-16_attempt2_C5_a2_execution01", "2026-10-16_attempt2_C5_rrs_execution01", "2026-10-16_attempt2_C5_w3_execution01"):
+        copy(EXTERNAL / execution / "execution_record.json", "executions/" + execution + ".json")
+    copied_sources = CORE + [C / ("f3_rp1-r3_attempt2_" + stem + "_2026-10-16.py")
+        for stem in ("literal_listing", "rrs_check", "w3_check", "holdpoint_package")]
+    copied_sources += [C / name for name in ("f3_rp1-r3_cached_historical_comparison_2026-10-15.py",
+        "f3_rp1-r3_historical_comparison_2026-10-15.py", "f3_rp1-r3_synthetic_prevalidation_2026-10-15.py",
+        "f3_rp1-r3_logged_preflight_2026-10-15.py")]
+    for source in copied_sources:
+        side(source)
+        copy(source, "sources/attempt2/" + source.relative_to(ROOT).as_posix())
+    for source in (CORE[0], CORE[-1], LOG):
+        copy(Q / "workspace" / source.relative_to(ROOT), "sources/attempt1/" + source.relative_to(ROOT).as_posix())
+    copy(LOG, "records/" + LOG.name)
+    copy(binding_path, "records/" + binding_path.name)
+    copy(d20, "prompts/" + d20.name)
+    # Preserve incoming sidecar bytes, including their original line endings.
+    (HOLD / "prompts" / (d20.name + ".sha256")).write_bytes(Path(str(d20) + ".sha256").read_bytes())
+    for name in ("quarantine_inventory_2026-10-16.csv", "quarantine_record_2026-10-16.json"):
+        copy(Q / name, "quarantine/" + name)
+    changed = [CORE[0], CORE[-1], LOG, binding_path, d20] + copied_sources[5:9]
+    diffs = []
+    for source in changed:
+        old = Q / "workspace" / source.relative_to(ROOT)
+        label = "C-4" if source == LOG else "C-1" if source == d20 else "C-3" if "literal_listing" in source.name else "C-5"
+        diffs.append(diff_file(source, "primary", old if old.exists() else None, label))
+        checksum = Path(str(source) + ".sha256")
+        old_checksum = Q / "workspace" / checksum.relative_to(ROOT)
+        diffs.append(diff_file(checksum, "sidecars", old_checksum if old_checksum.exists() else None, "C-4"))
+    write_json(HOLD / "attempt1_to_attempt2_diff_index.json", diffs)
+    changed_rows = []
+    for source in sorted(set(changed + [Path(str(x) + ".sha256") for x in changed])):
+        old = Q / "workspace" / source.relative_to(ROOT)
+        changed_rows.append(dict(path=source.relative_to(ROOT).as_posix(), attempt1_sha256=sha(old) if old.exists() else "<ABSENT>",
+                                 attempt2_sha256=sha(source), bytes=source.stat().st_size))
+    with (HOLD / "changed_file_hashes.csv").open("x", encoding="ascii", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(changed_rows[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(changed_rows)
+    side(HOLD / "changed_file_hashes.csv")
+    with (HOLD / "all_code_hashes.csv").open("x", encoding="ascii", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=["path", "sha256", "changed_from_attempt1"], lineterminator="\n")
+        writer.writeheader()
+        for source in copied_sources:
+            baseline = Q / "workspace" / source.relative_to(ROOT)
+            writer.writerow(dict(path=source.relative_to(ROOT).as_posix(), sha256=sha(source),
+                                 changed_from_attempt1=not baseline.exists() or sha(baseline) != sha(source)))
+    side(HOLD / "all_code_hashes.csv")
+    report = "# rp1-r3 attempt 2 — D-20 bekleme noktası\n\n**Tam koşu başlatılmadı. Ayrı PI onayı bekleniyor.**\n\n"
+    report += "Hazırlanma zamanı (UTC): `" + now + "`. D-20 SHA256: `" + sha(d20) + "`.\n\n"
+    report += "- Attempt-2 harness SHA256: `" + sha(CORE[0]) + "`.\n"
+    report += "- Değişen W-3 yazıcısı SHA256: `" + sha(CORE[-1]) + "`.\n"
+    report += "- C-3 sınıfları: " + ", ".join(k + "=" + str(v) for k, v in c3["count_by_class"].items()) + ". Bekleyen HISTPATH restorasyonu=" + str(len(c3["restoration_required"])) + ".\n"
+    report += "- C-5: tarihsel karşılaştırmada yeni fark=" + str(len(history["further_findings"])) + "; "
+    report += ", ".join(k + " " + str(len(v["cases"])) + "/" + str(len(v["cases"])) for k, v in synthetic["tests"].items()) + ".\n"
+    report += "- Ayrı RRS koşusu=" + str(len(rrs["test"]["cases"])) + "/" + str(len(rrs["test"]["cases"])) + "; kontrol kopyasında W-3 pinleri=" + str(len(w3["pin_checks"])) + "/" + str(len(w3["pin_checks"])) + ".\n"
+    report += "- C-6: main dahil " + str(proof["harness_function_segments_unchanged"]) + " fonksiyonun AST kaynak bölümü attempt-1 ile aynı. Gate tools, teknik testler ve launcher baytları korunuyor. Hiçbir expectation/declaration değişmedi.\n\n"
+    report += "C-3'teki iki gerçek F1 girdi yolu için dosya hash'i **NOT OBSERVED**: açık okuma/hash yasağı nedeniyle bu girdiler açılmadı. Kaynak literal karşılıkları listelenmiştir. Ayrıntılar C3_literal_listing.json içindedir.\n\n"
+    report += "Attempt-1'den kalan " + str(len(c3["TEXT_historical_descriptors_retained"])) + " TEXT farkı C-3 listesinde işaretlidir; bu açıklamalar düzeltilmedi. Carried kayıtların yanlış görünen eski açıklama metinleri de korunur; gerçek pin yolları ve hash'leri C-1'e göre doğrudur.\n\n"
+    report += "W-3 testi yalnız metadata dosyalarından oluşan ayrı kontrol kopyasında çalıştı. Ürettiği test custody dosyası aktif alana veya store'a alınmadı. Aktif attempt-2 W-3/launch kaydı ve store yok. Eski otomatik controller bu hazırlıkta çalıştırılmadı ve attempt-2 launch yöntemi olarak seçilmedi.\n\n"
+    report += "Tarihsel karşılaştırmada teslim edilmiş sonuçların karşılaştırmadan sonra eklenen alanlarına ait " + str(len(history["historical_postcomparison_finalization_findings"])) + " önceki fark ayrıca kaydedildi; tam exception metninin getirdiği yeni fark yok. Son tam koşunun gerçek 0 U koşulunun yerine bu kontrol konmuyor.\n\n"
+    report += "C-5 ham test çıktıları dış kontrol dizinlerinde korunuyor; burada sonuç kayıtları, kod hash'leri ve yürütme custody kayıtları teslim ediliyor. Bilimsel sonuç dosyasına, test_evidence teslimatına veya store'a hiçbir kontrol çıktısı aktarılmadı.\n\n"
+    report += "**Onay kapsamı:** changed_file_hashes.csv tüm uygulama/girdi/kayıt değişikliklerini ve sidecar hash'lerini; all_code_hashes.csv değişmeyenler dahil yürütülen kod hash'lerini verir. Diff'lerin kendileri ve üretilmiş paket indeksleri manifestte hash'lenir; kendi diff'leri üretilmez. Her diff hunk'ının tek D-20 etiketi vardır.\n\n"
+    report += "Bu bekleme noktasından sonra dosyalarda bir bayt değişirse yeni bekleme noktası gerekir. Tam koşu, bu harness ve diğer değişen dosya hash'lerini adlandıran ayrı PI onayı olmadan başlamaz. Commit/push yapılmadı; defterde madde kapatılmadı.\n"
+    with (HOLD / "BEKLEME_NOKTASI.md").open("x", encoding="utf-8", newline="\n") as stream: stream.write(report)
+    side(HOLD / "BEKLEME_NOKTASI.md")
+    payloads = [p for p in sorted(HOLD.rglob("*")) if p.is_file() and p.suffix != ".sha256"]
+    manifest = []
+    for path in payloads:
+        checksum = Path(str(path) + ".sha256")
+        assert checksum.exists() and checksum.read_text(encoding="ascii").split()[0] == sha(path)
+        manifest.append(dict(path=path.relative_to(HOLD).as_posix(), sha256=sha(path),
+                             sidecar_path=checksum.relative_to(HOLD).as_posix(), sidecar_sha256=sha(checksum)))
+    with (HOLD / "manifest.csv").open("x", encoding="ascii", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(manifest[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(manifest)
+    side(HOLD / "manifest.csv")
+    archive = Path.home() / "Downloads/f3_realdata_prep_rp1-r3_attempt2_holdpoint_2026-10-16.zip"
+    with zipfile.ZipFile(archive, "x", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for path in sorted(HOLD.rglob("*")):
+            if path.is_file(): bundle.write(path, path.relative_to(HOLD).as_posix())
+    side(archive)
+    for row in changed_rows: assert sha(ROOT / row["path"]) == row["attempt2_sha256"], "BYTE_CHANGED_AFTER_HOLD"
+    print(json.dumps(dict(state="HOLD_AWAITING_SEPARATE_PI_APPROVAL", report=str(HOLD / "BEKLEME_NOKTASI.md"),
+        archive=str(archive), archive_sha256=sha(archive), harness_sha256=sha(CORE[0]), writer_sha256=sha(CORE[-1]),
+        manifest_sha256=sha(HOLD / "manifest.csv"), code_files=len(copied_sources), changed_file_rows=len(changed_rows),
+        full_run_started=False, commit=False, push=False), ensure_ascii=True))
+
+
+if __name__ == "__main__":
+    main()

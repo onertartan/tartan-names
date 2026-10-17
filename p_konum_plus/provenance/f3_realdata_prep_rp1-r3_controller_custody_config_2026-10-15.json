@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-10-15T19:08:59.390075+00:00",
+  "parent_commit": "25c7d51a0d14e8935f464a7a52d6a49ef4383e2b",
+  "source_pins": {
+    "p_konum_plus/calibration/f3_rp1-r3_cached_historical_comparison_2026-10-15.py": "535680c8b2d0e83d5a5eef3a19c3653719aebd8a4e7e85cd67542f7f5e0d918e",
+    "p_konum_plus/calibration/f3_rp1-r3_finalize_delivery_2026-10-15.py": "425a1b65e289ffa44e63ce4603d35d6f654353c404c0450e437573631390ec0b",
+    "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+    "p_konum_plus/calibration/f3_rp1-r3_historical_comparison_2026-10-15.py": "72c72f02509c62d40e7c2d0ae3414b43fe90872173a223db5606f1d999b0d2cd",
+    "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
+    "p_konum_plus/calibration/f3_rp1-r3_logged_preflight_2026-10-15.py": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
+    "p_konum_plus/calibration/f3_rp1-r3_run_controller_2026-10-15.py": "bf8279346e9323980e6d89d66889e09742b3e6aaf807d5f7affd0b0e79015214",
+    "p_konum_plus/calibration/f3_rp1-r3_synthetic_prevalidation_2026-10-15.py": "b216d013e48a1e800419630b2c6d6e4b27d612fd14d8303ddb04db0898f46a29",
+    "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+    "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py": "f6f5c05f755de52db4b09016e08261126fb3d2c767f20bd3e1b61e7cc6a718e5",
+    "p_konum_plus/calibration/f3_rp1-r3_write_diff_records_2026-10-15.py": "952b67016cf3d5bbe676a3759c1af8cf342146cba10fa63c13144ae78c57ca29",
+    "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db"
+  },
+  "historical_execution_id": "2026-10-15_historical_execution04",
+  "historical_output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_historical_execution04",
+  "historical_wrapper_pid": 59476,
+  "synthetic_output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution04",
+  "controller_log_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\launch_records",
+  "authority": "Signed D-19 and source-pinned D-14 verification in the launcher/writer; configuration is custody, not a bypass or free authorization flag",
+  "commit": false
+}

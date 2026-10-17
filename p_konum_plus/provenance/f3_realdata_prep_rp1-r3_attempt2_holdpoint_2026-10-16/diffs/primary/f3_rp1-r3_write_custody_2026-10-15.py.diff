@@ -1,0 +1,13 @@
+--- attempt1/p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py
++++ attempt2/p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py
+@@ -36,0 +37,6 @@
++            elif (statement.targets[0].id == "RP2_DISPATCH_PINS"
++                  and isinstance(statement.value, ast.BinOp) and isinstance(statement.value.op, ast.Add)
++                  and isinstance(statement.value.left, ast.Name) and isinstance(statement.value.right, ast.Name)
++                  and statement.value.left.id == "RP3_INCOMING_DISPATCH_PINS"
++                  and statement.value.right.id == "RP3_CARRIED_DISPATCH_PINS"):
++                value = constants[statement.value.left.id] + constants[statement.value.right.id]
+@@ -104,0 +111,3 @@
++    observed.update(supersedes_attempt1_writer_record_path=constants["SUPERSEDES_ATTEMPT1_WRITER_RECORD_PATH"],
++                    supersedes_attempt1_writer_record_sha256=constants["SUPERSEDES_ATTEMPT1_WRITER_RECORD_SHA256"],
++                    supersedes_attempt1_W3_record=constants["SUPERSEDES_ATTEMPT1_W3_RECORD"])

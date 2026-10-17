@@ -1,0 +1,6 @@
+{
+  "previous_transfer": "final_checks_transfer_script.py",
+  "event": "Documentary finalizer stopped before the final transmission/ZIP because MANIFEST_PATH is an AST Name alias, not a literal. This resume resolves only literal assignments and aliases without importing or changing the harness.",
+  "source_code_changed": false,
+  "run_outputs_changed": false
+}

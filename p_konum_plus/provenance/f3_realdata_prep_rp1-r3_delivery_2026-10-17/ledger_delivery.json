@@ -1,0 +1,665 @@
+{
+  "status": "PREPARED_PENDING_INDEPENDENT_AUDIT",
+  "source_ledger_sha256": "266a4f7bcf5cd5a18c91f68c7857ad587a6ee051c5a1a87454348e1056770bbc",
+  "closure_policy": "No executor closure; historical dispositions are attributed only. All current items await independent verification.",
+  "items": [
+    {
+      "id": "RP1A-01",
+      "source": "rp1 audit 2fa28e2a\u2026, finding RP1A-01",
+      "classification": "HESAPLAMA (D-12 \u00a79: R-1); B under D-11 r1 \u00a75(iii) per PI-a",
+      "closure_point": "rp1-r3 independent audit",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": true,
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+          "sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db"
+        },
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_diff_custody_2026-10-15.json",
+          "sha256": "efcd644eba0e8adec4a2c2d9150678a9e0de363c95304b611faf0bcdb8639472"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "RP1A-02",
+      "source": "rp1 audit, finding RP1A-02",
+      "classification": "HESAPLAMA (R-2); B per PI-a",
+      "closure_point": "this package (R-2), audit-closed",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "RP1A-03",
+      "source": "rp1 audit, finding RP1A-03",
+      "classification": "HESAPLAMA (R-3); B per PI-a",
+      "closure_point": "rp1-r3 independent audit",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": true,
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py",
+          "sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045"
+        },
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+          "sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "RP1A-04",
+      "source": "rp1 audit, finding RP1A-04",
+      "classification": "HESAPLAMA code part (R-5) + KAYIT record part (R-6); PI-d ride-along",
+      "closure_point": "this package, audit-closed",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "RP1A-05",
+      "source": "rp1 audit, finding RP1A-05",
+      "classification": "KAYIT (R-6); PI-d ride-along",
+      "closure_point": "this package, next-inventory-level closure (D-11 r1 \u00a72 KAYIT row)",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "RP1A-06",
+      "source": "rp1 audit, finding RP1A-06",
+      "classification": "KAYIT (R-6); PI-d ride-along",
+      "closure_point": "rp1-r3 independent audit",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": true,
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_diff_custody_2026-10-15.json",
+          "sha256": "efcd644eba0e8adec4a2c2d9150678a9e0de363c95304b611faf0bcdb8639472"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "RP1A-07",
+      "source": "rp1 audit, finding RP1A-07 (evidence limit)",
+      "classification": "HESAPLAMA (R-4)",
+      "closure_point": "this package delivers the procedure; CLOSED only by the auditor's actual re-run",
+      "historical_evidence": "Prior rp1-r1 audit ledger; no new executor closure.",
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "predecessor_executor_status": "CLOSED (prior auditor decision only)",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] \u00d6nceki audit kayd\u0131n\u0131n ilgili CLOSED sat\u0131r\u0131 do\u011fruland\u0131; yeniden kapatma yok."
+    },
+    {
+      "id": "R42A-03 (b)",
+      "source": "A-5 C-31 FAIL / D-8 PI-3 (code item bound before real-data fitting); rp1 delivered the code (C-1)",
+      "classification": "HESAPLAMA (re-verified by R-5)",
+      "closure_point": "re-verified this package; CLOSED only by audit",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "R42A-09",
+      "source": "A-5, informational/latent (fit_spline tag derivation from any same-fixture/mask-id capture)",
+      "classification": "HESAPLAMA (re-verified/strengthened by R-1(ii), family-qualified ids)",
+      "closure_point": "re-verified this package",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "OPEN",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k.",
+      "current_evidence": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR2-05_R42A-09_current_evidence.json"
+    },
+    {
+      "id": "D-9 \u00a72(a) binding of rp1/rp1-r1 bytes",
+      "source": "D-9 \u00a72(a); rp1 report \u00a79 (\"rp1 bytes NOT bound\"); D-12 \u00a74",
+      "classification": "B\u0130L\u0130MSEL-a-adjacent gate (PI authority)",
+      "closure_point": "a PI record after the rp1-r1 independent audit confirms RP1A-01\u202603",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "OPEN",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "OPEN",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] PI binding kayd\u0131 gerekir; bu denetim ba\u011flama de\u011fildir."
+    },
+    {
+      "id": "A.5 (iii) inadmissible refit",
+      "source": "carried from D-7 / rp1 report \u00a78 uncovered_coverage_rows",
+      "classification": "B\u0130L\u0130MSEL-a (D-11 r1 \u00a75: a rule-reading or PI-authority finding)",
+      "closure_point": "a PI decision; no code change scheduled",
+      "historical_evidence": "Previous package evidence is historical; current correction has not run.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "OPEN",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "OPEN",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] PI bilimsel kural karar\u0131 gerekir; counter yaln\u0131z g\u00f6zlemdir."
+    },
+    {
+      "id": "IR1-01",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:169",
+      "classification": "B",
+      "closure_point": "rp1-r2 independent audit; IR1-13 requires evidence or an item-specific PI decision",
+      "historical_evidence": "[A] Wrong report hash and false OBSERVED claim; [X] invention mechanism is executor disclosure. Current r1 has the correct named-file hash and sidecar. Historical B(iii) custody defect; correction independently verified.",
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "predecessor_executor_status": "CLOSED (prior auditor decision only)",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] \u00d6nceki audit kayd\u0131n\u0131n ilgili CLOSED sat\u0131r\u0131 do\u011fruland\u0131; yeniden kapatma yok."
+    },
+    {
+      "id": "IR1-02",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:171",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A-S] Removing real_x or real_mask_ids from an F1 scenario produces TypeError, not F1ContractGap. Only four legacy fields are guarded; real-mode intake requirements are omitted. R-1(iii) remains unmet.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-03",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:173",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] mid() builds the ID at 2146 and f1_context_id_table builds it independently at 3001. Matching literals and a passing current set comparison do not supply the ONE builder required by R-1(ii).",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-04",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:175",
+      "classification": "B",
+      "closure_point": "rp1-r2 independent audit; IR1-13 requires evidence or an item-specific PI decision",
+      "historical_evidence": "[A] Reproduction gate compares sorted (sex,name) tuples, not the frozen 14-column eligible-manifest bytes. The changed-manifest test removes one tuple at 3326; it does not change one byte. No synthetic hash-table or eligible-manifest deliverable is exported. R-1(iv) and \u00a77 remain unmet.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-05",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:177",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] z_qc_pass and gate_pass retain literal ok=True at 3065/3072 inside the loader test changed by this package. R-2 explicitly covers all cases of this test. Delivered got=True does not make the assertion computed.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-06",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:179",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] Recursive flattening stops at declared dictionaries, including MAY_DIFFER counter maps and atomic test blocks. This is not every-leaf full depth. Capture counts 8/1/1 are declared in reasons and preserved by normalized list equality against the pinned baseline. CSV at 5638 drops kind, held, and a declaration ID. R-3 deliverable and gate requirements remain unmet.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-07",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:181",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A-S] a_val==b_val continues before expectation evaluation. Wrong equal COUNT values and an ADDITION already present in both files both return zero U findings. B(iii): the required gate is not enforced.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-08",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:183",
+      "classification": "K",
+      "closure_point": "rp1-r3 independent audit",
+      "historical_evidence": "[A-S] A changed exception raise location is accepted after the whole traceback is removed. Actual delivered traces differ by path AND verified unchanged-line shifts; source-line mapping shows no present semantic stack change. The current comparator nevertheless hides future stack changes.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": true,
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py",
+          "sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045"
+        },
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+          "sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "IR1-09",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:185",
+      "classification": "K",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A-S] The aggregate test requires cold.fit1_reads==0 although the helper allows a valid read from a prior process. Simulating both helpers passing with 146 resumed reads makes the aggregate fail. R-5 says first fit need not be fresh.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-10",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:187",
+      "classification": "K",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] Coarse nrgates_all/unittests_all/realscen replay paths append saved rows without changing source to replay (also 4312,4407). Only fine splmode replay was repaired. A restart can therefore label stored optimizer rows fresh.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-11",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:189",
+      "classification": "K",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] Handoff optimizer rows carry nr_gates rather than a handoff phase. _key_family at 235 omits f1handoff__, so code-produced family display is f1handoff instead of onestart/splmode. Both fixes change code-produced records and cannot be T under D-11 \u00a75.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-12",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:191",
+      "classification": "B",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] Handoff discards run_real_scenario returned family telemetry. Independent plan matches all 47706 handoff start-unit identities, but delivered bytes cannot reconcile their actual primary/fallback optimizer records or timing. \u00a79(6) full computation accounting is not established.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-13",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:193",
+      "classification": "B",
+      "closure_point": "rp1-r2 independent audit; IR1-13 requires evidence or an item-specific PI decision",
+      "historical_evidence": "[A] A 9h44 standalone pre-verification is disclosed outside the two primary attempts. [X] Its executed code hash, launch/custody record, output paths, and evidence excluding its outputs from deliverables/attempt-2 store are not supplied. Audit \u00a75.7 cannot be satisfied. No scientific difference or real-data access is inferred from this absence.",
+      "disposition": "RECORDED_LIMITATION under D-14",
+      "pi_record_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+      "pi_record_sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "OPEN",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "OPEN",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "OPEN / B; D-14 RECORDED_LIMITATION; original standalone source hash NOT OBSERVED; D-14 not extended to IR2-07."
+    },
+    {
+      "id": "IR1-14",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:195",
+      "classification": "T",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[X] Historical transport ZIP bytes and deleted dry-copy custody bytes are absent. The 108-occurrence self-scan has 106 independently traceable occurrences, one known historical mismatch, and one deleted custody value that remains unverified; 107 verified is not established.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Eksik tarihsel baytlar X/NOT OBSERVED; yanl\u0131\u015f verification iddias\u0131 yenilenmemi\u015f."
+    },
+    {
+      "id": "IR1-15",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:197",
+      "classification": "T",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] Register states 8895 handoff SPL rows; delivered per-call CSV has 9223 (all F3-REAL). Inventory states 11 upstream files while listing 12. Report says the external W-3 writer verified 31 preconditions; its INSTR list has 20 (the harness separately verifies 31). The estimate says 42k+ warning records; delivered stderr contains 33013 warning records (66026 lines), including 28 RuntimeWarnings. The older SCEN-A estimate describes full banks, but its family telemetry comes from MINI_BANK; this scope mismatch must be disclosed.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Named errata say\u0131lar\u0131, writer AST listesi ve eski telemetry/stderr yeniden say\u0131ld\u0131; envanter listesi ayr\u0131ca say\u0131ld\u0131."
+    },
+    {
+      "id": "IR1-16",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:199",
+      "classification": "T",
+      "closure_point": "rp1-r3 independent audit",
+      "historical_evidence": "[A] Both patches apply exactly to the delivered target, but labels are generated by keyword matches. Hunks 11\u201316 change family arguments to mid() and are falsely described as header/comment-only S5-WIRING; 19 changes ID construction (R-1), and 20 changes denominator comparison (R-2). The vs-r4-2 C-3 hunk includes R-1/R-2 changes.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": true,
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_diff_custody_2026-10-15.json",
+          "sha256": "efcd644eba0e8adec4a2c2d9150678a9e0de363c95304b611faf0bcdb8639472"
+        }
+      ],
+      "current_evidence": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/diff_custody.json"
+    },
+    {
+      "id": "IR1-17",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:201",
+      "classification": "T",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] First ledger omits the already-known deferred F1 input-table sidecar item. Record-only rows use OPEN\u2192closes on delivery rather than the instruction\u2019s pending-verification status. New code-produced display issue is later classified T.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Eksik ertelenmi\u015f sidecar maddesi ta\u015f\u0131nm\u0131\u015f, current executor closure yok; yeni R42A-09 stale-record bulgusu ayr\u0131d\u0131r."
+    },
+    {
+      "id": "IR1-18",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:203",
+      "classification": "K",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A-S] Unchanged writer sets first launch number from ATTEMPT_NUMBER=2. Auditor procedure requests first auditor launch 1; own custody thus incorrectly says first launch=2 while actual launch=1. Harness accepts it because it checks hashes/fingerprint, not that declaration.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k."
+    },
+    {
+      "id": "IR1-19",
+      "source": "f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md:205",
+      "classification": "T",
+      "closure_point": "rp1-r2 audit",
+      "historical_evidence": "[A] 1021 added synthetic .txt files have neither individual sidecars nor per-file hashes in the manifest (filenames only). Their generator and actual disjointness are independently checked, but audit \u00a71.1\u2019s explicit reason for omitting each sidecar is absent.",
+      "prelaunch_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "predecessor_executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "closure_attribution": "closed by the rp1-r2 independent audit dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2; prior-auditor-only qualification retained where written in auditor_status",
+      "status": "HISTORICAL_AUDIT_ATTRIBUTION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Fixture custody ve ayr\u0131 delivery sidecar a\u011fac\u0131 b\u00fct\u00fcn explicit dosyalarda do\u011fruland\u0131."
+    },
+    {
+      "id": "F1 input-hash-table sidecar",
+      "source": "rp1-r1 instruction and independent audit",
+      "classification": "T",
+      "closure_point": "real-data step 1",
+      "historical_evidence": "Deferred; real F1 table remains unopened.",
+      "prelaunch_status": "OPEN",
+      "predecessor_executor_status": "OPEN",
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "due_in_rp1_r3": false,
+      "status": "OPEN",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": "[A]/[A-S] Kapan\u0131\u015f noktas\u0131 real-data step 1; O-4 say\u0131m istisnas\u0131 bu maddeyi kapatmaz."
+    },
+    {
+      "id": "IR2-01",
+      "classification": "K",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+          "sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "IR2-02",
+      "classification": "K",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+          "sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "IR2-03",
+      "classification": "B (iii), proposed; rule-interpretation disposition belongs to PI",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "PI_disposition": "disposed by D-18 PI-2, scope verification pending",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+          "sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db"
+        },
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_diff_custody_2026-10-15.json",
+          "sha256": "efcd644eba0e8adec4a2c2d9150678a9e0de363c95304b611faf0bcdb8639472"
+        },
+        {
+          "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md",
+          "sha256": "fe9b2b539f55efeda94d61c77ad30bd146de2ebcbbbf4d7a203fb13a8c0dcfa0"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "IR2-04",
+      "classification": "T",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_auditor_rerun_procedure_r1_2026-10-15.md",
+          "sha256": "f5141e15f968b7971fc40547c9e0b3263ec86df21f28346597b77948866a5d09"
+        }
+      ],
+      "current_evidence": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/auditor_rerun_procedure_r1.md"
+    },
+    {
+      "id": "IR2-05",
+      "classification": "T",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+          "hash_reference": "Ledger own sidecar; no recursive self hash"
+        }
+      ],
+      "current_evidence": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR2-05_R42A-09_current_evidence.json"
+    },
+    {
+      "id": "IR2-06",
+      "classification": "T",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+          "sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db"
+        }
+      ],
+      "current_evidence": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json"
+    },
+    {
+      "id": "IR2-07",
+      "classification": "T (traceability evidence limit)",
+      "closure_point": "rp1-r3 independent audit",
+      "due_in_rp1_r3": true,
+      "auditor_record": "f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+      "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+      "status": "IMPLEMENTED_PENDING_VERIFICATION",
+      "source_ledger": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json",
+      "source_evidence": [
+        {
+          "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_IR2-07_observations_2026-10-15.json",
+          "sha256": "c355979573c434aa0288fb0891046ab30649c28d61b75a321fcc41c48d6db351"
+        }
+      ],
+      "current_evidence": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR2-07_reverification.json"
+    }
+  ]
+}

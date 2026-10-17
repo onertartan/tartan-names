@@ -1,0 +1,13 @@
+{
+  "parent_attempt_log": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md",
+  "parent_attempt_log_sha256": "1ff6589456710386b3978446f09aa10a5df9a39d99ef3a92860232eb85cf2cc4",
+  "event": "POSTRUN_DOCUMENTARY_DELIVERY_ONLY",
+  "source_end": "p_konum_plus/provenance/f3_step2_rp1-r3_attempt2_launch1_end_2026-10-15.json",
+  "return_code": 0,
+  "prior_attempt_failure": "Attempt 1 stopped in the W-3 writer before computation; signed D-20 B authorized bounded attempt-2 repairs and hold point. Attempt-2 code was separately approved by the PI before launch.",
+  "IR1_13": "OPEN / B under signed D-14; RECORDED_LIMITATION",
+  "code_changed": false,
+  "run_outputs_changed": false,
+  "commit": false,
+  "push": false
+}

@@ -1,0 +1,14 @@
+hunk,side,first,last,label,reason
+1,new,31,38,R3-2,Source content and originating package; exact non-overlapping changed-line range.
+2,new,101,111,R3-2,Source content and originating package; exact non-overlapping changed-line range.
+2,new,112,113,R3-5,Source content and originating package; exact non-overlapping changed-line range.
+2,new,114,142,R3-3,Source content and originating package; exact non-overlapping changed-line range.
+2,new,143,144,R3-5,Source content and originating package; exact non-overlapping changed-line range.
+2,new,145,176,R3-1,Source content and originating package; exact non-overlapping changed-line range.
+2,new,177,193,R3-5,Source content and originating package; exact non-overlapping changed-line range.
+3,old,134,136,R3-2,Source content and originating package; exact non-overlapping changed-line range.
+3,old,137,150,R3-3,Source content and originating package; exact non-overlapping changed-line range.
+3,old,151,158,R3-1,Source content and originating package; exact non-overlapping changed-line range.
+3,new,235,235,R3-2,Source content and originating package; exact non-overlapping changed-line range.
+3,new,236,236,R3-3,Source content and originating package; exact non-overlapping changed-line range.
+3,new,237,237,R3-1,Source content and originating package; exact non-overlapping changed-line range.

@@ -1,0 +1,17 @@
+{
+  "protected_files": 2500,
+  "protected_mismatches": [],
+  "source_code_changed": false,
+  "run_outputs_changed": false,
+  "tracked_diff": "",
+  "fixture_files_verified": 2204,
+  "diff_records": 6,
+  "changed_line_label_coverage": true,
+  "result_status": "PREPARED_PENDING_INDEPENDENT_AUDIT",
+  "s_findings": 0,
+  "u_findings": 0,
+  "declared_expectations_held": true,
+  "all_recorded_tests_ran_and_passed": true,
+  "commit": false,
+  "push": false
+}

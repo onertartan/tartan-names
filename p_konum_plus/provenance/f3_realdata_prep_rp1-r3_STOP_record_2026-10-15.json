@@ -1,0 +1,9 @@
+{
+  "event": "CONTROLLER_STOP",
+  "reason": "ATTEMPT1_FAILED_NO_AUTOMATIC_CORRECTION",
+  "exception_type": "AssertionError",
+  "full_run_authorized_only_after_all_gates": true,
+  "no_automatic_code_or_declaration_changes": true,
+  "real_data_access": false,
+  "commit": false
+}

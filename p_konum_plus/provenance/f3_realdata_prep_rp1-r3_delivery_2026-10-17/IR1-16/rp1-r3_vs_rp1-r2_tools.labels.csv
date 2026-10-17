@@ -1,0 +1,4 @@
+hunk,side,first,last,label,reason
+1,old,242,243,R3-1,Source-derived label for this exact changed-line interval; disjoint intervals split mixed hunks.
+1,new,242,266,R3-1,Source-derived label for this exact changed-line interval; disjoint intervals split mixed hunks.
+1,new,267,267,R3-5,Source-derived label for this exact changed-line interval; disjoint intervals split mixed hunks.

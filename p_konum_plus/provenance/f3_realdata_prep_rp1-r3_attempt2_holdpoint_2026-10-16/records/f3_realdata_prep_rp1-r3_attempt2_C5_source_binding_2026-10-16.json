@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-10-16T16:54:50.519439+00:00",
+  "authority": "D-20 C-5; pre-launch checks only; hold point B",
+  "core_source_hashes": {
+    "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+    "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+    "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+    "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
+    "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891"
+  },
+  "historical_check_code_hashes": {
+    "p_konum_plus/calibration/f3_rp1-r3_cached_historical_comparison_2026-10-15.py": "535680c8b2d0e83d5a5eef3a19c3653719aebd8a4e7e85cd67542f7f5e0d918e",
+    "p_konum_plus/calibration/f3_rp1-r3_historical_comparison_2026-10-15.py": "72c72f02509c62d40e7c2d0ae3414b43fe90872173a223db5606f1d999b0d2cd",
+    "p_konum_plus/calibration/f3_rp1-r3_logged_preflight_2026-10-15.py": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617"
+  },
+  "no_harness_computation": true,
+  "no_optimizer": true,
+  "full_launch_authorized": false
+}

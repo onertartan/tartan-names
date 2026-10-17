@@ -1,0 +1,39 @@
+{
+  "kind": "OUTSIDE_W3_SMALL_INPUT_TEST_EXECUTION",
+  "execution_id": "2026-10-10_execution01",
+  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_small_input_tests_2026-10-10.py",
+  "code_sha256": "421be9b7283de0df43b95d59221bb40eb533ce48c139ba07fc836a821cb071a2",
+  "harness_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+  "harness_sha256": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+  "source_hashes": {
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_small_input_tests_2026-10-10.py": "421be9b7283de0df43b95d59221bb40eb533ce48c139ba07fc836a821cb071a2",
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py": "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c",
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_gate_tools_2026-10-10.py": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py": "eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8",
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_technical_tests_2026-10-10.py": "cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b"
+  },
+  "directory": "G:\\PycharmProjects\\pkp-worktree",
+  "start_utc": "2026-10-10T17:20:43.108177+00:00",
+  "end_utc": "2026-10-10T17:20:54.604294+00:00",
+  "stdout": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-10_execution01\\stdout.log",
+  "stderr": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-10_execution01\\stderr.log",
+  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-10_execution01",
+  "store_root": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-10_execution01\\small_test_store",
+  "outputs_discarded": false,
+  "output_disposition": "RETAINED_IN_EXTERNAL_QUARANTINE; EXCLUDED_FROM_ALL_DELIVERABLES_AND_ATTEMPT_STORE",
+  "outside_w3_attempt": true,
+  "actual_optimizer_calls": 0,
+  "real_data_access": false,
+  "command": [
+    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_small_input_tests_2026-10-10.py"
+  ],
+  "interpreter": "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+  "pid": 49408,
+  "return_code": 0,
+  "stdout_sha256": "ab9231538316b52a3fb9faf8ebe1ee43a79127bf06a479fa23ca112004a0314c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "retained_output_inventory": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-10_execution01\\retained_output_inventory.json",
+  "retained_output_inventory_sha256": "c8b275d20ecdf50f476c99263a865ac77a7f8e28b0b8bfec552e9d6542f09097",
+  "attempt_store_absent": true
+}

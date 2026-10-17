@@ -1,0 +1,57 @@
+{
+  "start": {
+    "event": "OUTSIDE_W3_START",
+    "execution_id": "2026-10-16_attempt2_C3_execution03",
+    "time_utc": "2026-10-16T16:58:43.658012+00:00",
+    "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
+    "code_sha256": "4b1ab26e5b6e31542a90ff86ce0ee1940dcfdd67fe957d58193a5499a439d38a",
+    "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
+    "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
+    "directory": "G:\\PycharmProjects\\pkp-worktree",
+    "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03",
+    "command": [
+      "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "-B",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
+      "G:\\PycharmProjects\\pkp-worktree",
+      "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03"
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  },
+  "end": {
+    "event": "OUTSIDE_W3_END",
+    "execution_id": "2026-10-16_attempt2_C3_execution03",
+    "time_utc": "2026-10-16T16:58:50.263816+00:00",
+    "returncode": 0,
+    "retained_outputs": [
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\C3_literal_listing.csv",
+        "sha256": "fad840c4cd83faefd62bcc0ee5f7df07c6cc772894fca9c608e84c0e08d28089",
+        "bytes": 81822
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\C3_literal_listing.json",
+        "sha256": "b9b05d86cdcc41ee82aed7e88214c817fca8eee75c23eaedaf230dce7313c46b",
+        "bytes": 163130
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\stdout.log",
+        "sha256": "3f32bd6afa8e10597c5324d81333346fe55963922e6e19d2e1e0a5ee90bec524",
+        "bytes": 11596
+      }
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  }
+}

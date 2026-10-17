@@ -1,0 +1,614 @@
+{
+  "description_literals": [
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 158,
+      "text": "  'rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-15.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 159,
+      "text": " ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 160,
+      "text": "  '6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 161,
+      "text": "  'rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-15.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 162,
+      "text": " ('p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 163,
+      "text": "  'f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 164,
+      "text": "  'rp1-r3 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-15.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 165,
+      "text": " ('p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 166,
+      "text": "  '82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 167,
+      "text": "  'rp1-r3 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 168,
+      "text": " ('p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 169,
+      "text": "  'cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 170,
+      "text": "  'rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 171,
+      "text": " ('p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 172,
+      "text": "  '98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 173,
+      "text": "  'rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 174,
+      "text": " ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 175,
+      "text": "  '0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 176,
+      "text": "  'rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md'),"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 177,
+      "text": " ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 178,
+      "text": "  '4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955',"
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 179,
+      "text": "  'rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md'),"
+    }
+  ],
+  "retained_TEXT_descriptors": [
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 1,
+      "owner": "Expr:0",
+      "value": "F3 rp1-r3 preparation: child of the pinned rp1-r2 harness.\n\nSigned D-19 dispatches R3-1 through R3-5 and section 8 wiring.\nInherited technical controls remain mandatory; signed D-14 authorizes IR1-13.\nScientific rules, evaluator arithmetic and run_real_scenario are preserved.\n",
+      "attempt1_value": "F3 rp1-r3 preparation: child of the pinned rp1-r2 harness.\n\nSigned D-19 dispatches R3-1 through R3-5 and section 8 wiring.\nInherited technical controls remain mandatory; signed D-14 authorizes IR1-13.\nScientific rules, evaluator arithmetic and run_real_scenario are preserved.\n",
+      "rp1_r2_counterpart": "F3 rp1-r2 preparation: child of the pinned rp1-r1 harness.\n\nD-13 authorizes Q1-Q11 technical corrections; no real input is read.\nAll execution remains blocked pending the IR1-13 PI decision.\nHistorical source, scientific rules and evaluator arithmetic are preserved.\nThe other session's rp1-r2 draft is excluded from this implementation.\n",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 158,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-15.md",
+      "attempt1_value": "rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-15.md",
+      "rp1_r2_counterpart": "rp1-r2 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 161,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-15.md",
+      "attempt1_value": "rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-15.md",
+      "rp1_r2_counterpart": "rp1-r2 incoming f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 164,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-15.md",
+      "attempt1_value": "rp1-r3 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-15.md",
+      "rp1_r2_counterpart": "rp1-r2 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 167,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+      "attempt1_value": "rp1-r3 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+      "rp1_r2_counterpart": "rp1-r2 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 170,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+      "attempt1_value": "rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+      "rp1_r2_counterpart": "rp1-r2 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 173,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+      "attempt1_value": "rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+      "rp1_r2_counterpart": "rp1-r2 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 176,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+      "attempt1_value": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+      "rp1_r2_counterpart": "rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 179,
+      "owner": "assign:RP3_CARRIED_DISPATCH_PINS",
+      "value": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+      "attempt1_value": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+      "rp1_r2_counterpart": "rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 485,
+      "owner": "assign:DATE_TAG",
+      "value": "2026-10-15",
+      "attempt1_value": "2026-10-15",
+      "rp1_r2_counterpart": "2026-10-10",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 5469,
+      "owner": "main",
+      "value": "R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.",
+      "attempt1_value": "R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.",
+      "rp1_r2_counterpart": "rp1-r1's own dispatch record is D-12, not D-7",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "line": 5473,
+      "owner": "main",
+      "value": "R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.",
+      "attempt1_value": "R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.",
+      "rp1_r2_counterpart": "rp1-r1's own dispatch record path",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py",
+      "line": 46,
+      "owner": "main",
+      "value": "_stdout_2026-10-15.log",
+      "attempt1_value": "_stdout_2026-10-15.log",
+      "rp1_r2_counterpart": "_stdout_2026-10-10.log",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py",
+      "line": 47,
+      "owner": "main",
+      "value": "_stderr_2026-10-15.log",
+      "attempt1_value": "_stderr_2026-10-15.log",
+      "rp1_r2_counterpart": "_stderr_2026-10-10.log",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    },
+    {
+      "file": "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py",
+      "line": 118,
+      "owner": "main",
+      "value": "# rp1-r3 pre-execution custody\n\nOne immutable W-3 record for this actual launch; all earlier records are preserved.\n\n```text\n",
+      "attempt1_value": "# rp1-r3 pre-execution custody\n\nOne immutable W-3 record for this actual launch; all earlier records are preserved.\n\n```text\n",
+      "rp1_r2_counterpart": "# rp1-r2 pre-execution custody\n\nOne immutable W-3 record for this actual launch; all earlier records are preserved.\n\n```text\n",
+      "classification": "TEXT",
+      "names_existing_file": false,
+      "resolved_path": null,
+      "observed_file_sha256": null,
+      "fragment": false,
+      "real_input_not_read": false,
+      "restoration_required": false,
+      "TEXT_review_only": false
+    }
+  ],
+  "description_effect": "The carried third-field labels are documentary sources written into W-3 pin_checks.source. Some names/dates are historically inconsistent with adjacent operational path/hash pairs; all are unchanged in the approved attempt-2 code.",
+  "historical_comparison_source": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01\\comparison_result.json",
+  "historical_comparison_sha256": "e17b901ecfcf36fad46179f33c0f6d0caa5172e43b2e8107b300e707b3278385",
+  "historical_postcomparison_finalization_findings": [
+    {
+      "path": "results.end_state.rp1_r2_open_findings[0]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-01\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[10]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"IR1-04\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[11]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"IR1-13\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[12]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"F1 input-hash-table sidecar\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[1]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-02\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[2]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-03\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[3]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-04\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[4]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-05\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[5]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"RP1A-06\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[6]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"R42A-03 (b)\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[7]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"R42A-09\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[8]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"D-9 \\u00a72(a) binding of rp1/rp1-r1 bytes\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_open_findings[9]",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"A.5 (iii) inadmissible refit\""
+    },
+    {
+      "path": "results.end_state.rp1_r2_status",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"PARTIAL_PENDING_PI\""
+    },
+    {
+      "path": "results.end_state.standalone_evidence_status",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"NOT OBSERVED\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.baseline",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"p_konum_plus/calibration/f3_step2_results_r4-2_2026-09-30.json\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.baseline_sha256",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.e_declared",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "219433"
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.pass_",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "true"
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.s_findings",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "[]"
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.telemetry_baseline",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"p_konum_plus/calibration/f3_step2_telemetry_r4-2_2026-09-30.csv\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.test_evidence_baseline",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"p_konum_plus/calibration/f3_step2_test_evidence_r4-2_2026-09-30.json\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.test_evidence_baseline_sha256",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "\"c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf\""
+    },
+    {
+      "path": "results.nonregression_vs_r4_2.u_findings",
+      "classification": "U_FINDING",
+      "declaration_id": "",
+      "kind": "UNDECLARED",
+      "held": false,
+      "reason": "undeclared differing leaf",
+      "r4_2": "\"<ABSENT>\"",
+      "rp1-r2": "[]"
+    },
+    {
+      "path": "results.end_state.mandatory_tests_missing[*]",
+      "classification": "U_FINDING",
+      "declaration_id": "results:end_state.mandatory_tests_missing[*]",
+      "kind": "MAY_DIFFER",
+      "held": false,
+      "reason": "declared path absent from both documents",
+      "r4_2": "<ABSENT>",
+      "rp1-r2": "<ABSENT>"
+    }
+  ],
+  "further_findings": [],
+  "historical_comparison_output_delivery": "Raw outside-W3 output stays outside delivery/store; this is a documentary transcription of the findings.",
+  "distinction": "Historical extra rows belong to delivered rp1-r2 postcomparison finalization; final attempt-2 nonregression is checked independently. The absent-in-both mandatory_tests_missing[*] row is not a new field."
+}

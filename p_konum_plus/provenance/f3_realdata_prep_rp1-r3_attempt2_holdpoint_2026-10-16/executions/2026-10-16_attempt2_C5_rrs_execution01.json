@@ -1,0 +1,52 @@
+{
+  "start": {
+    "event": "OUTSIDE_W3_START",
+    "execution_id": "2026-10-16_attempt2_C5_rrs_execution01",
+    "time_utc": "2026-10-16T16:56:21.033802+00:00",
+    "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_rrs_check_2026-10-16.py",
+    "code_sha256": "e9ba0e66c7900c36ee70cef88ec9701cdb62232db1e1863173848e784c96fa70",
+    "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
+    "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
+    "directory": "G:\\PycharmProjects\\pkp-worktree",
+    "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01",
+    "command": [
+      "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "-B",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_rrs_check_2026-10-16.py",
+      "G:\\PycharmProjects\\pkp-worktree",
+      "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01"
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  },
+  "end": {
+    "event": "OUTSIDE_W3_END",
+    "execution_id": "2026-10-16_attempt2_C5_rrs_execution01",
+    "time_utc": "2026-10-16T16:56:22.326877+00:00",
+    "returncode": 0,
+    "retained_outputs": [
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\RRS_result.json",
+        "sha256": "7f83ea58720d7bb839ca1a8739b5b1bbc38d6f37b2fddbe7475522e98f1b195b",
+        "bytes": 1103
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\stdout.log",
+        "sha256": "2adbbc7622c6de31d196e1a45700c10d806bbc2b87a7131bd0352ecc45a5a3c4",
+        "bytes": 66
+      }
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  }
+}

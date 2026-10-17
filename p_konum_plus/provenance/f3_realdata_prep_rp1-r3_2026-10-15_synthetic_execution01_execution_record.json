@@ -1,0 +1,52 @@
+{
+  "start": {
+    "event": "OUTSIDE_W3_START",
+    "execution_id": "2026-10-15_synthetic_execution01",
+    "time_utc": "2026-10-15T18:45:10.484162+00:00",
+    "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_synthetic_prevalidation_2026-10-15.py",
+    "code_sha256": "b216d013e48a1e800419630b2c6d6e4b27d612fd14d8303ddb04db0898f46a29",
+    "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
+    "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
+    "directory": "G:\\PycharmProjects\\pkp-worktree",
+    "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution01",
+    "command": [
+      "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "-B",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_synthetic_prevalidation_2026-10-15.py",
+      "G:\\PycharmProjects\\pkp-worktree",
+      "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution01"
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  },
+  "end": {
+    "event": "OUTSIDE_W3_END",
+    "execution_id": "2026-10-15_synthetic_execution01",
+    "time_utc": "2026-10-15T18:45:14.088970+00:00",
+    "returncode": 0,
+    "retained_outputs": [
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution01\\stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution01\\stdout.log",
+        "sha256": "a6924ec273b8f522bc3773d11fd2478b09cf9cda40f11e68ed529758f7ace4b9",
+        "bytes": 206
+      },
+      {
+        "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-15_synthetic_execution01\\synthetic_result.json",
+        "sha256": "4c9810a8b74c7202989853b1317fdaa240d0d50d805d2150312d50eb77b6c082",
+        "bytes": 357027
+      }
+    ],
+    "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
+    "actual_optimizer_calls": 0,
+    "store_access": false,
+    "real_data_access": false
+  }
+}

@@ -1,0 +1,31 @@
+--- G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_rp1-r2_gate_tools_2026-10-10.py
++++ G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_rp1-r3_gate_tools_2026-10-15.py
+@@ -242,2 +242,26 @@
+-    tail = next((line for line in reversed(trace.splitlines()) if line.strip()), "")
+-    return json.dumps(dict(frames=frames, exception=tail), sort_keys=True, ensure_ascii=True)
++    exception_lines: list[str] = []
++    harness_paths = {filename for filename, _, _ in re.findall(
++        r'File "([^"]+)", line (\d+), in ([^\n\r]+)', trace)
++        if Path(filename).name == harness_name}
++    after_frame = False
++    frame_pattern = re.compile(r'^\s*File "[^"]+", line \d+, in [^\r\n]+$')
++    for line in trace.splitlines():
++        if line.strip() == "Traceback (most recent call last):":
++            after_frame = False
++            continue
++        if frame_pattern.match(line):
++            after_frame = True
++            continue
++        if after_frame and line.startswith("    "):
++            after_frame = False
++            continue
++        after_frame = False
++        # Exception text may itself contain the harness path.
++        for filename in sorted(harness_paths, key=len, reverse=True):
++            line = line.replace(filename, "<HARNESS>")
++        line = re.sub(r'(?:(?:[A-Za-z]:[\\/]|/|\\\\)(?:[^\s\"\'<>]*[\\/])?)?'
++                      + re.escape(harness_name), "<HARNESS>", line)
++        exception_lines.append(line)
++    return json.dumps(dict(frames=frames, exception="\n".join(exception_lines)),
++                      sort_keys=True, ensure_ascii=True)
++

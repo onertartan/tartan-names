@@ -1,0 +1,77 @@
+{
+  "method": "Context 0; one label per changed-line range; inherited annotations propagated through unchanged source lines; corrected Q9/Q10 ranges; originals untouched",
+  "diffs": [
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+      "baseline_sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "target_sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_harness_diff_vs_rp1-r2_2026-10-15.diff",
+      "diff_sha256": "73671866e14547221aab39b39d3fc4db7bd0075da8e3630c71c7d07c230db494",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_harness_diff_vs_rp1-r2_2026-10-15_labels.csv",
+      "labels_sha256": "a533ba402459595cd3a19e534c53b793229b94c38ef5631719a675755ef88848",
+      "hunk_count": 33,
+      "covered_changed_lines": 144
+    },
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r4-2_2026-09-30.py",
+      "baseline_sha256": "b988e9628731f6d0736ea3eaa4e9b4b5816ef5b15caf560a99c15e53933d0730",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "target_sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_harness_diff_vs_r4-2_2026-10-15.diff",
+      "diff_sha256": "5fc63864c9e502c063fe765146677f25dac4c89b901b401a9d2fd1365d2e4979",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_harness_diff_vs_r4-2_2026-10-15_labels.csv",
+      "labels_sha256": "130c0b228b5ac1687ab4432da1c0dff765f5145738cda71b3045cf076363e0fd",
+      "hunk_count": 72,
+      "covered_changed_lines": 6226
+    },
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_gate_tools_2026-10-10.py",
+      "baseline_sha256": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_gate_tools_2026-10-15.py",
+      "target_sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_tools_diff_vs_rp1-r2_2026-10-15.diff",
+      "diff_sha256": "199f28ae285f539f767edc8ac59c40ecc1d9091cc47f195d1fd0771584d9da74",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_tools_diff_vs_rp1-r2_2026-10-15_labels.csv",
+      "labels_sha256": "e98a59f9fffa0775e8815bdc3c541e99593baecc8e97f3629a795768e176d801",
+      "hunk_count": 1,
+      "covered_changed_lines": 28
+    },
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_technical_tests_2026-10-10.py",
+      "baseline_sha256": "cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_technical_tests_2026-10-15.py",
+      "target_sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_tests_diff_vs_rp1-r2_2026-10-15.diff",
+      "diff_sha256": "bbbd07cf3cb52f44912383dc692afe6a78d5346d28c198fc7465f88d8876b42e",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_tests_diff_vs_rp1-r2_2026-10-15_labels.csv",
+      "labels_sha256": "d15fcf6f071b7c1f6e086a8c0725e8a9c6cde53f88b51764cf445cafd5b63905",
+      "hunk_count": 3,
+      "covered_changed_lines": 129
+    },
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_launch_attempt_2026-10-10.py",
+      "baseline_sha256": "172e3d9bc67c0e5f8ad3406232bf77ec8c37c374a2429cee52c6491377916462",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_launch_attempt_2026-10-15.py",
+      "target_sha256": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_launcher_diff_vs_rp1-r2_2026-10-15.diff",
+      "diff_sha256": "f020e3ac7eb60a92b091732ad7f03a7993945370ab815ce8592d8d24e643134f",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_launcher_diff_vs_rp1-r2_2026-10-15_labels.csv",
+      "labels_sha256": "85bdbebe09c1c803ca25fb4e28c6058a9cb4954e49d143e1e02a7fe8d1d29c19",
+      "hunk_count": 9,
+      "covered_changed_lines": 24
+    },
+    {
+      "baseline": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_write_custody_2026-10-10.py",
+      "baseline_sha256": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e",
+      "target": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_write_custody_2026-10-15.py",
+      "target_sha256": "f6f5c05f755de52db4b09016e08261126fb3d2c767f20bd3e1b61e7cc6a718e5",
+      "diff": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_writer_diff_vs_rp1-r2_2026-10-15.diff",
+      "diff_sha256": "0216f9a945c2e3c07ea7a70f956b61241ed2117256602bc41bffd1feaeb6ba03",
+      "labels": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_writer_diff_vs_rp1-r2_2026-10-15_labels.csv",
+      "labels_sha256": "276535c6ded32e922ac224fb46d57de2b601849f8e81fd5b61edbcfd622af1eb",
+      "hunk_count": 6,
+      "covered_changed_lines": 13
+    }
+  ]
+}

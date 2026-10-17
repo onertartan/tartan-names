@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-10-16T16:49:09.727471+00:00",
+  "authority": "D-20 C-4",
+  "quarantine_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r3_attempt1_2026-10-16",
+  "copied_file_count": 149,
+  "inventory_sha256": "f0a4cf8cf2b4d84138a05c8a5f873fb8247aa64546e46c4a3cc8dbd1639bcd10",
+  "attempt1_harness_sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db",
+  "attempt1_writer_record_sha256": "5c9661045c6602195296689229834c4f178fb7cab03c9ad5fe3337aa2b9bf459",
+  "originals_moved_or_modified": false,
+  "active_attempt1_W3_record_exists": false,
+  "real_data_access": false
+}

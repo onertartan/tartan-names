@@ -1,0 +1,559 @@
+--- attempt1/p_konum_plus/provenance/f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md
++++ attempt2/p_konum_plus/provenance/f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md
+@@ -895,0 +896,556 @@
++
++```json
++{
++  "created_utc": "2026-10-16T16:49:09.727471+00:00",
++  "authority": "D-20 C-4",
++  "quarantine_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\quarantine\\f3_step2_rp1-r3_attempt1_2026-10-16",
++  "copied_file_count": 149,
++  "inventory_sha256": "f0a4cf8cf2b4d84138a05c8a5f873fb8247aa64546e46c4a3cc8dbd1639bcd10",
++  "attempt1_harness_sha256": "53145cdd26e1263708a90b8dca08d0a8cab95d1fe0cdc126eb878726534a44db",
++  "attempt1_writer_record_sha256": "5c9661045c6602195296689229834c4f178fb7cab03c9ad5fe3337aa2b9bf459",
++  "originals_moved_or_modified": false,
++  "active_attempt1_W3_record_exists": false,
++  "real_data_access": false,
++  "event": "D20_C4_ATTEMPT1_QUARANTINE_BEFORE_FIRST_EDIT",
++  "D20_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md",
++  "D20_sha256": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
++  "decision": "B; HOLD BEFORE ATTEMPT2 LAUNCH",
++  "observed_failure": "Attempt-1 W-3 writer stopped on a substituted historical input path; no W-3 record, harness execution or attempt store. No classification or ledger closure inferred."
++}
++```
++
++```json
++{
++  "event": "D20_C1_C4_BOUNDED_SOURCE_CHANGES",
++  "time_utc": "2026-10-16T16:51:29.226341+00:00",
++  "D20_sha256": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
++  "incoming_count": 10,
++  "carried_count": 11,
++  "harness_sha256": "a49d72496ce381572d23f21ba8611f9e123e52a07383eb6aef1045f38d0f3192",
++  "writer_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
++  "changes": [
++    "C-1: exact incoming and carried named groups, joined for existing dispatch iteration; every hash read from bytes and matched D-20 printed values",
++    "C-1: writer resolves only that specific two-group concatenation",
++    "C-4: ATTEMPT_NUMBER=2, isolated attempt-2 store, attempt-1 writer-record supersession and explicit no attempt-1 W-3 record; parent rp1-r2 supersession chain retained",
++    "C-4: writer reports those attempt-1 supersession fields"
++  ],
++  "harness_functions_including_main_unchanged": 108,
++  "expectations_and_declarations_unchanged": true,
++  "Q4_Q5_Q6_tests_and_behaviour_changed": false,
++  "launch_started": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C3_execution01",
++  "time_utc": "2026-10-16T16:52:55.294482+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++  "code_sha256": "f13d0f9b11a53388ad5963a461ee4dec04312986fc89ef7a0661b26222015966",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C3_execution01",
++  "time_utc": "2026-10-16T16:52:58.211120+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01\\C3_literal_listing.csv",
++      "sha256": "9cf65d726941ceeb4a8f1881b1d4ee02fd3a67a3b7054ea1b5e6bda6ffcc07e4",
++      "bytes": 81316
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01\\C3_literal_listing.json",
++      "sha256": "6cce838d89fe324c9f534237cdacd7c51c932f50f71efd482857ef2afbd9e799",
++      "bytes": 156815
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution01\\stdout.log",
++      "sha256": "e41028577b5ba4eb49bd0c24cff041c6e321c363304fd2c4476c96da07cd69cb",
++      "bytes": 6564
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "D20_C3_TEXT_PRESERVATION_DURING_PREPARATION",
++  "time_utc": "2026-10-16T16:54:17.364412+00:00",
++  "detail": "C-3 showed that initial C-1 assembly had copied parent descriptive labels. Carried descriptive labels are kept byte-identical to attempt 1; only C-1 paths/hashes are restored. Wrong-looking TEXT is reported without repair.",
++  "preserved_attempt1_label_count": 8,
++  "harness_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
++  "expectations_or_declarations_changed": false,
++  "launch_started": false
++}
++```
++
++```json
++{
++  "event": "D20_C5_CHECKS_START_SOURCE_BINDING",
++  "binding_path": "p_konum_plus\\provenance\\f3_realdata_prep_rp1-r3_attempt2_C5_source_binding_2026-10-16.json",
++  "binding_sha256": "e3f71f7c41a4963a6eedd7d0afb5aff7be297ffff090ae3ec5b5ecf537236f5d",
++  "record": {
++    "created_utc": "2026-10-16T16:54:50.519439+00:00",
++    "authority": "D-20 C-5; pre-launch checks only; hold point B",
++    "core_source_hashes": {
++      "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
++      "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
++      "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
++      "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
++      "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891"
++    },
++    "historical_check_code_hashes": {
++      "p_konum_plus/calibration/f3_rp1-r3_cached_historical_comparison_2026-10-15.py": "535680c8b2d0e83d5a5eef3a19c3653719aebd8a4e7e85cd67542f7f5e0d918e",
++      "p_konum_plus/calibration/f3_rp1-r3_historical_comparison_2026-10-15.py": "72c72f02509c62d40e7c2d0ae3414b43fe90872173a223db5606f1d999b0d2cd",
++      "p_konum_plus/calibration/f3_rp1-r3_logged_preflight_2026-10-15.py": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617"
++    },
++    "no_harness_computation": true,
++    "no_optimizer": true,
++    "full_launch_authorized": false
++  }
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C5_a1_execution01",
++  "time_utc": "2026-10-16T16:54:50.915382+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_cached_historical_comparison_2026-10-15.py",
++  "code_sha256": "535680c8b2d0e83d5a5eef3a19c3653719aebd8a4e7e85cd67542f7f5e0d918e",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_cached_historical_comparison_2026-10-15.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C5_w3_execution01",
++  "time_utc": "2026-10-16T16:56:12.767910+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_w3_check_2026-10-16.py",
++  "code_sha256": "b72b2607fb262494460060f7483b7756460af98fa3858811eb41970ea93cf589",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_w3_check_2026-10-16.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C5_w3_execution01",
++  "time_utc": "2026-10-16T16:56:20.844308+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\actual_writer_stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\actual_writer_stdout.log",
++      "sha256": "c20a26d82d8e10a2e01a4b6dc19990659cd661b8168f15de82adc7072309eafd",
++      "bytes": 325
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\stdout.log",
++      "sha256": "02617a6396618f1f86b97e99655257abbfd3042bbd56b414e5efa2e8f24ac75f",
++      "bytes": 121
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\W3_check_result.json",
++      "sha256": "1f4e8ae48374b64bda4b0c5b31db291e23fa82b7d08acbdb418d3adcc1af3940",
++      "bytes": 30413
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C5_rrs_execution01",
++  "time_utc": "2026-10-16T16:56:21.033802+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_rrs_check_2026-10-16.py",
++  "code_sha256": "e9ba0e66c7900c36ee70cef88ec9701cdb62232db1e1863173848e784c96fa70",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_rrs_check_2026-10-16.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C5_rrs_execution01",
++  "time_utc": "2026-10-16T16:56:22.326877+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\RRS_result.json",
++      "sha256": "7f83ea58720d7bb839ca1a8739b5b1bbc38d6f37b2fddbe7475522e98f1b195b",
++      "bytes": 1103
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_rrs_execution01\\stdout.log",
++      "sha256": "2adbbc7622c6de31d196e1a45700c10d806bbc2b87a7131bd0352ecc45a5a3c4",
++      "bytes": 66
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C5_a2_execution01",
++  "time_utc": "2026-10-16T16:56:22.551278+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_synthetic_prevalidation_2026-10-15.py",
++  "code_sha256": "b216d013e48a1e800419630b2c6d6e4b27d612fd14d8303ddb04db0898f46a29",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a2_execution01",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_synthetic_prevalidation_2026-10-15.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a2_execution01"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C5_a2_execution01",
++  "time_utc": "2026-10-16T16:56:26.419321+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a2_execution01\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a2_execution01\\stdout.log",
++      "sha256": "69804dbc8499fd2b8ca91e3125c7937013487f8dfe0846639f6d882a3ba8e373",
++      "bytes": 206
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a2_execution01\\synthetic_result.json",
++      "sha256": "633d671927576bfd03bcdd1cc1d11493096e2a918f0e094394c9eb7b59e61005",
++      "bytes": 381794
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C3_execution02",
++  "time_utc": "2026-10-16T16:56:40.871868+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++  "code_sha256": "83450a131cc9a264ddc010720dd186fd83dba5d16cdc7198b8df464251b046d6",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C3_execution02",
++  "time_utc": "2026-10-16T16:56:42.896398+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02\\C3_literal_listing.csv",
++      "sha256": "a15db5c42c247041e8581a043610d4dfb684718b9c2bca96a302ff0a808b1c65",
++      "bytes": 81324
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02\\C3_literal_listing.json",
++      "sha256": "5c18b221a7832d1a6c3eee8d3069e35edb9b64bd7c3080db992ddd4ac8b57851",
++      "bytes": 162387
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution02\\stdout.log",
++      "sha256": "f1754faeecffcf6c4c0dfc3a93e4f9ac6f7b1d99056240a329221eec343b4ff5",
++      "bytes": 11239
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_START",
++  "execution_id": "2026-10-16_attempt2_C3_execution03",
++  "time_utc": "2026-10-16T16:58:43.658012+00:00",
++  "code_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++  "code_sha256": "4b1ab26e5b6e31542a90ff86ce0ee1940dcfdd67fe957d58193a5499a439d38a",
++  "wrapper_path": "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_logged_preflight_2026-10-15.py",
++  "wrapper_sha256": "329cedc5ec7eedc12533c69f3f3c8afa6453d9619f5921ffbc38e80d97364617",
++  "directory": "G:\\PycharmProjects\\pkp-worktree",
++  "output_root": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03",
++  "command": [
++    "C:\\Users\\Neo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
++    "-B",
++    "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_attempt2_literal_listing_2026-10-16.py",
++    "G:\\PycharmProjects\\pkp-worktree",
++    "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03"
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "inputs_scope": "Pinned historical synthetic deliveries and gate source only; exact hashes recorded by comparator",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C3_execution03",
++  "time_utc": "2026-10-16T16:58:50.263816+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\C3_literal_listing.csv",
++      "sha256": "fad840c4cd83faefd62bcc0ee5f7df07c6cc772894fca9c608e84c0e08d28089",
++      "bytes": 81822
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\C3_literal_listing.json",
++      "sha256": "b9b05d86cdcc41ee82aed7e88214c817fca8eee75c23eaedaf230dce7313c46b",
++      "bytes": 163130
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C3_execution03\\stdout.log",
++      "sha256": "3f32bd6afa8e10597c5324d81333346fe55963922e6e19d2e1e0a5ee90bec524",
++      "bytes": 11596
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "OUTSIDE_W3_END",
++  "execution_id": "2026-10-16_attempt2_C5_a1_execution01",
++  "time_utc": "2026-10-16T17:11:56.733297+00:00",
++  "returncode": 0,
++  "retained_outputs": [
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01\\comparison_result.json",
++      "sha256": "e17b901ecfcf36fad46179f33c0f6d0caa5172e43b2e8107b300e707b3278385",
++      "bytes": 135353
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01\\executed_source_excerpts.txt",
++      "sha256": "299f83d5cc622a85708eb7f4c3d30f3a04df121921ef97d0ab1426196ed43115",
++      "bytes": 1634
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01\\stderr.log",
++      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0
++    },
++    {
++      "path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_a1_execution01\\stdout.log",
++      "sha256": "33c969c955f1a0a25223d268dcac63a42f7f5f5b963d07c533b4c7a6c5e0f867",
++      "bytes": 216
++    }
++  ],
++  "output_disposition": "RETAINED_OUTSIDE_EVERY_DELIVERABLE_AND_STORE",
++  "actual_optimizer_calls": 0,
++  "store_access": false,
++  "real_data_access": false
++}
++```
++
++```json
++{
++  "event": "D20_ATTEMPT2_HOLD_POINT_READY_NO_LAUNCH",
++  "created_utc": "2026-10-16T17:14:00.317770+00:00",
++  "packager_code_sha256": "9e30b78525ff90124ef97d7b91bc09fd972118b6382972ab105c7b44c7a1eca1",
++  "authority_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md",
++  "authority_sha256": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
++  "decision": "B",
++  "harness_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
++  "writer_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
++  "source_proof": {
++    "harness_function_segments_unchanged": 108,
++    "main_unchanged": true,
++    "run_real_scenario_unchanged": true,
++    "all_other_harness_globals_unchanged": true,
++    "writer_changed_functions": [
++      "literal_constants",
++      "main"
++    ],
++    "ledger_unchanged_sha256": "266a4f7bcf5cd5a18c91f68c7857ad587a6ee051c5a1a87454348e1056770bbc",
++    "expectations_and_declarations_unchanged": true,
++    "unchanged_gate_tests_launcher": {
++      "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
++      "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
++      "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496"
++    },
++    "parent_chain_unchanged": true,
++    "C2_D19_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md",
++    "C2_D19_observed_sha256": "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a"
++  },
++  "C3_counts": {
++    "NEW": 39,
++    "PIN": 23,
++    "HISTPATH": 43,
++    "TEXT": 73
++  },
++  "C3_real_input_hashes_NOT_OBSERVED": [
++    "p_konum_plus/manifests/f1_eligible_trajectory_manifest_2026-08-28.csv",
++    "p_konum_plus/manifests/f1_input_hash_table_2026-08-28.csv"
++  ],
++  "C3_TEXT_review_count": 15,
++  "C5_all_passed": true,
++  "active_W3_record_created": false,
++  "harness_launched": false,
++  "active_attempt_store_created": false,
++  "actual_optimizer_calls": 0,
++  "full_launch_authorized": false,
++  "commit": false,
++  "push": false,
++  "instruction": "Stop here; require separate PI approval naming this harness and all changed-file hashes. Any byte change requires a new hold point."
++}
++```

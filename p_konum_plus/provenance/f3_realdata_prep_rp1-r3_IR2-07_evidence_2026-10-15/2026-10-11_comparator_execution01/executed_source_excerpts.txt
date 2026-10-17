@@ -1,0 +1,48 @@
+def canon(o):
+    if isinstance(o, float):
+        return float.hex(o)
+    if isinstance(o, (np.floating,)):
+        return float.hex(float(o))
+    if isinstance(o, (np.integer,)):
+        return int(o)
+    if isinstance(o, (np.bool_,)):
+        return bool(o)
+    if isinstance(o, np.ndarray):
+        return [canon(v) for v in o.tolist()]
+    if isinstance(o, dict):
+        return {str(k): canon(v) for k, v in sorted(o.items(), key=lambda kv: str(kv[0]))}
+    if isinstance(o, (list, tuple)):
+        return [canon(v) for v in o]
+    return o
+
+te_old = RP2_TOOLS.normalize_traces(_r42te_doc, baseline_source, baseline_name)
+
+te_new = RP2_TOOLS.normalize_traces(canon(test_evidence), this_source, Path(__file__).name)
+
+more_rows, more_findings = RP2_TOOLS.compare_document(te_old, te_new, EXPECTATIONS_E["test_evidence"], "test_evidence")
+
+with open(R4_2_TELEMETRY_PATH, encoding="utf8") as stream:
+        old_tel = list(csv.DictReader(stream))
+
+with open(TELEMETRY_PATH, encoding="utf8") as stream:
+        new_tel = list(csv.DictReader(stream))
+
+if len(old_tel) != len(new_tel):
+        u_findings.append(dict(path="telemetry.row_count", classification="U_FINDING", held=False,
+                               reason="undeclared telemetry row count change", r4_2=len(old_tel), **{"rp1-r2": len(new_tel)}))
+
+for index, (old_row, new_row) in enumerate(zip(old_tel, new_tel)):
+        for column in sorted(set(old_row) | set(new_row)):
+            old_value, new_value = old_row.get(column, "<ABSENT>"), new_row.get(column, "<ABSENT>")
+            declared = column in ("wall_clock_seconds", "source")
+            if old_value == new_value and not declared:
+                continue
+            kind = "MAY_DIFFER" if column == "wall_clock_seconds" else "ADDITION" if column == "source" else "UNDECLARED"
+            held = kind == "MAY_DIFFER" or (kind == "ADDITION" and column not in old_row and new_value in ("fresh", "replay"))
+            row = dict(path="telemetry[%d].%s" % (index, column), declaration_id="telemetry:" + column if declared else "",
+                       classification="E" if held else "U_FINDING", kind=kind, held=held,
+                       reason="Q8 provenance addition / existing wall time declaration" if declared else "undeclared differing telemetry field",
+                       r4_2=old_value, **{"rp1-r2": new_value})
+            e_rows.append(row)
+            if not held:
+                u_findings.append(row)

@@ -1,0 +1,48 @@
+{
+  "count_bounds": [
+    5,
+    801
+  ],
+  "names": {
+    "F": [
+      "QA",
+      "QB",
+      "QC"
+    ],
+    "M": [
+      "QD",
+      "QE",
+      "QF"
+    ]
+  },
+  "raw_checksum_location": "checksums/raw; excluded from the raw input directory",
+  "rng": "numpy.default_rng / PCG64",
+  "seed": 20261010,
+  "serialization": {
+    "columns": [
+      "trajectory_id",
+      "sex",
+      "name",
+      "year_min",
+      "year_max",
+      "T",
+      "source_scope",
+      "eligibility_rule_id",
+      "trajectory_value_id",
+      "source_record_status",
+      "n_observed_years",
+      "n_missing_total",
+      "eligible",
+      "exclusion_reason"
+    ],
+    "delimiter": ",",
+    "encoding": "ascii",
+    "line_ending": "LF",
+    "quoting": "csv.QUOTE_MINIMAL"
+  },
+  "source": "TEST_ONLY_SYNTHETIC",
+  "years": [
+    1880,
+    2025
+  ]
+}

@@ -1,0 +1,35 @@
+--- G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_rp1-r2_launch_attempt_2026-10-10.py
++++ G:\PycharmProjects\pkp-worktree\p_konum_plus\calibration\f3_rp1-r3_launch_attempt_2026-10-15.py
+@@ -29 +29 @@
+-    value = os.environ.get("F3_RP1R2_LAUNCH", "")
++    value = os.environ.get("F3_RP1R3_LAUNCH", "")
+@@ -34 +34 @@
+-    harness = calibration / "f3_step2_adequacy_harness_rp1-r2_2026-10-10.py"
++    harness = calibration / "f3_step2_adequacy_harness_rp1-r3_2026-10-15.py"
+@@ -37 +37 @@
+-    helper = calibration / "f3_rp1-r2_gate_tools_2026-10-10.py"
++    helper = calibration / "f3_rp1-r3_gate_tools_2026-10-15.py"
+@@ -45,3 +45,3 @@
+-    prefix = "f3_step2_rp1-r2_attempt%d_launch%d" % (attempt, number)
+-    out = calibration / (prefix + "_stdout_2026-10-10.log")
+-    err = calibration / (prefix + "_stderr_2026-10-10.log")
++    prefix = "f3_step2_rp1-r3_attempt%d_launch%d" % (attempt, number)
++    out = calibration / (prefix + "_stdout_2026-10-15.log")
++    err = calibration / (prefix + "_stderr_2026-10-15.log")
+@@ -50 +50 @@
+-    writer = calibration / "f3_rp1-r2_write_custody_2026-10-10.py"
++    writer = calibration / "f3_rp1-r3_write_custody_2026-10-15.py"
+@@ -53 +53 @@
+-    record(provenance / (prefix + "_w3_writer_2026-10-10.json"),
++    record(provenance / (prefix + "_w3_writer_2026-10-15.json"),
+@@ -62,2 +62,2 @@
+-    record(provenance / (prefix + "_start_2026-10-10.json"), metadata)
+-    log = provenance / "f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md"
++    record(provenance / (prefix + "_start_2026-10-15.json"), metadata)
++    log = provenance / "f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md"
+@@ -68 +68 @@
+-        record(provenance / (prefix + "_pid_2026-10-10.json"), dict(pid=process.pid, attempt=attempt, launch=number))
++        record(provenance / (prefix + "_pid_2026-10-15.json"), dict(pid=process.pid, attempt=attempt, launch=number))
+@@ -72 +72 @@
+-    record(provenance / (prefix + "_end_2026-10-10.json"), metadata)
++    record(provenance / (prefix + "_end_2026-10-15.json"), metadata)

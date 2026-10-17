@@ -1,0 +1,32 @@
+[
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\comparison_result.json",
+    "sha256": "3abe97219ceb91ef505ede24406fc4726175cef7a53ac3182a9da0f028801dd4",
+    "bytes": 20809
+  },
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\executed_source_excerpts.txt",
+    "sha256": "a8beed8caec46dd9749be6e624a3020f7b5a84cbf017492136565720d09f1aeb",
+    "bytes": 2500
+  },
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\stderr.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\stdout.log",
+    "sha256": "da62ee58d09f7c737983d12a5b843cb7f62ad6faf706b7df8b06a0b77328d5ec",
+    "bytes": 156
+  },
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\telemetry_comparison.csv",
+    "sha256": "dce1842cd61f1d65d59c1408c2311f80d4b397394a3ebd4e31bbf681bf633164",
+    "bytes": 5056773
+  },
+  {
+    "path": "C:\\Users\\Neo\\Downloads\\rp1r2_preflight\\2026-10-11_comparator_execution01\\test_evidence_comparison.csv",
+    "sha256": "6071459b29b5a5d3fef89c59960c9c15a5db18b45a6444975f2ed8472e28b408",
+    "bytes": 227122
+  }
+]

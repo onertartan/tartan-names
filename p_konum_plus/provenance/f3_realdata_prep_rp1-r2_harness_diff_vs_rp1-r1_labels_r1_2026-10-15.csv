@@ -1,0 +1,162 @@
+hunk,side,first,last,label,reason
+1,old,1,70,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+1,new,1,6,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+2,old,162,164,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+2,new,98,100,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+3,old,168,168,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+3,new,104,104,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+4,old,174,174,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+4,new,110,110,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+5,old,178,178,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+5,new,114,114,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+6,old,180,180,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+6,new,116,116,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+7,new,119,122,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,123,124,Q11,Current launch/dependency/dispatch identity is hash-bound before computation.
+7,new,125,126,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,127,134,Q11,Hash-bound dependency custody and fingerprint wiring.
+7,new,135,139,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,140,140,Q10,Collect measured trajectory section timings for handoff export.
+7,new,141,142,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,143,145,Q2,The sole real-mode mask identity constructor.
+7,new,146,147,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,148,150,Q7,Aggregate the actual replay checks without a cold-zero condition.
+7,new,151,152,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,153,154,Q9,Validate the handoff phase.
+7,new,155,156,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,157,159,S5A,External PI decision gate; executor cannot authorize IR1-13.
+7,new,160,161,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,162,178,Q10,Reconcile actual optimizer events to handoff start/mode unit payloads.
+7,new,179,180,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,181,182,Q10,Reconcile actual optimizer events to handoff start/mode unit payloads.
+7,new,183,184,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,185,197,Q10,Reconcile actual optimizer events to handoff start/mode unit payloads.
+7,new,198,199,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+7,new,200,229,Q10,"Export family events, measured timing and scoped estimate."
+8,old,185,185,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+8,new,232,232,S8,"PI-authorized attempt identity, supersession, isolated store and immutable launch naming; provenance only."
+9,old,233,239,Q9,Identify the underlying key family after stripping scope prefixes.
+9,new,280,281,Q9,Exact authored edit for Q9; see authored-edits record.
+10,old,250,250,Q8,Every cache hit restores telemetry with replay provenance.
+10,new,292,292,Q9,Exact authored edit for Q9; see authored-edits record.
+11,old,257,257,Q8,Every cache hit restores telemetry with replay provenance.
+11,new,299,299,Q8,Exact authored edit for Q8; see authored-edits record.
+12,old,330,330,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+12,new,372,372,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+13,old,377,377,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+13,new,419,419,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+14,old,383,383,Q11,Current launch/dependency/dispatch identity is hash-bound before computation.
+14,old,384,393,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+14,new,425,425,Q11,Current launch/dependency/dispatch identity is hash-bound before computation.
+14,new,426,435,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+15,old,411,411,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+15,new,453,453,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+16,old,413,413,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+16,new,455,455,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+17,old,417,417,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+17,new,459,463,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+18,new,1174,1175,Q10,Attach unit/phase/source identity to the actual optimizer event.
+19,new,1386,1386,Q8,Mode-summary telemetry distinguishes fresh work from a restored mode.
+20,old,2123,2125,Q1,Replace the four-field-only guard by the complete real-mode intake guard.
+20,new,2172,2172,Q1,Check every required real key/map entry before a fit.
+21,old,2145,2145,Q2,Consumer calls the shared real-mode mask identity builder.
+21,new,2192,2192,Q2,Consumer calls the shared real-mode mask identity builder.
+22,new,2235,2236,Q10,Measure each trajectory's section boundaries.
+23,new,2375,2375,Q10,Exact authored edit for Q10; see authored-edits record.
+23,new,2376,2376,Q10,Measure each trajectory's section boundaries.
+23,new,2377,2379,Q10,Record measured trajectory section timing.
+24,old,2917,2953,Q3,PI-b form B manifest/raw-list custody and field re-derivation.
+24,new,2971,2979,Q3,Exact authored edit for Q3; see authored-edits record.
+25,old,3001,3001,Q2,Dry table calls the same identity builder as the consumer.
+25,new,3027,3027,Q2,Dry table calls the same identity builder as the consumer.
+26,old,3063,3065,Q4,Compute each loader case result from got and expected.
+26,new,3089,3090,Q4,Exact authored edit for Q4; see authored-edits record.
+27,old,3070,3072,Q4,Compute each loader case result from got and expected.
+27,new,3095,3096,Q4,Exact authored edit for Q4; see authored-edits record.
+28,new,3243,3243,Q9,Attribute optimizer calls to f1_handoff and restore the caller's phase afterward.
+28,new,3244,3244,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+28,new,3245,3245,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,old,3223,3223,Q10,Retain returned family events and section timings for handoff accounting.
+29,new,3250,3250,Q9,Attribute optimizer calls to f1_handoff and restore the caller's phase afterward.
+29,new,3251,3251,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3252,3252,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3253,3253,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3254,3254,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3255,3255,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3256,3256,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+29,new,3257,3257,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+30,new,3262,3262,Q9,Attribute optimizer calls to f1_handoff and restore the caller's phase afterward.
+31,new,3278,3278,Q10,Q10 trajectory timing/family telemetry; no phase statement in this range.
+32,old,3286,3301,Q3,Eight synthetic reproduction gate cases.
+32,old,3302,3307,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+32,old,3308,3332,Q3,Eight synthetic reproduction gate cases.
+32,new,3322,3323,Q3,Exact authored edit for Q3; see authored-edits record.
+33,old,3544,3545,Q7,Permit replayed cold units while checking exact stored payloads.
+33,new,3535,3535,Q7,Exact authored edit for Q7; see authored-edits record.
+34,new,3991,3991,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+35,old,4002,4002,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+35,new,3993,3993,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+36,old,4004,4004,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+36,new,3995,3995,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+37,new,4060,4060,Q11,Exact authored edit for Q11; see authored-edits record.
+38,new,4090,4092,Q11,Exact authored edit for Q11; see authored-edits record.
+39,new,4147,4150,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+40,old,4191,4191,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+40,new,4190,4190,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+41,new,4227,4234,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+42,new,4905,4905,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+43,old,4908,4908,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+43,new,4916,4916,Q8,Exact authored edit for Q8; see authored-edits record.
+44,old,4916,4916,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+44,new,4924,4924,Q8,Exact authored edit for Q8; see authored-edits record.
+45,old,5040,5040,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+45,new,5048,5049,Q5,Exact authored edit for Q5; see authored-edits record.
+46,old,5049,5049,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+46,new,5058,5058,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+47,old,5150,5154,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+47,new,5159,5164,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+48,old,5217,5217,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+48,new,5227,5228,Q5,Exact authored edit for Q5; see authored-edits record.
+49,old,5243,5243,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+49,new,5254,5254,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+50,new,5284,5285,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+51,old,5283,5285,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+51,new,5296,5298,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+52,old,5289,5289,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+52,new,5302,5302,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5316,5336,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5337,5433,Q5,Exact leaf declarations; 22 missing test_evidence additions corrected under section 0 in attempt 2; no test value or scientific expectation changed.
+53,old,5434,5444,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5445,5447,Q6,Replace whole-trace removal by semantic source-coordinate normalization.
+53,old,5448,5450,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5451,5453,Q6,Replace whole-trace removal by semantic source-coordinate normalization.
+53,old,5454,5454,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5455,5470,Q5,Replace subtree stopping by complete leaf recursion.
+53,old,5471,5471,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5472,5481,Q5,Evaluate exact leaf declarations.
+53,old,5482,5482,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5483,5500,Q5,Evaluate declared predicates even for equal values.
+53,old,5501,5501,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,old,5502,5545,Q5,Compare full-depth documents and absent declarations.
+53,new,5329,5329,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+53,new,5330,9851,Q5,Exact leaf declarations; 22 missing test_evidence additions corrected under section 0 in attempt 2; no test value or scientific expectation changed.
+54,old,5578,5589,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+54,old,5590,5591,Q5,Preserve per-row telemetry multiplicity instead of key collapsing.
+54,old,5592,5609,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+54,new,9884,9888,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+54,new,9889,9890,Q6,Preserve semantic traceback frame/function/statement/exception identity.
+54,new,9891,9892,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+54,new,9893,9893,Q5,Compare all declared/differing leaves and evaluate missing declarations.
+54,new,9894,9895,Q6,Preserve semantic traceback frame/function/statement/exception identity.
+54,new,9896,9896,Q5,Compare all declared/differing leaves and evaluate missing declarations.
+54,new,9897,9926,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+55,old,5611,5628,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+55,new,9928,9945,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+56,new,9948,9948,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+57,old,5632,5632,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+57,new,9950,9950,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+58,old,5638,5638,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+58,new,9956,9956,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+59,old,5652,5652,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+59,new,9970,9970,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.
+60,new,10003,10020,S8,Authorized output/dispatch/test/custody wiring; existing scientific bodies unchanged.

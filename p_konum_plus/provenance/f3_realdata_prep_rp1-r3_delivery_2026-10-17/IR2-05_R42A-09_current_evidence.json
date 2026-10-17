@@ -1,0 +1,31 @@
+{
+  "item": "IR2-05",
+  "executor_status": "IMPLEMENTED_PENDING_VERIFICATION",
+  "subject": "R42A-09",
+  "prior_auditor_attribution": "closed by the rp1-r2 independent audit; this is attribution, not an executor closure",
+  "auditor_record": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+  "auditor_record_sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+  "auditor_record_line": 9006,
+  "auditor_reason": "[A]/[A-S] Teslim kodu/kan\u0131t\u0131 ve ba\u011f\u0131ms\u0131z u\u00e7tan uca sonu\u00e7 + muhasebe kar\u015f\u0131la\u015ft\u0131rmalar\u0131 do\u011fruland\u0131; ayr\u0131 yeni bulgular kendi kimli\u011finde a\u00e7\u0131k.",
+  "current_correction_test_source": "p_konum_plus/calibration/f3_step2_results_rp1-r3_2026-10-15.json",
+  "current_correction_test_source_sha256": "d2a52c3822c7bf94680b91482c95ea10f9c80471a5077ddb0ac4bc760531618d",
+  "handoff_accounting": {
+    "expected_optimizer_rows": 47706,
+    "expected_spline_optimizer_rows": 9223,
+    "observed_family_units": 47706,
+    "observed_optimizer_rows": 47706,
+    "observed_spline_optimizer_rows": 9223,
+    "pass_": true,
+    "spline_rows_reconciled": true,
+    "stored_family_units": 47706,
+    "stored_spline_units": 7008
+  },
+  "current_context_id_unique": {
+    "all_unique": true,
+    "expected_rows": 144,
+    "matches_dry_table": true,
+    "pass_": true,
+    "rows": 144
+  },
+  "pi_binding_inferred": false
+}

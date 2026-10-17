@@ -1,0 +1,139 @@
+{
+  "diffs": [
+    {
+      "baseline": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+      "baseline_sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+      "target": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "target_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_harness.diff",
+      "diff_sha256": "a74fc9c70ff80178e2e310a84cf03811bb86cd312cb97cfc1c6996532690442a",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_harness.labels.csv",
+      "labels_sha256": "dc283f013e75350bc37ef9caaa7ac795a8fe7f0a07d51c9dd6a848ab1d68a0bd",
+      "hunks": 34,
+      "changed_lines": 209,
+      "exact_label_coverage": true,
+      "label_set": [
+        "R3-4",
+        "R3-5",
+        "S8"
+      ]
+    },
+    {
+      "baseline": "p_konum_plus/calibration/f3_step2_adequacy_harness_r4-2_2026-09-30.py",
+      "baseline_sha256": "b988e9628731f6d0736ea3eaa4e9b4b5816ef5b15caf560a99c15e53933d0730",
+      "target": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+      "target_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_r4-2_harness.diff",
+      "diff_sha256": "9cdb9a68f92d6316e14f85f8b682a0b08c0c5b4d2d8c20886d309140c97296f5",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_r4-2_harness.labels.csv",
+      "labels_sha256": "b361df8c0680cd264409e261bdec6b47b1831059735e188400274835fe2155d5",
+      "hunks": 73,
+      "changed_lines": 6291,
+      "exact_label_coverage": true,
+      "label_set": [
+        "rp1-r1:R-1",
+        "rp1-r1:R-3",
+        "rp1-r1:R-4",
+        "rp1-r1:R-5",
+        "rp1-r1:S5-WIRING",
+        "rp1-r1:S9-WIRING",
+        "rp1-r2:C2",
+        "rp1-r2:Q1",
+        "rp1-r2:Q10",
+        "rp1-r2:Q11",
+        "rp1-r2:Q2",
+        "rp1-r2:Q3",
+        "rp1-r2:Q4",
+        "rp1-r2:Q5",
+        "rp1-r2:Q6",
+        "rp1-r2:Q7",
+        "rp1-r2:Q8",
+        "rp1-r2:Q9",
+        "rp1-r2:S5A",
+        "rp1-r2:S8",
+        "rp1-r3:R3-4",
+        "rp1-r3:R3-5",
+        "rp1-r3:S8",
+        "rp1:C-1",
+        "rp1:C-2",
+        "rp1:C-3",
+        "rp1:C-5",
+        "rp1:C-6"
+      ]
+    },
+    {
+      "baseline": "p_konum_plus/calibration/f3_rp1-r2_gate_tools_2026-10-10.py",
+      "baseline_sha256": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+      "target": "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py",
+      "target_sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tools.diff",
+      "diff_sha256": "7140f9c7da78d36917d48ad239881e1c92f67ae7590b2e4aae69da89192477f2",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tools.labels.csv",
+      "labels_sha256": "86c2ed5ef142dd289b0d6b928306f470314089116ebeaa4b419bf7ee08ee9fdf",
+      "hunks": 1,
+      "changed_lines": 28,
+      "exact_label_coverage": true,
+      "label_set": [
+        "R3-1",
+        "R3-5"
+      ]
+    },
+    {
+      "baseline": "p_konum_plus/calibration/f3_rp1-r2_technical_tests_2026-10-10.py",
+      "baseline_sha256": "cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b",
+      "target": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+      "target_sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tests.diff",
+      "diff_sha256": "8f23ace993652463a0efc55c24ca83469cf7d1ea7d0767bf1aaa3d1c27880129",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_tests.labels.csv",
+      "labels_sha256": "4b2079fea1334f3ea859bd5c934c299c7d1ba783f5467f42a6d50c2f083f6e23",
+      "hunks": 3,
+      "changed_lines": 129,
+      "exact_label_coverage": true,
+      "label_set": [
+        "R3-1",
+        "R3-2",
+        "R3-3",
+        "R3-5"
+      ]
+    },
+    {
+      "baseline": "p_konum_plus/calibration/f3_rp1-r2_launch_attempt_2026-10-10.py",
+      "baseline_sha256": "172e3d9bc67c0e5f8ad3406232bf77ec8c37c374a2429cee52c6491377916462",
+      "target": "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py",
+      "target_sha256": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_launcher.diff",
+      "diff_sha256": "5297a9fa797147b626ad2d0986e998f08f031197357861d382797314ab1cdf15",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_launcher.labels.csv",
+      "labels_sha256": "ff4c226517fb5a167443ecee67502ea40e9a984dbbb4e3d6135dbb93963d4cbb",
+      "hunks": 9,
+      "changed_lines": 24,
+      "exact_label_coverage": true,
+      "label_set": [
+        "R3-5"
+      ]
+    },
+    {
+      "baseline": "p_konum_plus/calibration/f3_rp1-r2_write_custody_2026-10-10.py",
+      "baseline_sha256": "c0b9e10c2022b744b23190e81243c2713e6d7cb39859b370d9f87216de03fa0e",
+      "target": "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py",
+      "target_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
+      "diff": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_writer.diff",
+      "diff_sha256": "ba30ebb5fb21583f006a809a7e318e6d1fa330f682969497069afaa7775c136a",
+      "labels": "p_konum_plus/provenance/f3_realdata_prep_rp1-r3_delivery_2026-10-17/IR1-16/rp1-r3_vs_rp1-r2_writer.labels.csv",
+      "labels_sha256": "ca8fc259c8c24dbe48bc50c0e77b0bc04e3ccc10376f67710f15c97ad326417f",
+      "hunks": 7,
+      "changed_lines": 22,
+      "exact_label_coverage": true,
+      "label_set": [
+        "R3-5"
+      ]
+    }
+  ],
+  "method": "Context zero; mixed hunks are partitioned by exact old/new changed-line intervals, each carrying one originating-package label. S8 means section 8 wiring. rp1-r3_vs_rp1-r2 labels are R3-1 through R3-5 or S8 only; the r4-2 set retains historical package/item labels.",
+  "corrected_rp1_r2_labels": [
+    "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_rp1-r1_labels_r1_2026-10-15.csv",
+    "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_harness_diff_vs_r4-2_labels_r1_2026-10-15.csv"
+  ],
+  "old_attempt1_rp1_r3_diff_records": "Historical only; superseded for attempt 2 by this diff_custody.json."
+}

@@ -1,0 +1,23 @@
+{
+  "event": "ALL_NATIVE_PRELAUNCH_CHECKS_PASSED",
+  "scope_checks": {
+    "unchanged_nonmain_harness_functions": 107,
+    "immutable_consumer_segment_equal": true,
+    "inherited_declarations_preserved_except_two_authorized_reasons": true,
+    "new_addition_declarations": {
+      "results": 10,
+      "test_evidence": 8
+    },
+    "launcher_writer_identity_and_authorized_supersession_only": true
+  },
+  "historical_execution_record_sha256": "ff8277aadf1f9193bbf92f3f67537fbeccbec7ec63d7531992166cbf663c9c90",
+  "historical_comparison_output_sha256": "e17b901ecfcf36fad46179f33c0f6d0caa5172e43b2e8107b300e707b3278385",
+  "historical_further_finding_count": 0,
+  "synthetic_result_output_sha256": "c5382476d7fa44f1192bce7fdbaed9a2ceac6d401fd5083dcf0c72011e90df7d",
+  "parent_payloads_reverified": 2298,
+  "due_implemented_items": 12,
+  "store_before_launch": "EMPTY_OR_ABSENT",
+  "real_data_access": false,
+  "authority": "Signed D-19 plus exact D-14 authorization checked by the unchanged launcher/writer rule",
+  "commit": false
+}

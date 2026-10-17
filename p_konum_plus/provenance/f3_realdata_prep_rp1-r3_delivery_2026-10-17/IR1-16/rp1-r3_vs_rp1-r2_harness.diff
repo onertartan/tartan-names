@@ -1,0 +1,245 @@
+--- p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py
++++ p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py
+@@ -1,6 +1,5 @@
+-"""F3 rp1-r2 preparation: child of the pinned rp1-r1 harness.
+-
+-D-13 authorizes Q1-Q11 technical corrections; no real input is read.
+-All execution remains blocked pending the IR1-13 PI decision.
+-Historical source, scientific rules and evaluator arithmetic are preserved.
+-The other session's rp1-r2 draft is excluded from this implementation.
++"""F3 rp1-r3 preparation: child of the pinned rp1-r2 harness.
++
++Signed D-19 dispatches R3-1 through R3-5 and section 8 wiring.
++Inherited technical controls remain mandatory; signed D-14 authorizes IR1-13.
++Scientific rules, evaluator arithmetic and run_real_scenario are preserved.
+@@ -98,3 +97,3 @@
+-SUPERSEDES_HARNESS_SHA256 = "92181f38c736e4bad48e87b879dcb8a8ffc5981c9a77ce6c4144d6e23fc8494c"
+-SUPERSEDES_CUSTODY_SHA256 = "6384a57de7f11ab7d18920813215a3eb56c21466e24469ddf689a5fdaf791469"
+-SUPERSEDES_NOTE_PATH = "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_attempt_log_2026-10-10.md"
++SUPERSEDES_HARNESS_SHA256 = '4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d'
++SUPERSEDES_CUSTODY_SHA256 = '7d864db9c2e766ff1fc4d3ed77649e7a9a140249426d56e6d51779f7aa8efc8d'
++SUPERSEDES_NOTE_PATH = 'p_konum_plus/provenance/f3_realdata_prep_rp1-r3_attempt_log_2026-10-15.md'
+@@ -101,0 +101,3 @@
++SUPERSEDES_ATTEMPT1_WRITER_RECORD_PATH = 'p_konum_plus/provenance/f3_step2_rp1-r3_attempt1_launch1_w3_writer_2026-10-15.json'
++SUPERSEDES_ATTEMPT1_WRITER_RECORD_SHA256 = '5c9661045c6602195296689229834c4f178fb7cab03c9ad5fe3337aa2b9bf459'
++SUPERSEDES_ATTEMPT1_W3_RECORD = "no attempt-1 W-3 record"
+@@ -104 +106 @@
+-# comes from the ENVIRONMENT (F3_RP1R2_LAUNCH, set by the caller alongside
++# comes from the ENVIRONMENT (F3_RP1R3_LAUNCH, set by the caller alongside
+@@ -110 +112 @@
+-LAUNCH_NUMBER = int(os.environ.get("F3_RP1R2_LAUNCH", "0"))
++LAUNCH_NUMBER = int(os.environ.get('F3_RP1R3_LAUNCH', "0"))
+@@ -114 +116 @@
+-                      f"f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stdout_2026-10-10.log")
++                      f"f3_step2_rp1-r3_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stdout_2026-10-15.log")
+@@ -116 +118 @@
+-                      f"f3_step2_rp1-r2_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stderr_2026-10-10.log")
++                      f"f3_step2_rp1-r3_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_stderr_2026-10-15.log")
+@@ -123,2 +125,66 @@
+-RP2_DISPATCH_PINS = [('p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md', 'bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5', 'rp1-r2 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md'), ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md', '6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f', 'rp1-r2 incoming f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md'), ('p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md', 'f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913', 'rp1-r2 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md'), ('p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md', '82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e', 'rp1-r2 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md'), ('p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py', 'cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb', 'rp1-r2 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py'), ('p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md', '98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956', 'rp1-r2 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md'), ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md', '0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639', 'rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md'), ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md', '4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955', 'rp1-r2 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md'), ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md', 'a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7', 'D-14 IR1-13 RECORDED_LIMITATION')]
+-RP2_DEPENDENCY_PINS = {'f3_rp1-r2_gate_tools_2026-10-10.py': 'ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7', 'f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py': 'eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8', 'f3_rp1-r2_technical_tests_2026-10-10.py': 'cd44ea6edfa8601aefb4d3d234a44967b13bd2f3e16cc733aea61ed87439e96b'}
++RP3_INCOMING_DISPATCH_PINS = [('p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R3_INSTRUCTION_DRAFT_r1_2026-10-14.md',
++  'f84069a060c806355676a259bd07b437a7f81ae0600b90fef5ab9baa6f73881a',
++  'rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R3_INSTRUCTION_DRAFT_r1_2026-10-14.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md',
++  '10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_pi_decision_record_2026-10-12.md',
++  '278532bff270337e7db59d4e1a47287fc3169b651d9b4f4625687beca864fb93',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_pi_decision_record_2026-10-12.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_scope_evaluation_pi_decision_record_2026-10-12.md',
++  '3e2a5fe3373ae08fc91831d7312c5f994ff332efdf3bae50818cced98d608e45',
++  'rp1-r3 incoming '
++  'f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_scope_evaluation_pi_decision_record_2026-10-12.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_completion_pi_decision_record_2026-10-12.md',
++  '25023f450dc443a8d248fc8ed662812947f098f1532042a6858f159cee39deb9',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_completion_pi_decision_record_2026-10-12.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md',
++  'fe9b2b539f55efeda94d61c77ad30bd146de2ebcbbbf4d7a203fb13a8c0dcfa0',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-12.md',
++  'f3f24b6a7b889e0fa348d208ff7ec7f3478c97e1299059350adcf3b846628a72',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-12.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md',
++  'dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md'),
++ ('p_konum_plus/prompts/F3_RP1-R2_INDEPENDENT_AUDIT_INSTRUCTION_DRAFT_r1_2026-10-12.md',
++  '25eb0e160c90eac37b0e22249607a69b546ee065b1f8feeb1f8f8c735ec154c2',
++  'rp1-r3 incoming F3_RP1-R2_INDEPENDENT_AUDIT_INSTRUCTION_DRAFT_r1_2026-10-12.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md',
++  '778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2',
++  'D-20 signed attempt-2 bounded correction and hold point')]
++RP3_CARRIED_DISPATCH_PINS = [('p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md',
++  'bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5',
++  'rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-15.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md',
++  '6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-15.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md',
++  'f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913',
++  'rp1-r3 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-15.md'),
++ ('p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md',
++  '82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e',
++  'rp1-r3 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md'),
++ ('p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py',
++  'cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb',
++  'rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py'),
++ ('p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md',
++  '98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956',
++  'rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md'),
++ ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md',
++  '0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639',
++  'rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md'),
++ ('p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md',
++  '4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955',
++  'rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md'),
++ ('p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md',
++  'a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7',
++  'D-14 IR1-13 RECORDED_LIMITATION'),
++ ('p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py',
++  '4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d',
++  'rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py'),
++ ('p_konum_plus/provenance/f3_realdata_prep_rp1-r2_transmission_list_2026-10-12.csv',
++  'e48f5f6ba139eabbf52109556886c8f4d8c67f92e3c6155846800407e4ec3c75',
++  'rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r2_transmission_list_2026-10-12.csv')]
++RP2_DISPATCH_PINS = RP3_INCOMING_DISPATCH_PINS + RP3_CARRIED_DISPATCH_PINS
++RP2_DEPENDENCY_PINS = {'f3_rp1-r3_gate_tools_2026-10-15.py': '1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045', 'f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py': 'eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8', 'f3_rp1-r3_technical_tests_2026-10-15.py': '9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879'}
+@@ -137 +203 @@
+-RP2_TOOLS = load_rp2_dependency("f3_rp1-r2_gate_tools_2026-10-10.py")
++RP2_TOOLS = load_rp2_dependency('f3_rp1-r3_gate_tools_2026-10-15.py')
+@@ -139 +205 @@
+-RP2_TESTS = load_rp2_dependency("f3_rp1-r2_technical_tests_2026-10-10.py")
++RP2_TESTS = load_rp2_dependency('f3_rp1-r3_technical_tests_2026-10-15.py')
+@@ -232 +298 @@
+-RESTART_STORE_DIR = "p_konum_plus/calibration/.rp1-r2_attempt2_restart_store_2026-10-10"
++RESTART_STORE_DIR = 'p_konum_plus/calibration/.rp1-r3_attempt2_restart_store_2026-10-15'
+@@ -372 +438 @@
+-] + ["T-RP1R2-Q%d" % i for i in range(1, 12)]
++] + ["T-RP1R2-Q%d" % i for i in range(1, 12)] + ["T-RP1R3-RRS-UNCHANGED"]
+@@ -419 +485 @@
+-DATE_TAG = "2026-10-10"
++DATE_TAG = '2026-10-15'
+@@ -425,11 +491,11 @@
+-                f"f3_step2_rp1-r2_preexecution_custody_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_{DATE_TAG}.md")
+-TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_telemetry_rp1-r2_{DATE_TAG}.csv"
+-RESULTS_PATH = f"p_konum_plus/calibration/f3_step2_results_rp1-r2_{DATE_TAG}.json"
+-RESIDUAL_PATH = f"p_konum_plus/calibration/f3_step2_residual_series_rp1-r2_{DATE_TAG}.json"
+-TEST_EVIDENCE_PATH = f"p_konum_plus/calibration/f3_step2_test_evidence_rp1-r2_{DATE_TAG}.json"
+-PERCALL_TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r2_{DATE_TAG}.csv"
+-ATTEMPT_LOG_PATH = f"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_attempt_log_{DATE_TAG}.md"
+-STORE_MANIFEST_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_restart_store_manifest_{DATE_TAG}.csv"
+-REGISTER_PATH = f"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1-r2_{DATE_TAG}.md"
+-NONREG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4_{DATE_TAG}.csv"
+-NONREG_R41_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4-1_{DATE_TAG}.csv"
++                f"f3_step2_rp1-r3_preexecution_custody_attempt{ATTEMPT_NUMBER}_launch{LAUNCH_NUMBER}_{DATE_TAG}.md")
++TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_telemetry_rp1-r3_{DATE_TAG}.csv"
++RESULTS_PATH = f"p_konum_plus/calibration/f3_step2_results_rp1-r3_{DATE_TAG}.json"
++RESIDUAL_PATH = f"p_konum_plus/calibration/f3_step2_residual_series_rp1-r3_{DATE_TAG}.json"
++TEST_EVIDENCE_PATH = f"p_konum_plus/calibration/f3_step2_test_evidence_rp1-r3_{DATE_TAG}.json"
++PERCALL_TELEMETRY_PATH = f"p_konum_plus/calibration/f3_step2_spline_percall_telemetry_rp1-r3_{DATE_TAG}.csv"
++ATTEMPT_LOG_PATH = f"p_konum_plus/provenance/f3_realdata_prep_rp1-r3_attempt_log_{DATE_TAG}.md"
++STORE_MANIFEST_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_restart_store_manifest_{DATE_TAG}.csv"
++REGISTER_PATH = f"p_konum_plus/calibration/f3_step2_class_c_pin_register_rp1-r3_{DATE_TAG}.md"
++NONREG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_nonregression_vs_r4_{DATE_TAG}.csv"
++NONREG_R41_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_nonregression_vs_r4-1_{DATE_TAG}.csv"
+@@ -453 +519 @@
+-NONREG_R42_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_nonregression_vs_r4-2_{DATE_TAG}.csv"
++NONREG_R42_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_nonregression_vs_r4-2_{DATE_TAG}.csv"
+@@ -455 +521 @@
+-STORE_READ_LOG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_store_read_log_{DATE_TAG}.csv"
++STORE_READ_LOG_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_store_read_log_{DATE_TAG}.csv"
+@@ -459,4 +525,4 @@
+-EXPECTATIONS_E_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r2_expectations_{DATE_TAG}.json"
+-HANDOFF_FAMILY_PATH = f"p_konum_plus/calibration/f3_step2_handoff_family_telemetry_rp1-r2_{DATE_TAG}.csv"
+-HANDOFF_TIMING_PATH = f"p_konum_plus/calibration/f3_step2_handoff_timings_rp1-r2_{DATE_TAG}.csv"
+-HANDOFF_ESTIMATE_PATH = f"p_konum_plus/provenance/f3_realdata_prep_rp1-r2_size_estimate_{DATE_TAG}.json"
++EXPECTATIONS_E_PATH = f"p_konum_plus/calibration/f3_step2_rp1-r3_expectations_{DATE_TAG}.json"
++HANDOFF_FAMILY_PATH = f"p_konum_plus/calibration/f3_step2_handoff_family_telemetry_rp1-r3_{DATE_TAG}.csv"
++HANDOFF_TIMING_PATH = f"p_konum_plus/calibration/f3_step2_handoff_timings_rp1-r3_{DATE_TAG}.csv"
++HANDOFF_ESTIMATE_PATH = f"p_konum_plus/provenance/f3_realdata_prep_rp1-r3_size_estimate_{DATE_TAG}.json"
+@@ -3993 +4059 @@
+-    # caller sets F3_RP1R2_LAUNCH and redirects to the matching log pair.
++    # caller sets F3_RP1R3_LAUNCH and redirects to the matching log pair.
+@@ -3995 +4061 @@
+-        "R41A-02(c) STOP: set F3_RP1R2_LAUNCH to this launch's number (>= 1) "
++        "R41A-02(c) STOP: set F3_RP1R3_LAUNCH to this launch's number (>= 1) "
+@@ -4190 +4256 @@
+-    f1_synth_dir = f"p_konum_plus/calibration/f3_step2_rp1-r2_f1_synth_fixtures_{DATE_TAG}"
++    f1_synth_dir = f"p_konum_plus/calibration/f3_step2_rp1-r3_f1_synth_fixtures_{DATE_TAG}"
+@@ -4229,0 +4296,4 @@
++    scope_guard = RP2_TESTS.rrs_cases(
++        Path(__file__).read_bytes().decode("utf-8"),
++        Path("p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py").read_bytes().decode("utf-8"))
++    assert record_test("T-RP1R3-RRS-UNCHANGED", scope_guard["pass_"]), "RRS_SCOPE_STOP"
+@@ -4233 +4303 @@
+-        "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_runtime_fixture_custody_attempt%d_launch%d_2026-10-10.csv" % (ATTEMPT_NUMBER, LAUNCH_NUMBER))
++        'p_konum_plus/provenance/f3_realdata_prep_rp1-r3_runtime_fixture_custody_attempt%d_launch%d_2026-10-15.csv' % (ATTEMPT_NUMBER, LAUNCH_NUMBER))
+@@ -4905,0 +4976 @@
++    test_evidence["rp1_r3_scope_guard"] = scope_guard
+@@ -5159 +5230 @@
+-    _d13_path = "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md"
++    _d13_path = "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md"
+@@ -5161,4 +5232,4 @@
+-    assert _d12_observed == "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f", (
+-        "rp1-r2 STOP: D-13 observed %s != pinned %s"
+-        % (_d12_observed, "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f"))
+-    print("PI_DISPATCH_RECORD (D-13) observed = " + _d12_observed
++    assert _d12_observed == "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a", (
++        "rp1-r3 STOP: D-19 observed %s != pinned %s"
++        % (_d12_observed, "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a"))
++    print("PI_DISPATCH_RECORD (D-19) observed = " + _d12_observed
+@@ -5284,0 +5356,3 @@
++    results["rp1_r3_scope_guard"] = scope_guard
++    results["end_state"]["rp1_r3_status"] = "PARTIAL_PENDING_PI"
++    results["end_state"]["rp1_r3_open_findings"] = []
+@@ -5297 +5371 @@
+-        "rp1-r2 STOP: end_state.PI_dispatch_record_hash = %s but D-13 observes %s"
++        "rp1-r3 STOP: end_state.PI_dispatch_record_hash = %s but D-19 observes %s"
+@@ -5395 +5469 @@
+-                  'reason': "rp1-r1's own dispatch record is D-12, not D-7",
++                  'reason': 'R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.',
+@@ -5399 +5473 @@
+-                  'reason': "rp1-r1's own dispatch record path",
++                  'reason': 'R3-4: current signed dispatch record f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md; documentary provenance may differ.',
+@@ -7218 +7292,11 @@
+-                            'launch 1.'}],
++                            'launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.ran', 'id': 'results:rp1_r3_scope_guard.ran', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.pass_', 'id': 'results:rp1_r3_scope_guard.pass_', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].name', 'id': 'results:rp1_r3_scope_guard.cases[*].name', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].expected', 'id': 'results:rp1_r3_scope_guard.cases[*].expected', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].got', 'id': 'results:rp1_r3_scope_guard.cases[*].got', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].ok', 'id': 'results:rp1_r3_scope_guard.cases[*].ok', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'tests_run.T-RP1R3-RRS-UNCHANGED.ran', 'id': 'results:tests_run.T-RP1R3-RRS-UNCHANGED.ran', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'tests_run.T-RP1R3-RRS-UNCHANGED.passed', 'id': 'results:tests_run.T-RP1R3-RRS-UNCHANGED.passed', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'end_state.rp1_r3_status', 'id': 'results:end_state.rp1_r3_status', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'end_state.rp1_r3_open_findings', 'id': 'results:end_state.rp1_r3_open_findings', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'}],
+@@ -9851 +9935,9 @@
+-                       {'path': 'tests_run.T-RP1R2-Q9.ran', 'id': 'test_evidence:tests_run.T-RP1R2-Q9.ran', 'kind': 'ADDITION', 'reason': 'Section 0 declaration-defect correction after attempt 1: section 4 Q9 introduces T-RP1R2-Q9; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes.'}]}
++                       {'path': 'tests_run.T-RP1R2-Q9.ran', 'id': 'test_evidence:tests_run.T-RP1R2-Q9.ran', 'kind': 'ADDITION', 'reason': 'Section 0 declaration-defect correction after attempt 1: section 4 Q9 introduces T-RP1R2-Q9; its new test_evidence tests_run.ran leaf is absent from r4-2. This adds the missing namespace declaration; no test value or existing declaration changes.'},
++                       {'path': 'rp1_r3_scope_guard.ran', 'id': 'test_evidence:rp1_r3_scope_guard.ran', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.pass_', 'id': 'test_evidence:rp1_r3_scope_guard.pass_', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].name', 'id': 'test_evidence:rp1_r3_scope_guard.cases[*].name', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].expected', 'id': 'test_evidence:rp1_r3_scope_guard.cases[*].expected', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].got', 'id': 'test_evidence:rp1_r3_scope_guard.cases[*].got', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'rp1_r3_scope_guard.cases[*].ok', 'id': 'test_evidence:rp1_r3_scope_guard.cases[*].ok', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'tests_run.T-RP1R3-RRS-UNCHANGED.ran', 'id': 'test_evidence:tests_run.T-RP1R3-RRS-UNCHANGED.ran', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'},
++                       {'path': 'tests_run.T-RP1R3-RRS-UNCHANGED.passed', 'id': 'test_evidence:tests_run.T-RP1R3-RRS-UNCHANGED.passed', 'kind': 'ADDITION', 'reason': 'R3-5 / section 8: new mandatory immutable-consumer scope evidence and cycle status; absent from r4-2; authored before launch 1.'}]}
+@@ -10009 +10101 @@
+-    ledger_path = Path("p_konum_plus/provenance/f3_realdata_prep_rp1-r2_ledger_2026-10-10.json")
++    ledger_path = Path('p_konum_plus/provenance/f3_realdata_prep_rp1-r3_ledger_2026-10-15.json')
+@@ -10011,2 +10103,2 @@
+-    current_open = [row["id"] for row in ledger["items"] if row["status"] == "OPEN"]
+-    due = [row for row in ledger["items"] if row["closure_point"] == "rp1-r2 audit"]
++    due = [row for row in ledger["items"] if row.get("due_in_rp1_r3")]
++    current_open = [row["id"] for row in due if row["status"] != "IMPLEMENTED_PENDING_VERIFICATION"]
+@@ -10015,4 +10107,5 @@
+-                and not s_findings and not u_findings and not current_open
+-                and due_implemented and evidence_delivered)
+-    six["rp1_r2_status"] = "PREPARED_PENDING_INDEPENDENT_AUDIT" if prepared else "PARTIAL_PENDING_PI"
+-    six["rp1_r2_open_findings"] = current_open
++                and not s_findings and not u_findings and not six["open_findings"]
++                and not current_open and due_implemented)
++    six["rp1_r3_status"] = "PREPARED_PENDING_INDEPENDENT_AUDIT" if prepared else "PARTIAL_PENDING_PI"
++    six["rp1_r3_open_findings"] = current_open
++

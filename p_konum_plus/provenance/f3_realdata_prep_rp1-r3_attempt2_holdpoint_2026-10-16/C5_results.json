@@ -1,0 +1,1181 @@
+{
+  "a1": {
+    "passed": true,
+    "code_sha256": "535680c8b2d0e83d5a5eef3a19c3653719aebd8a4e7e85cd67542f7f5e0d918e",
+    "input_hashes": {
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_r4-2_2026-09-30.py": "b988e9628731f6d0736ea3eaa4e9b4b5816ef5b15caf560a99c15e53933d0730",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r2_gate_tools_2026-10-10.py": "ca7233e7aec291fbc160bd581c56733fbf615b1cb72a1de8bc94ab89799589a7",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_results_r4-2_2026-09-30.json": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_results_rp1-r2_2026-10-10.json": "81e1b523cc41561edabbea9098696646355b811d4b1ce86493bf10fae7e63818",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_test_evidence_r4-2_2026-09-30.json": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_test_evidence_rp1-r2_2026-10-10.json": "73c125c896c3d3cf6b4085fe6f9c96359272c7dfd4e9dc78e342f2c2ac730cc0",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_telemetry_r4-2_2026-09-30.csv": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_telemetry_rp1-r2_2026-10-10.csv": "4ae7b2389f4336233a4940ebd5a590632dbab742ca882d29a4d4ac0c0fd9c855",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_rp1-r2_nonregression_vs_r4-2_2026-10-10.csv": "25696c8e9b509a15fd0cb92bc2094dbd3e3d846602945a1ac7b5cbb66f9f348d"
+    },
+    "comparator_row_counts": {
+      "old": 219453,
+      "new": 219453
+    },
+    "further_findings": 0,
+    "traceback_rows": 11,
+    "trace_classifications_match_delivered": true,
+    "historical_postcomparison_finalization_findings": 25
+  },
+  "a2": {
+    "passed": true,
+    "code_sha256": "b216d013e48a1e800419630b2c6d6e4b27d612fd14d8303ddb04db0898f46a29",
+    "input_hashes": {
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r3_2026-10-15.py": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+    },
+    "tests": {
+      "Q4": {
+        "ran": true,
+        "pass_": true,
+        "cases": [
+          {
+            "name": "no_constant_ok",
+            "expected": 0,
+            "got": 0,
+            "ok": true
+          },
+          {
+            "name": "constant_rejected",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "keyword_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "dictionary_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "subscript_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "name_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "attribute_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "annotated_subscript_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "annotated_name_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "annotated_attribute_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          }
+        ]
+      },
+      "Q5": {
+        "ran": true,
+        "pass_": true,
+        "cases": [
+          {
+            "name": "count_transition",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.rows",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failures",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.path",
+            "expected": "test.n",
+            "got": "test.n",
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.classification",
+            "expected": "U_FINDING",
+            "got": "U_FINDING",
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.declaration_id",
+            "expected": "wrong_equal_count",
+            "got": "wrong_equal_count",
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.kind",
+            "expected": "COUNT",
+            "got": "COUNT",
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.held",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "wrong_equal_count.failure.reason",
+            "expected": "source-authored negative",
+            "got": "source-authored negative",
+            "ok": true
+          },
+          {
+            "name": "addition_in_both",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.rows",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failures",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.path",
+            "expected": "test.n",
+            "got": "test.n",
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.classification",
+            "expected": "U_FINDING",
+            "got": "U_FINDING",
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.declaration_id",
+            "expected": "addition_in_both",
+            "got": "addition_in_both",
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.kind",
+            "expected": "ADDITION",
+            "got": "ADDITION",
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.held",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "addition_in_both.failure.reason",
+            "expected": "source-authored negative",
+            "got": "source-authored negative",
+            "ok": true
+          },
+          {
+            "name": "unequal_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.rows",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failures",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.path",
+            "expected": "test.n",
+            "got": "test.n",
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.classification",
+            "expected": "U_FINDING",
+            "got": "U_FINDING",
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.declaration_id",
+            "expected": "unequal_equal",
+            "got": "unequal_equal",
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.kind",
+            "expected": "EQUAL",
+            "got": "EQUAL",
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.held",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "unequal_equal.failure.reason",
+            "expected": "source-authored negative",
+            "got": "source-authored negative",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.rows",
+            "expected": 2,
+            "got": 2,
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failures",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.path",
+            "expected": "test.n.leaf",
+            "got": "test.n.leaf",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.classification",
+            "expected": "U_FINDING",
+            "got": "U_FINDING",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.declaration_id",
+            "expected": "",
+            "got": "",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.kind",
+            "expected": "UNDECLARED",
+            "got": "UNDECLARED",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.held",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.failure.reason",
+            "expected": "undeclared differing leaf",
+            "got": "undeclared differing leaf",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.parent_count",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.parent.classification",
+            "expected": "E",
+            "got": "E",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.parent.declaration_id",
+            "expected": "deep_not_hidden",
+            "got": "deep_not_hidden",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.parent.kind",
+            "expected": "MAY_DIFFER",
+            "got": "MAY_DIFFER",
+            "ok": true
+          },
+          {
+            "name": "deep_not_hidden.parent.held",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "absent_in_both",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.rows",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failures",
+            "expected": 1,
+            "got": 1,
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.path",
+            "expected": "test.missing",
+            "got": "test.missing",
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.classification",
+            "expected": "U_FINDING",
+            "got": "U_FINDING",
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.declaration_id",
+            "expected": "absent_in_both",
+            "got": "absent_in_both",
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.kind",
+            "expected": "ADDITION",
+            "got": "ADDITION",
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.held",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "absent_in_both.failure.reason",
+            "expected": "declared path absent from both documents",
+            "got": "declared path absent from both documents",
+            "ok": true
+          }
+        ]
+      },
+      "Q6": {
+        "ran": true,
+        "pass_": true,
+        "cases": [
+          {
+            "name": "path_normalized.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_normalized.exception_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_normalized.signature_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_normalized",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "changed_raise_rejected.frames_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "changed_raise_rejected.exception_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "changed_raise_rejected.signature_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "changed_raise_rejected",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_in_exception_text.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_in_exception_text.exception_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "path_in_exception_text.signature_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "field_before_path_preserved.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "field_before_path_preserved.exception_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "field_before_path_preserved.signature_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "multiline_type.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "multiline_type.exception_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "multiline_type.signature_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "multiline_nonfinal.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "multiline_nonfinal.exception_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "multiline_nonfinal.signature_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "chained_cause_type.frames_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "chained_cause_type.exception_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          },
+          {
+            "name": "chained_cause_type.signature_equal",
+            "expected": false,
+            "got": false,
+            "ok": true
+          }
+        ]
+      },
+      "RRS": {
+        "ran": true,
+        "pass_": true,
+        "cases": [
+          {
+            "name": "parent_segment_equal",
+            "expected": true,
+            "got": true,
+            "ok": true
+          },
+          {
+            "name": "constructed_statement_change_rejected",
+            "expected": true,
+            "got": true,
+            "ok": true
+          }
+        ]
+      }
+    },
+    "namespaces": {
+      "results": {
+        "declarations": 28,
+        "rows": 356,
+        "failures": 0,
+        "all_declarations_held": true
+      },
+      "test_evidence": {
+        "declarations": 26,
+        "rows": 354,
+        "failures": 0,
+        "all_declarations_held": true
+      }
+    }
+  },
+  "RRS": {
+    "code_sha256": "e9ba0e66c7900c36ee70cef88ec9701cdb62232db1e1863173848e784c96fa70",
+    "test_id": "T-RP1R3-RRS-UNCHANGED",
+    "test": {
+      "ran": true,
+      "pass_": true,
+      "cases": [
+        {
+          "name": "parent_segment_equal",
+          "expected": true,
+          "got": true,
+          "ok": true
+        },
+        {
+          "name": "constructed_statement_change_rejected",
+          "expected": true,
+          "got": true,
+          "ok": true
+        }
+      ]
+    },
+    "inputs": {
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r3_2026-10-15.py": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_step2_adequacy_harness_rp1-r2_2026-10-10.py": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+      "G:\\PycharmProjects\\pkp-worktree\\p_konum_plus\\calibration\\f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+    },
+    "scope": "Existing positive and constructed negative only; no harness import/main, optimizer or store",
+    "real_data_access": false
+  },
+  "W3": {
+    "code_sha256": "b72b2607fb262494460060f7483b7756460af98fa3858811eb41970ea93cf589",
+    "passed": true,
+    "writer_return_code": 0,
+    "original_writer_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
+    "control_copy_writer_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
+    "harness_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+    "copied_control_inputs": [
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R3_CORRECTION_EXECUTION_PROMPT_DRAFT_v2.md",
+        "sha256": "5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4_CORRECTION_INSTRUCTION_2026-09-24.md",
+        "sha256": "e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_pi_dispatch_record_2026-09-24.md",
+        "sha256": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r3_independent_audit_claude-fable-5-1_DRAFT_r1_2026-09-24.md",
+        "sha256": "11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_pi_ratified_content_2026-09-07.md",
+        "sha256": "da0c4064615263b1aef8884bc1a7fef64d319a40ff48e313c0bb19a522d1c498"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-1_CORRECTION_INSTRUCTION_2026-09-29.md",
+        "sha256": "283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-1_pi_dispatch_record_2026-09-29.md",
+        "sha256": "a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-2_CORRECTION_INSTRUCTION_2026-09-30.md",
+        "sha256": "d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_dispatch_record_2026-09-30.md",
+        "sha256": "a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-1_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-30.md",
+        "sha256": "ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_fixture_generator_r4-1_2026-09-29.py",
+        "sha256": "68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_fixture_manifest_r4-1_2026-09-29.csv",
+        "sha256": "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_results_r4-1_2026-09-29.json",
+        "sha256": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-28.md",
+        "sha256": "b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r2_2026-09-28.md",
+        "sha256": "9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1_INSTRUCTION_2026-10-02.md",
+        "sha256": "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_pi_dispatch_record_2026-10-02.md",
+        "sha256": "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_qualification_pi_decision_record_2026-10-02.md",
+        "sha256": "1ab17e44fd16d6c7f69a5563030ad854809e8569c3469275deda5c6f0aa304d3"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_decision_record_2026-10-01.md",
+        "sha256": "aadf2840d7063dd2c13e829c23128f821115fd9839a63b748afc6ac28764e9ae"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_independent_audit_claude-opus-5-5_DRAFT_r1_2026-10-01.md",
+        "sha256": "9111bc71933f0fccfab213f785bea1d3b0f27e3b34a5da00dae0f83a78b57575"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_results_r4-2_2026-09-30.json",
+        "sha256": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_telemetry_r4-2_2026-09-30.csv",
+        "sha256": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_test_evidence_r4-2_2026-09-30.json",
+        "sha256": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf"
+      },
+      {
+        "path": "p_konum_plus/calibration/f1_input_freeze_record_2026-08-28.md",
+        "sha256": "5eceb198a04e31643cbf7aae02c381413ad820c5a706a5ca0d6ea31ef80088b0"
+      },
+      {
+        "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+        "sha256": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1_transmission_list_2026-10-04.md",
+        "sha256": "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py",
+        "sha256": "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R1_INSTRUCTION_DRAFT_r2_2026-10-05.md",
+        "sha256": "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_pi_dispatch_record_2026-10-05.md",
+        "sha256": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_independent_audit_gpt_codex_DRAFT_r1_2026-10-05.md",
+        "sha256": "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989"
+      },
+      {
+        "path": "p_konum_plus/prompts/RP1-R1_Talimat_Taslagi_Degerlendirmesi_2026-10-05.md",
+        "sha256": "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R3_INSTRUCTION_DRAFT_r1_2026-10-14.md",
+        "sha256": "f84069a060c806355676a259bd07b437a7f81ae0600b90fef5ab9baa6f73881a"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md",
+        "sha256": "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_pi_decision_record_2026-10-12.md",
+        "sha256": "278532bff270337e7db59d4e1a47287fc3169b651d9b4f4625687beca864fb93"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_scope_evaluation_pi_decision_record_2026-10-12.md",
+        "sha256": "3e2a5fe3373ae08fc91831d7312c5f994ff332efdf3bae50818cced98d608e45"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_completion_pi_decision_record_2026-10-12.md",
+        "sha256": "25023f450dc443a8d248fc8ed662812947f098f1532042a6858f159cee39deb9"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md",
+        "sha256": "fe9b2b539f55efeda94d61c77ad30bd146de2ebcbbbf4d7a203fb13a8c0dcfa0"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-12.md",
+        "sha256": "f3f24b6a7b889e0fa348d208ff7ec7f3478c97e1299059350adcf3b846628a72"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+        "sha256": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2"
+      },
+      {
+        "path": "p_konum_plus/prompts/F3_RP1-R2_INDEPENDENT_AUDIT_INSTRUCTION_DRAFT_r1_2026-10-12.md",
+        "sha256": "25eb0e160c90eac37b0e22249607a69b546ee065b1f8feeb1f8f8c735ec154c2"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md",
+        "sha256": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md",
+        "sha256": "bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md",
+        "sha256": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md",
+        "sha256": "f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913"
+      },
+      {
+        "path": "p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+        "sha256": "82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+        "sha256": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+        "sha256": "98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956"
+      },
+      {
+        "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+        "sha256": "4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+        "sha256": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+        "sha256": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_transmission_list_2026-10-12.csv",
+        "sha256": "e48f5f6ba139eabbf52109556886c8f4d8c67f92e3c6155846800407e4ec3c75"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_step2_rp1-r3_attempt1_launch1_w3_writer_2026-10-15.json",
+        "sha256": "5c9661045c6602195296689229834c4f178fb7cab03c9ad5fe3337aa2b9bf459"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py",
+        "sha256": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_rp1-r2_reproduction_fixture_generator_2026-10-10.py",
+        "sha256": "eaeabaaeb922a7f6cfb8573075129a56e98dc1ceddcee3c5a24a85bef5ed0de8"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py",
+        "sha256": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r3_2026-10-15.py",
+        "sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_rp1-r3_write_custody_2026-10-15.py",
+        "sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891"
+      }
+    ],
+    "pin_checks": [
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R3_CORRECTION_EXECUTION_PROMPT_DRAFT_v2.md",
+        "expected": "5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5",
+        "observed": "5b0e19ea58ddd6557ee3bcf8f5bd3c314c52f32b9692ac377a90252b4bfba8f5",
+        "source": "D-3"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4_CORRECTION_INSTRUCTION_2026-09-24.md",
+        "expected": "e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387",
+        "observed": "e12839587153cd9ee461d0697f431d5ddf740e8eec5b82741fe478333e6dd387",
+        "source": "r4 instruction"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_pi_dispatch_record_2026-09-24.md",
+        "expected": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851",
+        "observed": "0cd87ad5b95264f65e862bf6f6c84b0f2cbe9c5eb234b1cd85ed7cc4af36a851",
+        "source": "D-5"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r3_independent_audit_claude-fable-5-1_DRAFT_r1_2026-09-24.md",
+        "expected": "11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6",
+        "observed": "11cfa591cee0a3dbb1eab0a14083484049a10aa7c9cfd65b9df43847bbcd31c6",
+        "source": "A-1"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_pi_ratified_content_2026-09-07.md",
+        "expected": "da0c4064615263b1aef8884bc1a7fef64d319a40ff48e313c0bb19a522d1c498",
+        "observed": "da0c4064615263b1aef8884bc1a7fef64d319a40ff48e313c0bb19a522d1c498",
+        "source": "D-2"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-1_CORRECTION_INSTRUCTION_2026-09-29.md",
+        "expected": "283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330",
+        "observed": "283ac4e29b6a42faddb3565adfdec41ec6b9ca949395de7041de622b2b704330",
+        "source": "r4-1 instruction"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-1_pi_dispatch_record_2026-09-29.md",
+        "expected": "a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0",
+        "observed": "a92a0518dd053a54b5baab63f0057b8304d5581afbb497da137f593d6c3fe3b0",
+        "source": "D-6"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_STEP2_R4-2_CORRECTION_INSTRUCTION_2026-09-30.md",
+        "expected": "d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe",
+        "observed": "d668033867913f728050b1944178d2eb56c3a0a9e43299cc84b391409f354ffe",
+        "source": "r4-2 instruction"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_dispatch_record_2026-09-30.md",
+        "expected": "a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb",
+        "observed": "a3e705093577135f9992685a483b2f0de343326da6c3aecbb278e7672e1ec1fb",
+        "source": "D-7"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-1_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-30.md",
+        "expected": "ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82",
+        "observed": "ad22293661393f84dfa0fe9dee5f64be17737b56f060fe42dac3e3d685a29c82",
+        "source": "A-4 (input)"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_fixture_generator_r4-1_2026-09-29.py",
+        "expected": "68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830",
+        "observed": "68d126cf07b11b844cec0d43a607f0e340ec2ea195870f9b4e27f812b29f9830",
+        "source": "generator (reused r4-1)"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_fixture_manifest_r4-1_2026-09-29.csv",
+        "expected": "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe",
+        "observed": "5c09c4f0811fa51bc3b9c7b4744875c439888a654ef970a9718a82eeec69dcfe",
+        "source": "manifest (reused r4-1)"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_results_r4-1_2026-09-29.json",
+        "expected": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385",
+        "observed": "6dd4185b895d0d26fda47ab3269527232f733ad89c065467c0caa85a125a4385",
+        "source": "r4-1 results (baseline)"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r1_2026-09-28.md",
+        "expected": "b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a",
+        "observed": "b721702785d0eca6de3a07793b2ec9adfc7144617b9726ac0a731d71be74219a",
+        "source": "A-2 (input)"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4_independent_audit_claude-opus-5-5_DRAFT_r2_2026-09-28.md",
+        "expected": "9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9",
+        "observed": "9c16abb5beb112cd014d4318049de167b45feaf358f7ad31ec990136543543f9",
+        "source": "A-3 (input)"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1_INSTRUCTION_2026-10-02.md",
+        "expected": "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5",
+        "observed": "a57b6fca304deb82d2f48ef4b1b30ef545d250bd5a21009bd2390bf72effcbd5",
+        "source": "rp1 instruction"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_pi_dispatch_record_2026-10-02.md",
+        "expected": "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34",
+        "observed": "4c89577bed6820da3ad50d9651f742c4de33d3441027182b2696e30712847f34",
+        "source": "D-10"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_qualification_pi_decision_record_2026-10-02.md",
+        "expected": "1ab17e44fd16d6c7f69a5563030ad854809e8569c3469275deda5c6f0aa304d3",
+        "observed": "1ab17e44fd16d6c7f69a5563030ad854809e8569c3469275deda5c6f0aa304d3",
+        "source": "D-9 (QUALIFIED)"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_pi_decision_record_2026-10-01.md",
+        "expected": "aadf2840d7063dd2c13e829c23128f821115fd9839a63b748afc6ac28764e9ae",
+        "observed": "aadf2840d7063dd2c13e829c23128f821115fd9839a63b748afc6ac28764e9ae",
+        "source": "D-8"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_step2_r4-2_independent_audit_claude-opus-5-5_DRAFT_r1_2026-10-01.md",
+        "expected": "9111bc71933f0fccfab213f785bea1d3b0f27e3b34a5da00dae0f83a78b57575",
+        "observed": "9111bc71933f0fccfab213f785bea1d3b0f27e3b34a5da00dae0f83a78b57575",
+        "source": "A-5 (input)"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_results_r4-2_2026-09-30.json",
+        "expected": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba",
+        "observed": "f2a0a4d5a94de0e902d8403243f4fc92faa315468ec21213a64860f3efa1e1ba",
+        "source": "r4-2 results (non-regression baseline)"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_telemetry_r4-2_2026-09-30.csv",
+        "expected": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d",
+        "observed": "ac70eaf580ba4fddf3de63f6ef41ac1eb739483cc88d6cc0fbcec767965ddd5d",
+        "source": "r4-2 telemetry"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_test_evidence_r4-2_2026-09-30.json",
+        "expected": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+        "observed": "c156b9e0ef70f72f751d32e7b2826f4db2fc2a3b78308f54d96ab57a924082bf",
+        "source": "r4-2 test evidence"
+      },
+      {
+        "path": "p_konum_plus/calibration/f1_input_freeze_record_2026-08-28.md",
+        "expected": "5eceb198a04e31643cbf7aae02c381413ad820c5a706a5ca0d6ea31ef80088b0",
+        "observed": "5eceb198a04e31643cbf7aae02c381413ad820c5a706a5ca0d6ea31ef80088b0",
+        "source": "F1 freeze record"
+      },
+      {
+        "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+        "expected": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+        "observed": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+        "source": "D-11 r1"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1_transmission_list_2026-10-04.md",
+        "expected": "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9",
+        "observed": "858091d68e09d8431864fda86b0d1399386d156b07bb2e37dd920d6f937a44c9",
+        "source": "rp1 transmission list"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1_2026-10-02.py",
+        "expected": "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09",
+        "observed": "39c733a38eb14031b1525d31718488536f75ec1f57a2695c5a2a88744c5d6f09",
+        "source": "rp1 harness"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R1_INSTRUCTION_DRAFT_r2_2026-10-05.md",
+        "expected": "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d",
+        "observed": "2226fc9622989c5fff6d1eab0d36b7d0e5370c8f2d686930d67ab52f64a0980d",
+        "source": "rp1-r1 instruction"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_pi_dispatch_record_2026-10-05.md",
+        "expected": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364",
+        "observed": "2c23130dfed76b02f50c24de0319ab39e296d47fc74cb46b8ad0c88dc6434364",
+        "source": "D-12"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1_independent_audit_gpt_codex_DRAFT_r1_2026-10-05.md",
+        "expected": "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989",
+        "observed": "2fa28e2ad8f312bde4ddbf688364bd431ea3843904108494e2bcc4a5f5320989",
+        "source": "rp1 audit (input)"
+      },
+      {
+        "path": "p_konum_plus/prompts/RP1-R1_Talimat_Taslagi_Degerlendirmesi_2026-10-05.md",
+        "expected": "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef",
+        "observed": "aa9fcaa9dc2cd7f32c6a11714c69771902354d8ae7c6083072a6275e4f97e0ef",
+        "source": "rp1-r1 DRAFT review (input)"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R3_INSTRUCTION_DRAFT_r1_2026-10-14.md",
+        "expected": "f84069a060c806355676a259bd07b437a7f81ae0600b90fef5ab9baa6f73881a",
+        "observed": "f84069a060c806355676a259bd07b437a7f81ae0600b90fef5ab9baa6f73881a",
+        "source": "rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R3_INSTRUCTION_DRAFT_r1_2026-10-14.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md",
+        "expected": "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a",
+        "observed": "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_pi_decision_record_2026-10-12.md",
+        "expected": "278532bff270337e7db59d4e1a47287fc3169b651d9b4f4625687beca864fb93",
+        "observed": "278532bff270337e7db59d4e1a47287fc3169b651d9b4f4625687beca864fb93",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_pi_decision_record_2026-10-12.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_scope_evaluation_pi_decision_record_2026-10-12.md",
+        "expected": "3e2a5fe3373ae08fc91831d7312c5f994ff332efdf3bae50818cced98d608e45",
+        "observed": "3e2a5fe3373ae08fc91831d7312c5f994ff332efdf3bae50818cced98d608e45",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_scope_evaluation_pi_decision_record_2026-10-12.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_completion_pi_decision_record_2026-10-12.md",
+        "expected": "25023f450dc443a8d248fc8ed662812947f098f1532042a6858f159cee39deb9",
+        "observed": "25023f450dc443a8d248fc8ed662812947f098f1532042a6858f159cee39deb9",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_AUDITOR-SCOPE-01_completion_pi_decision_record_2026-10-12.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md",
+        "expected": "fe9b2b539f55efeda94d61c77ad30bd146de2ebcbbbf4d7a203fb13a8c0dcfa0",
+        "observed": "fe9b2b539f55efeda94d61c77ad30bd146de2ebcbbbf4d7a203fb13a8c0dcfa0",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_audit_outcome_pi_decision_record_2026-10-14.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-12.md",
+        "expected": "f3f24b6a7b889e0fa348d208ff7ec7f3478c97e1299059350adcf3b846628a72",
+        "observed": "f3f24b6a7b889e0fa348d208ff7ec7f3478c97e1299059350adcf3b846628a72",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-12.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md",
+        "expected": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+        "observed": "dfa76b94b3b82209ceed7587fb9f2722db07044e5ce74a14ef9daf761b760eb2",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r2_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-13.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/F3_RP1-R2_INDEPENDENT_AUDIT_INSTRUCTION_DRAFT_r1_2026-10-12.md",
+        "expected": "25eb0e160c90eac37b0e22249607a69b546ee065b1f8feeb1f8f8c735ec154c2",
+        "observed": "25eb0e160c90eac37b0e22249607a69b546ee065b1f8feeb1f8f8c735ec154c2",
+        "source": "rp1-r3 incoming F3_RP1-R2_INDEPENDENT_AUDIT_INSTRUCTION_DRAFT_r1_2026-10-12.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md",
+        "expected": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
+        "observed": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
+        "source": "D-20 signed attempt-2 bounded correction and hold point"
+      },
+      {
+        "path": "p_konum_plus/prompts/Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-10.md",
+        "expected": "bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5",
+        "observed": "bf53e1e91a0a8b8a4a02bf9ef20467e1f917adce92a97d4d4037a6b5097333a5",
+        "source": "rp1-r3 incoming Claude_Code_F3_REALDATA_PREP_RP1-R2_INSTRUCTION_DRAFT_r1_2026-10-15.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_pi_dispatch_record_2026-10-10.md",
+        "expected": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f",
+        "observed": "6b9ae30e301eba089364edff41ddf26096f054a4d8c49fedb2ad15bd3245638f",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-15.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-10.md",
+        "expected": "f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913",
+        "observed": "f3a6f369b8d2a5d1dacd6945c00e28b2beeaa59fefbdea8cb6298b9574cdc913",
+        "source": "rp1-r3 incoming f3_realdata_prep_rp1-r1_independent_audit_gpt-6_codex_DRAFT_r1_2026-10-15.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md",
+        "expected": "82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e",
+        "observed": "82472d635eda2b928ce9583d6d7fab1b21c305a9ac1ea2bdb3675f839c62620e",
+        "source": "rp1-r3 incoming F3_RP1-R1_INDEPENDENT_AUDIT_INSTRUCTION_r2_2026-10-08.md"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py",
+        "expected": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb",
+        "observed": "cac93ac632ff188493e5b2416580b21f36916ca8735c2366403f320da91688eb",
+        "source": "rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r1_2026-10-05.py"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md",
+        "expected": "98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956",
+        "observed": "98ed374d215da69561a6e4e6b03b49e52c6792d8cec05ee89307dfc8e71ca956",
+        "source": "rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r1_transmission_list_r1_2026-10-08.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md",
+        "expected": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+        "observed": "0b177ee4b1a9efc409c5f47ef3ada102e7795229e0b5761af45a64a33c607639",
+        "source": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_2026-10-04.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md",
+        "expected": "4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955",
+        "observed": "4d43682fc5ee2fe88a55d0fcf6bde3af9659192072322162eca5e2bbee0c9955",
+        "source": "rp1-r3 carried p_konum_plus/prompts/p_konum_plus_lightweight_review_policy_r1_addendum1_r1_2026-10-08.md"
+      },
+      {
+        "path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r2_IR1-13_pi_decision_record_2026-10-10.md",
+        "expected": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+        "observed": "a0ec71cb5214ac2319cb749d24888c456e697bc3fcbf3dd130907e20045418c7",
+        "source": "D-14 IR1-13 RECORDED_LIMITATION"
+      },
+      {
+        "path": "p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py",
+        "expected": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+        "observed": "4d2e3db00bf1742458107c09e2f78a6ce8dc22a206a9a1209547c3ba942b3d1d",
+        "source": "rp1-r3 carried p_konum_plus/calibration/f3_step2_adequacy_harness_rp1-r2_2026-10-10.py"
+      },
+      {
+        "path": "p_konum_plus/provenance/f3_realdata_prep_rp1-r2_transmission_list_2026-10-12.csv",
+        "expected": "e48f5f6ba139eabbf52109556886c8f4d8c67f92e3c6155846800407e4ec3c75",
+        "observed": "e48f5f6ba139eabbf52109556886c8f4d8c67f92e3c6155846800407e4ec3c75",
+        "source": "rp1-r3 carried p_konum_plus/provenance/f3_realdata_prep_rp1-r2_transmission_list_2026-10-12.csv"
+      }
+    ],
+    "external_test_custody_path": "C:\\Users\\Neo\\Downloads\\rp1r3_preflight\\2026-10-16_attempt2_C5_w3_execution01\\metadata_control_copy\\p_konum_plus\\provenance\\f3_step2_rp1-r3_preexecution_custody_attempt2_launch1_2026-10-15.md",
+    "external_test_custody_sha256": "d2456915bad3ad9ea13b8d7f1eaac80b561cbd6018a479c6057d5bd08ff04340",
+    "active_custody_created": false,
+    "harness_launched": false,
+    "actual_optimizer_calls": 0,
+    "real_data_access": false,
+    "output_disposition": "EXTERNAL TEST ARTIFACT ONLY; NEVER ACTIVE CUSTODY OR STORE INPUT"
+  }
+}

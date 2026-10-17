@@ -1,0 +1,50 @@
+{
+  "event": "D20_ATTEMPT2_HOLD_POINT_READY_NO_LAUNCH",
+  "created_utc": "2026-10-16T17:14:00.317770+00:00",
+  "packager_code_sha256": "9e30b78525ff90124ef97d7b91bc09fd972118b6382972ab105c7b44c7a1eca1",
+  "authority_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_attempt1_STOP_pi_decision_record_2026-10-16.md",
+  "authority_sha256": "778d8aff874991591cf45ae37e4fc0c698fb066304e16b6503e29868f693eff2",
+  "decision": "B",
+  "harness_sha256": "9ff48dbe6a5fdb6e4ae9d1952f1f7ecaba553eb84ef4e2a60de0be8258e8f96e",
+  "writer_sha256": "822560025b80920431998005b647076348f4e3026546e42a852718ea1f082891",
+  "source_proof": {
+    "harness_function_segments_unchanged": 108,
+    "main_unchanged": true,
+    "run_real_scenario_unchanged": true,
+    "all_other_harness_globals_unchanged": true,
+    "writer_changed_functions": [
+      "literal_constants",
+      "main"
+    ],
+    "ledger_unchanged_sha256": "266a4f7bcf5cd5a18c91f68c7857ad587a6ee051c5a1a87454348e1056770bbc",
+    "expectations_and_declarations_unchanged": true,
+    "unchanged_gate_tests_launcher": {
+      "p_konum_plus/calibration/f3_rp1-r3_gate_tools_2026-10-15.py": "1666abcf25d54bbc0b2ea3f404e286801149c3b7fb223eb83a49c1a54a75c045",
+      "p_konum_plus/calibration/f3_rp1-r3_technical_tests_2026-10-15.py": "9d68989488657a8dc8f1bc3ce119ea1232415971043d0f9de799a4a014df9879",
+      "p_konum_plus/calibration/f3_rp1-r3_launch_attempt_2026-10-15.py": "e55b16569b2f1729597f95cf8d0849f08d6ce0da44f930cf5f5b568968112496"
+    },
+    "parent_chain_unchanged": true,
+    "C2_D19_path": "p_konum_plus/prompts/f3_realdata_prep_rp1-r3_pi_dispatch_record_2026-10-14.md",
+    "C2_D19_observed_sha256": "10b3543344bd9ebf9df3319cfdc0d3540888328fde8bf4e5d6e05764bb675b1a"
+  },
+  "C3_counts": {
+    "NEW": 39,
+    "PIN": 23,
+    "HISTPATH": 43,
+    "TEXT": 73
+  },
+  "C3_real_input_hashes_NOT_OBSERVED": [
+    "p_konum_plus/manifests/f1_eligible_trajectory_manifest_2026-08-28.csv",
+    "p_konum_plus/manifests/f1_input_hash_table_2026-08-28.csv"
+  ],
+  "C3_TEXT_review_count": 15,
+  "C5_all_passed": true,
+  "active_W3_record_created": false,
+  "harness_launched": false,
+  "active_attempt_store_created": false,
+  "actual_optimizer_calls": 0,
+  "full_launch_authorized": false,
+  "commit": false,
+  "push": false,
+  "instruction": "Stop here; require separate PI approval naming this harness and all changed-file hashes. Any byte change requires a new hold point."
+}
